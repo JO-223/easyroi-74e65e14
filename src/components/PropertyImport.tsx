@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Dialog, 
   DialogContent, 
@@ -28,6 +28,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { DataImport } from "@/types/property";
+import { Shield, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const importFormSchema = z.object({
   source: z.string().min(1, {
@@ -44,6 +46,8 @@ export function PropertyImport() {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   
   const form = useForm<ImportFormValues>({
     resolver: zodResolver(importFormSchema),
@@ -53,7 +57,44 @@ export function PropertyImport() {
     },
   });
   
+  // Check if the current user is an administrator
+  useEffect(() => {
+    async function checkUserRole() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          // Fetch the user's profile to get their role
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) throw error;
+          
+          const role = profile?.role || null;
+          setUserRole(role);
+          setIsAdmin(['administrator', 'owner'].includes(role));
+        }
+      } catch (error) {
+        console.error("Error checking user role:", error);
+      }
+    }
+    
+    checkUserRole();
+  }, []);
+  
   const onSubmit = async (data: ImportFormValues) => {
+    if (!isAdmin) {
+      toast({
+        title: "Permission Denied",
+        description: "Only administrators can import property data.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsLoading(true);
     try {
       // Create a new data import record
@@ -107,10 +148,23 @@ export function PropertyImport() {
     }
   };
   
+  if (!isAdmin && userRole !== null) {
+    return (
+      <Alert variant="destructive" className="max-w-md">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>{t('accessDenied')}</AlertTitle>
+        <AlertDescription>
+          {t('importPropertiesAdminOnly')}
+        </AlertDescription>
+      </Alert>
+    );
+  }
+  
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90">
+        <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 flex items-center gap-2">
+          <Shield size={16} />
           {t('importProperties')}
         </Button>
       </DialogTrigger>

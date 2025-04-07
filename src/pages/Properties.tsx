@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 // Define properties per page
 const PROPERTIES_PER_PAGE = 9;
@@ -24,6 +25,34 @@ export default function Properties() {
   const [filters, setFilters] = useState<PropertyFilter>({});
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  
+  // Check if the current user is an administrator
+  useEffect(() => {
+    async function checkUserRole() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          // Fetch the user's profile to get their role
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) throw error;
+          
+          const role = profile?.role || null;
+          setIsAdmin(['administrator', 'owner'].includes(role));
+        }
+      } catch (error) {
+        console.error("Error checking user role:", error);
+      }
+    }
+    
+    checkUserRole();
+  }, []);
   
   // Fetch properties
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
