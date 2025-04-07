@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,11 +11,12 @@ import { Building2, Calendar, Edit, MapPin, Save, Shield, User } from "lucide-re
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
+
 const Profile = () => {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
 
-  // Sample user profile data
   const [profile, setProfile] = useState({
     firstName: "John",
     lastName: "Doe",
@@ -25,7 +25,7 @@ const Profile = () => {
     location: "Milan, Italy",
     bio: "Experienced real estate investor with focus on luxury properties across Europe and the Middle East. Passionate about architectural preservation and sustainable development.",
     joinDate: "Member since February 2023",
-    level: "gold",
+    level: "gold" as InvestorLevel,
     interests: ["Luxury Residential", "Commercial", "Historic Properties"],
     notifications: {
       email: true,
@@ -75,7 +75,6 @@ const Profile = () => {
   return (
     <DashboardLayout title="My Profile" subtitle="Manage your investor profile and account settings">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Profile Section */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader className="pb-0">
@@ -243,7 +242,6 @@ const Profile = () => {
           </Card>
         </div>
         
-        {/* Right Sidebar - Summary & Activity */}
         <div>
           <Card>
             <CardHeader>

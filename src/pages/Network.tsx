@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,12 +8,15 @@ import { Building2, Globe, Mail, MapPin, Search, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+// Define the type for investor level to match BadgeLevelProps
+type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
+
 // Sample investor data
 const investors = [
   {
     id: 1,
     name: "David Chen",
-    level: "platinum",
+    level: "platinum" as InvestorLevel,
     role: "Real Estate Developer",
     location: "Singapore",
     properties: 12,
@@ -25,7 +27,7 @@ const investors = [
   {
     id: 2,
     name: "Sophia Rossi",
-    level: "gold",
+    level: "gold" as InvestorLevel,
     role: "Investment Fund Manager",
     location: "Milan, Italy",
     properties: 8,
@@ -36,7 +38,7 @@ const investors = [
   {
     id: 3,
     name: "Michael Berman",
-    level: "gold",
+    level: "gold" as InvestorLevel,
     role: "Family Office Director",
     location: "New York, USA",
     properties: 6,
@@ -47,7 +49,7 @@ const investors = [
   {
     id: 4,
     name: "Amina Al-Farsi",
-    level: "platinum",
+    level: "platinum" as InvestorLevel,
     role: "Property Investor",
     location: "Dubai, UAE",
     properties: 14,
@@ -58,7 +60,7 @@ const investors = [
   {
     id: 5,
     name: "Robert Johnson",
-    level: "silver",
+    level: "silver" as InvestorLevel,
     role: "Architect & Investor",
     location: "London, UK",
     properties: 4,
@@ -69,7 +71,7 @@ const investors = [
   {
     id: 6,
     name: "Isabella Martinez",
-    level: "gold",
+    level: "gold" as InvestorLevel,
     role: "Hospitality Executive",
     location: "Madrid, Spain",
     properties: 7,
