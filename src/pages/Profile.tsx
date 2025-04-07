@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -46,20 +45,17 @@ const Profile = () => {
     avatar_url: null
   });
 
-  // Fetch user profile data
   useEffect(() => {
     const getProfile = async () => {
       try {
         setIsLoading(true);
         
-        // Get current user
         const { data: { user } } = await supabase.auth.getUser();
         
         if (!user) {
           throw new Error("No user logged in");
         }
         
-        // Fetch profile data
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*')
@@ -68,7 +64,6 @@ const Profile = () => {
         
         if (profileError) throw profileError;
         
-        // Fetch user interests
         const { data: userInterests, error: interestsError } = await supabase
           .from('profile_interests')
           .select('interests(name)')
@@ -76,14 +71,12 @@ const Profile = () => {
         
         if (interestsError) throw interestsError;
         
-        // Fetch available interests
         const { data: allInterests, error: allInterestsError } = await supabase
           .from('interests')
           .select('id, name');
         
         if (allInterestsError) throw allInterestsError;
         
-        // Format join date
         if (profileData) {
           const joinDate = new Date(profileData.join_date);
           const joinMonth = joinDate.toLocaleString('default', { month: 'long' });
@@ -122,7 +115,6 @@ const Profile = () => {
     try {
       setIsSaving(true);
       
-      // Update profile
       const { error: updateError } = await supabase
         .from('profiles')
         .update({
@@ -166,7 +158,6 @@ const Profile = () => {
       
       if (error) throw error;
       
-      // Refresh interests
       const { data: userInterests, error: fetchError } = await supabase
         .from('profile_interests')
         .select('interests(name)')
@@ -190,7 +181,6 @@ const Profile = () => {
 
   const removeInterest = async (interestName: string) => {
     try {
-      // Get interest id
       const { data: interestData } = await supabase
         .from('interests')
         .select('id')
@@ -199,7 +189,6 @@ const Profile = () => {
       
       if (!interestData) return;
       
-      // Delete interest relation
       const { error } = await supabase
         .from('profile_interests')
         .delete()
@@ -208,7 +197,6 @@ const Profile = () => {
       
       if (error) throw error;
       
-      // Update local state
       setInterests(interests.filter(i => i.name !== interestName));
       
     } catch (error) {

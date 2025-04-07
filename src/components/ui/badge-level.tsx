@@ -32,7 +32,13 @@ const badgeConfig = {
 };
 
 export function BadgeLevel({ level, className }: BadgeLevelProps) {
-  const config = badgeConfig[level];
+  // If the level is null or undefined, return null to avoid rendering anything
+  if (!level) {
+    return null;
+  }
+  
+  // Make sure the level is a valid key in our badgeConfig
+  const config = badgeConfig[level] || badgeConfig.bronze;
   
   return (
     <Badge className={cn(config.className, className)}>
