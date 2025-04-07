@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
@@ -7,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { BadgeLevel } from "@/components/ui/badge-level";
 import { ChevronDown, Globe, MapPin, Wifi, Tv, Car, Bath, Bed, Droplet } from "lucide-react";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Sample properties data
 const properties = [
@@ -103,9 +105,10 @@ const priceRanges = ["All Prices", "Under €1M", "€1M - €3M", "€3M - €5
 const investorLevels = ["All Levels", "Bronze", "Silver", "Gold", "Platinum", "Diamond"];
 
 export default function Properties() {
-  const [selectedLocation, setSelectedLocation] = useState("All Locations");
-  const [selectedPriceRange, setSelectedPriceRange] = useState("All Prices");
-  const [selectedInvestorLevel, setSelectedInvestorLevel] = useState("All Levels");
+  const { t } = useLanguage();
+  const [selectedLocation, setSelectedLocation] = useState(t('allLocations'));
+  const [selectedPriceRange, setSelectedPriceRange] = useState(t('allPrices'));
+  const [selectedInvestorLevel, setSelectedInvestorLevel] = useState(t('allLevels'));
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   return (
@@ -115,10 +118,10 @@ export default function Properties() {
         <div className="container px-4 py-12 mx-auto">
           <div className="mb-10 text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gradient-gold">
-              Exclusive Properties
+              {t('exclusiveProperties')}
             </h1>
             <p className="text-white/80 max-w-2xl mx-auto text-lg">
-              Discover our handpicked selection of luxury real estate investments in premier locations around the world.
+              {t('discoverProperties')}
             </p>
           </div>
 
@@ -130,11 +133,11 @@ export default function Properties() {
               className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-4 mb-8"
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-white">Filter Properties</h2>
+                <h2 className="text-xl font-semibold text-white">{t('filterProperties')}</h2>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="text-white hover:text-easyroi-gold">
                     <ChevronDown className={`h-5 w-5 transition-transform ${filtersOpen ? 'rotate-180' : ''}`} />
-                    <span className="ml-1">{filtersOpen ? 'Hide Filters' : 'Show Filters'}</span>
+                    <span className="ml-1">{filtersOpen ? t('hideFilters') : t('showFilters')}</span>
                   </Button>
                 </CollapsibleTrigger>
               </div>
@@ -143,7 +146,7 @@ export default function Properties() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Location filter */}
                   <div>
-                    <h3 className="font-medium mb-2 text-white/90">Location</h3>
+                    <h3 className="font-medium mb-2 text-white/90">{t('location')}</h3>
                     <div className="space-y-2">
                       {locations.map(location => (
                         <div key={location} className="flex items-center space-x-2">
@@ -166,7 +169,7 @@ export default function Properties() {
 
                   {/* Price range filter */}
                   <div>
-                    <h3 className="font-medium mb-2 text-white/90">Price Range</h3>
+                    <h3 className="font-medium mb-2 text-white/90">{t('priceRange')}</h3>
                     <div className="space-y-2">
                       {priceRanges.map(range => (
                         <div key={range} className="flex items-center space-x-2">
@@ -189,7 +192,7 @@ export default function Properties() {
 
                   {/* Investor level filter */}
                   <div>
-                    <h3 className="font-medium mb-2 text-white/90">Investor Level</h3>
+                    <h3 className="font-medium mb-2 text-white/90">{t('investorLevel')}</h3>
                     <div className="space-y-2">
                       {investorLevels.map(level => (
                         <div key={level} className="flex items-center space-x-2">
@@ -213,10 +216,10 @@ export default function Properties() {
 
                 <div className="flex justify-end space-x-2 pt-4 border-t border-white/10">
                   <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                    Reset Filters
+                    {t('resetFilters')}
                   </Button>
                   <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90">
-                    Apply Filters
+                    {t('applyFilters')}
                   </Button>
                 </div>
               </CollapsibleContent>
@@ -247,19 +250,19 @@ export default function Properties() {
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-white/70">Price</p>
+                      <p className="text-sm text-white/70">{t('price')}</p>
                       <p className="font-bold text-easyroi-gold">{property.price}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-white/70">Expected ROI</p>
+                      <p className="text-sm text-white/70">{t('expectedROI')}</p>
                       <p className="font-bold text-easyroi-gold">{property.roi}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-white/70">Min Investment</p>
+                      <p className="text-sm text-white/70">{t('minInvestment')}</p>
                       <p className="font-bold text-white">{property.minInvestment}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-white/70">Status</p>
+                      <p className="text-sm text-white/70">{t('status')}</p>
                       <p className="font-bold text-green-400">{property.status}</p>
                     </div>
                   </div>
@@ -283,7 +286,7 @@ export default function Properties() {
                 
                 <CardFooter className="pt-0">
                   <Button className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy">
-                    View Details
+                    {t('viewDetails')}
                   </Button>
                 </CardFooter>
               </Card>

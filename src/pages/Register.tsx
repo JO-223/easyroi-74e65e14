@@ -18,25 +18,27 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-
-const formSchema = z.object({
-  firstName: z.string().min(2, "First name is required"),
-  lastName: z.string().min(2, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string(),
-  acceptTerms: z.boolean().refine(val => val === true, {
-    message: "You must accept the terms and conditions"
-  }),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
+
+  const formSchema = z.object({
+    firstName: z.string().min(2, t('firstNameRequired')),
+    lastName: z.string().min(2, t('lastNameRequired')),
+    email: z.string().email(t('invalidEmail')),
+    password: z.string().min(8, t('passwordMinChars')),
+    confirmPassword: z.string(),
+    acceptTerms: z.boolean().refine(val => val === true, {
+      message: t('acceptTermsRequired')
+    }),
+  }).refine(data => data.password === data.confirmPassword, {
+    message: t('passwordsNotMatch'),
+    path: ["confirmPassword"],
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,8 +59,8 @@ const Register = () => {
     setTimeout(() => {
       setLoading(false);
       toast({
-        title: "Registration successful!",
-        description: "Your account has been created.",
+        title: t('registrationSuccess'),
+        description: t('accountCreated'),
       });
       navigate("/dashboard");
     }, 1500);
@@ -71,8 +73,8 @@ const Register = () => {
       <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-easyroi-navy">Create an account</h1>
-            <p className="mt-2 text-gray-600">Join our exclusive investor community</p>
+            <h1 className="text-3xl font-bold text-easyroi-navy">{t('createAccount')}</h1>
+            <p className="mt-2 text-gray-600">{t('joinCommunity')}</p>
           </div>
           
           <div className="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
@@ -84,9 +86,9 @@ const Register = () => {
                     name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>First name</FormLabel>
+                        <FormLabel>{t('firstName')}</FormLabel>
                         <FormControl>
-                          <Input placeholder="John" {...field} />
+                          <Input placeholder={t('firstNamePlaceholder')} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -97,9 +99,9 @@ const Register = () => {
                     name="lastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Last name</FormLabel>
+                        <FormLabel>{t('lastName')}</FormLabel>
                         <FormControl>
-                          <Input placeholder="Doe" {...field} />
+                          <Input placeholder={t('lastNamePlaceholder')} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -111,7 +113,7 @@ const Register = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('email')}</FormLabel>
                       <FormControl>
                         <Input placeholder="your@email.com" {...field} />
                       </FormControl>
@@ -124,7 +126,7 @@ const Register = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t('password')}</FormLabel>
                       <FormControl>
                         <Input type="password" placeholder="••••••••" {...field} />
                       </FormControl>
@@ -137,7 +139,7 @@ const Register = () => {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+                      <FormLabel>{t('confirmPassword')}</FormLabel>
                       <FormControl>
                         <Input type="password" placeholder="••••••••" {...field} />
                       </FormControl>
@@ -158,7 +160,7 @@ const Register = () => {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <FormLabel>
-                          I accept the <Link to="/terms" className="text-easyroi-navy underline">terms and conditions</Link>
+                          {t('iAccept')} <Link to="/terms" className="text-easyroi-navy underline">{t('termsAndConditions')}</Link>
                         </FormLabel>
                         <FormMessage />
                       </div>
@@ -170,16 +172,16 @@ const Register = () => {
                   className="w-full bg-easyroi-navy hover:bg-easyroi-navy/90"
                   disabled={loading}
                 >
-                  {loading ? "Creating account..." : "Create account"}
+                  {loading ? t('creatingAccount') : t('createAccount')}
                 </Button>
               </form>
             </Form>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Already have an account?{" "}
+                {t('alreadyHaveAccount')}{" "}
                 <Link to="/login" className="font-medium text-easyroi-navy hover:text-easyroi-navy/80">
-                  Sign in
+                  {t('signIn')}
                 </Link>
               </p>
             </div>
