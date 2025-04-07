@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 type SettingsType = 'account' | 'display' | 'notifications' | 'privacy';
 
@@ -42,32 +44,74 @@ const Settings = () => {
     },
   });
 
+  // Load user's settings from Supabase when component mounts
   useEffect(() => {
-    setSettingsData({
-      account: {
-        name: "John Doe",
-        email: "john@example.com",
-      },
-      display: {
-        language: displaySettings.language,
-        currency: displaySettings.currency,
-        timezone: displaySettings.timezone,
-        theme: "light",
-      },
-      notifications: {
-        email: true,
-        push: false,
-      },
-      privacy: {
-        publicProfile: true,
-        dataSharing: false,
-      },
-    });
-  }, [displaySettings]);
+    const loadUserSettings = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          // Fetch profile data
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+          
+          if (profileError) throw profileError;
+          
+          // Fetch display settings
+          const { data: displayData, error: displayError } = await supabase
+            .from('display_settings')
+            .select('*')
+            .eq('profile_id', user.id)
+            .single();
+          
+          if (displayError) throw displayError;
+          
+          // Update local state with fetched data
+          setSettingsData(prev => ({
+            ...prev,
+            account: {
+              name: `${profileData?.first_name || ''} ${profileData?.last_name || ''}`.trim() || "John Doe",
+              email: profileData?.email || "john@example.com",
+            },
+            display: {
+              language: displayData?.language as Language || displaySettings.language,
+              currency: displayData?.currency as Currency || displaySettings.currency,
+              timezone: displayData?.timezone as Timezone || displaySettings.timezone,
+              theme: "light", // Default theme
+            }
+          }));
+          
+          // Update context for immediate effect
+          if (displayData) {
+            updateDisplaySettings({
+              language: displayData.language as Language,
+              currency: displayData.currency as Currency,
+              timezone: displayData.timezone as Timezone
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error loading settings:", error);
+        toast({
+          title: t('errorOccurred'),
+          description: t('errorLoadingSettings'),
+          variant: "destructive"
+        });
+      }
+    };
+    
+    loadUserSettings();
+  }, [toast, t, displaySettings, updateDisplaySettings]);
 
   const handleSettingsSubmit = async (settingsType: SettingsType) => {
     try {
       setIsSaving(true);
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No authenticated user");
       
       switch (settingsType) {
         case 'account':
@@ -79,13 +123,25 @@ const Settings = () => {
           break;
           
         case 'display':
-          // Handle display settings update logic here
+          // Update display settings in database
+          const { error } = await supabase
+            .from('display_settings')
+            .update({
+              language: settingsData.display.language,
+              currency: settingsData.display.currency,
+              timezone: settingsData.display.timezone
+            })
+            .eq('profile_id', user.id);
+          
+          if (error) throw error;
+          
           // Update context for immediate effect
           updateDisplaySettings({
             language: settingsData.display.language as Language,
             currency: settingsData.display.currency as Currency,
             timezone: settingsData.display.timezone as Timezone
           });
+          
           toast({
             title: t('displaySettingsUpdated'),
             description: t('displaySettingsSaved'),
@@ -146,13 +202,7 @@ const Settings = () => {
               <Input id="email" value={settingsData.account.email} className="col-span-2" disabled />
             </div>
             <Button onClick={() => handleSettingsSubmit('account')} disabled={isSaving} className="ml-auto">
-              {isSaving ? (
-                <>
-                  {t('saving')}...
-                </>
-              ) : (
-                t('updateAccount')
-              )}
+              {isSaving ? t('saving') : t('updateAccount')}
             </Button>
           </CardContent>
         </Card>
@@ -168,15 +218,18 @@ const Settings = () => {
               <Label htmlFor="language" className="text-right">
                 {t('language')}
               </Label>
-              <Select onValueChange={(value) => setSettingsData(prev => ({
+              <Select 
+                value={settingsData.display.language}
+                onValueChange={(value) => setSettingsData(prev => ({
                   ...prev,
                   display: {
                     ...prev.display,
                     language: value as Language
                   }
-                }))} defaultValue={settingsData.display.language}>
+                }))}
+              >
                 <SelectTrigger className="col-span-2">
-                  <SelectValue placeholder="Select a language" />
+                  <SelectValue placeholder={t('selectLanguage')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="english">English</SelectItem>
@@ -190,15 +243,18 @@ const Settings = () => {
               <Label htmlFor="currency" className="text-right">
                 {t('currency')}
               </Label>
-              <Select onValueChange={(value) => setSettingsData(prev => ({
+              <Select 
+                value={settingsData.display.currency}
+                onValueChange={(value) => setSettingsData(prev => ({
                   ...prev,
                   display: {
                     ...prev.display,
                     currency: value as Currency
                   }
-                }))} defaultValue={settingsData.display.currency}>
+                }))}
+              >
                 <SelectTrigger className="col-span-2">
-                  <SelectValue placeholder="Select a currency" />
+                  <SelectValue placeholder={t('selectCurrency')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="usd">USD</SelectItem>
@@ -211,15 +267,18 @@ const Settings = () => {
               <Label htmlFor="timezone" className="text-right">
                 {t('timezone')}
               </Label>
-              <Select onValueChange={(value) => setSettingsData(prev => ({
+              <Select 
+                value={settingsData.display.timezone}
+                onValueChange={(value) => setSettingsData(prev => ({
                   ...prev,
                   display: {
                     ...prev.display,
                     timezone: value as Timezone
                   }
-                }))} defaultValue={settingsData.display.timezone}>
+                }))}
+              >
                 <SelectTrigger className="col-span-2">
-                  <SelectValue placeholder="Select a timezone" />
+                  <SelectValue placeholder={t('selectTimezone')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="utc">UTC</SelectItem>
@@ -229,13 +288,7 @@ const Settings = () => {
               </Select>
             </div>
             <Button onClick={() => handleSettingsSubmit('display')} disabled={isSaving} className="ml-auto">
-              {isSaving ? (
-                <>
-                  {t('saving')}...
-                </>
-              ) : (
-                t('updateDisplay')
-              )}
+              {isSaving ? t('saving') : t('updateDisplay')}
             </Button>
           </CardContent>
         </Card>
@@ -254,13 +307,17 @@ const Settings = () => {
                   {t('emailNotificationsDesc')}
                 </p>
               </div>
-              <Switch id="email-notifications" defaultChecked={settingsData.notifications.email} onCheckedChange={(checked) => setSettingsData(prev => ({
+              <Switch 
+                id="email-notifications" 
+                checked={settingsData.notifications.email}
+                onCheckedChange={(checked) => setSettingsData(prev => ({
                   ...prev,
                   notifications: {
                     ...prev.notifications,
                     email: checked
                   }
-                }))} />
+                }))} 
+              />
             </div>
             <div className="flex items-center justify-between rounded-md border p-4">
               <div className="space-y-1 leading-none">
@@ -269,22 +326,20 @@ const Settings = () => {
                   {t('pushNotificationsDesc')}
                 </p>
               </div>
-              <Switch id="push-notifications" defaultChecked={settingsData.notifications.push} onCheckedChange={(checked) => setSettingsData(prev => ({
+              <Switch 
+                id="push-notifications" 
+                checked={settingsData.notifications.push}
+                onCheckedChange={(checked) => setSettingsData(prev => ({
                   ...prev,
                   notifications: {
                     ...prev.notifications,
                     push: checked
                   }
-                }))} />
+                }))} 
+              />
             </div>
             <Button onClick={() => handleSettingsSubmit('notifications')} disabled={isSaving} className="ml-auto">
-              {isSaving ? (
-                <>
-                  {t('saving')}...
-                </>
-              ) : (
-                t('updateNotifications')
-              )}
+              {isSaving ? t('saving') : t('updateNotifications')}
             </Button>
           </CardContent>
         </Card>
@@ -303,13 +358,17 @@ const Settings = () => {
                   {t('publicProfileDesc')}
                 </p>
               </div>
-              <Switch id="public-profile" defaultChecked={settingsData.privacy.publicProfile} onCheckedChange={(checked) => setSettingsData(prev => ({
+              <Switch 
+                id="public-profile" 
+                checked={settingsData.privacy.publicProfile}
+                onCheckedChange={(checked) => setSettingsData(prev => ({
                   ...prev,
                   privacy: {
                     ...prev.privacy,
                     publicProfile: checked
                   }
-                }))} />
+                }))} 
+              />
             </div>
             <div className="flex items-center justify-between rounded-md border p-4">
               <div className="space-y-1 leading-none">
@@ -318,22 +377,20 @@ const Settings = () => {
                   {t('dataSharingDesc')}
                 </p>
               </div>
-              <Switch id="data-sharing" defaultChecked={settingsData.privacy.dataSharing} onCheckedChange={(checked) => setSettingsData(prev => ({
+              <Switch 
+                id="data-sharing" 
+                checked={settingsData.privacy.dataSharing}
+                onCheckedChange={(checked) => setSettingsData(prev => ({
                   ...prev,
                   privacy: {
                     ...prev.privacy,
                     dataSharing: checked
                   }
-                }))} />
+                }))} 
+              />
             </div>
             <Button onClick={() => handleSettingsSubmit('privacy')} disabled={isSaving} className="ml-auto">
-              {isSaving ? (
-                <>
-                  {t('saving')}...
-                </>
-              ) : (
-                t('updatePrivacy')
-              )}
+              {isSaving ? t('saving') : t('updatePrivacy')}
             </Button>
           </CardContent>
         </Card>
