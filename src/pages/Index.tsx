@@ -1,203 +1,163 @@
 
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { BadgeLevel } from '@/components/ui/badge-level';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Building2, BarChart3, Calendar, MapPin, TrendingUp, Lock, Users } from 'lucide-react';
+import { RotatingShape } from '@/components/RotatingShape';
+import { AnimatedSection } from '@/components/AnimatedSection';
+import { ArrowDown, MapPin, Building2, BarChart3, Shield } from 'lucide-react';
 
 const Index = () => {
-  const features = [
-    {
-      name: 'Real-time Analytics',
-      description: 'Track your investment performance with comprehensive analytics and real-time data.',
-      icon: BarChart3,
-    },
-    {
-      name: 'Global Properties',
-      description: 'Access exclusive real estate opportunities in Italy, Dubai, and other premium markets.',
-      icon: Building2,
-    },
-    {
-      name: 'Exclusive Events',
-      description: 'Get invited to high-end networking events and investment opportunities.',
-      icon: Calendar,
-    },
-    {
-      name: 'Secure Platform',
-      description: 'Your investments and personal data are protected with enterprise-grade security.',
-      icon: Lock,
-    },
-  ];
+  const [scrollPosition, setScrollPosition] = useState(0);
   
-  const locations = [
-    { name: 'Milan, Italy', image: '/placeholder.svg' },
-    { name: 'Rome, Italy', image: '/placeholder.svg' },
-    { name: 'Dubai, UAE', image: '/placeholder.svg' },
-  ];
-
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white overflow-x-hidden">
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-easyroi-navy/90 to-easyroi-navy/70"></div>
-        <div className="container mx-auto px-4 py-24 sm:py-32 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              Premium Real Estate Investments with <span className="text-easyroi-gold">Exceptional Returns</span>
-            </h1>
-            <p className="text-xl mb-8 text-gray-300">
-              EasyROI provides exclusive access to high-yield international real estate investments and a powerful platform to track your portfolio performance.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/register">
-                <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-semibold px-8 py-6 text-lg">
-                  Start Investing
-                </Button>
-              </Link>
-              <Link to="/properties">
-                <Button variant="outline" className="border-easyroi-gold text-easyroi-gold hover:bg-easyroi-gold/10 px-8 py-6 text-lg">
-                  View Properties
-                </Button>
-              </Link>
+      {/* Hero Section - Minimalist */}
+      <section className="relative h-screen flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="/dubai-skyline.png" 
+            alt="Dubai Skyline" 
+            className="w-full h-full object-cover object-center"
+            style={{
+              filter: 'brightness(0.8) contrast(1.1)',
+              transform: `scale(1.1) translateY(${scrollPosition * 0.1}px)`
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-transparent z-10"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-20">
+          <div className="max-w-2xl">
+            <AnimatedSection delay={300}>
+              <h1 className="minimal-title text-white">
+                Premium Real Estate 
+                <span className="block text-easyroi-gold font-normal"> Exceptional Returns</span>
+              </h1>
+            </AnimatedSection>
+            
+            <AnimatedSection delay={600}>
+              <p className="minimal-subtitle text-gray-300 mt-6">
+                Exclusive access to high-yield international real estate investments.
+              </p>
+            </AnimatedSection>
+            
+            <AnimatedSection delay={900} className="mt-12">
+              <div className="flex gap-6">
+                <Link to="/register">
+                  <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-normal px-8 py-6 text-lg rounded-none button-hover-scale">
+                    Start Investing
+                  </Button>
+                </Link>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+        
+        <div className="scroll-indicator">
+          <span className="text-sm text-easyroi-gold/80 mb-2 tracking-widest">SCROLL</span>
+          <div className="scroll-indicator-line"></div>
+        </div>
+      </section>
+      
+      {/* Minimalist Features Section */}
+      <section className="minimal-section bg-white">
+        <div className="minimal-container">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+            <AnimatedSection>
+              <h2 className="minimal-title text-easyroi-navy">Luxury portfolio carefully curated</h2>
+              <p className="minimal-subtitle">
+                Access to exclusive real estate opportunities not available on the open market.
+              </p>
+            </AnimatedSection>
+            
+            <div className="relative">
+              <AnimatedSection className="absolute right-0 top-0">
+                <RotatingShape className="ml-auto" />
+              </AnimatedSection>
             </div>
           </div>
-        </div>
-      </section>
-      
-      {/* Features Section */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-easyroi-navy">Why Choose EasyROI</h2>
-            <p className="text-gray-600 text-lg">Our platform offers unparalleled access to premium real estate investments and comprehensive portfolio management.</p>
-          </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature) => (
-              <Card key={feature.name} className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="pt-6">
-                  <div className="mb-4 w-12 h-12 rounded-full bg-easyroi-purple-100 flex items-center justify-center">
-                    <feature.icon className="h-6 w-6 text-easyroi-purple-700" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-easyroi-navy">{feature.name}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="minimal-cards-container mt-24">
+            <AnimatedSection delay={100} className="minimal-card">
+              <Building2 className="h-6 w-6 text-easyroi-gold mb-4" />
+              <h3 className="minimal-card-title">Premium Properties</h3>
+              <p className="minimal-card-text">Access exclusive real estate in Italy, Dubai, and other luxury markets.</p>
+            </AnimatedSection>
+            
+            <AnimatedSection delay={200} className="minimal-card">
+              <BarChart3 className="h-6 w-6 text-easyroi-gold mb-4" />
+              <h3 className="minimal-card-title">Portfolio Analytics</h3>
+              <p className="minimal-card-text">Track investments with comprehensive real-time data analysis.</p>
+            </AnimatedSection>
+            
+            <AnimatedSection delay={300} className="minimal-card">
+              <Shield className="h-6 w-6 text-easyroi-gold mb-4" />
+              <h3 className="minimal-card-title">Secure Platform</h3>
+              <p className="minimal-card-text">Enterprise-grade security for your investments and data.</p>
+            </AnimatedSection>
           </div>
         </div>
       </section>
       
-      {/* Locations Section */}
-      <section className="py-16 md:py-24 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-easyroi-navy">Featured Locations</h2>
-            <p className="text-gray-600 text-lg">Explore our premium real estate opportunities in these exclusive markets.</p>
-          </div>
+      {/* Locations Section - Minimal */}
+      <section className="minimal-section bg-gray-50">
+        <div className="minimal-container">
+          <AnimatedSection>
+            <h2 className="minimal-title text-easyroi-navy mb-24">Featured Locations</h2>
+          </AnimatedSection>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {locations.map((location) => (
-              <div key={location.name} className="relative rounded-lg overflow-hidden h-80 group">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
+            {['Milan, Italy', 'Rome, Italy', 'Dubai, UAE'].map((location, index) => (
+              <AnimatedSection key={location} delay={index * 100} className="relative h-96 group overflow-hidden">
                 <img 
-                  src={location.image} 
-                  alt={location.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  src="/placeholder.svg" 
+                  alt={location} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-easyroi-navy/70 to-transparent flex flex-col justify-end p-6">
-                  <div className="flex items-center text-white mb-1">
-                    <MapPin className="h-5 w-5 mr-2 text-easyroi-gold" />
-                    <span className="font-medium">{location.name}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 flex flex-col justify-end p-8">
+                  <div className="flex items-center text-white mb-4">
+                    <MapPin className="h-4 w-4 mr-2 text-easyroi-gold" />
+                    <span className="text-sm tracking-wide">{location}</span>
                   </div>
-                  <Link to="/properties">
-                    <Button variant="link" className="text-easyroi-gold p-0 hover:text-white">
-                      View Properties →
-                    </Button>
-                  </Link>
                 </div>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
       
-      {/* Investor Levels Section */}
-      <section className="py-16 md:py-24 bg-easyroi-navy text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4">Investor Levels</h2>
-            <p className="text-gray-300 text-lg">
-              Unlock exclusive benefits and opportunities as you progress through our investor tiers.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-            {['bronze', 'silver', 'gold', 'platinum', 'diamond'].map((level) => (
-              <Card key={level} className={`border-none bg-gradient-to-br shadow-lg ${
-                level === 'bronze' ? 'from-easyroi-bronze/80 to-easyroi-bronze' :
-                level === 'silver' ? 'from-easyroi-silver/80 to-easyroi-silver' :
-                level === 'gold' ? 'from-easyroi-gold/80 to-easyroi-gold' :
-                level === 'platinum' ? 'from-easyroi-platinum/80 to-easyroi-platinum' :
-                'from-easyroi-diamond/80 to-easyroi-diamond'
-              }`}>
-                <CardContent className="pt-6 text-center">
-                  <BadgeLevel level={level as 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond'} className="mb-2" />
-                  <h3 className={`text-xl font-bold mb-2 ${
-                    level === 'bronze' ? 'text-white' : 'text-easyroi-navy'
-                  }`}>
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </h3>
-                  <p className={level === 'bronze' ? 'text-gray-200' : 'text-gray-700'}>
-                    {level === 'bronze' && 'Entry level benefits'}
-                    {level === 'silver' && 'Enhanced access'}
-                    {level === 'gold' && 'Premium privileges'}
-                    {level === 'platinum' && 'Elite opportunities'}
-                    {level === 'diamond' && 'Exclusive concierge'}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Link to="/register">
-              <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-semibold">
-                Join Our Investor Community
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="bg-gradient-to-r from-easyroi-purple-900 to-easyroi-purple-800 rounded-2xl p-8 md:p-12 shadow-xl">
-            <div className="md:flex items-center justify-between">
-              <div className="mb-6 md:mb-0 md:max-w-lg">
-                <h2 className="text-3xl font-bold mb-4 text-white">Ready to Maximize Your ROI?</h2>
-                <p className="text-gray-300">
-                  Join EasyROI today and gain access to exclusive real estate investment opportunities in premium markets.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-4">
+      {/* CTA Section - Minimal */}
+      <section className="minimal-section bg-white">
+        <div className="minimal-container">
+          <AnimatedSection>
+            <div className="flex flex-col md:flex-row md:items-center justify-between border-t border-gray-200 pt-12">
+              <h2 className="minimal-title text-easyroi-navy max-w-xl">Ready to maximize your investment potential?</h2>
+              
+              <div className="mt-8 md:mt-0">
                 <Link to="/register">
-                  <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-semibold">
+                  <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-normal px-8 py-6 text-lg rounded-none button-hover-scale">
                     Create Account
                   </Button>
                 </Link>
-                <Link to="/contact">
-                  <Button variant="outline" className="border-white text-white hover:bg-white/10">
-                    Contact Us
-                  </Button>
-                </Link>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
       

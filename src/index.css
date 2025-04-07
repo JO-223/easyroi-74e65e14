@@ -142,7 +142,7 @@
     background-image: url('/dubai-skyline.png');
   }
   
-  /* New menu animation classes */
+  /* Menu animation classes */
   .nav-link {
     @apply relative overflow-hidden transition-all duration-300;
   }
@@ -163,5 +163,103 @@
   
   .button-hover-glow {
     @apply hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition-all duration-300;
+  }
+  
+  /* New minimal luxury design */
+  .minimal-section {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+  
+  .minimal-container {
+    @apply container mx-auto px-6 md:px-8;
+  }
+  
+  .minimal-title {
+    @apply font-light text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight;
+  }
+  
+  .minimal-subtitle {
+    @apply font-light text-lg md:text-xl mt-6 tracking-wide text-gray-600 max-w-xl;
+  }
+  
+  .fade-in-section {
+    @apply opacity-0 translate-y-10 transition-all duration-700 ease-out;
+  }
+  
+  .fade-in-section.is-visible {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  .scroll-indicator {
+    @apply absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center;
+  }
+  
+  .scroll-indicator-line {
+    @apply h-16 w-px bg-easyroi-gold/50 relative overflow-hidden;
+  }
+  
+  .scroll-indicator-line:after {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-easyroi-gold transform -translate-y-full animate-[scrollDown_1.5s_ease-in-out_infinite];
+  }
+  
+  .minimal-cards-container {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-1;
+  }
+  
+  .minimal-card {
+    @apply border-t border-gray-200 pt-6 px-4 hover:bg-gray-50 transition duration-300;
+  }
+  
+  .minimal-card-title {
+    @apply text-xl font-normal mb-2;
+  }
+  
+  .minimal-card-text {
+    @apply text-gray-500 text-sm leading-relaxed;
+  }
+  
+  @keyframes scrollDown {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+  
+  .mask-right {
+    -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  }
+  
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  .rotate-3d {
+    transform-style: preserve-3d;
+    animation: rotate3d 20s linear infinite;
+  }
+  
+  @keyframes rotate3d {
+    0% {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
   }
 }
