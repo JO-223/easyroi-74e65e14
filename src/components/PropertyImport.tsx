@@ -27,6 +27,7 @@ import * as z from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { DataImport } from "@/types/property";
 
 const importFormSchema = z.object({
   source: z.string().min(1, {
@@ -58,9 +59,10 @@ export function PropertyImport() {
       // Create a new data import record
       const { data: importRecord, error: importError } = await supabase
         .from('data_imports')
-        .insert([
-          { source: data.source, status: 'processing' }
-        ])
+        .insert({
+          source: data.source,
+          status: 'processing'
+        })
         .select('id')
         .single();
         

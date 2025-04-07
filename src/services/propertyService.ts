@@ -7,8 +7,8 @@ export const fetchProperties = async (filters?: PropertyFilter) => {
     .from('properties')
     .select(`
       *,
-      location:location_id(id, address, zone, city, country),
-      type:type_id(id, name, description),
+      location:location_id(*),
+      type:type_id(*),
       amenities:property_amenities(amenity:amenity_id(*)),
       images:property_images(*),
       pros_cons:property_pros_cons(*)
@@ -17,8 +17,7 @@ export const fetchProperties = async (filters?: PropertyFilter) => {
   // Apply filters if provided
   if (filters) {
     if (filters.location) {
-      query = query.eq('location.city', filters.location)
-                   .or(`location.country.eq.${filters.location},location.zone.eq.${filters.location}`);
+      query = query.or(`location.city.ilike.%${filters.location}%,location.country.ilike.%${filters.location}%,location.zone.ilike.%${filters.location}%`);
     }
     if (filters.priceMin) {
       query = query.gte('price', filters.priceMin);

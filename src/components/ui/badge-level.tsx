@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Award, Crown, Diamond, Medal, Star } from "lucide-react";
 
-type BadgeLevelProps = {
+export type BadgeLevelProps = {
   level?: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | null;
   className?: string;
 };

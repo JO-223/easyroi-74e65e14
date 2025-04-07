@@ -63,3 +63,17 @@ export type PropertyFilter = {
   bathrooms?: number;
   amenities?: string[];
 };
+
+// Add data import types
+export type DataImport = {
+  id: string;
+  source: string;
+  import_date: string;
+  records_processed: number | null;
+  records_created: number | null;
+  records_updated: number | null;
+  records_failed: number | null;
+  status: string | null;
+  error_details: string | null;
+  completed_at: string | null;
+};

@@ -43,7 +43,7 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
             className="w-full h-full object-cover" 
           />
           <div className="absolute top-4 left-4">
-            <BadgeLevel level={property.investor_level as any} size="lg" />
+            <BadgeLevel level={property.investor_level as any} />
           </div>
         </div>
         
