@@ -33,11 +33,11 @@ const badgeConfig = {
 
 export function BadgeLevel({ level, className }: BadgeLevelProps) {
   // If the level is null, undefined, or not a valid key, return null
-  if (!level || !badgeConfig[level]) {
+  if (!level || !badgeConfig[level as keyof typeof badgeConfig]) {
     return null;
   }
   
-  const config = badgeConfig[level];
+  const config = badgeConfig[level as keyof typeof badgeConfig];
   
   return (
     <Badge className={cn(config.className, className)}>

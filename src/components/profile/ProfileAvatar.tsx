@@ -14,12 +14,15 @@ type ProfileAvatarProps = {
 };
 
 export const ProfileAvatar = ({ level, joinDate, isEditing }: ProfileAvatarProps) => {
+  // Convert level to the expected type for BadgeLevel
+  const typedLevel = level as 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | null;
+  
   return (
     <div className="md:w-1/3 flex flex-col items-center">
       <div className="h-32 w-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center">
         <User className="h-16 w-16 text-gray-400" />
       </div>
-      <BadgeLevel level={level} className="mb-2" />
+      <BadgeLevel level={typedLevel} className="mb-2" />
       <p className="text-sm text-center text-gray-500">{joinDate}</p>
       
       {isEditing && (
