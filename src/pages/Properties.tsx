@@ -1,7 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { Navbar } from '@/components/navbar';
-import { Footer } from '@/components/footer';
 import { PropertyCard } from '@/components/PropertyCard';
 import { PropertyFilters } from '@/components/PropertyFilters';
 import { PropertyDetailModal } from '@/components/PropertyDetailModal';
@@ -80,12 +78,11 @@ export default function Properties() {
   const investorLevels = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
 
   return (
-    <DashboardLayout title={t('properties')} subtitle={t('discoverProperties')}>
-      <div className="min-h-screen pb-20">
-        <div className="mb-10 flex justify-between items-center">
+    <DashboardLayout title={t('properties')} subtitle={""}>
+      <div className="min-h-screen pb-20 bg-white">
+        <div className="mb-6 flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold mb-2">{t('exclusiveProperties')}</h2>
-            <p className="text-gray-500">{t('discoverProperties')}</p>
+            <h2 className="text-3xl font-bold">{t('exclusiveProperties')}</h2>
           </div>
           <PropertyImport />
         </div>
@@ -140,9 +137,8 @@ export default function Properties() {
             </div>
           </>
         ) : (
-          <div className="text-center py-20">
-            <h3 className="text-xl font-semibold mb-2">{t('noPropertiesFound')}</h3>
-            <p className="text-gray-500 mb-6">{t('tryDifferentFilters')}</p>
+          <div className="text-center py-12">
+            <p className="text-lg text-gray-500 mb-4">{t('nessuna proprietà trovata, prova con filtri diversi')}</p>
             <Button 
               onClick={() => setFilters({})}
               className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90"
