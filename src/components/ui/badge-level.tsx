@@ -32,7 +32,7 @@ const badgeConfig = {
 };
 
 export function BadgeLevel({ level, className }: BadgeLevelProps) {
-  // If the level is null, undefined, or not a valid key, use bronze as default
+  // If the level is null, undefined, or not a valid key, return null
   if (!level || !badgeConfig[level]) {
     return null;
   }

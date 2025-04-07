@@ -291,8 +291,8 @@ const Profile = () => {
                   <div className="h-32 w-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center">
                     <User className="h-16 w-16 text-gray-400" />
                   </div>
-                  <BadgeLevel level={profile.level as InvestorLevel} className="mb-2" />
-                  <p className="text-sm text-center text-gray-500">{profile.join_date}</p>
+                  <BadgeLevel level={profile?.level as InvestorLevel} className="mb-2" />
+                  <p className="text-sm text-center text-gray-500">{profile?.join_date}</p>
                   
                   {isEditing && (
                     <Button variant="outline" size="sm" className="mt-4 w-full">
