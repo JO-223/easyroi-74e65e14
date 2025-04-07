@@ -5,16 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { t } = useLanguage();
 
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Properties', href: '/properties' },
-    { name: 'Events', href: '/events' },
-    { name: 'Contact', href: '/contact' },
+    { name: t('home'), href: '/' },
+    { name: t('properties'), href: '/properties' },
+    { name: t('events'), href: '/events' },
+    { name: t('contact'), href: '/contact' },
   ];
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export function Navbar() {
           <div className="ml-2">
             <Link to="/login">
               <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300 shadow-sm">
-                Login
+                {t('login')}
               </Button>
             </Link>
           </div>
@@ -109,7 +111,7 @@ export function Navbar() {
                   <div className="p-6 border-t border-gray-100">
                     <Link to="/login" onClick={() => setIsOpen(false)} className="block w-full">
                       <Button className="w-full bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 shadow-sm">
-                        Login
+                        {t('login')}
                       </Button>
                     </Link>
                   </div>

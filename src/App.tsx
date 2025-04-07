@@ -15,35 +15,47 @@ import Network from "./pages/Network";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <LanguageProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/properties" element={<Properties />} />
-            <Route path="/dashboard/analytics" element={<Analytics />} />
-            <Route path="/dashboard/events" element={<Events />} />
-            <Route path="/dashboard/network" element={<Network />} />
-            <Route path="/dashboard/profile" element={<Profile />} />
-            <Route path="/dashboard/settings" element={<Settings />} />
-            {/* Redirect /properties to /dashboard/properties for backward compatibility */}
-            <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </LanguageProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Force update on language change
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('displaySettings');
+    if (savedSettings) {
+      const { language } = JSON.parse(savedSettings);
+      document.documentElement.lang = language;
+    }
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <LanguageProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/properties" element={<Properties />} />
+              <Route path="/dashboard/analytics" element={<Analytics />} />
+              <Route path="/dashboard/events" element={<Events />} />
+              <Route path="/dashboard/network" element={<Network />} />
+              <Route path="/dashboard/profile" element={<Profile />} />
+              <Route path="/dashboard/settings" element={<Settings />} />
+              {/* Redirect /properties to /dashboard/properties for backward compatibility */}
+              <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </LanguageProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

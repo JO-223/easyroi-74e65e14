@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageCo
 
 const Settings = () => {
   const { toast } = useToast();
-  const { displaySettings, updateDisplaySettings } = useLanguage();
+  const { displaySettings, updateDisplaySettings, t } = useLanguage();
   
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
@@ -32,26 +31,19 @@ const Settings = () => {
   });
   
   const handleSaveSettings = (section: string) => {
-    if (section === 'display') {
-      toast({
-        title: "Settings Updated",
-        description: `Your ${section} settings have been saved successfully.`,
-      });
-    } else {
-      toast({
-        title: "Settings Updated",
-        description: `Your ${section} settings have been saved successfully.`,
-      });
-    }
+    toast({
+      title: t('saveSettings'),
+      description: `${t(section)} ${t('saveSettings').toLowerCase()}.`,
+    });
   };
   
   return (
-    <DashboardLayout title="Settings" subtitle="Configure your account preferences and settings">
+    <DashboardLayout title={t('settings')} subtitle="Configure your account preferences and settings">
       <Tabs defaultValue="notifications" className="w-full">
         <TabsList className="grid grid-cols-3 mb-8 md:w-[400px]">
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          <TabsTrigger value="notifications">{t('notifications')}</TabsTrigger>
+          <TabsTrigger value="account">{t('account')}</TabsTrigger>
+          <TabsTrigger value="preferences">{t('preferences')}</TabsTrigger>
         </TabsList>
         
         {/* Notifications Tab */}
@@ -60,7 +52,7 @@ const Settings = () => {
             <CardHeader>
               <div className="flex items-center space-x-2">
                 <Bell className="h-5 w-5 text-easyroi-navy" />
-                <CardTitle>Notification Settings</CardTitle>
+                <CardTitle>{t('notificationSettings')}</CardTitle>
               </div>
               <CardDescription>Manage how and when you receive notifications</CardDescription>
             </CardHeader>
@@ -124,10 +116,10 @@ const Settings = () => {
             <CardFooter className="flex justify-end">
               <Button 
                 className="bg-easyroi-navy hover:bg-easyroi-navy/90"
-                onClick={() => handleSaveSettings('notification')}
+                onClick={() => handleSaveSettings('notificationSettings')}
               >
                 <Save className="mr-2 h-4 w-4" />
-                Save Notification Settings
+                {t('saveNotificationSettings')}
               </Button>
             </CardFooter>
           </Card>
@@ -139,7 +131,7 @@ const Settings = () => {
             <CardHeader>
               <div className="flex items-center space-x-2">
                 <Lock className="h-5 w-5 text-easyroi-navy" />
-                <CardTitle>Security Settings</CardTitle>
+                <CardTitle>{t('securitySettings')}</CardTitle>
               </div>
               <CardDescription>Manage your account security settings</CardDescription>
             </CardHeader>
@@ -207,10 +199,10 @@ const Settings = () => {
             <CardFooter className="flex justify-end">
               <Button 
                 className="bg-easyroi-navy hover:bg-easyroi-navy/90"
-                onClick={() => handleSaveSettings('security')}
+                onClick={() => handleSaveSettings('securitySettings')}
               >
                 <Save className="mr-2 h-4 w-4" />
-                Save Security Settings
+                {t('saveSecuritySettings')}
               </Button>
             </CardFooter>
           </Card>
@@ -222,14 +214,14 @@ const Settings = () => {
             <CardHeader>
               <div className="flex items-center space-x-2">
                 <Globe className="h-5 w-5 text-easyroi-navy" />
-                <CardTitle>Display Preferences</CardTitle>
+                <CardTitle>{t('displayPreferences')}</CardTitle>
               </div>
               <CardDescription>Customize your regional and interface preferences</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="language">Language</Label>
+                  <Label htmlFor="language">{t('language')}</Label>
                   <Select 
                     value={displaySettings.language} 
                     onValueChange={(value) => updateDisplaySettings({ language: value as Language })}
@@ -239,9 +231,9 @@ const Settings = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="english">English</SelectItem>
-                      <SelectItem value="italian">Italian</SelectItem>
-                      <SelectItem value="spanish">Spanish</SelectItem>
-                      <SelectItem value="german">German</SelectItem>
+                      <SelectItem value="italian">Italiano</SelectItem>
+                      <SelectItem value="spanish">Español</SelectItem>
+                      <SelectItem value="german">Deutsch</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -308,10 +300,10 @@ const Settings = () => {
             <CardFooter className="flex justify-end">
               <Button 
                 className="bg-easyroi-navy hover:bg-easyroi-navy/90"
-                onClick={() => handleSaveSettings('display')}
+                onClick={() => handleSaveSettings('preferences')}
               >
                 <Save className="mr-2 h-4 w-4" />
-                Save Preferences
+                {t('savePreferences')}
               </Button>
             </CardFooter>
           </Card>

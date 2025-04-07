@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Language, useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
 
 const languageFlags: Record<Language, { flag: string; name: string }> = {
   english: { flag: "🇬🇧", name: "English" },
@@ -22,14 +23,26 @@ interface LanguageSwitcherProps {
 }
 
 export function LanguageSwitcher({ variant = "default", className = "" }: LanguageSwitcherProps) {
-  const { displaySettings, updateDisplaySettings } = useLanguage();
+  const { displaySettings, updateDisplaySettings, t } = useLanguage();
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
 
   const currentLanguage = languageFlags[displaySettings.language];
 
   const handleLanguageChange = (language: Language) => {
     updateDisplaySettings({ language });
     setOpen(false);
+    
+    toast({
+      title: t('language'),
+      description: language === 'english' 
+        ? "Language changed to English" 
+        : language === 'italian' 
+        ? "Lingua cambiata in Italiano" 
+        : language === 'spanish' 
+        ? "Idioma cambiado a Español" 
+        : "Sprache auf Deutsch geändert",
+    });
   };
 
   return (
