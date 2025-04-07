@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
@@ -109,13 +108,10 @@ export default function Properties() {
   const [selectedInvestorLevel, setSelectedInvestorLevel] = useState("All Levels");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  // We would implement actual filtering logic here in a real application
-  // For now, we just display all properties
-
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-easyroi-purple-950 via-easyroi-purple-900 to-easyroi-navy pb-20">
+      <main className="min-h-screen bg-gradient-to-br from-easyroi-purple-950 via-easyroi-purple-900 to-easyroi-purple-800 pb-20">
         <div className="container px-4 py-12 mx-auto">
           <div className="mb-10 text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gradient-gold">
@@ -286,7 +282,7 @@ export default function Properties() {
                 </CardContent>
                 
                 <CardFooter className="pt-0">
-                  <Button className="w-full bg-gradient-to-r from-easyroi-purple-600 to-easyroi-purple-800 hover:from-easyroi-purple-700 hover:to-easyroi-purple-900 text-white">
+                  <Button className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy">
                     View Details
                   </Button>
                 </CardFooter>

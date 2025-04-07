@@ -64,7 +64,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				easyroi: {
-					navy: "#0C2340",
+					navy: "#27184F",
 					gold: "#D4AF37",
 					white: "#FFFFFF",
 					lightgray: "#F8F9FA",
@@ -74,7 +74,7 @@ export default {
 					silver: "#C0C0C0",
 					platinum: "#E5E4E2",
 					diamond: "#B9F2FF",
-					// New purple brand colors
+					// Refined purple brand colors
 					purple: {
 						50: "#F3F1F9",
 						100: "#E7E2F4",
@@ -127,6 +127,7 @@ export default {
 				'gradient-luxury': 'linear-gradient(135deg, #271B4D 0%, #5A42A0 100%)',
 				'gradient-gold': 'linear-gradient(135deg, #D4AF37 0%, #F8E7AC 100%)',
 				'gradient-card': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03))',
+				'hero-pattern': 'url("/dubai-skyline.png")',
 			}
 		}
 	},

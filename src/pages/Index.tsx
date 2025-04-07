@@ -42,8 +42,8 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative bg-easyroi-navy text-white">
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-easyroi-navy to-black opacity-90"></div>
+      <section className="hero-section">
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-easyroi-navy/90 to-easyroi-navy/70"></div>
         <div className="container mx-auto px-4 py-24 sm:py-32 relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
@@ -80,8 +80,8 @@ const Index = () => {
             {features.map((feature) => (
               <Card key={feature.name} className="border-none shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardContent className="pt-6">
-                  <div className="mb-4 w-12 h-12 rounded-full bg-easyroi-navy/10 flex items-center justify-center">
-                    <feature.icon className="h-6 w-6 text-easyroi-navy" />
+                  <div className="mb-4 w-12 h-12 rounded-full bg-easyroi-purple-100 flex items-center justify-center">
+                    <feature.icon className="h-6 w-6 text-easyroi-purple-700" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-easyroi-navy">{feature.name}</h3>
                   <p className="text-gray-600">{feature.description}</p>
@@ -108,7 +108,7 @@ const Index = () => {
                   alt={location.name} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-easyroi-navy/70 to-transparent flex flex-col justify-end p-6">
                   <div className="flex items-center text-white mb-1">
                     <MapPin className="h-5 w-5 mr-2 text-easyroi-gold" />
                     <span className="font-medium">{location.name}</span>
@@ -176,7 +176,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="bg-gradient-to-r from-easyroi-navy to-easyroi-navy/90 rounded-2xl p-8 md:p-12 shadow-xl">
+          <div className="bg-gradient-to-r from-easyroi-purple-900 to-easyroi-purple-800 rounded-2xl p-8 md:p-12 shadow-xl">
             <div className="md:flex items-center justify-between">
               <div className="mb-6 md:mb-0 md:max-w-lg">
                 <h2 className="text-3xl font-bold mb-4 text-white">Ready to Maximize Your ROI?</h2>

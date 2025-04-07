@@ -136,4 +136,9 @@
   .text-gradient-gold {
     @apply bg-gradient-gold bg-clip-text text-transparent;
   }
+
+  .hero-section {
+    @apply relative bg-cover bg-center text-white;
+    background-image: url('/dubai-skyline.png');
+  }
 }
