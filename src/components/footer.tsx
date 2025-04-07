@@ -28,7 +28,6 @@ export function Footer() {
             <h2 className="text-xl font-semibold mb-4 border-b border-easyroi-gold pb-2">{t('quickLinks')}</h2>
             <ul className="space-y-2">
               <li><Link to="/" className="hover:text-easyroi-gold transition-colors">{t('home')}</Link></li>
-              <li><Link to="/dashboard" className="hover:text-easyroi-gold transition-colors">{t('dashboard')}</Link></li>
               <li><Link to="/contact" className="hover:text-easyroi-gold transition-colors">{t('contact')}</Link></li>
               <li><Link to="/about" className="hover:text-easyroi-gold transition-colors">{t('aboutUs')}</Link></li>
               <li><Link to="/login" className="hover:text-easyroi-gold transition-colors">{t('login')}</Link></li>

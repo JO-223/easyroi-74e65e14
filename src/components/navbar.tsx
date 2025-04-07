@@ -17,7 +17,6 @@ export function Navbar() {
 
   const navigation = [
     { name: t('home'), href: '/' },
-    { name: t('dashboard'), href: '/dashboard' },
     { name: t('contact'), href: '/contact' },
     { name: t('aboutUs'), href: '/about' },
   ];
