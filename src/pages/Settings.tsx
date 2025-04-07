@@ -238,7 +238,7 @@ const Settings = () => {
                       <SelectItem value="english">English</SelectItem>
                       <SelectItem value="italian">Italian</SelectItem>
                       <SelectItem value="spanish">Spanish</SelectItem>
-                      <SelectItem value="arabic">Arabic</SelectItem>
+                      <SelectItem value="german">German</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -256,7 +256,7 @@ const Settings = () => {
                       <SelectItem value="eur">EUR (€)</SelectItem>
                       <SelectItem value="usd">USD ($)</SelectItem>
                       <SelectItem value="gbp">GBP (£)</SelectItem>
-                      <SelectItem value="aed">AED (د.إ)</SelectItem>
+                      <SelectItem value="chf">CHF (Fr.)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -273,7 +273,7 @@ const Settings = () => {
                     <SelectContent>
                       <SelectItem value="europe_rome">Europe/Rome (UTC+1/2)</SelectItem>
                       <SelectItem value="europe_london">Europe/London (UTC+0/1)</SelectItem>
-                      <SelectItem value="asia_dubai">Asia/Dubai (UTC+4)</SelectItem>
+                      <SelectItem value="europe_zurich">Europe/Zurich (UTC+1/2)</SelectItem>
                       <SelectItem value="america_newyork">America/New York (UTC-5/4)</SelectItem>
                     </SelectContent>
                   </Select>
