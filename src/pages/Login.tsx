@@ -120,7 +120,7 @@ const Login = () => {
               <p className="text-sm text-gray-600">
                 {t('needAssistance')}
               </p>
-
+            </div>
             <div className="mt-8 text-center">
               <Link to="/dashboard">
                 <Button 
