@@ -13,24 +13,15 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Database } from "@/integrations/supabase/types";
 
 type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
-interface ProfileData {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  location: string;
-  bio: string;
-  join_date: string;
-  level: InvestorLevel;
-  avatar_url: string | null;
-}
+type Profile = Database['public']['Tables']['profiles']['Row'];
+type ProfileInterest = { name: string };
 
-interface ProfileInterest {
-  name: string;
+interface ProfileData extends Profile {
+  join_date: string;
 }
 
 const Profile = () => {
@@ -93,17 +84,24 @@ const Profile = () => {
         if (allInterestsError) throw allInterestsError;
         
         // Format join date
-        const joinDate = new Date(profileData.join_date);
-        const joinMonth = joinDate.toLocaleString('default', { month: 'long' });
-        const joinYear = joinDate.getFullYear();
+        if (profileData) {
+          const joinDate = new Date(profileData.join_date);
+          const joinMonth = joinDate.toLocaleString('default', { month: 'long' });
+          const joinYear = joinDate.getFullYear();
+          
+          setProfile({
+            ...profileData,
+            join_date: `${t('memberSince')} ${joinMonth} ${joinYear}`
+          });
+        }
         
-        setProfile({
-          ...profileData,
-          join_date: `${t('memberSince')} ${joinMonth} ${joinYear}`
-        });
+        if (userInterests) {
+          setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
+        }
         
-        setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
-        setAvailableInterests(allInterests);
+        if (allInterests) {
+          setAvailableInterests(allInterests);
+        }
         
       } catch (error) {
         console.error("Error loading user profile:", error);
@@ -176,7 +174,9 @@ const Profile = () => {
       
       if (fetchError) throw fetchError;
       
-      setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
+      if (userInterests) {
+        setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
+      }
       
     } catch (error) {
       console.error("Error adding interest:", error);
@@ -321,7 +321,7 @@ const Profile = () => {
                       <label className="text-sm font-medium">{t('firstName')}</label>
                       {isEditing ? (
                         <Input 
-                          value={profile.first_name} 
+                          value={profile.first_name || ''} 
                           onChange={(e) => setProfile({...profile, first_name: e.target.value})} 
                         />
                       ) : (
@@ -332,7 +332,7 @@ const Profile = () => {
                       <label className="text-sm font-medium">{t('lastName')}</label>
                       {isEditing ? (
                         <Input 
-                          value={profile.last_name} 
+                          value={profile.last_name || ''} 
                           onChange={(e) => setProfile({...profile, last_name: e.target.value})} 
                         />
                       ) : (

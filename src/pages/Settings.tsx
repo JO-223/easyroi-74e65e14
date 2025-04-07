@@ -13,30 +13,15 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
-interface NotificationSettings {
-  email_notifications: boolean;
-  sms_notifications: boolean;
-  property_alerts: boolean;
-  event_reminders: boolean;
-  marketing_updates: boolean;
-}
+type NotificationSettings = Database['public']['Tables']['notification_settings']['Row'];
+type SecuritySettings = Database['public']['Tables']['security_settings']['Row'];
+type DisplaySettings = Database['public']['Tables']['display_settings']['Row'];
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
-interface SecuritySettings {
-  two_factor_auth: boolean;
-  login_alerts: boolean;
+interface UISecuritySettings extends Omit<SecuritySettings, 'session_timeout'> {
   session_timeout: string;
-}
-
-interface DisplaySettings {
-  language: Language;
-  currency: Currency;
-  timezone: Timezone;
-}
-
-interface Profile {
-  email: string;
-  phone: string | null;
 }
 
 const Settings = () => {
@@ -48,28 +33,40 @@ const Settings = () => {
   const [savingSection, setSavingSection] = useState<string | null>(null);
   
   const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>({
+    profile_id: "",
     email_notifications: true,
     sms_notifications: false,
     property_alerts: true,
     event_reminders: true,
     marketing_updates: false,
+    app_notifications: true
   });
   
-  const [securitySettings, setSecuritySettings] = useState<SecuritySettings>({
+  const [securitySettings, setSecuritySettings] = useState<UISecuritySettings>({
+    profile_id: "",
     two_factor_auth: false,
     login_alerts: true,
     session_timeout: "30",
   });
   
   const [displaySettings, setDisplaySettings] = useState<DisplaySettings>({
-    language: contextDisplaySettings.language,
-    currency: contextDisplaySettings.currency,
-    timezone: contextDisplaySettings.timezone
+    profile_id: "",
+    language: contextDisplaySettings.language as Language,
+    currency: contextDisplaySettings.currency as Currency,
+    timezone: contextDisplaySettings.timezone as Timezone
   });
   
   const [profile, setProfile] = useState<Profile>({
+    id: "",
     email: "",
-    phone: null
+    first_name: null,
+    last_name: null,
+    phone: null,
+    location: null,
+    bio: null,
+    join_date: "",
+    level: null,
+    avatar_url: null
   });
   
   // Fetch user settings
@@ -133,23 +130,51 @@ const Settings = () => {
         
         // Update states with fetched data
         if (notifData) {
-          setNotificationSettings(notifData);
+          setNotificationSettings({
+            ...notifData
+          });
+        } else {
+          setNotificationSettings({
+            ...notificationSettings,
+            profile_id: user.id
+          });
         }
         
         if (securityData) {
           setSecuritySettings({
             ...securityData,
-            session_timeout: securityData.session_timeout.toString()
+            session_timeout: securityData.session_timeout?.toString() || "30"
+          });
+        } else {
+          setSecuritySettings({
+            ...securitySettings,
+            profile_id: user.id
           });
         }
         
         if (displayData) {
-          setDisplaySettings(displayData as DisplaySettings);
-          updateDisplaySettings(displayData);
+          setDisplaySettings({
+            ...displayData
+          });
+          updateDisplaySettings(displayData as any);
+        } else {
+          setDisplaySettings({
+            ...displaySettings,
+            profile_id: user.id
+          });
         }
         
         if (profileData) {
-          setProfile(profileData);
+          setProfile({
+            ...profile,
+            ...profileData,
+            id: user.id
+          });
+        } else {
+          setProfile({
+            ...profile,
+            id: user.id
+          });
         }
         
       } catch (error) {
@@ -179,7 +204,12 @@ const Settings = () => {
             .from('notification_settings')
             .upsert({
               profile_id: userId,
-              ...notificationSettings
+              email_notifications: notificationSettings.email_notifications,
+              sms_notifications: notificationSettings.sms_notifications,
+              property_alerts: notificationSettings.property_alerts,
+              event_reminders: notificationSettings.event_reminders,
+              marketing_updates: notificationSettings.marketing_updates,
+              app_notifications: notificationSettings.app_notifications
             });
           break;
           
@@ -231,7 +261,7 @@ const Settings = () => {
   
   const updateEmail = async () => {
     try {
-      if (!userId) return;
+      if (!userId || !profile.email) return;
       
       await supabase
         .from('profiles')
@@ -317,7 +347,7 @@ const Settings = () => {
                   </div>
                   <Switch 
                     id="email-notifications" 
-                    checked={notificationSettings.email_notifications}
+                    checked={notificationSettings.email_notifications || false}
                     onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, email_notifications: checked})}
                   />
                 </div>
@@ -328,7 +358,7 @@ const Settings = () => {
                   </div>
                   <Switch 
                     id="sms-notifications" 
-                    checked={notificationSettings.sms_notifications}
+                    checked={notificationSettings.sms_notifications || false}
                     onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, sms_notifications: checked})}
                   />
                 </div>
@@ -342,7 +372,7 @@ const Settings = () => {
                   <Label htmlFor="property-alerts">{t('propertyAlerts')}</Label>
                   <Switch 
                     id="property-alerts" 
-                    checked={notificationSettings.property_alerts}
+                    checked={notificationSettings.property_alerts || false}
                     onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, property_alerts: checked})}
                   />
                 </div>
@@ -350,7 +380,7 @@ const Settings = () => {
                   <Label htmlFor="event-reminders">{t('eventReminders')}</Label>
                   <Switch 
                     id="event-reminders" 
-                    checked={notificationSettings.event_reminders}
+                    checked={notificationSettings.event_reminders || false}
                     onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, event_reminders: checked})}
                   />
                 </div>
@@ -358,7 +388,7 @@ const Settings = () => {
                   <Label htmlFor="marketing-updates">{t('marketingNewsletter')}</Label>
                   <Switch 
                     id="marketing-updates" 
-                    checked={notificationSettings.marketing_updates}
+                    checked={notificationSettings.marketing_updates || false}
                     onCheckedChange={(checked) => setNotificationSettings({...notificationSettings, marketing_updates: checked})}
                   />
                 </div>
@@ -406,7 +436,7 @@ const Settings = () => {
                   </div>
                   <Switch 
                     id="two-factor-auth" 
-                    checked={securitySettings.two_factor_auth}
+                    checked={securitySettings.two_factor_auth || false}
                     onCheckedChange={(checked) => setSecuritySettings({...securitySettings, two_factor_auth: checked})}
                   />
                 </div>
@@ -418,7 +448,7 @@ const Settings = () => {
                   </div>
                   <Switch 
                     id="login-alerts" 
-                    checked={securitySettings.login_alerts}
+                    checked={securitySettings.login_alerts || false}
                     onCheckedChange={(checked) => setSecuritySettings({...securitySettings, login_alerts: checked})}
                   />
                 </div>
@@ -494,7 +524,7 @@ const Settings = () => {
                 <div>
                   <Label htmlFor="language">{t('language')}</Label>
                   <Select 
-                    value={displaySettings.language} 
+                    value={displaySettings.language || 'english'} 
                     onValueChange={(value) => setDisplaySettings({ ...displaySettings, language: value as Language })}
                   >
                     <SelectTrigger className="mt-1">
@@ -512,7 +542,7 @@ const Settings = () => {
                 <div>
                   <Label htmlFor="currency">{t('displayCurrency')}</Label>
                   <Select 
-                    value={displaySettings.currency} 
+                    value={displaySettings.currency || 'eur'} 
                     onValueChange={(value) => setDisplaySettings({ ...displaySettings, currency: value as Currency })}
                   >
                     <SelectTrigger className="mt-1">
@@ -530,7 +560,7 @@ const Settings = () => {
                 <div>
                   <Label htmlFor="timezone">{t('timezone')}</Label>
                   <Select 
-                    value={displaySettings.timezone} 
+                    value={displaySettings.timezone || 'europe_rome'} 
                     onValueChange={(value) => setDisplaySettings({ ...displaySettings, timezone: value as Timezone })}
                   >
                     <SelectTrigger className="mt-1">
@@ -556,7 +586,7 @@ const Settings = () => {
                     <div className="flex mt-1">
                       <Input 
                         id="email" 
-                        value={profile.email} 
+                        value={profile.email || ''} 
                         onChange={(e) => setProfile({...profile, email: e.target.value})} 
                         className="rounded-r-none" 
                       />
