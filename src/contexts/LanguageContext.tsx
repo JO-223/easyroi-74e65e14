@@ -84,6 +84,7 @@ const translations: Record<Language, Record<string, string>> = {
     investorPortalDesc: 'Sign in to access your exclusive investment dashboard',
     privatePortalAlert: 'This is a private investment portal. Access is granted only to verified investors.',
     needAssistance: 'Need assistance? Contact your investment advisor.',
+    scheduleMeeting: 'Schedule a meeting',
     
     // Dashboard page
     investmentGrowth: 'Investment Growth',
@@ -154,7 +155,7 @@ const translations: Record<Language, Record<string, string>> = {
     securePlatformDesc: 'Enterprise-grade security for your investments and data.',
     featuredLocations: 'Featured Locations',
     readyToMaximize: 'Ready to maximize your investment potential?',
-    createAccount: 'Create Account',
+    scheduleMeeting: 'Schedule a meeting',
     
     // Settings page
     configurePreferences: 'Configure your account preferences and settings',
@@ -279,6 +280,7 @@ const translations: Record<Language, Record<string, string>> = {
     investorPortalDesc: 'Accedi per visualizzare la tua dashboard di investimenti esclusiva',
     privatePortalAlert: 'Questo è un portale di investimento privato. L\'accesso è consentito solo agli investitori verificati.',
     needAssistance: 'Hai bisogno di assistenza? Contatta il tuo consulente di investimenti.',
+    scheduleMeeting: 'Richiedi una consulenza',
     
     // Dashboard page
     investmentGrowth: 'Crescita degli Investimenti',
@@ -349,7 +351,7 @@ const translations: Record<Language, Record<string, string>> = {
     securePlatformDesc: 'Sicurezza di livello enterprise per i tuoi investimenti e dati.',
     featuredLocations: 'Località in Evidenza',
     readyToMaximize: 'Pronto a massimizzare il tuo potenziale di investimento?',
-    createAccount: 'Crea Account',
+    scheduleMeeting: 'Richiedi una consulenza',
     
     // Settings page
     configurePreferences: 'Configura le tue preferenze e impostazioni dell\'account',
@@ -474,6 +476,7 @@ const translations: Record<Language, Record<string, string>> = {
     investorPortalDesc: 'Inicia sesión para acceder a tu panel de inversiones exclusivo',
     privatePortalAlert: 'Este es un portal de inversión privado. El acceso se concede solo a inversores verificados.',
     needAssistance: '¿Necesitas ayuda? Contacta a tu asesor de inversiones.',
+    scheduleMeeting: 'Agende su consulta',
     
     // Dashboard page
     investmentGrowth: 'Crecimiento de Inversión',
@@ -544,7 +547,7 @@ const translations: Record<Language, Record<string, string>> = {
     securePlatformDesc: 'Seguridad empresarial para tus inversiones y datos.',
     featuredLocations: 'Ubicaciones Destacadas',
     readyToMaximize: '¿Listo para maximizar tu potencial de inversion?',
-    createAccount: 'Crear Cuenta',
+    scheduleMeeting: 'Agende su consulta',
     
     // Settings page
     configurePreferences: 'Configura las preferencias y ajustes de tu cuenta',
@@ -669,6 +672,7 @@ const translations: Record<Language, Record<string, string>> = {
     investorPortalDesc: 'Melde dich an, um auf dein exklusives Investoren-Dashboard zuzugreifen',
     privatePortalAlert: 'Dies ist ein privates Investitionsportal. Der Zugang wird nur verifizierten Investoren gewährt.',
     needAssistance: 'Brauchst du Hilfe? Kontaktiere deinen Anlageberater.',
+    scheduleMeeting: 'Beratung buchen',
     
     // Dashboard page
     investmentGrowth: 'Investitionswachstum',
@@ -739,7 +743,7 @@ const translations: Record<Language, Record<string, string>> = {
     securePlatformDesc: 'Unternehmenssichere Plattform für deine Investitionen und Daten.',
     featuredLocations: 'Ausgewählte Standorte',
     readyToMaximize: 'Bereit, dein Investitionspotenzial zu maximieren?',
-    createAccount: 'Konto Erstellen',
+    scheduleMeeting: 'Beratung buchen',
     
     // Settings page
     configurePreferences: 'Konfiguriere deine Kontoeinstellungen und Präferenzen',
