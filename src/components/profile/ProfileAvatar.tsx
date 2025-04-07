@@ -19,14 +19,16 @@ export const ProfileAvatar = ({ level, joinDate, isEditing }: ProfileAvatarProps
   
   return (
     <div className="md:w-1/3 flex flex-col items-center">
-      <div className="h-32 w-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center">
+      <div className="h-32 w-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center shadow-md">
         <User className="h-16 w-16 text-gray-400" />
       </div>
-      <BadgeLevel level={typedLevel} className="mb-2" />
-      <p className="text-sm text-center text-gray-500">{joinDate}</p>
+      <div className="mt-2 mb-3">
+        <BadgeLevel level={typedLevel} className="animate-fade-in" />
+      </div>
+      <p className="text-sm text-center text-gray-500 mt-1">{joinDate}</p>
       
       {isEditing && (
-        <Button variant="outline" size="sm" className="mt-4 w-full">
+        <Button variant="outline" size="sm" className="mt-4 w-full hover:bg-accent/80">
           Change Photo
         </Button>
       )}
