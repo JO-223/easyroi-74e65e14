@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { BadgeLevel } from "@/components/ui/badge-level";
 import { Building2, Globe, Mail, MapPin, Search, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Define the type for investor level to match BadgeLevelProps
 type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
@@ -84,6 +86,7 @@ const investors = [
 const Network = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const filteredInvestors = investors.filter(investor => 
     investor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -93,25 +96,25 @@ const Network = () => {
 
   const handleConnect = (investorId: number, investorName: string) => {
     toast({
-      title: "Connection Request Sent",
-      description: `Your connection request has been sent to ${investorName}.`,
+      title: t('connectionSent'),
+      description: `${t('connectionSentMsg')} ${investorName}.`,
     });
   };
 
   const handleMessage = (investorId: number, investorName: string) => {
     toast({
-      title: "Message Center",
-      description: `Opening conversation with ${investorName}.`,
+      title: t('messageCenter'),
+      description: `${t('openingConversation')} ${investorName}.`,
     });
   };
 
   return (
-    <DashboardLayout title="Investor Network" subtitle="Connect with fellow exclusive investors in the EasyROI community">
+    <DashboardLayout title={t('investorNetwork')} subtitle={t('connectInvestors')}>
       <div className="mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <Input
-            placeholder="Search by name, location, or investment interest..."
+            placeholder={t('searchInvestors')}
             className="pl-10"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -119,7 +122,7 @@ const Network = () => {
         </div>
         <div className="flex justify-between items-center mt-4">
           <p className="text-sm text-muted-foreground">
-            {filteredInvestors.length} investors found
+            {filteredInvestors.length} {t('investorsFound')}
           </p>
         </div>
       </div>
@@ -153,7 +156,7 @@ const Network = () => {
                 </div>
                 <div className="flex items-center text-sm">
                   <Building2 className="mr-2 h-4 w-4 text-muted-foreground" />
-                  <span>{investor.properties} Properties</span>
+                  <span>{investor.properties} {t('properties_count')}</span>
                 </div>
                 <div className="mt-3">
                   <p className="text-sm text-gray-600">{investor.bio}</p>
@@ -171,13 +174,13 @@ const Network = () => {
                 className="flex-1" 
                 onClick={() => handleMessage(investor.id, investor.name)}
               >
-                <Mail className="mr-2 h-4 w-4" /> Message
+                <Mail className="mr-2 h-4 w-4" /> {t('message')}
               </Button>
               <Button 
                 className="flex-1 bg-easyroi-navy hover:bg-easyroi-navy/90" 
                 onClick={() => handleConnect(investor.id, investor.name)}
               >
-                <UserPlus className="mr-2 h-4 w-4" /> Connect
+                <UserPlus className="mr-2 h-4 w-4" /> {t('connect')}
               </Button>
             </CardFooter>
           </Card>

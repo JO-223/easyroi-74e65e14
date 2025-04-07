@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button';
 import { RotatingShape } from '@/components/RotatingShape';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { ArrowDown, MapPin, Building2, BarChart3, Shield } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const { t } = useLanguage();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -46,14 +48,14 @@ const Index = () => {
           <div className="max-w-2xl">
             <AnimatedSection delay={300}>
               <h1 className="minimal-title text-white">
-                Premium Real Estate 
-                <span className="block text-easyroi-gold font-normal"> Exceptional Returns</span>
+                {t('premiumRealEstate')}
+                <span className="block text-easyroi-gold font-normal">{t('exceptionalReturns')}</span>
               </h1>
             </AnimatedSection>
             
             <AnimatedSection delay={600}>
               <p className="minimal-subtitle text-gray-200 mt-6">
-                Exclusive access to high-yield international real estate investments.
+                {t('exclusiveAccess')}
               </p>
             </AnimatedSection>
             
@@ -61,7 +63,7 @@ const Index = () => {
               <div className="flex gap-6">
                 <Link to="/register">
                   <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-normal px-8 py-6 text-lg rounded-none button-hover-scale">
-                    Start Investing
+                    {t('startInvesting')}
                   </Button>
                 </Link>
               </div>
@@ -70,7 +72,7 @@ const Index = () => {
         </div>
         
         <div className="scroll-indicator">
-          <span className="text-sm text-easyroi-gold/80 mb-2 tracking-widest">SCROLL</span>
+          <span className="text-sm text-easyroi-gold/80 mb-2 tracking-widest">{t('scroll')}</span>
           <div className="scroll-indicator-line"></div>
         </div>
       </section>
@@ -80,9 +82,9 @@ const Index = () => {
         <div className="minimal-container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
             <AnimatedSection>
-              <h2 className="minimal-title text-easyroi-purple-900">Luxury portfolio carefully curated</h2>
+              <h2 className="minimal-title text-easyroi-purple-900">{t('curated')}</h2>
               <p className="minimal-subtitle">
-                Access to exclusive real estate opportunities not available on the open market.
+                {t('curatedDesc')}
               </p>
             </AnimatedSection>
             
@@ -96,20 +98,20 @@ const Index = () => {
           <div className="minimal-cards-container mt-24">
             <AnimatedSection delay={100} className="minimal-card">
               <Building2 className="h-6 w-6 text-easyroi-gold mb-4" />
-              <h3 className="minimal-card-title">Premium Properties</h3>
-              <p className="minimal-card-text">Access exclusive real estate in Italy, Dubai, and other luxury markets.</p>
+              <h3 className="minimal-card-title">{t('premiumProperties')}</h3>
+              <p className="minimal-card-text">{t('premiumPropertiesDesc')}</p>
             </AnimatedSection>
             
             <AnimatedSection delay={200} className="minimal-card">
               <BarChart3 className="h-6 w-6 text-easyroi-gold mb-4" />
-              <h3 className="minimal-card-title">Portfolio Analytics</h3>
-              <p className="minimal-card-text">Track investments with comprehensive real-time data analysis.</p>
+              <h3 className="minimal-card-title">{t('portfolioAnalytics')}</h3>
+              <p className="minimal-card-text">{t('portfolioAnalyticsDesc')}</p>
             </AnimatedSection>
             
             <AnimatedSection delay={300} className="minimal-card">
               <Shield className="h-6 w-6 text-easyroi-gold mb-4" />
-              <h3 className="minimal-card-title">Secure Platform</h3>
-              <p className="minimal-card-text">Enterprise-grade security for your investments and data.</p>
+              <h3 className="minimal-card-title">{t('securePlatform')}</h3>
+              <p className="minimal-card-text">{t('securePlatformDesc')}</p>
             </AnimatedSection>
           </div>
         </div>
@@ -119,7 +121,7 @@ const Index = () => {
       <section className="minimal-section bg-white">
         <div className="minimal-container">
           <AnimatedSection>
-            <h2 className="minimal-title text-easyroi-purple-900 mb-24">Featured Locations</h2>
+            <h2 className="minimal-title text-easyroi-purple-900 mb-24">{t('featuredLocations')}</h2>
           </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
@@ -147,12 +149,12 @@ const Index = () => {
         <div className="minimal-container">
           <AnimatedSection>
             <div className="flex flex-col md:flex-row md:items-center justify-between border-t border-gray-200 pt-12">
-              <h2 className="minimal-title text-easyroi-purple-900 max-w-xl">Ready to maximize your investment potential?</h2>
+              <h2 className="minimal-title text-easyroi-purple-900 max-w-xl">{t('readyToMaximize')}</h2>
               
               <div className="mt-8 md:mt-0">
                 <Link to="/register">
                   <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-normal px-8 py-6 text-lg rounded-none button-hover-scale">
-                    Create Account
+                    {t('createAccount')}
                   </Button>
                 </Link>
               </div>

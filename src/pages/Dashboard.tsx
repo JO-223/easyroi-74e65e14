@@ -14,8 +14,11 @@ import {
   Cell,
 } from "recharts";
 import { BarChart3, Building2, Calendar, TrendingUp } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Dashboard = () => {
+  const { t } = useLanguage();
+  
   // Sample data for demonstration purposes
   const investmentData = [
     { name: "Jan", value: 12000 },
@@ -36,40 +39,40 @@ const Dashboard = () => {
 
   const stats = [
     {
-      title: "Total Investment",
+      title: t('totalInvestment'),
       value: "€2,450,000",
       change: "+12.5%",
       isPositive: true,
       icon: TrendingUp,
     },
     {
-      title: "Properties",
+      title: t('properties'),
       value: "8",
       change: "+1",
       isPositive: true,
       icon: Building2,
     },
     {
-      title: "ROI",
+      title: t('roi'),
       value: "7.4%",
       change: "+0.6%",
       isPositive: true,
       icon: BarChart3,
     },
     {
-      title: "Events",
+      title: t('events'),
       value: "3",
-      change: "Upcoming",
+      change: t('events'),
       isPositive: true,
       icon: Calendar,
     },
   ];
 
   const propertyList = [
-    { id: 1, name: "Villa Toscana", location: "Florence, Italy", roi: "8.2%", value: "€650,000", status: "Active" },
-    { id: 2, name: "Marina Apartments", location: "Dubai, UAE", roi: "7.5%", value: "€820,000", status: "Active" },
-    { id: 3, name: "Vatican View", location: "Rome, Italy", roi: "6.9%", value: "€540,000", status: "Active" },
-    { id: 4, name: "Plaza Investment", location: "Madrid, Spain", roi: "7.2%", value: "€440,000", status: "Development" },
+    { id: 1, name: "Villa Toscana", location: "Florence, Italy", roi: "8.2%", value: "€650,000", status: t('active') },
+    { id: 2, name: "Marina Apartments", location: "Dubai, UAE", roi: "7.5%", value: "€820,000", status: t('active') },
+    { id: 3, name: "Vatican View", location: "Rome, Italy", roi: "6.9%", value: "€540,000", status: t('active') },
+    { id: 4, name: "Plaza Investment", location: "Madrid, Spain", roi: "7.2%", value: "€440,000", status: t('development') },
   ];
 
   return (
@@ -99,7 +102,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Investment Growth</CardTitle>
+              <CardTitle>{t('investmentGrowth')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-64">
@@ -118,7 +121,7 @@ const Dashboard = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Portfolio Allocation</CardTitle>
+              <CardTitle>{t('portfolioAllocation')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-64 flex items-center justify-center">
@@ -138,7 +141,7 @@ const Dashboard = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [`${value}%`, "Allocation"]} />
+                    <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -148,18 +151,18 @@ const Dashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Your Properties</CardTitle>
+            <CardTitle>{t('yourProperties')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">Property</th>
-                    <th className="text-left py-3 px-4 font-medium">Location</th>
-                    <th className="text-left py-3 px-4 font-medium">ROI</th>
-                    <th className="text-left py-3 px-4 font-medium">Value</th>
-                    <th className="text-left py-3 px-4 font-medium">Status</th>
+                    <th className="text-left py-3 px-4 font-medium">{t('property')}</th>
+                    <th className="text-left py-3 px-4 font-medium">{t('location')}</th>
+                    <th className="text-left py-3 px-4 font-medium">{t('roi')}</th>
+                    <th className="text-left py-3 px-4 font-medium">{t('value')}</th>
+                    <th className="text-left py-3 px-4 font-medium">{t('status')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -171,7 +174,7 @@ const Dashboard = () => {
                       <td className="py-3 px-4">{property.value}</td>
                       <td className="py-3 px-4">
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          property.status === "Active" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
+                          property.status === t('active') ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
                         }`}>
                           {property.status}
                         </span>

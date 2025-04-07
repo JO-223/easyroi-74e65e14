@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar as CalendarIcon, Clock, Globe, MapPin, Ticket, Users } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Sample event data
 const upcomingEvents = [
@@ -71,18 +72,19 @@ const pastEvents = [
 const Events = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleRSVP = (eventId: number, eventTitle: string) => {
     toast({
-      title: "RSVP Confirmed",
-      description: `You've successfully registered for: ${eventTitle}`,
+      title: t('rsvpConfirmed'),
+      description: `${t('rsvpConfirmedMsg')} ${eventTitle}`,
     });
   };
 
   const handleDownloadRecording = (eventId: number) => {
     toast({
-      title: "Download Started",
-      description: "Your recording download has started.",
+      title: t('downloadStarted'),
+      description: t('downloadStartedMsg'),
     });
   };
 
@@ -99,7 +101,7 @@ const Events = () => {
         <div className="flex justify-between items-start">
           <CardTitle className="text-xl">{event.title}</CardTitle>
           <Badge variant={event.type === "online" ? "outline" : "default"} className={event.type === "online" ? "bg-blue-50 text-blue-700 border-blue-200" : ""}>
-            {event.type === "online" ? "Online" : "In-Person"}
+            {event.type === "online" ? t('online') : t('inPerson')}
           </Badge>
         </div>
         <CardDescription className="mt-2">{event.description}</CardDescription>
@@ -125,7 +127,9 @@ const Events = () => {
           {!isPast && event.capacity && (
             <div className="flex items-center text-sm">
               <Users className="mr-2 h-4 w-4 text-muted-foreground" />
-              <span>{event.capacity}</span>
+              <span>{event.capacity.includes("Limited") ? 
+                `${t('limitedTo')} ${event.capacity.split(" ")[2]} ${t('investors')}` : 
+                t('unlimited')}</span>
             </div>
           )}
         </div>
@@ -137,14 +141,14 @@ const Events = () => {
             className="w-full" 
             onClick={() => handleDownloadRecording(event.id)}
           >
-            <Ticket className="mr-2 h-4 w-4" /> View Details
+            <Ticket className="mr-2 h-4 w-4" /> {t('viewDetails')}
           </Button>
         ) : (
           <Button 
             className="w-full bg-easyroi-navy hover:bg-easyroi-navy/90" 
             onClick={() => handleRSVP(event.id, event.title)}
           >
-            <Ticket className="mr-2 h-4 w-4" /> RSVP
+            <Ticket className="mr-2 h-4 w-4" /> {t('rsvp')}
           </Button>
         )}
       </CardFooter>
@@ -152,16 +156,16 @@ const Events = () => {
   );
 
   return (
-    <DashboardLayout title="Events" subtitle="Exclusive investment events and networking opportunities">
+    <DashboardLayout title={t('events')} subtitle={t('exclusiveEvents')}>
       <Tabs defaultValue="upcoming" className="w-full" onValueChange={setActiveTab}>
         <div className="flex items-center justify-between mb-6">
           <TabsList>
-            <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
-            <TabsTrigger value="past">Past Events</TabsTrigger>
+            <TabsTrigger value="upcoming">{t('upcomingEvents')}</TabsTrigger>
+            <TabsTrigger value="past">{t('pastEvents')}</TabsTrigger>
           </TabsList>
           
           <div className="text-sm text-muted-foreground">
-            {activeTab === "upcoming" ? upcomingEvents.length : pastEvents.length} events found
+            {activeTab === "upcoming" ? upcomingEvents.length : pastEvents.length} {t('eventsFound')}
           </div>
         </div>
         

@@ -20,7 +20,7 @@ import { useEffect } from "react";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Force update on language change
+  // Initialize language settings from localStorage
   useEffect(() => {
     const savedSettings = localStorage.getItem('displaySettings');
     if (savedSettings) {

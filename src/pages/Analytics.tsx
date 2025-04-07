@@ -18,8 +18,11 @@ import {
   Cell,
   Legend
 } from "recharts";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Analytics = () => {
+  const { t } = useLanguage();
+  
   // Sample data for charts
   const performanceData = [
     { month: "Jan", roi: 3.2, benchmark: 2.7 },
@@ -62,33 +65,33 @@ const Analytics = () => {
 
   const metrics = [
     {
-      title: "Portfolio ROI",
+      title: t('portfolioROI'),
       value: "7.4%",
       change: "+0.6%",
       isPositive: true,
       icon: Percent,
-      description: "vs previous year",
+      description: t('vsPreviousYear'),
     },
     {
-      title: "Annual Growth",
+      title: t('annualGrowth'),
       value: "12.3%",
       change: "+2.1%",
       isPositive: true,
       icon: TrendingUp,
-      description: "vs previous year",
+      description: t('vsPreviousYear'),
     },
     {
-      title: "Market Comparison",
+      title: t('marketComparison'),
       value: "+4.2%",
-      change: "Above index",
+      change: t('aboveIndex'),
       isPositive: true,
       icon: LineChart,
-      description: "vs market average",
+      description: t('vsMarketAverage'),
     },
   ];
 
   return (
-    <DashboardLayout title="Analytics" subtitle="Comprehensive data analysis of your investment portfolio">
+    <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
       <div className="grid gap-6">
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -115,7 +118,7 @@ const Analytics = () => {
         {/* Performance Chart */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>ROI Performance (2024)</CardTitle>
+            <CardTitle>{t('roiPerformance')} (2024)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-80">
@@ -137,7 +140,7 @@ const Analytics = () => {
                   <Line
                     type="monotone"
                     dataKey="roi"
-                    name="Your Portfolio"
+                    name={t('yourPortfolio')}
                     stroke="#0C2340"
                     strokeWidth={2}
                     dot={{ r: 4 }}
@@ -146,7 +149,7 @@ const Analytics = () => {
                   <Line
                     type="monotone"
                     dataKey="benchmark"
-                    name="Market Average"
+                    name={t('marketAverage')}
                     stroke="#D4AF37"
                     strokeWidth={2}
                     strokeDasharray="5 5"
@@ -163,7 +166,7 @@ const Analytics = () => {
           {/* Asset Allocation */}
           <Card>
             <CardHeader>
-              <CardTitle>Asset Allocation</CardTitle>
+              <CardTitle>{t('assetAllocation')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-64">
@@ -182,7 +185,7 @@ const Analytics = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [`${value}%`, "Allocation"]} />
+                    <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
@@ -193,7 +196,7 @@ const Analytics = () => {
           {/* Geographic Distribution */}
           <Card>
             <CardHeader>
-              <CardTitle>Geographic Distribution</CardTitle>
+              <CardTitle>{t('geographicDistribution')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-64">
@@ -212,7 +215,7 @@ const Analytics = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [`${value}%`, "Allocation"]} />
+                    <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
@@ -224,7 +227,7 @@ const Analytics = () => {
         {/* Historical Performance */}
         <Card>
           <CardHeader>
-            <CardTitle>Historical ROI Performance</CardTitle>
+            <CardTitle>{t('historicalROI')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -239,7 +242,7 @@ const Analytics = () => {
                     tickFormatter={(value) => `${value}%`}
                   />
                   <Tooltip formatter={(value) => [`${value}%`, "ROI"]} />
-                  <Bar dataKey="roi" fill="#D4AF37" radius={[4, 4, 0, 0]} name="Annual ROI" />
+                  <Bar dataKey="roi" fill="#D4AF37" radius={[4, 4, 0, 0]} name={t('annualROI')} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

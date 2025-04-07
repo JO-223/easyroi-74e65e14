@@ -19,6 +19,7 @@ import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 import { AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -29,6 +30,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,8 +47,8 @@ const Login = () => {
     setTimeout(() => {
       setLoading(false);
       toast({
-        title: "Success!",
-        description: "You have successfully logged in.",
+        title: t('loginSuccessTitle'),
+        description: t('loginSuccessMsg'),
       });
       navigate("/dashboard");
     }, 1500);
@@ -64,15 +66,15 @@ const Login = () => {
               alt="EasyROI Logo" 
               className="h-16 mx-auto mb-6" 
             />
-            <h1 className="text-3xl font-bold text-easyroi-purple-800">Investor Portal</h1>
-            <p className="mt-2 text-gray-600">Sign in to access your exclusive investment dashboard</p>
+            <h1 className="text-3xl font-bold text-easyroi-purple-800">{t('investorPortal')}</h1>
+            <p className="mt-2 text-gray-600">{t('investorPortalDesc')}</p>
           </div>
           
           <div className="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
             <Alert className="mb-6 bg-blue-50 text-blue-800 border-blue-200">
               <AlertTriangle className="h-4 w-4 text-blue-500" />
               <AlertDescription>
-                This is a private investment portal. Access is granted only to verified investors.
+                {t('privatePortalAlert')}
               </AlertDescription>
             </Alert>
             
@@ -83,7 +85,7 @@ const Login = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('email')}</FormLabel>
                       <FormControl>
                         <Input placeholder="your@email.com" {...field} />
                       </FormControl>
@@ -96,7 +98,7 @@ const Login = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t('password')}</FormLabel>
                       <FormControl>
                         <Input type="password" placeholder="••••••••" {...field} />
                       </FormControl>
@@ -106,7 +108,7 @@ const Login = () => {
                 />
                 <div className="text-right">
                   <Link to="/forgot-password" className="text-sm font-medium text-easyroi-purple-800 hover:text-easyroi-purple-800/80">
-                    Forgot password?
+                    {t('forgotPassword')}
                   </Link>
                 </div>
                 <Button 
@@ -114,14 +116,14 @@ const Login = () => {
                   className="w-full bg-easyroi-navy hover:bg-easyroi-navy/90"
                   disabled={loading}
                 >
-                  {loading ? "Signing in..." : "Sign in"}
+                  {loading ? t('signingIn') : t('signIn')}
                 </Button>
               </form>
             </Form>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Need assistance? Contact your investment advisor.
+                {t('needAssistance')}
               </p>
             </div>
           </div>

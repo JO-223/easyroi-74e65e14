@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,8 +38,21 @@ const Settings = () => {
     });
   };
   
+  const handleSavePreferences = () => {
+    updateDisplaySettings({
+      language: displaySettings.language,
+      currency: displaySettings.currency,
+      timezone: displaySettings.timezone
+    });
+    
+    toast({
+      title: t('savePreferences'),
+      description: t('savePreferences'),
+    });
+  };
+  
   return (
-    <DashboardLayout title={t('settings')} subtitle="Configure your account preferences and settings">
+    <DashboardLayout title={t('settings')} subtitle={t('configurePreferences')}>
       <Tabs defaultValue="notifications" className="w-full">
         <TabsList className="grid grid-cols-3 mb-8 md:w-[400px]">
           <TabsTrigger value="notifications">{t('notifications')}</TabsTrigger>
@@ -54,15 +68,15 @@ const Settings = () => {
                 <Bell className="h-5 w-5 text-easyroi-navy" />
                 <CardTitle>{t('notificationSettings')}</CardTitle>
               </div>
-              <CardDescription>Manage how and when you receive notifications</CardDescription>
+              <CardDescription>{t('notificationSettings')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
-                <h3 className="text-sm font-medium">Notification Channels</h3>
+                <h3 className="text-sm font-medium">{t('notificationChannels')}</h3>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <Label htmlFor="email-notifications">Email Notifications</Label>
+                    <Label htmlFor="email-notifications">{t('emailNotifications')}</Label>
                   </div>
                   <Switch 
                     id="email-notifications" 
@@ -73,7 +87,7 @@ const Settings = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Phone className="h-4 w-4 text-muted-foreground" />
-                    <Label htmlFor="sms-notifications">SMS Notifications</Label>
+                    <Label htmlFor="sms-notifications">{t('smsNotifications')}</Label>
                   </div>
                   <Switch 
                     id="sms-notifications" 
@@ -86,9 +100,9 @@ const Settings = () => {
               <Separator />
               
               <div className="space-y-3">
-                <h3 className="text-sm font-medium">Notification Types</h3>
+                <h3 className="text-sm font-medium">{t('notificationTypes')}</h3>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="property-alerts">Property Alerts & Updates</Label>
+                  <Label htmlFor="property-alerts">{t('propertyAlerts')}</Label>
                   <Switch 
                     id="property-alerts" 
                     checked={notificationSettings.propertyAlerts}
@@ -96,7 +110,7 @@ const Settings = () => {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="event-reminders">Event Reminders</Label>
+                  <Label htmlFor="event-reminders">{t('eventReminders')}</Label>
                   <Switch 
                     id="event-reminders" 
                     checked={notificationSettings.eventReminders}
@@ -104,7 +118,7 @@ const Settings = () => {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="marketing-updates">Marketing & Newsletter</Label>
+                  <Label htmlFor="marketing-updates">{t('marketingNewsletter')}</Label>
                   <Switch 
                     id="marketing-updates" 
                     checked={notificationSettings.marketingUpdates}
@@ -133,15 +147,15 @@ const Settings = () => {
                 <Lock className="h-5 w-5 text-easyroi-navy" />
                 <CardTitle>{t('securitySettings')}</CardTitle>
               </div>
-              <CardDescription>Manage your account security settings</CardDescription>
+              <CardDescription>{t('securitySettings')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-3">
-                <h3 className="text-sm font-medium">Authentication</h3>
+                <h3 className="text-sm font-medium">{t('authentication')}</h3>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="two-factor-auth">Two-factor Authentication</Label>
-                    <p className="text-sm text-muted-foreground">Add an extra layer of security to your account.</p>
+                    <Label htmlFor="two-factor-auth">{t('twoFactorAuth')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('twoFactorDesc')}</p>
                   </div>
                   <Switch 
                     id="two-factor-auth" 
@@ -152,8 +166,8 @@ const Settings = () => {
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="login-alerts">Login Alerts</Label>
-                    <p className="text-sm text-muted-foreground">Receive alerts when someone logs into your account.</p>
+                    <Label htmlFor="login-alerts">{t('loginAlerts')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('loginAlertsDesc')}</p>
                   </div>
                   <Switch 
                     id="login-alerts" 
@@ -166,18 +180,18 @@ const Settings = () => {
               <Separator />
               
               <div className="grid gap-3">
-                <h3 className="text-sm font-medium">Password Management</h3>
-                <Button variant="outline">Change Password</Button>
+                <h3 className="text-sm font-medium">{t('passwordManagement')}</h3>
+                <Button variant="outline">{t('changePassword')}</Button>
               </div>
               
               <Separator />
               
               <div className="grid gap-3">
-                <h3 className="text-sm font-medium">Session Management</h3>
+                <h3 className="text-sm font-medium">{t('sessionManagement')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="session-timeout">Automatic Session Timeout</Label>
-                    <p className="text-sm text-muted-foreground">Choose how long until your session expires.</p>
+                    <Label htmlFor="session-timeout">{t('sessionTimeout')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('sessionTimeoutDesc')}</p>
                   </div>
                   <Select 
                     value={securitySettings.sessionTimeout} 
@@ -187,10 +201,10 @@ const Settings = () => {
                       <SelectValue placeholder="Select timeout" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="15">15 minutes</SelectItem>
-                      <SelectItem value="30">30 minutes</SelectItem>
-                      <SelectItem value="60">1 hour</SelectItem>
-                      <SelectItem value="120">2 hours</SelectItem>
+                      <SelectItem value="15">15 {t('minutes')}</SelectItem>
+                      <SelectItem value="30">30 {t('minutes')}</SelectItem>
+                      <SelectItem value="60">1 {t('hour')}</SelectItem>
+                      <SelectItem value="120">2 {t('hours')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -216,7 +230,7 @@ const Settings = () => {
                 <Globe className="h-5 w-5 text-easyroi-navy" />
                 <CardTitle>{t('displayPreferences')}</CardTitle>
               </div>
-              <CardDescription>Customize your regional and interface preferences</CardDescription>
+              <CardDescription>{t('displayPreferences')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -239,7 +253,7 @@ const Settings = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="currency">Display Currency</Label>
+                  <Label htmlFor="currency">{t('displayCurrency')}</Label>
                   <Select 
                     value={displaySettings.currency} 
                     onValueChange={(value) => updateDisplaySettings({ currency: value as Currency })}
@@ -257,7 +271,7 @@ const Settings = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="timezone">Timezone</Label>
+                  <Label htmlFor="timezone">{t('timezone')}</Label>
                   <Select 
                     value={displaySettings.timezone} 
                     onValueChange={(value) => updateDisplaySettings({ timezone: value as Timezone })}
@@ -278,20 +292,20 @@ const Settings = () => {
               <Separator />
               
               <div>
-                <h3 className="text-sm font-medium mb-3">Contact Information</h3>
+                <h3 className="text-sm font-medium mb-3">{t('contactInformation')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="email">Primary Email Address</Label>
+                    <Label htmlFor="email">{t('primaryEmail')}</Label>
                     <div className="flex mt-1">
                       <Input id="email" value="john.doe@example.com" readOnly className="rounded-r-none" />
-                      <Button className="rounded-l-none">Verify</Button>
+                      <Button className="rounded-l-none">{t('verify')}</Button>
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">{t('phoneNumber')}</Label>
                     <div className="flex mt-1">
                       <Input id="phone" value="+39 123 456 7890" readOnly className="rounded-r-none" />
-                      <Button className="rounded-l-none">Verify</Button>
+                      <Button className="rounded-l-none">{t('verify')}</Button>
                     </div>
                   </div>
                 </div>
@@ -300,7 +314,7 @@ const Settings = () => {
             <CardFooter className="flex justify-end">
               <Button 
                 className="bg-easyroi-navy hover:bg-easyroi-navy/90"
-                onClick={() => handleSaveSettings('preferences')}
+                onClick={handleSavePreferences}
               >
                 <Save className="mr-2 h-4 w-4" />
                 {t('savePreferences')}
