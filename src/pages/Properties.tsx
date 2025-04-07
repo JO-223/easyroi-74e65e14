@@ -34,7 +34,7 @@ export default function Properties() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Fetch the user's profile to get their role
+          // Fetch the user's profile to get their level (role)
           const { data, error } = await supabase
             .from('profiles')
             .select('*')
@@ -46,9 +46,9 @@ export default function Properties() {
             return;
           }
           
-          if (data && data.role) {
-            const role = data.role as UserRole;
-            setIsAdmin(['administrator', 'owner'].includes(role));
+          if (data && data.level) {
+            const level = data.level as UserRole;
+            setIsAdmin(['administrator', 'owner'].includes(level));
           }
         }
       } catch (error) {

@@ -64,7 +64,7 @@ export function PropertyImport() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Fetch the user's profile to get their role
+          // Fetch the user's profile to get their level (role)
           const { data, error } = await supabase
             .from('profiles')
             .select('*')
@@ -76,10 +76,10 @@ export function PropertyImport() {
             return;
           }
           
-          if (data && data.role) {
-            const role = data.role as UserRole;
-            setUserRole(role);
-            setIsAdmin(['administrator', 'owner'].includes(role));
+          if (data && data.level) {
+            const level = data.level as UserRole;
+            setUserRole(level);
+            setIsAdmin(['administrator', 'owner'].includes(level));
           }
         }
       } catch (error) {
