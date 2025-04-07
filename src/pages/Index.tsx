@@ -75,12 +75,12 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Minimalist Features Section */}
+      {/* Minimalist Features Section with Luxury Image */}
       <section className="minimal-section bg-white">
         <div className="minimal-container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
             <AnimatedSection>
-              <h2 className="minimal-title text-easyroi-navy">Luxury portfolio carefully curated</h2>
+              <h2 className="minimal-title text-easyroi-purple-900">Luxury portfolio carefully curated</h2>
               <p className="minimal-subtitle">
                 Access to exclusive real estate opportunities not available on the open market.
               </p>
@@ -115,11 +115,11 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Locations Section - Minimal */}
-      <section className="minimal-section bg-gray-50">
+      {/* Locations Section - Minimal with Luxury Images */}
+      <section className="minimal-section bg-white">
         <div className="minimal-container">
           <AnimatedSection>
-            <h2 className="minimal-title text-easyroi-navy mb-24">Featured Locations</h2>
+            <h2 className="minimal-title text-easyroi-purple-900 mb-24">Featured Locations</h2>
           </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
@@ -147,7 +147,7 @@ const Index = () => {
         <div className="minimal-container">
           <AnimatedSection>
             <div className="flex flex-col md:flex-row md:items-center justify-between border-t border-gray-200 pt-12">
-              <h2 className="minimal-title text-easyroi-navy max-w-xl">Ready to maximize your investment potential?</h2>
+              <h2 className="minimal-title text-easyroi-purple-900 max-w-xl">Ready to maximize your investment potential?</h2>
               
               <div className="mt-8 md:mt-0">
                 <Link to="/register">
