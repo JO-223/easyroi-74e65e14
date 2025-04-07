@@ -5,7 +5,7 @@ import { PropertyFilters } from '@/components/PropertyFilters';
 import { PropertyDetailModal } from '@/components/PropertyDetailModal';
 import { PropertyPagination } from '@/components/PropertyPagination';
 import { PropertyImport } from '@/components/PropertyImport';
-import { Property, PropertyFilter, UserRole } from '@/types/property';
+import { Property, PropertyFilter } from '@/types/property';
 import { fetchProperties, fetchLocations, fetchPropertyTypes, fetchAmenities } from '@/services/propertyService';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { useAdminRole } from '@/hooks/use-admin-role';
 
 // Define properties per page
 const PROPERTIES_PER_PAGE = 9;
@@ -25,39 +25,7 @@ export default function Properties() {
   const [filters, setFilters] = useState<PropertyFilter>({});
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  
-  // Check if the current user is an administrator
-  useEffect(() => {
-    async function checkUserRole() {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (user) {
-          // Fetch the user's profile to get their level (role)
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', user.id)
-            .single();
-          
-          if (error) {
-            console.error("Error fetching user role:", error);
-            return;
-          }
-          
-          if (data && data.level) {
-            const level = data.level as UserRole;
-            setIsAdmin(['administrator', 'owner'].includes(level));
-          }
-        }
-      } catch (error) {
-        console.error("Error checking user role:", error);
-      }
-    }
-    
-    checkUserRole();
-  }, []);
+  const { isAdmin } = useAdminRole();
   
   // Fetch properties
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
