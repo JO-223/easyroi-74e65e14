@@ -27,7 +27,7 @@ import * as z from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { DataImport } from "@/types/property";
+import { DataImport, UserRole } from "@/types/property";
 import { Shield, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -47,7 +47,7 @@ export function PropertyImport() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
   
   const form = useForm<ImportFormValues>({
     resolver: zodResolver(importFormSchema),
@@ -65,17 +65,22 @@ export function PropertyImport() {
         
         if (user) {
           // Fetch the user's profile to get their role
-          const { data: profile, error } = await supabase
+          const { data, error } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', user.id)
             .single();
           
-          if (error) throw error;
+          if (error) {
+            console.error("Error fetching user role:", error);
+            return;
+          }
           
-          const role = profile?.role || null;
-          setUserRole(role);
-          setIsAdmin(['administrator', 'owner'].includes(role));
+          if (data) {
+            const userRole = data.role as UserRole;
+            setUserRole(userRole);
+            setIsAdmin(['administrator', 'owner'].includes(userRole));
+          }
         }
       } catch (error) {
         console.error("Error checking user role:", error);

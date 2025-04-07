@@ -5,7 +5,7 @@ import { PropertyFilters } from '@/components/PropertyFilters';
 import { PropertyDetailModal } from '@/components/PropertyDetailModal';
 import { PropertyPagination } from '@/components/PropertyPagination';
 import { PropertyImport } from '@/components/PropertyImport';
-import { Property, PropertyFilter } from '@/types/property';
+import { Property, PropertyFilter, UserRole } from '@/types/property';
 import { fetchProperties, fetchLocations, fetchPropertyTypes, fetchAmenities } from '@/services/propertyService';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -35,16 +35,21 @@ export default function Properties() {
         
         if (user) {
           // Fetch the user's profile to get their role
-          const { data: profile, error } = await supabase
+          const { data, error } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', user.id)
             .single();
           
-          if (error) throw error;
+          if (error) {
+            console.error("Error fetching user role:", error);
+            return;
+          }
           
-          const role = profile?.role || null;
-          setIsAdmin(['administrator', 'owner'].includes(role));
+          if (data) {
+            const userRole = data.role as UserRole;
+            setIsAdmin(['administrator', 'owner'].includes(userRole));
+          }
         }
       } catch (error) {
         console.error("Error checking user role:", error);
