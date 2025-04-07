@@ -126,10 +126,14 @@ const Login = () => {
                 {t('needAssistance')}
               </p>
             </div>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                {t('scheduleMeeting')}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      
       <Footer />
     </div>
   );

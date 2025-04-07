@@ -61,9 +61,9 @@ const Index = () => {
             
             <AnimatedSection delay={900} className="mt-12">
               <div className="flex gap-6">
-                <Link to="/register">
+                <Link to="/">
                   <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-normal px-8 py-6 text-lg rounded-none button-hover-scale">
-                    {t('startInvesting')}
+                    {t('scheduleMeeting')}
                   </Button>
                 </Link>
               </div>
@@ -154,7 +154,7 @@ const Index = () => {
               <div className="mt-8 md:mt-0">
                 <Link to="/register">
                   <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy font-normal px-8 py-6 text-lg rounded-none button-hover-scale">
-                    {t('createAccount')}
+                    {t('scheduleMeeting')}
                   </Button>
                 </Link>
               </div>
