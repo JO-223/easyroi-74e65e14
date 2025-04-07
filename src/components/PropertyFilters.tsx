@@ -40,7 +40,7 @@ export function PropertyFilters({
   const zones = Array.from(new Set(locations.map(loc => loc.zone)));
   
   const locationOptions = [
-    { label: t('allLocations'), value: '' },
+    { label: t('allLocations'), value: 'all' },
     ...cities.map(city => ({ label: city, value: city })),
     ...countries.map(country => ({ label: country, value: country })),
     ...zones.map(zone => ({ label: zone, value: zone }))
@@ -49,8 +49,8 @@ export function PropertyFilters({
   const handleFilterChange = (key: keyof PropertyFilter, value: any) => {
     const newFilters = { ...filters, [key]: value };
     
-    // If value is empty, remove the filter
-    if (value === '' || value === undefined) {
+    // If value is 'all' or undefined, remove the filter
+    if (value === 'all' || value === undefined) {
       delete newFilters[key];
     }
     
@@ -86,7 +86,7 @@ export function PropertyFilters({
         <div>
           <h3 className="font-medium mb-2 text-gray-700">{t('location')}</h3>
           <Select 
-            value={filters.location || ''} 
+            value={filters.location || 'all'} 
             onValueChange={(value) => handleFilterChange('location', value)}
           >
             <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
@@ -131,14 +131,14 @@ export function PropertyFilters({
         <div>
           <h3 className="font-medium mb-2 text-gray-700">{t('propertyType')}</h3>
           <Select 
-            value={filters.type || ''} 
+            value={filters.type || 'all'} 
             onValueChange={(value) => handleFilterChange('type', value)}
           >
             <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
               <SelectValue placeholder={t('allTypes')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">{t('allTypes')}</SelectItem>
+              <SelectItem value="all">{t('allTypes')}</SelectItem>
               {propertyTypes.map((type) => (
                 <SelectItem key={type.id} value={type.name}>
                   {type.name}
@@ -152,14 +152,14 @@ export function PropertyFilters({
         <div>
           <h3 className="font-medium mb-2 text-gray-700">{t('investorLevel')}</h3>
           <Select 
-            value={filters.investorLevel || ''} 
+            value={filters.investorLevel || 'all'} 
             onValueChange={(value) => handleFilterChange('investorLevel', value)}
           >
             <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
               <SelectValue placeholder={t('allLevels')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">{t('allLevels')}</SelectItem>
+              <SelectItem value="all">{t('allLevels')}</SelectItem>
               {investorLevels.map((level) => (
                 <SelectItem key={level} value={level}>
                   {level.charAt(0).toUpperCase() + level.slice(1)}

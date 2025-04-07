@@ -80,11 +80,8 @@ export default function Properties() {
   return (
     <DashboardLayout title={t('properties')} subtitle={""}>
       <div className="min-h-screen pb-20 bg-white">
-        <div className="mb-6 flex justify-between items-center">
-          <div>
-            <h2 className="text-3xl font-bold">{t('exclusiveProperties')}</h2>
-          </div>
-          <PropertyImport />
+        <div className="mb-6">
+          <h2 className="text-3xl font-bold">{t('exclusiveProperties')}</h2>
         </div>
 
         {/* Filters section */}
@@ -154,6 +151,11 @@ export default function Properties() {
           isOpen={isDetailModalOpen}
           onClose={handleCloseDetailModal}
         />
+
+        {/* Property Import button (moved to bottom right corner) */}
+        <div className="fixed bottom-6 right-6 z-10">
+          <PropertyImport />
+        </div>
       </div>
     </DashboardLayout>
   );
