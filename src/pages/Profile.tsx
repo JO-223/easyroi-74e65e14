@@ -35,14 +35,14 @@ const Profile = () => {
 
   const [profile, setProfile] = useState<ProfileData>({
     id: "",
-    first_name: "",
-    last_name: "",
+    first_name: null,
+    last_name: null,
     email: "",
-    phone: "",
-    location: "",
-    bio: "",
+    phone: null,
+    location: null,
+    bio: null,
     join_date: "",
-    level: "bronze",
+    level: null,
     avatar_url: null
   });
 

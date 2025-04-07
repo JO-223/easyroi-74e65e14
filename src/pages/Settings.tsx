@@ -156,7 +156,11 @@ const Settings = () => {
           setDisplaySettings({
             ...displayData
           });
-          updateDisplaySettings(displayData as any);
+          updateDisplaySettings({
+            language: displayData.language as Language,
+            currency: displayData.currency as Currency,
+            timezone: displayData.timezone as Timezone
+          });
         } else {
           setDisplaySettings({
             ...displaySettings,
@@ -235,7 +239,11 @@ const Settings = () => {
             });
           
           // Update context for immediate effect
-          updateDisplaySettings(displaySettings);
+          updateDisplaySettings({
+            language: displaySettings.language,
+            currency: displaySettings.currency,
+            timezone: displaySettings.timezone
+          });
           break;
           
         default:
