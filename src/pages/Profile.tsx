@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,14 +15,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Database } from "@/integrations/supabase/types";
 
-type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
-
-type Profile = Database['public']['Tables']['profiles']['Row'];
-type ProfileInterest = { name: string };
-
-interface ProfileData extends Profile {
+type InvestorLevel = Database['public']['Tables']['profiles']['Row']['level'];
+type ProfileData = Database['public']['Tables']['profiles']['Row'] & {
   join_date: string;
-}
+};
+type ProfileInterest = { name: string };
 
 const Profile = () => {
   const { toast } = useToast();

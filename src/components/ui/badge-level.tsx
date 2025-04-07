@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 type BadgeLevelProps = {
-  level: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
+  level?: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | null;
   className?: string;
 };
 
@@ -32,13 +32,12 @@ const badgeConfig = {
 };
 
 export function BadgeLevel({ level, className }: BadgeLevelProps) {
-  // If the level is null or undefined, return null to avoid rendering anything
-  if (!level) {
+  // If the level is null, undefined, or not a valid key, use bronze as default
+  if (!level || !badgeConfig[level]) {
     return null;
   }
   
-  // Make sure the level is a valid key in our badgeConfig
-  const config = badgeConfig[level] || badgeConfig.bronze;
+  const config = badgeConfig[level];
   
   return (
     <Badge className={cn(config.className, className)}>
