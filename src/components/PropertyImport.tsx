@@ -67,7 +67,7 @@ export function PropertyImport() {
           // Fetch the user's profile to get their role
           const { data, error } = await supabase
             .from('profiles')
-            .select('role')
+            .select('*')
             .eq('id', user.id)
             .single();
           
@@ -76,10 +76,10 @@ export function PropertyImport() {
             return;
           }
           
-          if (data) {
-            const userRole = data.role as UserRole;
-            setUserRole(userRole);
-            setIsAdmin(['administrator', 'owner'].includes(userRole));
+          if (data && data.role) {
+            const role = data.role as UserRole;
+            setUserRole(role);
+            setIsAdmin(['administrator', 'owner'].includes(role));
           }
         }
       } catch (error) {
