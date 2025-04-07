@@ -76,9 +76,10 @@ export function DisplaySettings({
               <SelectValue placeholder={t('selectTimezone')} />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              <SelectItem value="utc">UTC</SelectItem>
-              <SelectItem value="est">EST</SelectItem>
-              <SelectItem value="cet">CET</SelectItem>
+              <SelectItem value="europe_rome">Europe/Rome</SelectItem>
+              <SelectItem value="europe_london">Europe/London</SelectItem>
+              <SelectItem value="america_newyork">America/New York</SelectItem>
+              <SelectItem value="europe_zurich">Europe/Zurich</SelectItem>
             </SelectContent>
           </Select>
         </div>

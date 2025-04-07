@@ -5,7 +5,7 @@ import { DisplaySettings } from "@/components/settings/DisplaySettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
 import { PrivacySettings } from "@/components/settings/PrivacySettings";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useSettings, SettingsType } from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 const Settings = () => {
   const { t } = useLanguage();
