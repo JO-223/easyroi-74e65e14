@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { BadgeLevel } from "@/components/ui/badge-level";
-import { ChevronDown, Globe, MapPin, Wifi, Tv, Car, Pool, Bath, Bed } from "lucide-react";
+import { ChevronDown, Globe, MapPin, Wifi, Tv, Car, Bath, Bed, Droplet } from "lucide-react";
 
 // Sample properties data
 const properties = [
@@ -271,7 +271,7 @@ export default function Properties() {
                   <div className="mt-4 flex flex-wrap gap-2">
                     {property.amenities.slice(0, 4).map((amenity, index) => (
                       <span key={index} className="inline-flex items-center px-2 py-1 bg-white/10 rounded text-xs">
-                        {amenity.includes("Pool") && <Pool className="h-3 w-3 mr-1" />}
+                        {amenity.includes("Pool") && <Droplet className="h-3 w-3 mr-1" />}
                         {amenity.includes("WiFi") && <Wifi className="h-3 w-3 mr-1" />}
                         {amenity.includes("Parking") && <Car className="h-3 w-3 mr-1" />}
                         {amenity.includes("Beds") && <Bed className="h-3 w-3 mr-1" />}
