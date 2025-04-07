@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -58,14 +58,9 @@ const Login = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 mt-16">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <img 
-              src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
-              alt="EasyROI Logo" 
-              className="h-16 mx-auto mb-6" 
-            />
             <h1 className="text-3xl font-bold text-easyroi-purple-800">{t('investorPortal')}</h1>
             <p className="mt-2 text-gray-600">{t('investorPortalDesc')}</p>
           </div>
@@ -130,6 +125,17 @@ const Login = () => {
               <p className="text-sm text-gray-600">
                 {t('scheduleMeeting')}
               </p>
+            </div>
+
+            <div className="mt-8 text-center">
+              <Link to="/dashboard">
+                <Button 
+                  className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy shadow-md transition-all duration-300 flex items-center gap-2"
+                >
+                  {t('scheduleMeeting')}
+                  <ArrowRight size={16} />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
