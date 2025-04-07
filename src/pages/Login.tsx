@@ -17,10 +17,12 @@ import { Input } from "@/components/ui/input";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
+import { AlertTriangle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(1, "Password is required"),
 });
 
 const Login = () => {
@@ -57,11 +59,23 @@ const Login = () => {
       <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-easyroi-navy">Welcome back</h1>
-            <p className="mt-2 text-gray-600">Sign in to your investor account</p>
+            <img 
+              src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
+              alt="EasyROI Logo" 
+              className="h-16 mx-auto mb-6" 
+            />
+            <h1 className="text-3xl font-bold text-easyroi-purple-800">Investor Portal</h1>
+            <p className="mt-2 text-gray-600">Sign in to access your exclusive investment dashboard</p>
           </div>
           
           <div className="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
+            <Alert className="mb-6 bg-blue-50 text-blue-800 border-blue-200">
+              <AlertTriangle className="h-4 w-4 text-blue-500" />
+              <AlertDescription>
+                This is a private investment portal. Access is granted only to verified investors.
+              </AlertDescription>
+            </Alert>
+            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -91,7 +105,7 @@ const Login = () => {
                   )}
                 />
                 <div className="text-right">
-                  <Link to="/forgot-password" className="text-sm font-medium text-easyroi-navy hover:text-easyroi-navy/80">
+                  <Link to="/forgot-password" className="text-sm font-medium text-easyroi-purple-800 hover:text-easyroi-purple-800/80">
                     Forgot password?
                   </Link>
                 </div>
@@ -107,10 +121,7 @@ const Login = () => {
             
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{" "}
-                <Link to="/register" className="font-medium text-easyroi-navy hover:text-easyroi-navy/80">
-                  Register
-                </Link>
+                Need assistance? Contact your investment advisor.
               </p>
             </div>
           </div>

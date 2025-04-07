@@ -50,7 +50,11 @@ export function SidebarNav() {
       <div className="py-2">
         <div className="px-3 py-2">
           <div className="flex items-center">
-            <span className="text-easyroi-gold text-2xl font-bold">Easy<span className="text-white">ROI</span></span>
+            <img 
+              src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
+              alt="EasyROI Logo" 
+              className="h-10" 
+            />
           </div>
         </div>
       </div>

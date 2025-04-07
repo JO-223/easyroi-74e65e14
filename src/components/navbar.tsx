@@ -37,7 +37,7 @@ export function Navbar() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <img src="/lovable-uploads/9496436e-cc5e-4188-9411-1dea4b718fc3.png" alt="EasyROI Logo" className="h-12" />
+            <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-12" />
           </Link>
         </div>
 
@@ -55,15 +55,10 @@ export function Navbar() {
               {item.name}
             </Link>
           ))}
-          <div className="ml-6 flex items-center space-x-3">
+          <div className="ml-6">
             <Link to="/login">
-              <Button variant="outline" className="border-easyroi-purple-500 text-easyroi-purple-800 hover:bg-easyroi-purple-50 transition-all duration-300">
-                Login
-              </Button>
-            </Link>
-            <Link to="/register">
               <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300 shadow-sm">
-                Register
+                Login
               </Button>
             </Link>
           </div>
@@ -82,7 +77,7 @@ export function Navbar() {
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between p-6 border-b border-gray-100">
                   <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-                    <img src="/lovable-uploads/9496436e-cc5e-4188-9411-1dea4b718fc3.png" alt="EasyROI Logo" className="h-10" />
+                    <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-easyroi-purple-800 hover:text-easyroi-gold hover:bg-easyroi-purple-50/20">
                     <X className="h-6 w-6" />
@@ -105,15 +100,10 @@ export function Navbar() {
                       </Link>
                     ))}
                   </div>
-                  <div className="p-6 border-t border-gray-100 space-y-3">
+                  <div className="p-6 border-t border-gray-100">
                     <Link to="/login" onClick={() => setIsOpen(false)} className="block w-full">
-                      <Button variant="outline" className="w-full border-easyroi-purple-500 text-easyroi-purple-800 hover:bg-easyroi-purple-50">
-                        Login
-                      </Button>
-                    </Link>
-                    <Link to="/register" onClick={() => setIsOpen(false)} className="block w-full">
                       <Button className="w-full bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 shadow-sm">
-                        Register
+                        Login
                       </Button>
                     </Link>
                   </div>
