@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -15,37 +16,53 @@ export function Navbar() {
     { name: 'Contact', href: '/contact' },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    document.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
+
   return (
-    <header className="bg-transparent backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
+    }`}>
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <span className="text-easyroi-purple-600 font-bold text-xl">Easy<span className="text-easyroi-gold">ROI</span></span>
+            <img src="/lovable-uploads/9496436e-cc5e-4188-9411-1dea4b718fc3.png" alt="EasyROI Logo" className="h-12" />
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-6">
           {navigation.map((item) => (
             <Link
               key={item.name}
               to={item.href}
-              className="text-easyroi-purple-600 relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 
-                after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 
-                after:left-0 after:bg-easyroi-gold after:origin-bottom-right after:transition-transform 
+              className="text-easyroi-purple-800 relative px-3 py-2 text-sm font-medium transition-all duration-300 
+                after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 
+                after:bottom-0 after:left-0 after:bg-easyroi-gold after:origin-bottom-right after:transition-transform 
                 after:duration-300 hover:text-easyroi-gold hover:after:scale-x-100 hover:after:origin-bottom-left"
             >
               {item.name}
             </Link>
           ))}
-          <div className="ml-4 flex items-center">
+          <div className="ml-6 flex items-center space-x-3">
             <Link to="/login">
-              <Button variant="outline" className="mr-2 border-easyroi-gold text-easyroi-gold hover:bg-easyroi-gold/20 transition-all duration-300">
+              <Button variant="outline" className="border-easyroi-purple-500 text-easyroi-purple-800 hover:bg-easyroi-purple-50 transition-all duration-300">
                 Login
               </Button>
             </Link>
             <Link to="/register">
-              <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300">
+              <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300 shadow-sm">
                 Register
               </Button>
             </Link>
@@ -56,46 +73,50 @@ export function Navbar() {
         <div className="md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-easyroi-purple-600 hover:bg-white/10">
+              <Button variant="ghost" size="icon" className="text-easyroi-purple-800 hover:bg-easyroi-purple-50/30">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-easyroi-navy/95 backdrop-blur-md text-white border-easyroi-navy">
-              <div className="flex items-center justify-between mb-8">
-                <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-                  <span className="text-easyroi-purple-600 font-bold text-xl">Easy<span className="text-easyroi-gold">ROI</span></span>
-                </Link>
-                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-white hover:text-easyroi-gold">
-                  <X className="h-6 w-6" />
-                </Button>
-              </div>
-              <div className="flex flex-col space-y-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="text-easyroi-purple-600 relative overflow-hidden px-3 py-2 text-base font-medium
-                      after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 
-                      after:bottom-0 after:left-0 after:bg-easyroi-gold after:origin-bottom-right 
-                      after:transition-transform after:duration-300 hover:text-easyroi-gold 
-                      hover:after:scale-x-100 hover:after:origin-bottom-left"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
+            <SheetContent side="right" className="bg-white/95 backdrop-blur-xl border-none shadow-xl p-0">
+              <div className="flex flex-col h-full">
+                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                  <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+                    <img src="/lovable-uploads/9496436e-cc5e-4188-9411-1dea4b718fc3.png" alt="EasyROI Logo" className="h-10" />
                   </Link>
-                ))}
-                <div className="pt-4 flex flex-col space-y-2">
-                  <Link to="/login" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full border-easyroi-gold text-easyroi-gold hover:bg-easyroi-gold/20">
-                      Login
-                    </Button>
-                  </Link>
-                  <Link to="/register" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300">
-                      Register
-                    </Button>
-                  </Link>
+                  <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-easyroi-purple-800 hover:text-easyroi-gold hover:bg-easyroi-purple-50/20">
+                    <X className="h-6 w-6" />
+                  </Button>
+                </div>
+                <div className="flex flex-col justify-between h-full">
+                  <div className="p-6 space-y-6">
+                    {navigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className="block text-easyroi-purple-800 text-lg font-light relative overflow-hidden
+                          after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-px 
+                          after:bottom-0 after:left-0 after:bg-easyroi-gold after:origin-bottom-right 
+                          after:transition-transform after:duration-300 hover:text-easyroi-gold 
+                          hover:after:scale-x-100 hover:after:origin-bottom-left"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="p-6 border-t border-gray-100 space-y-3">
+                    <Link to="/login" onClick={() => setIsOpen(false)} className="block w-full">
+                      <Button variant="outline" className="w-full border-easyroi-purple-500 text-easyroi-purple-800 hover:bg-easyroi-purple-50">
+                        Login
+                      </Button>
+                    </Link>
+                    <Link to="/register" onClick={() => setIsOpen(false)} className="block w-full">
+                      <Button className="w-full bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 shadow-sm">
+                        Register
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </SheetContent>
