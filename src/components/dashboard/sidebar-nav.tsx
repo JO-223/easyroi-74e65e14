@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { BarChart3, Building2, Calendar, Home, Settings, UserCircle, Users } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 const items = [
   {
@@ -94,7 +95,11 @@ export function SidebarNav() {
           )
         })}
       </nav>
-      <div className="p-4">
+      <div className="p-4 space-y-2">
+        <div className="flex justify-between items-center px-3 py-2 text-sm font-medium rounded-md text-white">
+          <span>Language</span>
+          <LanguageSwitcher variant="minimal" className="text-white hover:bg-sidebar-accent/50" />
+        </div>
         <Link
           to="/logout"
           className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-white hover:text-easyroi-gold hover:bg-sidebar-accent/50 transition-colors w-full"

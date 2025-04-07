@@ -11,9 +11,11 @@ import { Bell, Globe, Lock, Mail, Phone, Save, User } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
 
 const Settings = () => {
   const { toast } = useToast();
+  const { displaySettings, updateDisplaySettings } = useLanguage();
   
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
@@ -29,17 +31,18 @@ const Settings = () => {
     sessionTimeout: "30",
   });
   
-  const [displaySettings, setDisplaySettings] = useState({
-    language: "english",
-    currency: "eur",
-    timezone: "europe_rome",
-  });
-  
   const handleSaveSettings = (section: string) => {
-    toast({
-      title: "Settings Updated",
-      description: `Your ${section} settings have been saved successfully.`,
-    });
+    if (section === 'display') {
+      toast({
+        title: "Settings Updated",
+        description: `Your ${section} settings have been saved successfully.`,
+      });
+    } else {
+      toast({
+        title: "Settings Updated",
+        description: `Your ${section} settings have been saved successfully.`,
+      });
+    }
   };
   
   return (
@@ -229,7 +232,7 @@ const Settings = () => {
                   <Label htmlFor="language">Language</Label>
                   <Select 
                     value={displaySettings.language} 
-                    onValueChange={(value) => setDisplaySettings({...displaySettings, language: value})}
+                    onValueChange={(value) => updateDisplaySettings({ language: value as Language })}
                   >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select language" />
@@ -247,7 +250,7 @@ const Settings = () => {
                   <Label htmlFor="currency">Display Currency</Label>
                   <Select 
                     value={displaySettings.currency} 
-                    onValueChange={(value) => setDisplaySettings({...displaySettings, currency: value})}
+                    onValueChange={(value) => updateDisplaySettings({ currency: value as Currency })}
                   >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select currency" />
@@ -265,7 +268,7 @@ const Settings = () => {
                   <Label htmlFor="timezone">Timezone</Label>
                   <Select 
                     value={displaySettings.timezone} 
-                    onValueChange={(value) => setDisplaySettings({...displaySettings, timezone: value})}
+                    onValueChange={(value) => updateDisplaySettings({ timezone: value as Timezone })}
                   >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Select timezone" />

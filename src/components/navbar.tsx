@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +56,10 @@ export function Navbar() {
               {item.name}
             </Link>
           ))}
-          <div className="ml-6">
+          
+          <LanguageSwitcher className="ml-2" />
+          
+          <div className="ml-2">
             <Link to="/login">
               <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300 shadow-sm">
                 Login
@@ -65,7 +69,9 @@ export function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center space-x-2">
+          <LanguageSwitcher variant="minimal" />
+          
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="text-easyroi-purple-800 hover:bg-easyroi-purple-50/30">
