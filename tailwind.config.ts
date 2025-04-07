@@ -74,6 +74,20 @@ export default {
 					silver: "#C0C0C0",
 					platinum: "#E5E4E2",
 					diamond: "#B9F2FF",
+					// New purple brand colors
+					purple: {
+						50: "#F3F1F9",
+						100: "#E7E2F4",
+						200: "#D0C6E9",
+						300: "#B8A9DE",
+						400: "#9F8CD3",
+						500: "#876FC8",
+						600: "#6C52BD",
+						700: "#5A42A0",
+						800: "#473282",
+						900: "#342265",
+						950: "#271B4D"
+					}
 				}
 			},
 			borderRadius: {
@@ -108,6 +122,11 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				shimmer: 'shimmer 1.5s infinite',
+			},
+			backgroundImage: {
+				'gradient-luxury': 'linear-gradient(135deg, #271B4D 0%, #5A42A0 100%)',
+				'gradient-gold': 'linear-gradient(135deg, #D4AF37 0%, #F8E7AC 100%)',
+				'gradient-card': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03))',
 			}
 		}
 	},
