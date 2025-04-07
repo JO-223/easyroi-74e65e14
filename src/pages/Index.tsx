@@ -31,15 +31,15 @@ const Index = () => {
       <section className="relative h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="/dubai-skyline.png" 
-            alt="Dubai Skyline" 
+            src="/lovable-uploads/c6fb964a-ed49-478a-88c3-5d395e52f920.png" 
+            alt="Luxury Dubai Apartment View" 
             className="w-full h-full object-cover object-center"
             style={{
-              filter: 'brightness(0.8) contrast(1.1)',
+              filter: 'brightness(0.85)',
               transform: `scale(1.1) translateY(${scrollPosition * 0.1}px)`
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-transparent z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-easyroi-purple-950/70 via-easyroi-purple-900/60 to-transparent z-10"></div>
         </div>
         
         <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-20">
@@ -52,7 +52,7 @@ const Index = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={600}>
-              <p className="minimal-subtitle text-gray-300 mt-6">
+              <p className="minimal-subtitle text-gray-200 mt-6">
                 Exclusive access to high-yield international real estate investments.
               </p>
             </AnimatedSection>
