@@ -120,17 +120,11 @@ const Login = () => {
               <p className="text-sm text-gray-600">
                 {t('needAssistance')}
               </p>
-            </div>
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                {t('scheduleMeeting')}
-              </p>
-            </div>
 
             <div className="mt-8 text-center">
               <Link to="/dashboard">
                 <Button 
-                  className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy shadow-md transition-all duration-300 flex items-center gap-2"
+                  className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy shadow-md transition-all duration-300 flex items-center"
                 >
                   {t('scheduleMeeting')}
                   <ArrowRight size={16} />
