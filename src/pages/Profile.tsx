@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,90 +8,294 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, Calendar, Edit, MapPin, Save, Shield, User } from "lucide-react";
-import { useState } from "react";
+import { Building2, Calendar, Edit, Loader2, MapPin, Save, Shield, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
+interface ProfileData {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  location: string;
+  bio: string;
+  join_date: string;
+  level: InvestorLevel;
+  avatar_url: string | null;
+}
+
+interface ProfileInterest {
+  name: string;
+}
+
 const Profile = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [interests, setInterests] = useState<ProfileInterest[]>([]);
+  const [availableInterests, setAvailableInterests] = useState<{id: string, name: string}[]>([]);
 
-  const [profile, setProfile] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "+39 123 456 7890",
-    location: "Milan, Italy",
-    bio: "Experienced real estate investor with focus on luxury properties across Europe and the Middle East. Passionate about architectural preservation and sustainable development.",
-    joinDate: "Member since February 2023",
-    level: "gold" as InvestorLevel,
-    interests: ["Luxury Residential", "Commercial", "Historic Properties"],
-    notifications: {
-      email: true,
-      sms: false,
-      app: true
-    }
+  const [profile, setProfile] = useState<ProfileData>({
+    id: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    location: "",
+    bio: "",
+    join_date: "",
+    level: "bronze",
+    avatar_url: null
   });
 
-  const handleSaveProfile = () => {
-    setIsEditing(false);
-    toast({
-      title: "Profile Updated",
-      description: "Your profile information has been saved successfully."
-    });
+  // Fetch user profile data
+  useEffect(() => {
+    const getProfile = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          throw new Error("No user logged in");
+        }
+        
+        // Fetch profile data
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (profileError) throw profileError;
+        
+        // Fetch user interests
+        const { data: userInterests, error: interestsError } = await supabase
+          .from('profile_interests')
+          .select('interests(name)')
+          .eq('profile_id', user.id);
+        
+        if (interestsError) throw interestsError;
+        
+        // Fetch available interests
+        const { data: allInterests, error: allInterestsError } = await supabase
+          .from('interests')
+          .select('id, name');
+        
+        if (allInterestsError) throw allInterestsError;
+        
+        // Format join date
+        const joinDate = new Date(profileData.join_date);
+        const joinMonth = joinDate.toLocaleString('default', { month: 'long' });
+        const joinYear = joinDate.getFullYear();
+        
+        setProfile({
+          ...profileData,
+          join_date: `${t('memberSince')} ${joinMonth} ${joinYear}`
+        });
+        
+        setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
+        setAvailableInterests(allInterests);
+        
+      } catch (error) {
+        console.error("Error loading user profile:", error);
+        toast({
+          title: t('errorOccurred'),
+          description: t('errorLoadingProfile'),
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProfile();
+  }, [toast, t]);
+
+  const handleSaveProfile = async () => {
+    try {
+      setIsSaving(true);
+      
+      // Update profile
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          email: profile.email,
+          phone: profile.phone,
+          location: profile.location,
+          bio: profile.bio
+        })
+        .eq('id', profile.id);
+      
+      if (updateError) throw updateError;
+      
+      setIsEditing(false);
+      
+      toast({
+        title: t('profileUpdated'),
+        description: t('profileInfoSaved')
+      });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast({
+        title: t('errorOccurred'),
+        description: t('errorUpdatingProfile'),
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const addInterest = async (interestId: string) => {
+    try {
+      const { error } = await supabase
+        .from('profile_interests')
+        .insert({
+          profile_id: profile.id,
+          interest_id: interestId
+        });
+      
+      if (error) throw error;
+      
+      // Refresh interests
+      const { data: userInterests, error: fetchError } = await supabase
+        .from('profile_interests')
+        .select('interests(name)')
+        .eq('profile_id', profile.id);
+      
+      if (fetchError) throw fetchError;
+      
+      setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
+      
+    } catch (error) {
+      console.error("Error adding interest:", error);
+      toast({
+        title: t('errorOccurred'),
+        description: t('errorAddingInterest'),
+        variant: "destructive"
+      });
+    }
+  };
+
+  const removeInterest = async (interestName: string) => {
+    try {
+      // Get interest id
+      const { data: interestData } = await supabase
+        .from('interests')
+        .select('id')
+        .eq('name', interestName)
+        .single();
+      
+      if (!interestData) return;
+      
+      // Delete interest relation
+      const { error } = await supabase
+        .from('profile_interests')
+        .delete()
+        .eq('profile_id', profile.id)
+        .eq('interest_id', interestData.id);
+      
+      if (error) throw error;
+      
+      // Update local state
+      setInterests(interests.filter(i => i.name !== interestName));
+      
+    } catch (error) {
+      console.error("Error removing interest:", error);
+      toast({
+        title: t('errorOccurred'),
+        description: t('errorRemovingInterest'),
+        variant: "destructive"
+      });
+    }
   };
 
   const investmentSummary = [
-    { label: "Total Properties", value: "6" },
-    { label: "Portfolio Value", value: "€2,450,000" },
-    { label: "Average ROI", value: "7.4%" },
-    { label: "Years Investing", value: "3" },
+    { label: t('totalProperties'), value: "6" },
+    { label: t('portfolioValue'), value: "€2,450,000" },
+    { label: t('averageROI'), value: "7.4%" },
+    { label: t('yearsInvesting'), value: "3" },
   ];
 
   const recentActivity = [
     {
       type: "property-view",
-      description: "Viewed Villa Toscana property details",
-      date: "2 days ago"
+      description: t('viewedProperty'),
+      date: t('daysAgo', { days: 2 })
     },
     {
       type: "event-rsvp",
-      description: "RSVP'd to Dubai Property Showcase",
-      date: "5 days ago"
+      description: t('rsvpEvent'),
+      date: t('daysAgo', { days: 5 })
     },
     {
       type: "document-download",
-      description: "Downloaded Q1 Investment Report",
-      date: "1 week ago"
+      description: t('downloadedReport'),
+      date: t('weeksAgo', { weeks: 1 })
     },
     {
       type: "property-favorite",
-      description: "Added Marina Apartments to favorites",
-      date: "2 weeks ago"
+      description: t('addedFavorite'),
+      date: t('weeksAgo', { weeks: 2 })
     },
   ];
 
+  if (isLoading) {
+    return (
+      <DashboardLayout title={t('myProfile')} subtitle={t('profileSubtitle')}>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-easyroi-navy" />
+          <span className="ml-2 text-lg text-easyroi-navy">{t('loadingProfile')}</span>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
-    <DashboardLayout title="My Profile" subtitle="Manage your investor profile and account settings">
+    <DashboardLayout title={t('myProfile')} subtitle={t('profileSubtitle')}>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Card>
             <CardHeader className="pb-0">
               <div className="flex justify-between items-start">
                 <div>
-                  <CardTitle>Profile Information</CardTitle>
-                  <CardDescription>Update your personal information and preferences</CardDescription>
+                  <CardTitle>{t('profileInformation')}</CardTitle>
+                  <CardDescription>{t('profileDescription')}</CardDescription>
                 </div>
                 <Button 
                   variant={isEditing ? "default" : "outline"} 
                   size="sm" 
                   onClick={() => isEditing ? handleSaveProfile() : setIsEditing(true)}
+                  disabled={isSaving}
                   className={isEditing ? "bg-easyroi-navy hover:bg-easyroi-navy/90" : ""}
                 >
-                  {isEditing ? <Save className="mr-2 h-4 w-4" /> : <Edit className="mr-2 h-4 w-4" />}
-                  {isEditing ? "Save Changes" : "Edit Profile"}
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t('saving')}
+                    </>
+                  ) : isEditing ? (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      {t('saveChanges')}
+                    </>
+                  ) : (
+                    <>
+                      <Edit className="mr-2 h-4 w-4" />
+                      {t('editProfile')}
+                    </>
+                  )}
                 </Button>
               </div>
             </CardHeader>
@@ -100,12 +305,12 @@ const Profile = () => {
                   <div className="h-32 w-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center">
                     <User className="h-16 w-16 text-gray-400" />
                   </div>
-                  <BadgeLevel level={profile.level} className="mb-2" />
-                  <p className="text-sm text-center text-gray-500">{profile.joinDate}</p>
+                  <BadgeLevel level={profile.level as InvestorLevel} className="mb-2" />
+                  <p className="text-sm text-center text-gray-500">{profile.join_date}</p>
                   
                   {isEditing && (
                     <Button variant="outline" size="sm" className="mt-4 w-full">
-                      Change Photo
+                      {t('changePhoto')}
                     </Button>
                   )}
                 </div>
@@ -113,75 +318,127 @@ const Profile = () => {
                 <div className="md:w-2/3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label className="text-sm font-medium">First Name</label>
+                      <label className="text-sm font-medium">{t('firstName')}</label>
                       {isEditing ? (
-                        <Input value={profile.firstName} onChange={(e) => setProfile({...profile, firstName: e.target.value})} />
+                        <Input 
+                          value={profile.first_name} 
+                          onChange={(e) => setProfile({...profile, first_name: e.target.value})} 
+                        />
                       ) : (
-                        <p className="mt-1">{profile.firstName}</p>
+                        <p className="mt-1">{profile.first_name || '-'}</p>
                       )}
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Last Name</label>
+                      <label className="text-sm font-medium">{t('lastName')}</label>
                       {isEditing ? (
-                        <Input value={profile.lastName} onChange={(e) => setProfile({...profile, lastName: e.target.value})} />
+                        <Input 
+                          value={profile.last_name} 
+                          onChange={(e) => setProfile({...profile, last_name: e.target.value})} 
+                        />
                       ) : (
-                        <p className="mt-1">{profile.lastName}</p>
+                        <p className="mt-1">{profile.last_name || '-'}</p>
                       )}
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label className="text-sm font-medium">Email</label>
+                      <label className="text-sm font-medium">{t('email')}</label>
                       {isEditing ? (
-                        <Input value={profile.email} onChange={(e) => setProfile({...profile, email: e.target.value})} />
+                        <Input 
+                          value={profile.email} 
+                          onChange={(e) => setProfile({...profile, email: e.target.value})} 
+                        />
                       ) : (
                         <p className="mt-1">{profile.email}</p>
                       )}
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Phone</label>
+                      <label className="text-sm font-medium">{t('phone')}</label>
                       {isEditing ? (
-                        <Input value={profile.phone} onChange={(e) => setProfile({...profile, phone: e.target.value})} />
+                        <Input 
+                          value={profile.phone || ''} 
+                          onChange={(e) => setProfile({...profile, phone: e.target.value})} 
+                        />
                       ) : (
-                        <p className="mt-1">{profile.phone}</p>
+                        <p className="mt-1">{profile.phone || '-'}</p>
                       )}
                     </div>
                   </div>
                   
                   <div className="mb-4">
-                    <label className="text-sm font-medium">Location</label>
+                    <label className="text-sm font-medium">{t('location')}</label>
                     {isEditing ? (
-                      <Input value={profile.location} onChange={(e) => setProfile({...profile, location: e.target.value})} />
+                      <Input 
+                        value={profile.location || ''} 
+                        onChange={(e) => setProfile({...profile, location: e.target.value})} 
+                      />
                     ) : (
                       <p className="mt-1 flex items-center">
-                        <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
-                        {profile.location}
+                        {profile.location ? (
+                          <>
+                            <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                            {profile.location}
+                          </>
+                        ) : '-'}
                       </p>
                     )}
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium">Bio</label>
+                    <label className="text-sm font-medium">{t('bio')}</label>
                     {isEditing ? (
                       <Textarea 
-                        value={profile.bio} 
+                        value={profile.bio || ''} 
                         onChange={(e) => setProfile({...profile, bio: e.target.value})}
                         rows={4}
                       />
                     ) : (
-                      <p className="mt-1 text-sm">{profile.bio}</p>
+                      <p className="mt-1 text-sm">{profile.bio || '-'}</p>
                     )}
                   </div>
                   
                   {isEditing && (
                     <div className="mt-4">
-                      <label className="text-sm font-medium">Investment Interests</label>
+                      <label className="text-sm font-medium">{t('investmentInterests')}</label>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {profile.interests.map(interest => (
-                          <Badge key={interest} variant="outline">{interest}</Badge>
+                        {interests.map(interest => (
+                          <Badge 
+                            key={interest.name} 
+                            variant="outline"
+                            className="px-3 py-1 gap-1"
+                          >
+                            {interest.name}
+                            <button 
+                              className="ml-1 text-gray-500 hover:text-red-500"
+                              onClick={() => removeInterest(interest.name)}
+                            >
+                              ×
+                            </button>
+                          </Badge>
                         ))}
-                        <Button variant="outline" size="sm" className="h-6">+ Add</Button>
+                        <div className="relative">
+                          <select 
+                            className="appearance-none border rounded-md px-3 py-1 text-sm"
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                addInterest(e.target.value);
+                                e.target.value = '';
+                              }
+                            }}
+                            value=""
+                          >
+                            <option value="">{t('addInterest')}</option>
+                            {availableInterests
+                              .filter(ai => !interests.some(i => i.name === ai.name))
+                              .map(interest => (
+                                <option key={interest.id} value={interest.id}>
+                                  {interest.name}
+                                </option>
+                              ))
+                            }
+                          </select>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -192,48 +449,33 @@ const Profile = () => {
           
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Security & Privacy</CardTitle>
-              <CardDescription>Manage your account security and privacy settings</CardDescription>
+              <CardTitle>{t('securityPrivacy')}</CardTitle>
+              <CardDescription>{t('securityPrivacyDesc')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div>
                   <h4 className="font-medium mb-2 flex items-center">
                     <Shield className="h-4 w-4 mr-2 text-muted-foreground" /> 
-                    Password Settings
+                    {t('passwordSettings')}
                   </h4>
-                  <Button variant="outline" size="sm">Change Password</Button>
+                  <Button variant="outline" size="sm">{t('changePassword')}</Button>
                 </div>
                 <Separator />
                 <div>
-                  <h4 className="font-medium mb-2">Notification Preferences</h4>
+                  <h4 className="font-medium mb-2">{t('notificationPreferences')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="flex items-center justify-between p-3 border rounded-md">
-                      <span>Email Notifications</span>
-                      <input 
-                        type="checkbox" 
-                        checked={profile.notifications.email}
-                        onChange={() => setProfile({...profile, notifications: {...profile.notifications, email: !profile.notifications.email}})}
-                        className="h-4 w-4"
-                      />
+                      <span>{t('emailNotifications')}</span>
+                      <input type="checkbox" className="h-4 w-4" />
                     </div>
                     <div className="flex items-center justify-between p-3 border rounded-md">
-                      <span>SMS Notifications</span>
-                      <input 
-                        type="checkbox" 
-                        checked={profile.notifications.sms}
-                        onChange={() => setProfile({...profile, notifications: {...profile.notifications, sms: !profile.notifications.sms}})}
-                        className="h-4 w-4"
-                      />
+                      <span>{t('smsNotifications')}</span>
+                      <input type="checkbox" className="h-4 w-4" />
                     </div>
                     <div className="flex items-center justify-between p-3 border rounded-md">
-                      <span>App Notifications</span>
-                      <input 
-                        type="checkbox" 
-                        checked={profile.notifications.app}
-                        onChange={() => setProfile({...profile, notifications: {...profile.notifications, app: !profile.notifications.app}})}
-                        className="h-4 w-4"
-                      />
+                      <span>{t('appNotifications')}</span>
+                      <input type="checkbox" className="h-4 w-4" />
                     </div>
                   </div>
                 </div>
@@ -245,7 +487,7 @@ const Profile = () => {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Investment Summary</CardTitle>
+              <CardTitle>{t('investmentSummary')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
@@ -257,14 +499,14 @@ const Profile = () => {
                 ))}
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4">
-                <Building2 className="mr-2 h-4 w-4" /> View All Properties
+                <Building2 className="mr-2 h-4 w-4" /> {t('viewAllProperties')}
               </Button>
             </CardContent>
           </Card>
           
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle>{t('recentActivity')}</CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="space-y-4">

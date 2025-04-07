@@ -1,19 +1,23 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from "@/integrations/supabase/client";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const navigation = [
     { name: t('home'), href: '/' },
+    { name: t('dashboard'), href: '/dashboard' },
     { name: t('contact'), href: '/contact' },
     { name: t('aboutUs'), href: '/about' },
   ];
@@ -31,6 +35,27 @@ export function Navbar() {
       document.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+  
+  useEffect(() => {
+    // Get current auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null);
+    });
+    
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+    
+    return () => subscription.unsubscribe();
+  }, []);
+  
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -61,11 +86,20 @@ export function Navbar() {
           <LanguageSwitcher className="ml-2" />
           
           <div className="ml-2">
-            <Link to="/login">
-              <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300 shadow-sm">
-                {t('login')}
+            {user ? (
+              <Button 
+                onClick={handleLogout}
+                className="bg-easyroi-navy text-white hover:bg-easyroi-navy/90 transform hover:scale-105 transition-all duration-300 shadow-sm"
+              >
+                {t('logout')}
               </Button>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 transform hover:scale-105 transition-all duration-300 shadow-sm">
+                  {t('login')}
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -108,11 +142,23 @@ export function Navbar() {
                     ))}
                   </div>
                   <div className="p-6 border-t border-gray-100">
-                    <Link to="/login" onClick={() => setIsOpen(false)} className="block w-full">
-                      <Button className="w-full bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 shadow-sm">
-                        {t('login')}
+                    {user ? (
+                      <Button 
+                        onClick={() => {
+                          handleLogout();
+                          setIsOpen(false);
+                        }}
+                        className="w-full bg-easyroi-navy text-white hover:bg-easyroi-navy/90 shadow-sm"
+                      >
+                        {t('logout')}
                       </Button>
-                    </Link>
+                    ) : (
+                      <Link to="/login" onClick={() => setIsOpen(false)} className="block w-full">
+                        <Button className="w-full bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 shadow-sm">
+                          {t('login')}
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
