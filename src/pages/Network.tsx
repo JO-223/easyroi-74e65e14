@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useToast } from "@/hooks/use-toast";
@@ -36,7 +35,7 @@ const Network = () => {
           const { data: profileData, error: profileError } = await supabase.rpc(
             'get_user_profile_visibility',
             { p_user_id: user.id }
-          ) as { data: any[] | null, error: any };
+          );
           
           if (!profileError && profileData && profileData.length > 0) {
             const visibility = profileData[0]?.visibility as ProfileVisibility || 'public';
@@ -53,7 +52,7 @@ const Network = () => {
               const { data, error } = await supabase.rpc(
                 'get_profile_by_id',
                 { p_user_id: user.id }
-              ) as { data: any[] | null, error: any };
+              );
                 
               if (!error && data && data.length > 0) {
                 const visibility = data[0].visibility as ProfileVisibility || 'public';

@@ -31,7 +31,7 @@ export function usePrivacySettings() {
           const { data: profileData, error: profileError } = await supabase.rpc(
             'get_profile_by_id',
             { p_user_id: user.id }
-          ) as { data: any[] | null, error: any };
+          );
           
           if (profileError) throw profileError;
           
@@ -39,7 +39,7 @@ export function usePrivacySettings() {
           const { data: privacyData, error: privacyError } = await supabase.rpc(
             'get_privacy_settings', 
             { p_user_id: user.id }
-          ) as { data: any[] | null, error: any };
+          );
           
           if (privacyError) throw privacyError;
           
@@ -92,7 +92,7 @@ export function usePrivacySettings() {
           p_public_profile: privacySettings.publicProfile,
           p_data_sharing: privacySettings.dataSharing
         }
-      ) as { data: any, error: any };
+      );
       
       if (privacyError) throw privacyError;
       
@@ -103,7 +103,7 @@ export function usePrivacySettings() {
           p_user_id: user.id,
           p_visibility: privacySettings.profileVisibility
         }
-      ) as { data: any, error: any };
+      );
       
       if (profileError) throw profileError;
       
