@@ -14,6 +14,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { AccessDeniedAlert } from "@/components/property/AccessDeniedAlert";
 import { ImportForm } from "@/components/property/ImportForm";
+import { ImportHistorySheet } from "@/components/property/ImportHistorySheet";
 
 export function PropertyImport() {
   const { t } = useLanguage();
@@ -30,23 +31,27 @@ export function PropertyImport() {
   }
   
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 flex items-center gap-2">
-          <Shield size={16} />
-          {t('importProperties')}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>Import Properties</DialogTitle>
-          <DialogDescription>
-            Import property data from external sources in JSON format.
-          </DialogDescription>
-        </DialogHeader>
-        
-        <ImportForm onSuccess={() => setIsOpen(false)} />
-      </DialogContent>
-    </Dialog>
+    <div className="flex items-center gap-2">
+      <ImportHistorySheet />
+      
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 flex items-center gap-2">
+            <Shield size={16} />
+            {t('importProperties')}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Import Properties</DialogTitle>
+            <DialogDescription>
+              Import property data from external sources in JSON format. The system can handle hundreds of properties at once.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <ImportForm onSuccess={() => setIsOpen(false)} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

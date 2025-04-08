@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const importFormSchema = z.object({
   source: z.string().min(1, {
@@ -38,6 +39,7 @@ interface ImportFormProps {
 export function ImportForm({ onSuccess }: ImportFormProps) {
   const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState<string | null>(null);
   
   const form = useForm<ImportFormValues>({
     resolver: zodResolver(importFormSchema),
@@ -49,7 +51,38 @@ export function ImportForm({ onSuccess }: ImportFormProps) {
   
   const onSubmit = async (data: ImportFormValues) => {
     setIsLoading(true);
+    setProgress("Validating JSON data...");
+    
     try {
+      // Validate the JSON structure
+      let propertyData: any[];
+      try {
+        const parsedData = JSON.parse(data.importData);
+        propertyData = Array.isArray(parsedData) ? parsedData : [parsedData];
+        
+        if (propertyData.length === 0) {
+          throw new Error("No property data found in JSON");
+        }
+        
+        // Basic validation of each property
+        for (const property of propertyData) {
+          if (!property.name || !property.address || !property.price) {
+            throw new Error("Each property must have at least a name, address, and price");
+          }
+        }
+      } catch (parseError) {
+        console.error("JSON parsing error:", parseError);
+        toast({
+          title: "Invalid JSON format",
+          description: "Please check your JSON data format and try again.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+      
+      setProgress(`Processing ${propertyData.length} properties...`);
+      
       // Create a new data import record
       const { data: importRecord, error: importError } = await supabase
         .from('data_imports')
@@ -60,28 +93,33 @@ export function ImportForm({ onSuccess }: ImportFormProps) {
         .select('id')
         .single();
         
-      if (importError) throw importError;
+      if (importError) {
+        console.error("Error creating import record:", importError);
+        throw new Error("Failed to create import record");
+      }
       
-      // Here we would normally process the JSON data
-      // For now, we'll just simulate it worked
+      // Call the Edge Function for processing large datasets
+      setProgress("Sending data to import service...");
       
-      // Update the import record to reflect completion
-      const { error: updateError } = await supabase
-        .from('data_imports')
-        .update({ 
-          status: 'completed',
-          records_processed: 10,
-          records_created: 8,
-          records_updated: 2,
-          completed_at: new Date().toISOString()
-        })
-        .eq('id', importRecord.id);
-        
-      if (updateError) throw updateError;
+      const { data: importResult, error: functionError } = await supabase.functions.invoke(
+        'import-properties',
+        {
+          body: {
+            source: data.source,
+            data: propertyData
+          }
+        }
+      );
       
+      if (functionError) {
+        console.error("Edge function error:", functionError);
+        throw new Error("Import process failed");
+      }
+      
+      // Show success message with details
       toast({
         title: "Import Successful",
-        description: "Your property data has been imported.",
+        description: `Processed ${importResult.processed} properties: ${importResult.created} created, ${importResult.updated} updated, ${importResult.failed} failed.`,
       });
       
       form.reset();
@@ -90,11 +128,12 @@ export function ImportForm({ onSuccess }: ImportFormProps) {
       console.error("Import failed:", error);
       toast({
         title: "Import Failed",
-        description: "There was an error importing your property data.",
+        description: error instanceof Error ? error.message : "There was an error importing your property data.",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
+      setProgress(null);
     }
   };
   
@@ -132,12 +171,19 @@ export function ImportForm({ onSuccess }: ImportFormProps) {
                 />
               </FormControl>
               <FormDescription>
-                Paste your property data in JSON format.
+                Paste your property data in JSON format. The system can handle hundreds of properties in a single import.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+        
+        {progress && (
+          <div className="text-sm text-muted-foreground flex items-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {progress}
+          </div>
+        )}
         
         <DialogFooter>
           <Button 
