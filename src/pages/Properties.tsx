@@ -1,5 +1,7 @@
 
 import { useState, useEffect } from 'react';
+import { Navbar } from '@/components/navbar';
+import { Footer } from '@/components/footer';
 import { PropertyCard } from '@/components/PropertyCard';
 import { PropertyFilters } from '@/components/PropertyFilters';
 import { PropertyDetailModal } from '@/components/PropertyDetailModal';
@@ -13,7 +15,6 @@ import { useToast } from '@/hooks/use-toast';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
-import { useAdminRole } from '@/hooks/use-admin-role';
 
 // Define properties per page
 const PROPERTIES_PER_PAGE = 9;
@@ -25,7 +26,6 @@ export default function Properties() {
   const [filters, setFilters] = useState<PropertyFilter>({});
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const { isAdmin } = useAdminRole();
   
   // Fetch properties
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
@@ -77,13 +77,17 @@ export default function Properties() {
   };
 
   // Investor levels for filtering
-  const investorLevels = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'cosmic'];
+  const investorLevels = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
 
   return (
-    <DashboardLayout title={t('properties')} subtitle={""}>
-      <div className="min-h-screen pb-20 bg-white">
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold">{t('exclusiveProperties')}</h2>
+    <DashboardLayout title={t('properties')} subtitle={t('discoverProperties')}>
+      <div className="min-h-screen pb-20">
+        <div className="mb-10 flex justify-between items-center">
+          <div>
+            <h2 className="text-3xl font-bold mb-2">{t('exclusiveProperties')}</h2>
+            <p className="text-gray-500">{t('discoverProperties')}</p>
+          </div>
+          <PropertyImport />
         </div>
 
         {/* Filters section */}
@@ -136,8 +140,9 @@ export default function Properties() {
             </div>
           </>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-lg text-gray-500 mb-4">{t('nessuna proprietà trovata, prova con filtri diversi')}</p>
+          <div className="text-center py-20">
+            <h3 className="text-xl font-semibold mb-2">{t('noPropertiesFound')}</h3>
+            <p className="text-gray-500 mb-6">{t('tryDifferentFilters')}</p>
             <Button 
               onClick={() => setFilters({})}
               className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90"
@@ -153,11 +158,6 @@ export default function Properties() {
           isOpen={isDetailModalOpen}
           onClose={handleCloseDetailModal}
         />
-
-        {/* Property Import button (moved to bottom right corner) */}
-        <div className="fixed bottom-6 right-6 z-10">
-          <PropertyImport />
-        </div>
       </div>
     </DashboardLayout>
   );

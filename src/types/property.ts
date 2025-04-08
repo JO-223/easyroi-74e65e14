@@ -19,7 +19,6 @@ export type Property = {
   amenities: Amenity[];
   images: PropertyImage[];
   pros_cons: PropertyProCon[];
-  owner_id?: string;
 };
 
 export type PropertyLocation = {
@@ -77,24 +76,4 @@ export type DataImport = {
   status: string | null;
   error_details: string | null;
   completed_at: string | null;
-};
-
-// Add user role types
-export type UserRole = 
-  | 'user'
-  | 'bronze' 
-  | 'silver' 
-  | 'gold' 
-  | 'platinum' 
-  | 'diamond'
-  | 'cosmic'
-  | 'administrator'
-  | 'owner';
-
-// User investment tracking
-export type UserInvestment = {
-  id: string;
-  user_id: string;
-  total_investment: number;
-  last_updated: string;
 };

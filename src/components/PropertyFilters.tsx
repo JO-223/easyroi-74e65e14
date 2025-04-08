@@ -31,7 +31,7 @@ export function PropertyFilters({
   investorLevels
 }: PropertyFiltersProps) {
   const { t } = useLanguage();
-  const [filtersOpen, setFiltersOpen] = useState(true);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState<PropertyFilter>({});
   
   // Get unique cities and countries
@@ -40,7 +40,7 @@ export function PropertyFilters({
   const zones = Array.from(new Set(locations.map(loc => loc.zone)));
   
   const locationOptions = [
-    { label: t('allLocations'), value: 'all' },
+    { label: t('allLocations'), value: '' },
     ...cities.map(city => ({ label: city, value: city })),
     ...countries.map(country => ({ label: country, value: country })),
     ...zones.map(zone => ({ label: zone, value: zone }))
@@ -49,8 +49,8 @@ export function PropertyFilters({
   const handleFilterChange = (key: keyof PropertyFilter, value: any) => {
     const newFilters = { ...filters, [key]: value };
     
-    // If value is 'all' or undefined, remove the filter
-    if (value === 'all' || value === undefined) {
+    // If value is empty, remove the filter
+    if (value === '' || value === undefined) {
       delete newFilters[key];
     }
     
@@ -80,150 +80,150 @@ export function PropertyFilters({
   };
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Location filter */}
-        <div>
-          <h3 className="font-medium mb-2 text-gray-700">{t('location')}</h3>
-          <Select 
-            value={filters.location || 'all'} 
-            onValueChange={(value) => handleFilterChange('location', value)}
-          >
-            <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
-              <SelectValue placeholder={t('allLocations')} />
-            </SelectTrigger>
-            <SelectContent>
-              {locationOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <Collapsible
+      open={filtersOpen}
+      onOpenChange={setFiltersOpen}
+      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-4 mb-8"
+    >
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-white">{t('filterProperties')}</h2>
+        <CollapsibleTrigger asChild>
+          <Button variant="ghost" size="sm" className="text-white hover:text-easyroi-gold">
+            <ChevronDown className={`h-5 w-5 transition-transform ${filtersOpen ? 'rotate-180' : ''}`} />
+            <span className="ml-1">{filtersOpen ? t('hideFilters') : t('showFilters')}</span>
+          </Button>
+        </CollapsibleTrigger>
+      </div>
 
-        {/* Price range filter */}
-        <div>
-          <h3 className="font-medium mb-2 text-gray-700">{t('priceRange')}</h3>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Input
-                type="number"
-                placeholder={t('min')}
-                className="bg-white border-gray-300 text-gray-800"
-                value={filters.priceMin || ''}
-                onChange={(e) => handleFilterChange('priceMin', e.target.value ? Number(e.target.value) : undefined)}
-              />
+      <CollapsibleContent className="mt-4 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Location filter */}
+          <div>
+            <h3 className="font-medium mb-2 text-white/90">{t('location')}</h3>
+            <Select 
+              value={filters.location || ''} 
+              onValueChange={(value) => handleFilterChange('location', value)}
+            >
+              <SelectTrigger className="w-full bg-white/10 border-white/20 text-white">
+                <SelectValue placeholder={t('allLocations')} />
+              </SelectTrigger>
+              <SelectContent>
+                {locationOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Price range filter */}
+          <div>
+            <h3 className="font-medium mb-2 text-white/90">{t('priceRange')}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Input
+                  type="number"
+                  placeholder={t('min')}
+                  className="bg-white/10 border-white/20 text-white"
+                  value={filters.priceMin || ''}
+                  onChange={(e) => handleFilterChange('priceMin', e.target.value ? Number(e.target.value) : undefined)}
+                />
+              </div>
+              <div>
+                <Input
+                  type="number"
+                  placeholder={t('max')}
+                  className="bg-white/10 border-white/20 text-white"
+                  value={filters.priceMax || ''}
+                  onChange={(e) => handleFilterChange('priceMax', e.target.value ? Number(e.target.value) : undefined)}
+                />
+              </div>
             </div>
-            <div>
-              <Input
-                type="number"
-                placeholder={t('max')}
-                className="bg-white border-gray-300 text-gray-800"
-                value={filters.priceMax || ''}
-                onChange={(e) => handleFilterChange('priceMax', e.target.value ? Number(e.target.value) : undefined)}
-              />
-            </div>
+          </div>
+
+          {/* Property type filter */}
+          <div>
+            <h3 className="font-medium mb-2 text-white/90">{t('propertyType')}</h3>
+            <Select 
+              value={filters.type || ''} 
+              onValueChange={(value) => handleFilterChange('type', value)}
+            >
+              <SelectTrigger className="w-full bg-white/10 border-white/20 text-white">
+                <SelectValue placeholder={t('allTypes')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">{t('allTypes')}</SelectItem>
+                {propertyTypes.map((type) => (
+                  <SelectItem key={type.id} value={type.name}>
+                    {type.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Investor level filter */}
+          <div>
+            <h3 className="font-medium mb-2 text-white/90">{t('investorLevel')}</h3>
+            <Select 
+              value={filters.investorLevel || ''} 
+              onValueChange={(value) => handleFilterChange('investorLevel', value)}
+            >
+              <SelectTrigger className="w-full bg-white/10 border-white/20 text-white">
+                <SelectValue placeholder={t('allLevels')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">{t('allLevels')}</SelectItem>
+                {investorLevels.map((level) => (
+                  <SelectItem key={level} value={level}>
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
-        {/* Property type filter */}
+        {/* Amenities filter */}
         <div>
-          <h3 className="font-medium mb-2 text-gray-700">{t('propertyType')}</h3>
-          <Select 
-            value={filters.type || 'all'} 
-            onValueChange={(value) => handleFilterChange('type', value)}
-          >
-            <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
-              <SelectValue placeholder={t('allTypes')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t('allTypes')}</SelectItem>
-              {propertyTypes.map((type) => (
-                <SelectItem key={type.id} value={type.name}>
-                  {type.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Investor level filter */}
-        <div>
-          <h3 className="font-medium mb-2 text-gray-700">{t('investorLevel')}</h3>
-          <Select 
-            value={filters.investorLevel || 'all'} 
-            onValueChange={(value) => handleFilterChange('investorLevel', value)}
-          >
-            <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
-              <SelectValue placeholder={t('allLevels')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t('allLevels')}</SelectItem>
-              {investorLevels.map((level) => (
-                <SelectItem key={level} value={level}>
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Amenities filter */}
-      <div className="mt-4">
-        <Collapsible
-          open={filtersOpen}
-          onOpenChange={setFiltersOpen}
-        >
-          <div className="flex items-center justify-between border-t border-gray-200 pt-4 mt-2">
-            <h3 className="font-medium text-gray-700">{t('amenities')}</h3>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <ChevronDown className={`h-5 w-5 transition-transform ${filtersOpen ? 'rotate-180' : ''}`} />
-                <span className="ml-1">{filtersOpen ? t('nascondiAmenità') : t('mostraAmenità')}</span>
-              </Button>
-            </CollapsibleTrigger>
+          <h3 className="font-medium mb-2 text-white/90">{t('amenities')}</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            {amenities.map((amenity) => (
+              <div key={amenity.id} className="flex items-center space-x-2">
+                <Checkbox 
+                  id={`amenity-${amenity.id}`} 
+                  checked={filters.amenities?.includes(amenity.id)}
+                  onCheckedChange={(checked) => handleAmenityToggle(amenity.id, checked as boolean)}
+                  className="border-easyroi-gold data-[state=checked]:bg-easyroi-gold data-[state=checked]:text-easyroi-navy"
+                />
+                <label 
+                  htmlFor={`amenity-${amenity.id}`}
+                  className="text-sm text-white/80 cursor-pointer"
+                >
+                  {amenity.name}
+                </label>
+              </div>
+            ))}
           </div>
-          
-          <CollapsibleContent className="mt-4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-              {amenities.map((amenity) => (
-                <div key={amenity.id} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`amenity-${amenity.id}`} 
-                    checked={filters.amenities?.includes(amenity.id)}
-                    onCheckedChange={(checked) => handleAmenityToggle(amenity.id, checked as boolean)}
-                    className="border-gray-300 data-[state=checked]:bg-easyroi-gold data-[state=checked]:text-easyroi-navy"
-                  />
-                  <label 
-                    htmlFor={`amenity-${amenity.id}`}
-                    className="text-sm text-gray-700 cursor-pointer"
-                  >
-                    {amenity.name}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-      </div>
+        </div>
 
-      <div className="flex justify-end space-x-2 pt-4 mt-4 border-t border-gray-200">
-        <Button 
-          variant="outline" 
-          className="border-gray-300 text-gray-700 hover:bg-gray-100"
-          onClick={handleResetFilters}
-        >
-          {t('resetFilters')}
-        </Button>
-        <Button 
-          className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90"
-          onClick={handleApplyFilters}
-        >
-          {t('applyFilters')}
-        </Button>
-      </div>
-    </div>
+        <div className="flex justify-end space-x-2 pt-4 border-t border-white/10">
+          <Button 
+            variant="outline" 
+            className="border-white/20 text-white hover:bg-white/10"
+            onClick={handleResetFilters}
+          >
+            {t('resetFilters')}
+          </Button>
+          <Button 
+            className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90"
+            onClick={handleApplyFilters}
+          >
+            {t('applyFilters')}
+          </Button>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
