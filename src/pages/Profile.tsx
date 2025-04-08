@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useToast } from "@/hooks/use-toast";
@@ -9,7 +8,7 @@ import { ProfileMainCard } from "@/components/profile/ProfileMainCard";
 import { SecurityPrivacyCard } from "@/components/profile/SecurityPrivacyCard";
 import InvestmentSummary from "@/components/profile/InvestmentSummaryCard";
 import RecentActivityCard from "@/components/profile/RecentActivityCard";
-import { ProfileVisibility } from "@/services/networkService";
+import { ProfileVisibility } from "@/services/network/types";
 
 type InvestorLevel = Database['public']['Tables']['profiles']['Row']['level'];
 type ProfileData = {
@@ -90,7 +89,6 @@ const Profile = () => {
           setProfile({
             ...profileData,
             join_date: `Member since ${joinMonth} ${joinYear}`,
-            // Ensure visibility is one of the allowed values or default to 'public'
             visibility: (profileData.visibility as ProfileVisibility) || 'public'
           });
         }

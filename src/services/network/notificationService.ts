@@ -11,7 +11,7 @@ export async function getNotifications() {
     
     const { data, error } = await supabase.rpc('get_user_notifications', {
       p_user_id: user.id
-    });
+    }) as { data: any[] | null, error: any };
       
     if (error) throw error;
     
@@ -32,7 +32,7 @@ export async function markNotificationsAsRead(notificationIds: string[]) {
     
     const { error } = await supabase.rpc('mark_notifications_as_read', {
       p_notification_ids: notificationIds
-    });
+    }) as { data: any, error: any };
       
     return !error;
   } catch (error) {

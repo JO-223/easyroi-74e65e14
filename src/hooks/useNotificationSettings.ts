@@ -69,7 +69,7 @@ export function useNotificationSettings() {
           p_email_notifications: notificationSettings.email,
           p_push_notifications: notificationSettings.push
         }
-      );
+      ) as { data: any, error: any };
       
       if (error) throw error;
       
