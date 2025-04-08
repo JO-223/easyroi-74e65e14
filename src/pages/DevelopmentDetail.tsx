@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
@@ -64,6 +63,9 @@ export default function DevelopmentDetail() {
     format(new Date(project.expected_completion), 'MMMM d, yyyy') : 
     t('notAvailable');
   
+  // Cast to the specific type needed by BadgeLevel
+  const investorLevel = project.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond" | null;
+  
   return (
     <DashboardLayout>
       <div className="container mx-auto py-6">
@@ -80,7 +82,7 @@ export default function DevelopmentDetail() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-4 right-4">
-                <BadgeLevel level={project.investor_level} />
+                <BadgeLevel level={investorLevel} />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <Badge className="bg-easyroi-gold text-easyroi-navy">{project.construction_stage}</Badge>

@@ -110,7 +110,7 @@ export type DevelopmentProject = {
   available_units: number;
   min_investment: number | null;
   expected_roi: number | null;
-  investor_level: string;
+  investor_level: "bronze" | "silver" | "gold" | "platinum" | "diamond";
   images: PropertyImage[];
 };
 

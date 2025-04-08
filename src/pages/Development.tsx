@@ -18,12 +18,14 @@ export default function Development() {
   const { data: projects = [], isLoading, error } = useQuery({
     queryKey: ['developmentProjects'],
     queryFn: fetchDevelopmentProjects,
-    onError: () => {
-      toast({
-        title: t('errorFetchingProjects'),
-        description: t('pleaseTryAgainLater'),
-        variant: "destructive",
-      });
+    meta: {
+      onError: () => {
+        toast({
+          title: t('errorFetchingProjects'),
+          description: t('pleaseTryAgainLater'),
+          variant: "destructive",
+        });
+      },
     },
   });
   

@@ -23,6 +23,9 @@ export function DevelopmentProjectCard({ project, onClick }: DevelopmentProjectC
     format(new Date(project.expected_completion), 'MMM d, yyyy') : 
     t('notAvailable');
   
+  // Cast investor_level to the appropriate type expected by BadgeLevel
+  const investorLevel = project.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond" | null;
+  
   return (
     <Card 
       className="group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
@@ -35,7 +38,7 @@ export function DevelopmentProjectCard({ project, onClick }: DevelopmentProjectC
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute top-2 right-2">
-          <BadgeLevel level={project.investor_level} />
+          <BadgeLevel level={investorLevel} />
         </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <Badge className="bg-easyroi-gold text-easyroi-navy">{project.construction_stage}</Badge>
