@@ -36,7 +36,7 @@ export function DashboardHeader({
           </Sheet>
           
           <div>
-            <h1 className="text-xl font-bold tracking-tight">{title}</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-50">{title}</h1>
             {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           </div>
         </div>
