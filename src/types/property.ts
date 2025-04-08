@@ -77,3 +77,14 @@ export type DataImport = {
   error_details: string | null;
   completed_at: string | null;
 };
+
+// Add user role types
+export type UserRole = 
+  | 'user'
+  | 'bronze' 
+  | 'silver' 
+  | 'gold' 
+  | 'platinum' 
+  | 'diamond'
+  | 'administrator'
+  | 'owner';
