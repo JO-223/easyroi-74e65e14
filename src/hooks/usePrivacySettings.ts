@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { ProfileVisibility } from "@/services/networkService";
+import { ProfileVisibility } from "@/services/network/types";
 
 export interface PrivacySettings {
   publicProfile: boolean;
@@ -31,7 +31,7 @@ export function usePrivacySettings() {
           const { data: profileData, error: profileError } = await supabase.rpc(
             'get_profile_by_id',
             { p_user_id: user.id }
-          );
+          ) as { data: any[] | null, error: any };
           
           if (profileError) throw profileError;
           
@@ -39,7 +39,7 @@ export function usePrivacySettings() {
           const { data: privacyData, error: privacyError } = await supabase.rpc(
             'get_privacy_settings', 
             { p_user_id: user.id }
-          );
+          ) as { data: any[] | null, error: any };
           
           if (privacyError) throw privacyError;
           

@@ -28,7 +28,7 @@ export function useNotificationSettings() {
           const { data, error } = await supabase.rpc(
             'get_notification_settings',
             { p_user_id: user.id }
-          );
+          ) as { data: any[] | null, error: any };
           
           // Don't throw if no data is found - it's OK for settings to be missing initially
           if (error && error.code !== 'PGRST116') throw error;

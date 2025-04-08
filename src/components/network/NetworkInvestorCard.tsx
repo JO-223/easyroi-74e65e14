@@ -4,7 +4,7 @@ import { MessageCircle, UserPlus, UserMinus, AlertCircle, MapPin } from "lucide-
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BadgeLevel } from "@/components/ui/badge-level";
-import { NetworkInvestor } from "@/services/networkService";
+import { NetworkInvestor } from "@/services/network/types";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NetworkInvestorCardProps {

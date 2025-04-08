@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { useAccountSettings, AccountSettings } from "./useAccountSettings";
 import { useDisplaySettings, DisplaySettings } from "./useDisplaySettings";
 import { useNotificationSettings, NotificationSettings } from "./useNotificationSettings";
 import { usePrivacySettings, PrivacySettings } from "./usePrivacySettings";
-import { ProfileVisibility } from "@/services/networkService";
+import { ProfileVisibility } from "@/services/network/types";
 
 export type SettingsType = 'account' | 'display' | 'notifications' | 'privacy';
 
