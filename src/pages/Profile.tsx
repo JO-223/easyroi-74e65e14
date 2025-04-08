@@ -9,10 +9,12 @@ import { ProfileMainCard } from "@/components/profile/ProfileMainCard";
 import { SecurityPrivacyCard } from "@/components/profile/SecurityPrivacyCard";
 import InvestmentSummary from "@/components/profile/InvestmentSummaryCard";
 import RecentActivityCard from "@/components/profile/RecentActivityCard";
+import { ProfileVisibility } from "@/services/networkService";
 
 type InvestorLevel = Database['public']['Tables']['profiles']['Row']['level'];
 type ProfileData = Database['public']['Tables']['profiles']['Row'] & {
   join_date: string;
+  visibility: ProfileVisibility;
 };
 type ProfileInterest = { name: string };
 
@@ -34,7 +36,8 @@ const Profile = () => {
     bio: null,
     join_date: "",
     level: null,
-    avatar_url: null
+    avatar_url: null,
+    visibility: "public"
   });
 
   useEffect(() => {

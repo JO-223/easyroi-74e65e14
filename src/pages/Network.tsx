@@ -38,8 +38,8 @@ const Network = () => {
             .eq('id', user.id)
             .single();
           
-          if (!error && data) {
-            setUserVisibility(data.visibility as ProfileVisibility || 'public');
+          if (!error && data && data.visibility) {
+            setUserVisibility(data.visibility as ProfileVisibility);
           }
           
           // Only load investors if the user's profile is not private

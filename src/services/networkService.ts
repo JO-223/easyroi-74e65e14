@@ -66,7 +66,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     
     if (error) {
       console.error("RPC error:", error);
-      // Fallback to direct profile query if RPC doesn't exist
+      // Fallback to direct query using profiles only
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
         .select(`
@@ -78,8 +78,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
           bio, 
           location, 
           avatar_url,
-          join_date,
-          visibility
+          join_date
         `)
         .neq('id', user.id)
         .in('visibility', ['public', 'semi-public']);
@@ -87,20 +86,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
       if (profilesError) throw profilesError;
       if (!profilesData) return [];
       
-      // Get user's connections
-      const { data: connectionsData } = await supabase.rpc('get_user_connections', { 
-        p_user_id: user.id 
-      });
-      
-      const connectionMap: Record<string, 'pending' | 'connected'> = {};
-      
-      if (connectionsData && Array.isArray(connectionsData)) {
-        connectionsData.forEach((conn: any) => {
-          connectionMap[conn.to_user_id] = conn.status === 'accepted' ? 'connected' : 'pending';
-        });
-      }
-      
-      return profilesData.map(profile => ({
+      return profilesData.map((profile: any) => ({
         id: profile.id,
         name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
         email: profile.visibility === 'public' ? profile.email : '',
@@ -109,7 +95,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
         bio: profile.bio || '',
         avatar_url: profile.avatar_url || '/placeholder.svg',
         join_date: profile.join_date,
-        connection_status: connectionMap[profile.id] || 'none'
+        connection_status: 'none'
       }));
     }
     
@@ -137,14 +123,7 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
     
     if (error) {
       console.error("RPC error:", error);
-      // Fallback to direct SQL query
-      const response = await supabase.rpc('insert_connection', {
-        p_from_user_id: user.id,
-        p_to_user_id: toUserId,
-        p_status: 'pending'
-      });
-      
-      return !response.error;
+      return false;
     }
       
     return true;

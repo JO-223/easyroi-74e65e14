@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { ProfileVisibility } from "@/services/networkService";
 
 export type SettingsType = 'account' | 'display' | 'notifications' | 'privacy';
 
@@ -26,7 +27,7 @@ interface NotificationSettings {
 interface PrivacySettings {
   publicProfile: boolean;
   dataSharing: boolean;
-  profileVisibility: 'public' | 'semi-public' | 'private';
+  profileVisibility: ProfileVisibility;
 }
 
 export interface UserSettings {
@@ -86,7 +87,7 @@ export function useSettings() {
           
           if (displayError && displayError.code !== 'PGRST116') throw displayError;
           
-          // Get privacy settings - Using custom SQL query to handle table access
+          // Get privacy settings using an RPC call
           const { data: privacyData, error: privacyError } = await supabase
             .rpc('get_privacy_settings', { user_id: user.id });
           
@@ -106,9 +107,9 @@ export function useSettings() {
               theme: "light",
             },
             privacy: {
-              publicProfile: privacyData?.[0]?.public_profile ?? true,
-              dataSharing: privacyData?.[0]?.data_sharing ?? false,
-              profileVisibility: profileData?.visibility || 'public',
+              publicProfile: Array.isArray(privacyData) && privacyData.length > 0 ? !!privacyData[0]?.public_profile : true,
+              dataSharing: Array.isArray(privacyData) && privacyData.length > 0 ? !!privacyData[0]?.data_sharing : false,
+              profileVisibility: (profileData?.visibility as ProfileVisibility) || 'public',
             }
           }));
           
