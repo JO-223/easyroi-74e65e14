@@ -86,12 +86,9 @@ export function useSettings() {
           
           if (displayError && displayError.code !== 'PGRST116') throw displayError;
           
-          // Get privacy settings
+          // Get privacy settings - Using custom SQL query to handle table access
           const { data: privacyData, error: privacyError } = await supabase
-            .from('privacy_settings')
-            .select('*')
-            .eq('profile_id', user.id)
-            .single();
+            .rpc('get_privacy_settings', { user_id: user.id });
           
           if (privacyError && privacyError.code !== 'PGRST116') throw privacyError;
           
@@ -109,8 +106,8 @@ export function useSettings() {
               theme: "light",
             },
             privacy: {
-              publicProfile: privacyData?.public_profile ?? true,
-              dataSharing: privacyData?.data_sharing ?? false,
+              publicProfile: privacyData?.[0]?.public_profile ?? true,
+              dataSharing: privacyData?.[0]?.data_sharing ?? false,
               profileVisibility: profileData?.visibility || 'public',
             }
           }));
@@ -183,26 +180,14 @@ export function useSettings() {
           break;
           
         case 'privacy':
-          // Check if entry exists first
-          const { data: privacyExists } = await supabase
-            .from('privacy_settings')
-            .select('profile_id')
-            .eq('profile_id', user.id)
-            .single();
+          // Use RPC function to update privacy settings
+          const { error: privacyError } = await supabase
+            .rpc('update_privacy_settings', {
+              user_id: user.id,
+              p_public_profile: settingsData.privacy.publicProfile,
+              p_data_sharing: settingsData.privacy.dataSharing
+            });
           
-          // Determine if we need to insert or update
-          const privacyQuery = privacyExists 
-            ? supabase.from('privacy_settings').update({
-                public_profile: settingsData.privacy.publicProfile,
-                data_sharing: settingsData.privacy.dataSharing
-              }).eq('profile_id', user.id)
-            : supabase.from('privacy_settings').insert({
-                profile_id: user.id,
-                public_profile: settingsData.privacy.publicProfile,
-                data_sharing: settingsData.privacy.dataSharing
-              });
-          
-          const { error: privacyError } = await privacyQuery;
           if (privacyError) throw privacyError;
           
           // Update profile visibility

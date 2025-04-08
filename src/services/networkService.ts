@@ -61,52 +61,60 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return [];
     
-    // Only get profiles that are public or semi-public
-    // but exclude the current user's profile
-    const { data, error } = await supabase
-      .from('profiles')
-      .select(`
-        id, 
-        first_name, 
-        last_name, 
-        email, 
-        level, 
-        bio, 
-        location, 
-        avatar_url,
-        join_date,
-        visibility
-      `)
-      .neq('id', user.id)
-      .in('visibility', ['public', 'semi-public'])
-      .order('join_date', { ascending: false });
-
-    if (error) throw error;
+    // Use a stored procedure to get network investors
+    const { data, error } = await supabase.rpc('get_network_investors');
     
-    // Get user's connections
-    const { data: connections, error: connectionsError } = await supabase
-      .from('connections')
-      .select('to_user_id, status')
-      .eq('from_user_id', user.id);
+    if (error) {
+      console.error("RPC error:", error);
+      // Fallback to direct profile query if RPC doesn't exist
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select(`
+          id, 
+          first_name, 
+          last_name, 
+          email, 
+          level, 
+          bio, 
+          location, 
+          avatar_url,
+          join_date,
+          visibility
+        `)
+        .neq('id', user.id)
+        .in('visibility', ['public', 'semi-public']);
+        
+      if (profilesError) throw profilesError;
+      if (!profilesData) return [];
       
-    if (connectionsError) throw connectionsError;
+      // Get user's connections
+      const { data: connectionsData } = await supabase.rpc('get_user_connections', { 
+        p_user_id: user.id 
+      });
+      
+      const connectionMap: Record<string, 'pending' | 'connected'> = {};
+      
+      if (connectionsData && Array.isArray(connectionsData)) {
+        connectionsData.forEach((conn: any) => {
+          connectionMap[conn.to_user_id] = conn.status === 'accepted' ? 'connected' : 'pending';
+        });
+      }
+      
+      return profilesData.map(profile => ({
+        id: profile.id,
+        name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
+        email: profile.visibility === 'public' ? profile.email : '',
+        level: profile.level as UserRole || 'bronze',
+        location: profile.location || '',
+        bio: profile.bio || '',
+        avatar_url: profile.avatar_url || '/placeholder.svg',
+        join_date: profile.join_date,
+        connection_status: connectionMap[profile.id] || 'none'
+      }));
+    }
     
-    const connectionMap: Record<string, 'pending' | 'connected'> = {};
-    connections?.forEach(conn => {
-      connectionMap[conn.to_user_id] = conn.status === 'accepted' ? 'connected' : 'pending';
-    });
-    
-    return data.map(profile => ({
-      id: profile.id,
-      name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
-      email: profile.visibility === 'public' ? profile.email : '',
-      level: profile.level as UserRole || 'bronze',
-      location: profile.location || '',
-      bio: profile.bio || '',
-      avatar_url: profile.avatar_url || '/placeholder.svg',
-      join_date: profile.join_date,
-      connection_status: connectionMap[profile.id] || 'none'
-    }));
+    // Return the RPC result directly if it worked
+    return data || [];
   } catch (error) {
     console.error('Error fetching network investors:', error);
     return [];
@@ -121,15 +129,25 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
     
-    const { error } = await supabase
-      .from('connections')
-      .insert({
-        from_user_id: user.id,
-        to_user_id: toUserId,
-        status: 'pending'
+    // Use a stored procedure to create a connection
+    const { error } = await supabase.rpc('create_connection_request', {
+      from_id: user.id,
+      to_id: toUserId
+    });
+    
+    if (error) {
+      console.error("RPC error:", error);
+      // Fallback to direct SQL query
+      const response = await supabase.rpc('insert_connection', {
+        p_from_user_id: user.id,
+        p_to_user_id: toUserId,
+        p_status: 'pending'
       });
       
-    return !error;
+      return !response.error;
+    }
+      
+    return true;
   } catch (error) {
     console.error('Error sending connection request:', error);
     return false;
@@ -141,11 +159,11 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
  */
 export async function acceptConnectionRequest(connectionId: string): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('connections')
-      .update({ status: 'accepted' })
-      .eq('id', connectionId);
-      
+    const { error } = await supabase.rpc('update_connection_status', {
+      conn_id: connectionId,
+      status_value: 'accepted'
+    });
+    
     return !error;
   } catch (error) {
     console.error('Error accepting connection request:', error);
@@ -158,11 +176,11 @@ export async function acceptConnectionRequest(connectionId: string): Promise<boo
  */
 export async function rejectConnectionRequest(connectionId: string): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('connections')
-      .update({ status: 'rejected' })
-      .eq('id', connectionId);
-      
+    const { error } = await supabase.rpc('update_connection_status', {
+      conn_id: connectionId,
+      status_value: 'rejected'
+    });
+    
     return !error;
   } catch (error) {
     console.error('Error rejecting connection request:', error);
@@ -178,14 +196,11 @@ export async function removeConnection(toUserId: string): Promise<boolean> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
     
-    const { error } = await supabase
-      .from('connections')
-      .delete()
-      .match({ 
-        from_user_id: user.id, 
-        to_user_id: toUserId 
-      });
-      
+    const { error } = await supabase.rpc('delete_user_connection', {
+      from_id: user.id,
+      to_id: toUserId
+    });
+    
     return !error;
   } catch (error) {
     console.error('Error removing connection:', error);
@@ -201,14 +216,12 @@ export async function sendMessage(recipientId: string, content: string): Promise
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
     
-    const { error } = await supabase
-      .from('messages')
-      .insert({
-        sender_id: user.id,
-        recipient_id: recipientId,
-        content
-      });
-      
+    const { error } = await supabase.rpc('send_message', {
+      p_sender_id: user.id,
+      p_recipient_id: recipientId,
+      p_content: content
+    });
+    
     return !error;
   } catch (error) {
     console.error('Error sending message:', error);
@@ -225,26 +238,18 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
     if (!user) return [];
     
     // Get all messages between the two users
-    const { data, error } = await supabase
-      .from('messages')
-      .select('*')
-      .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-      .or(`sender_id.eq.${otherUserId},recipient_id.eq.${otherUserId}`)
-      .order('created_at');
+    const { data, error } = await supabase.rpc('get_conversation', {
+      user1_id: user.id,
+      user2_id: otherUserId
+    });
       
     if (error) throw error;
     
-    // Mark all messages as read
-    const messagesToUpdate = data
-      .filter(msg => msg.recipient_id === user.id && !msg.read)
-      .map(msg => msg.id);
-      
-    if (messagesToUpdate.length > 0) {
-      await supabase
-        .from('messages')
-        .update({ read: true })
-        .in('id', messagesToUpdate);
-    }
+    // Mark messages as read
+    await supabase.rpc('mark_messages_as_read', {
+      p_recipient_id: user.id,
+      p_sender_id: otherUserId
+    });
     
     return data as MessageData[];
   } catch (error) {
@@ -261,11 +266,9 @@ export async function getNotifications() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return [];
     
-    const { data, error } = await supabase
-      .from('notifications')
-      .select('*')
-      .eq('profile_id', user.id)
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.rpc('get_user_notifications', {
+      p_user_id: user.id
+    });
       
     if (error) throw error;
     
@@ -284,10 +287,9 @@ export async function markNotificationsAsRead(notificationIds: string[]) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
     
-    const { error } = await supabase
-      .from('notifications')
-      .update({ read: true })
-      .in('id', notificationIds);
+    const { error } = await supabase.rpc('mark_notifications_as_read', {
+      p_notification_ids: notificationIds
+    });
       
     return !error;
   } catch (error) {
