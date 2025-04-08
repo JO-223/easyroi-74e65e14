@@ -7,6 +7,7 @@ export function useAdminRole() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   
   useEffect(() => {
     async function checkUserRole() {
@@ -14,6 +15,8 @@ export function useAdminRole() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
+          setUserId(user.id);
+          
           // Fetch the user's profile to get their level (role)
           const { data, error } = await supabase
             .from('profiles')
@@ -44,5 +47,5 @@ export function useAdminRole() {
     checkUserRole();
   }, []);
   
-  return { isAdmin, userRole, isLoading };
+  return { isAdmin, userRole, isLoading, userId };
 }

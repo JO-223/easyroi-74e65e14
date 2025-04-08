@@ -78,6 +78,14 @@ export type DataImport = {
   completed_at: string | null;
 };
 
+// User investments type
+export type UserInvestment = {
+  id: string;
+  user_id: string;
+  total_investment: number;
+  last_updated: string;
+};
+
 // Add user role types
 export type UserRole = 
   | 'user'
@@ -88,3 +96,36 @@ export type UserRole =
   | 'diamond'
   | 'administrator'
   | 'owner';
+
+// Development project types for future construction projects
+export type DevelopmentProject = {
+  id: string;
+  name: string;
+  description: string;
+  location: PropertyLocation;
+  expected_completion: string;
+  construction_stage: string;
+  progress_percentage: number;
+  total_units: number;
+  available_units: number;
+  min_investment: number | null;
+  expected_roi: number | null;
+  investor_level: string;
+  images: PropertyImage[];
+};
+
+// Event types for networking and property events
+export type Event = {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  event_type: string;
+  max_attendees: number | null;
+  current_attendees: number;
+  property_id?: string;
+  project_id?: string;
+  image_url?: string;
+};
