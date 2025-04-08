@@ -13,7 +13,7 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
     const { error } = await supabase.rpc('create_connection_request', {
       p_from_id: user.id,
       p_to_id: toUserId
-    });
+    }) as { data: any; error: any };
     
     if (error) {
       console.error("RPC error:", error);
@@ -35,7 +35,7 @@ export async function acceptConnectionRequest(connectionId: string): Promise<boo
     const { error } = await supabase.rpc('update_connection_status', {
       p_connection_id: connectionId,
       p_status: 'accepted'
-    });
+    }) as { data: any; error: any };
     
     return !error;
   } catch (error) {
@@ -52,7 +52,7 @@ export async function rejectConnectionRequest(connectionId: string): Promise<boo
     const { error } = await supabase.rpc('update_connection_status', {
       p_connection_id: connectionId,
       p_status: 'rejected'
-    });
+    }) as { data: any; error: any };
     
     return !error;
   } catch (error) {
@@ -72,7 +72,7 @@ export async function removeConnection(toUserId: string): Promise<boolean> {
     const { error } = await supabase.rpc('delete_user_connection', {
       p_from_id: user.id,
       p_to_id: toUserId
-    });
+    }) as { data: any; error: any };
     
     return !error;
   } catch (error) {

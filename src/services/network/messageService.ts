@@ -14,7 +14,7 @@ export async function sendMessage(recipientId: string, content: string): Promise
       p_sender_id: user.id,
       p_recipient_id: recipientId,
       p_content: content
-    });
+    }) as { data: any; error: any };
     
     return !error;
   } catch (error) {
@@ -35,7 +35,7 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
     const { data, error } = await supabase.rpc('get_conversation', {
       p_user1_id: user.id,
       p_user2_id: otherUserId
-    });
+    }) as { data: any[]; error: any };
       
     if (error) throw error;
     
@@ -43,7 +43,7 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
     await supabase.rpc('mark_messages_as_read', {
       p_recipient_id: user.id,
       p_sender_id: otherUserId
-    });
+    }) as { data: any; error: any };
     
     return (data as MessageData[]) || [];
   } catch (error) {

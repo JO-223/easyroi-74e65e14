@@ -28,12 +28,12 @@ export function useNotificationSettings() {
           const { data, error } = await supabase.rpc(
             'get_notification_settings',
             { p_user_id: user.id }
-          );
+          ) as { data: any[]; error: any };
           
           // Don't throw if no data is found - it's OK for settings to be missing initially
           if (error && error.code !== 'PGRST116') throw error;
           
-          if (data && data.length > 0) {
+          if (data && Array.isArray(data) && data.length > 0) {
             setNotificationSettings({
               email: Boolean(data[0]?.email_notifications ?? true),
               push: Boolean(data[0]?.push_notifications ?? false),
@@ -69,7 +69,7 @@ export function useNotificationSettings() {
           p_email_notifications: notificationSettings.email,
           p_push_notifications: notificationSettings.push
         }
-      );
+      ) as { data: any; error: any };
       
       if (error) throw error;
       
