@@ -17,9 +17,13 @@ export function DashboardLayout({ children, title, subtitle }: DashboardLayoutPr
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
         {/* Sidebar for larger screens */}
-        <div className="hidden lg:block w-64 bg-white border-r min-h-screen">
+        <div className="hidden lg:block w-64 bg-sidebar min-h-screen">
           <div className="p-6">
-            <h2 className="text-2xl font-bold text-easyroi-navy">{t('easyROI')}</h2>
+            <img 
+              src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
+              alt="EasyROI Logo" 
+              className="h-10" 
+            />
           </div>
           <SidebarNav />
         </div>

@@ -54,18 +54,7 @@ export function SidebarNav() {
   ];
   
   return (
-    <div className="flex flex-col h-full">
-      <div className="py-2">
-        <div className="px-3 py-2">
-          <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
-              alt="EasyROI Logo" 
-              className="h-10" 
-            />
-          </div>
-        </div>
-      </div>
+    <div className="flex flex-col h-full bg-sidebar text-sidebar-foreground">
       <div className="px-3 py-2">
         <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-4">
           <div className="flex items-center space-x-2">
