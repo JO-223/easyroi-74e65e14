@@ -12,10 +12,20 @@ import RecentActivityCard from "@/components/profile/RecentActivityCard";
 import { ProfileVisibility } from "@/services/networkService";
 
 type InvestorLevel = Database['public']['Tables']['profiles']['Row']['level'];
-type ProfileData = Database['public']['Tables']['profiles']['Row'] & {
+type ProfileData = {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string;
+  phone: string | null;
+  location: string | null;
+  bio: string | null;
   join_date: string;
+  level: string | null;
+  avatar_url: string | null;
   visibility: ProfileVisibility;
 };
+
 type ProfileInterest = { name: string };
 
 const Profile = () => {
@@ -53,7 +63,7 @@ const Profile = () => {
         
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('*')
+          .select('*, visibility')
           .eq('id', user.id)
           .single();
         
@@ -79,7 +89,9 @@ const Profile = () => {
           
           setProfile({
             ...profileData,
-            join_date: `Member since ${joinMonth} ${joinYear}`
+            join_date: `Member since ${joinMonth} ${joinYear}`,
+            // Ensure visibility is one of the allowed values or default to 'public'
+            visibility: (profileData.visibility as ProfileVisibility) || 'public'
           });
         }
         

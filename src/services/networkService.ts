@@ -78,7 +78,8 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
           bio, 
           location, 
           avatar_url,
-          join_date
+          join_date,
+          visibility
         `)
         .neq('id', user.id)
         .in('visibility', ['public', 'semi-public']);
@@ -86,7 +87,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
       if (profilesError) throw profilesError;
       if (!profilesData) return [];
       
-      return profilesData.map((profile: any) => ({
+      return profilesData.map((profile) => ({
         id: profile.id,
         name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
         email: profile.visibility === 'public' ? profile.email : '',

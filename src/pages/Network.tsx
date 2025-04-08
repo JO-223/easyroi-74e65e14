@@ -1,11 +1,10 @@
 
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BadgeLevel } from "@/components/ui/badge-level";
-import { Building2, Globe, Mail, MapPin, Search, UserPlus, UserMinus, MessageCircle, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Search, UserPlus, UserMinus, MessageCircle, AlertCircle, EyeOff } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -31,21 +30,43 @@ const Network = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Get user profile to check visibility
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('visibility')
-            .eq('id', user.id)
-            .single();
+          // Get user profile to check visibility using RPC
+          const { data: profileData, error: profileError } = await supabase.rpc(
+            'get_user_profile_visibility',
+            { p_user_id: user.id }
+          );
           
-          if (!error && data && data.visibility) {
-            setUserVisibility(data.visibility as ProfileVisibility);
-          }
-          
-          // Only load investors if the user's profile is not private
-          if (!data || data.visibility !== 'private') {
-            const networkInvestors = await getNetworkInvestors();
-            setInvestors(networkInvestors);
+          if (!profileError && profileData && profileData.length > 0) {
+            const visibility = profileData[0]?.visibility as ProfileVisibility || 'public';
+            setUserVisibility(visibility);
+            
+            // Only load investors if the user's profile is not private
+            if (visibility !== 'private') {
+              const networkInvestors = await getNetworkInvestors();
+              setInvestors(networkInvestors);
+            }
+          } else {
+            // Fallback to direct query
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('visibility')
+              .eq('id', user.id)
+              .single();
+              
+            if (!error && data) {
+              const visibility = data.visibility as ProfileVisibility || 'public';
+              setUserVisibility(visibility);
+              
+              // Only load investors if the user's profile is not private
+              if (visibility !== 'private') {
+                const networkInvestors = await getNetworkInvestors();
+                setInvestors(networkInvestors);
+              }
+            } else {
+              // Default to loading investors if we can't determine visibility
+              const networkInvestors = await getNetworkInvestors();
+              setInvestors(networkInvestors);
+            }
           }
         }
       } catch (error) {
