@@ -17,7 +17,7 @@ export function DashboardHeader({
   const {
     t
   } = useLanguage();
-  return <div className="flex flex-col space-y-0 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center p-4 md:p-6 border-b shadow-sm bg-easyroi-navy rounded-none">
+  return <div className="flex flex-col space-y-0 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center p-4 md:p-6 border-b shadow-sm rounded-none bg-slate-50">
       <div className="flex items-center justify-between w-full sm:w-auto">
         <div className="flex items-center gap-2">
           <Sheet>
@@ -36,7 +36,7 @@ export function DashboardHeader({
           </Sheet>
           
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-50">{title}</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-950">{title}</h1>
             {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           </div>
         </div>
