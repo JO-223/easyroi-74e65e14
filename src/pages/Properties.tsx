@@ -77,7 +77,7 @@ export default function Properties() {
   };
 
   // Investor levels for filtering
-  const investorLevels = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
+  const investorLevels = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'cosmic'];
 
   return (
     <DashboardLayout title={t('properties')} subtitle={""}>

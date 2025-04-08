@@ -16,6 +16,7 @@ import { AccessDeniedAlert } from "@/components/property/AccessDeniedAlert";
 import { ImportForm } from "@/components/property/ImportForm";
 import { ImportHistorySheet } from "@/components/property/ImportHistorySheet";
 import { AdminActions } from "@/components/property/AdminActions";
+import { InvestorLevelInfo } from "@/components/InvestorLevelInfo";
 
 export function PropertyImport() {
   const { t } = useLanguage();
@@ -57,6 +58,8 @@ export function PropertyImport() {
             <ImportForm onSuccess={() => setIsOpen(false)} />
           </DialogContent>
         </Dialog>
+        
+        <InvestorLevelInfo />
       </div>
     </div>
   );

@@ -2,43 +2,55 @@
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Award, Crown, Diamond, Medal, Star } from "lucide-react";
+import { Award, Crown, Diamond, Medal, Star, Sparkles } from "lucide-react";
 
 export type BadgeLevelProps = {
-  level?: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | null;
+  level?: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | 'cosmic' | null;
   className?: string;
 };
 
 const badgeConfig = {
   bronze: {
     label: 'Bronze',
-    className: 'badge-bronze',
+    className: 'badge-bronze bg-amber-700/80 hover:bg-amber-700',
     icon: Medal,
-    iconProps: { size: 14 }
+    iconProps: { size: 14 },
+    description: 'Investimenti fino a 500K'
   },
   silver: {
     label: 'Silver',
-    className: 'badge-silver',
+    className: 'badge-silver bg-slate-400/80 hover:bg-slate-400',
     icon: Award,
-    iconProps: { size: 14 }
+    iconProps: { size: 14 },
+    description: 'Investimenti da 500K a 1M'
   },
   gold: {
     label: 'Gold',
-    className: 'badge-gold',
+    className: 'badge-gold bg-easyroi-gold/80 hover:bg-easyroi-gold',
     icon: Crown,
-    iconProps: { size: 14 }
+    iconProps: { size: 14 },
+    description: 'Investimenti da 1M a 2.5M'
   },
   platinum: {
     label: 'Platinum',
-    className: 'badge-platinum',
+    className: 'badge-platinum bg-zinc-500/80 hover:bg-zinc-500',
     icon: Star,
-    iconProps: { size: 14 }
+    iconProps: { size: 14 },
+    description: 'Investimenti da 2.5M a 5M'
   },
   diamond: {
     label: 'Diamond',
-    className: 'badge-diamond',
+    className: 'badge-diamond bg-blue-500/80 hover:bg-blue-500',
     icon: Diamond,
-    iconProps: { size: 14 }
+    iconProps: { size: 14 },
+    description: 'Investimenti da 5M a 20M'
+  },
+  cosmic: {
+    label: 'Cosmic',
+    className: 'badge-cosmic bg-purple-600/80 hover:bg-purple-600 text-white',
+    icon: Sparkles,
+    iconProps: { size: 14 },
+    description: 'Investimenti superiori a 20M'
   },
 };
 
@@ -56,7 +68,8 @@ export function BadgeLevel({ level, className }: BadgeLevelProps) {
       config.className,
       "transition-all duration-300 hover:scale-105 flex items-center gap-1 font-medium",
       className
-    )}>
+    )}
+    title={config.description}>
       <Icon {...config.iconProps} className="mr-1" />
       {config.label} Investor
     </Badge>
