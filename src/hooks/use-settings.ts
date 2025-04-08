@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
@@ -67,22 +68,34 @@ export function useSettings() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
+          // Get profile data
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
-            .select('*, privacy_settings(*)')
+            .select('*')
             .eq('id', user.id)
             .single();
           
           if (profileError) throw profileError;
           
+          // Get display settings
           const { data: displayData, error: displayError } = await supabase
             .from('display_settings')
             .select('*')
             .eq('profile_id', user.id)
             .single();
           
-          if (displayError) throw displayError;
+          if (displayError && displayError.code !== 'PGRST116') throw displayError;
           
+          // Get privacy settings
+          const { data: privacyData, error: privacyError } = await supabase
+            .from('privacy_settings')
+            .select('*')
+            .eq('profile_id', user.id)
+            .single();
+          
+          if (privacyError && privacyError.code !== 'PGRST116') throw privacyError;
+          
+          // Update settings data with data from the database
           setSettingsData(prev => ({
             ...prev,
             account: {
@@ -96,8 +109,8 @@ export function useSettings() {
               theme: "light",
             },
             privacy: {
-              publicProfile: profileData?.privacy_settings?.public_profile ?? true,
-              dataSharing: profileData?.privacy_settings?.data_sharing ?? false,
+              publicProfile: privacyData?.public_profile ?? true,
+              dataSharing: privacyData?.data_sharing ?? false,
               profileVisibility: profileData?.visibility || 'public',
             }
           }));
@@ -170,16 +183,29 @@ export function useSettings() {
           break;
           
         case 'privacy':
-          const { error: privacyError } = await supabase
+          // Check if entry exists first
+          const { data: privacyExists } = await supabase
             .from('privacy_settings')
-            .update({
-              public_profile: settingsData.privacy.publicProfile,
-              data_sharing: settingsData.privacy.dataSharing
-            })
-            .eq('profile_id', user.id);
+            .select('profile_id')
+            .eq('profile_id', user.id)
+            .single();
           
+          // Determine if we need to insert or update
+          const privacyQuery = privacyExists 
+            ? supabase.from('privacy_settings').update({
+                public_profile: settingsData.privacy.publicProfile,
+                data_sharing: settingsData.privacy.dataSharing
+              }).eq('profile_id', user.id)
+            : supabase.from('privacy_settings').insert({
+                profile_id: user.id,
+                public_profile: settingsData.privacy.publicProfile,
+                data_sharing: settingsData.privacy.dataSharing
+              });
+          
+          const { error: privacyError } = await privacyQuery;
           if (privacyError) throw privacyError;
           
+          // Update profile visibility
           const { error: profileError } = await supabase
             .from('profiles')
             .update({

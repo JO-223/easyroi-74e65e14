@@ -55,9 +55,11 @@ const Settings = () => {
         <PrivacySettings 
           publicProfile={settingsData.privacy.publicProfile}
           dataSharing={settingsData.privacy.dataSharing}
+          profileVisibility={settingsData.privacy.profileVisibility}
           isSaving={isSaving}
           onPublicProfileChange={(checked) => updatePrivacySettingsField('publicProfile', checked)}
           onDataSharingChange={(checked) => updatePrivacySettingsField('dataSharing', checked)}
+          onProfileVisibilityChange={(value) => updatePrivacySettingsField('profileVisibility', value)}
           onSave={() => handleSettingsSubmit('privacy')}
         />
       </div>

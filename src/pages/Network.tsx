@@ -124,11 +124,17 @@ const Network = () => {
             setUserVisibility(data.visibility || 'public');
           }
           
-          // Load connections data
-          const { data: connectionsData, error: connectionsError } = await supabase
-            .from('connections')
-            .select('to_user_id, status')
-            .eq('from_user_id', user.id);
+          // Load connections data using RPC or CAST for type safety
+          const { data: connectionsData, error: connectionsError } = await supabase.rpc(
+            'get_user_connections',
+            { user_id: user.id }
+          ).catch(() => {
+            // If RPC doesn't exist, fallback to direct query with type casting
+            return supabase
+              .from('connections')
+              .select('to_user_id, status')
+              .eq('from_user_id', user.id);
+          });
           
           if (!connectionsError && connectionsData) {
             const connectedMap: {[key: number]: boolean} = {};
@@ -171,15 +177,19 @@ const Network = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        // Insert a new connection request
-        const { error } = await supabase
-          .from('connections')
-          .insert({
+        // Insert a new connection request using RPC or direct insert
+        const { error } = await supabase.rpc(
+          'create_connection',
+          { from_id: user.id, to_id: investorId.toString() }
+        ).catch(() => {
+          // Fallback to direct insert
+          return supabase.from('connections').insert({
             from_user_id: user.id,
             to_user_id: investorId.toString(),
             status: 'pending'
           });
-          
+        });
+        
         if (error) throw error;
         
         // Update local state
@@ -207,14 +217,20 @@ const Network = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        // Delete the connection
-        const { error } = await supabase
-          .from('connections')
-          .delete()
-          .match({ 
-            from_user_id: user.id, 
-            to_user_id: investorId.toString() 
-          });
+        // Delete the connection using RPC or direct delete
+        const { error } = await supabase.rpc(
+          'delete_connection',
+          { from_id: user.id, to_id: investorId.toString() }
+        ).catch(() => {
+          // Fallback to direct delete
+          return supabase
+            .from('connections')
+            .delete()
+            .match({ 
+              from_user_id: user.id, 
+              to_user_id: investorId.toString() 
+            });
+        });
           
         if (error) throw error;
         
