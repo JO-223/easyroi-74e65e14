@@ -34,9 +34,13 @@ export function useAccountSettings() {
           if (profileError) throw profileError;
           
           if (profileData) {
+            const firstName = profileData.first_name as string || '';
+            const lastName = profileData.last_name as string || '';
+            const email = profileData.email as string || "john@example.com";
+            
             setAccountSettings({
-              name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim() || "John Doe",
-              email: profileData.email || "john@example.com",
+              name: `${firstName} ${lastName}`.trim() || "John Doe",
+              email: email,
             });
           }
         }

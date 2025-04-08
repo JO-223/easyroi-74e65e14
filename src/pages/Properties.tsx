@@ -36,19 +36,41 @@ export default function Properties() {
   // Fetch locations for filters
   const { data: locations = [] } = useQuery({
     queryKey: ['locations'],
-    queryFn: fetchLocations,
+    queryFn: () => {
+      return fetchLocations().then(locs => 
+        locs.map((loc: any) => ({
+          city: loc.city as string,
+          country: loc.country as string,
+          zone: loc.zone as string
+        }))
+      );
+    },
   });
   
   // Fetch property types for filters
   const { data: propertyTypes = [] } = useQuery({
     queryKey: ['propertyTypes'],
-    queryFn: fetchPropertyTypes,
+    queryFn: () => {
+      return fetchPropertyTypes().then(types => 
+        types.map((type: any) => ({
+          id: type.id as string,
+          name: type.name as string
+        }))
+      );
+    },
   });
   
   // Fetch amenities for filters
   const { data: amenities = [] } = useQuery({
     queryKey: ['amenities'],
-    queryFn: fetchAmenities,
+    queryFn: () => {
+      return fetchAmenities().then(ams => 
+        ams.map((am: any) => ({
+          id: am.id as string,
+          name: am.name as string
+        }))
+      );
+    },
   });
   
   // Reset page when filters change

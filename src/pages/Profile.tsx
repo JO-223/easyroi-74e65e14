@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useToast } from "@/hooks/use-toast";
@@ -82,23 +83,30 @@ const Profile = () => {
         if (allInterestsError) throw allInterestsError;
         
         if (profileData) {
-          const joinDate = new Date(profileData.join_date);
+          const joinDate = profileData.join_date ? new Date(profileData.join_date as string) : new Date();
           const joinMonth = joinDate.toLocaleString('default', { month: 'long' });
           const joinYear = joinDate.getFullYear();
           
           setProfile({
-            ...profileData,
+            ...profileData as unknown as ProfileData,
             join_date: `Member since ${joinMonth} ${joinYear}`,
             visibility: (profileData.visibility as ProfileVisibility) || 'public'
           });
         }
         
         if (userInterests) {
-          setInterests(userInterests.map((item: any) => ({ name: item.interests.name })));
+          const typedInterests = userInterests.map((item: any) => ({ 
+            name: item.interests?.name as string || ''
+          }));
+          setInterests(typedInterests);
         }
         
         if (allInterests) {
-          setAvailableInterests(allInterests);
+          const typedAvailableInterests = allInterests.map((item: any) => ({ 
+            id: item.id as string || '', 
+            name: item.name as string || '' 
+          }));
+          setAvailableInterests(typedAvailableInterests);
         }
         
       } catch (error) {

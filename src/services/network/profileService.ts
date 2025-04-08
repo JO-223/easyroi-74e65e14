@@ -25,19 +25,19 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
         );
         
         if (profilesError) throw profilesError;
-        if (!profilesData) return [];
+        if (!profilesData || !Array.isArray(profilesData)) return [];
         
-        // Format data to match NetworkInvestor interface
-        const investorData = (profilesData as any[]).map((profile: any) => ({
-          id: profile.id,
-          name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Unknown User',
-          email: profile.visibility === 'public' ? profile.email : '',
+        // Format data to match NetworkInvestor interface with explicit type assertion
+        const investorData = profilesData.map((profile: any) => ({
+          id: profile.id as string,
+          name: `${profile.first_name as string || ''} ${profile.last_name as string || ''}`.trim() || 'Unknown User',
+          email: profile.visibility === 'public' ? profile.email as string : '',
           level: (profile.level as any) || 'bronze',
-          location: profile.location || '',
-          bio: profile.bio || '',
-          avatar_url: profile.avatar_url || '/placeholder.svg',
-          join_date: profile.join_date,
-          connection_status: 'none'
+          location: profile.location as string || '',
+          bio: profile.bio as string || '',
+          avatar_url: profile.avatar_url as string || '/placeholder.svg',
+          join_date: profile.join_date as string,
+          connection_status: 'none' as 'none' | 'pending' | 'connected'
         })) as NetworkInvestor[];
         
         // Check connection status separately via RPC
@@ -51,14 +51,17 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
           return investorData;
         }
         
-        // Update connection status
+        // Update connection status with type safety
         if (connectionsData && Array.isArray(connectionsData) && connectionsData.length > 0) {
-          (connectionsData as any[]).forEach((connection: any) => {
-            const investorIndex = investorData.findIndex(inv => inv.id === connection.user_id);
+          connectionsData.forEach((connection: any) => {
+            const userId = connection.user_id as string;
+            const status = connection.status as string;
+            
+            const investorIndex = investorData.findIndex(inv => inv.id === userId);
             if (investorIndex !== -1) {
-              investorData[investorIndex].connection_status = connection.status === 'accepted' 
+              investorData[investorIndex].connection_status = status === 'accepted' 
                 ? 'connected' 
-                : connection.status === 'pending' 
+                : status === 'pending' 
                   ? 'pending' 
                   : 'none';
             }
@@ -72,8 +75,8 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
       }
     }
     
-    // Return the RPC result directly if it worked
-    return data || [];
+    // Return the RPC result directly if it worked, ensuring it's an array
+    return Array.isArray(data) ? data as NetworkInvestor[] : [];
   } catch (error) {
     console.error('Error fetching network investors:', error);
     return [];
