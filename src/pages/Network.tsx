@@ -5,13 +5,30 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BadgeLevel } from "@/components/ui/badge-level";
-import { Building2, Globe, Mail, MapPin, Search, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { Building2, Globe, Mail, MapPin, Search, UserPlus, UserMinus, MessageCircle, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 // Define the type for investor level to match BadgeLevelProps
 type InvestorLevel = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
+type ProfileVisibility = 'public' | 'semi-public' | 'private';
+
+interface Investor {
+  id: number;
+  name: string;
+  level: InvestorLevel;
+  role: string;
+  location: string;
+  properties: number;
+  bio: string;
+  interests: string[];
+  profileImage: string;
+  visibility?: ProfileVisibility;
+  isConnected?: boolean;
+  connectionPending?: boolean;
+}
 
 // Sample investor data
 const investors = [
@@ -85,20 +102,140 @@ const investors = [
 
 const Network = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [userVisibility, setUserVisibility] = useState<ProfileVisibility>("public");
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [connections, setConnections] = useState<{[key: number]: boolean}>({});
+  const [pendingConnections, setPendingConnections] = useState<{[key: number]: boolean}>({});
 
-  const filteredInvestors = investors.filter(investor => 
-    investor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    investor.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    investor.interests.some(interest => interest.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  useEffect(() => {
+    // Load user's profile visibility setting
+    const loadUserSettings = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('visibility')
+            .eq('id', user.id)
+            .single();
+          
+          if (!error && data) {
+            setUserVisibility(data.visibility || 'public');
+          }
+          
+          // Load connections data
+          const { data: connectionsData, error: connectionsError } = await supabase
+            .from('connections')
+            .select('to_user_id, status')
+            .eq('from_user_id', user.id);
+          
+          if (!connectionsError && connectionsData) {
+            const connectedMap: {[key: number]: boolean} = {};
+            const pendingMap: {[key: number]: boolean} = {};
+            
+            connectionsData.forEach((connection: any) => {
+              if (connection.status === 'accepted') {
+                connectedMap[connection.to_user_id] = true;
+              } else if (connection.status === 'pending') {
+                pendingMap[connection.to_user_id] = true;
+              }
+            });
+            
+            setConnections(connectedMap);
+            setPendingConnections(pendingMap);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading user settings:", error);
+      }
+    };
+    
+    loadUserSettings();
+  }, []);
 
-  const handleConnect = (investorId: number, investorName: string) => {
-    toast({
-      title: t('connectionSent'),
-      description: `${t('connectionSentMsg')} ${investorName}.`,
-    });
+  const filteredInvestors = investors
+    .filter(investor => 
+      investor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      investor.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      investor.interests.some(interest => interest.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+    .map(investor => ({
+      ...investor,
+      isConnected: connections[investor.id] || false,
+      connectionPending: pendingConnections[investor.id] || false
+    }));
+
+  const handleConnect = async (investorId: number, investorName: string) => {
+    // In a real app, this would interact with Supabase to create a connection request
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Insert a new connection request
+        const { error } = await supabase
+          .from('connections')
+          .insert({
+            from_user_id: user.id,
+            to_user_id: investorId.toString(),
+            status: 'pending'
+          });
+          
+        if (error) throw error;
+        
+        // Update local state
+        setPendingConnections({
+          ...pendingConnections,
+          [investorId]: true
+        });
+        
+        toast({
+          title: t('connectionSent'),
+          description: `${t('connectionSentMsg')} ${investorName}.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error sending connection request:", error);
+      toast({
+        title: t('error'),
+        description: t('connectionRequestError'),
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDisconnect = async (investorId: number, investorName: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Delete the connection
+        const { error } = await supabase
+          .from('connections')
+          .delete()
+          .match({ 
+            from_user_id: user.id, 
+            to_user_id: investorId.toString() 
+          });
+          
+        if (error) throw error;
+        
+        // Update local state
+        const newConnections = { ...connections };
+        delete newConnections[investorId];
+        setConnections(newConnections);
+        
+        toast({
+          title: t('connectionRemoved'),
+          description: `${t('connectionRemovedMsg')} ${investorName}.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error removing connection:", error);
+      toast({
+        title: t('error'),
+        description: t('connectionRemoveError'),
+        variant: "destructive"
+      });
+    }
   };
 
   const handleMessage = (investorId: number, investorName: string) => {
@@ -107,6 +244,35 @@ const Network = () => {
       description: `${t('openingConversation')} ${investorName}.`,
     });
   };
+
+  // If user has private profile, show message
+  if (userVisibility === 'private') {
+    return (
+      <DashboardLayout title={t('investorNetwork')} subtitle={t('connectInvestors')}>
+        <Card className="border-none shadow-none">
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="rounded-full bg-amber-100 p-3 mb-4">
+              <EyeOff className="h-6 w-6 text-amber-600" />
+            </div>
+            <h3 className="text-xl font-medium text-center mb-2">
+              {t('privateProfileNetworkRestricted')}
+            </h3>
+            <p className="text-muted-foreground text-center max-w-md mb-6">
+              {t('privateProfileNetworkMessage')}
+            </p>
+            <Button
+              onClick={() => {
+                // Navigate to settings
+                window.location.href = "/dashboard/settings";
+              }}
+            >
+              {t('goToPrivacySettings')}
+            </Button>
+          </CardContent>
+        </Card>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout title={t('investorNetwork')} subtitle={t('connectInvestors')}>
@@ -174,14 +340,31 @@ const Network = () => {
                 className="flex-1" 
                 onClick={() => handleMessage(investor.id, investor.name)}
               >
-                <Mail className="mr-2 h-4 w-4" /> {t('message')}
+                <MessageCircle className="mr-2 h-4 w-4" /> {t('message')}
               </Button>
-              <Button 
-                className="flex-1 bg-easyroi-navy hover:bg-easyroi-navy/90" 
-                onClick={() => handleConnect(investor.id, investor.name)}
-              >
-                <UserPlus className="mr-2 h-4 w-4" /> {t('connect')}
-              </Button>
+              {investor.isConnected ? (
+                <Button 
+                  variant="outline"
+                  className="flex-1 text-red-500 hover:text-red-600 hover:bg-red-50"
+                  onClick={() => handleDisconnect(investor.id, investor.name)}
+                >
+                  <UserMinus className="mr-2 h-4 w-4" /> {t('disconnect')}
+                </Button>
+              ) : investor.connectionPending ? (
+                <Button 
+                  disabled
+                  className="flex-1 bg-slate-100 text-slate-500"
+                >
+                  <AlertCircle className="mr-2 h-4 w-4" /> {t('pending')}
+                </Button>
+              ) : (
+                <Button 
+                  className="flex-1 bg-easyroi-navy hover:bg-easyroi-navy/90" 
+                  onClick={() => handleConnect(investor.id, investor.name)}
+                >
+                  <UserPlus className="mr-2 h-4 w-4" /> {t('connect')}
+                </Button>
+              )}
             </CardFooter>
           </Card>
         ))}

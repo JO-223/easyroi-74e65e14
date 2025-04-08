@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
@@ -26,6 +25,7 @@ interface NotificationSettings {
 interface PrivacySettings {
   publicProfile: boolean;
   dataSharing: boolean;
+  profileVisibility: 'public' | 'semi-public' | 'private';
 }
 
 export interface UserSettings {
@@ -57,6 +57,7 @@ export function useSettings() {
     privacy: {
       publicProfile: true,
       dataSharing: false,
+      profileVisibility: 'public',
     },
   });
 
@@ -66,16 +67,14 @@ export function useSettings() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Fetch profile data
           const { data: profileData, error: profileError } = await supabase
             .from('profiles')
-            .select('*')
+            .select('*, privacy_settings(*)')
             .eq('id', user.id)
             .single();
           
           if (profileError) throw profileError;
           
-          // Fetch display settings
           const { data: displayData, error: displayError } = await supabase
             .from('display_settings')
             .select('*')
@@ -84,7 +83,6 @@ export function useSettings() {
           
           if (displayError) throw displayError;
           
-          // Update local state with fetched data
           setSettingsData(prev => ({
             ...prev,
             account: {
@@ -95,11 +93,15 @@ export function useSettings() {
               language: displayData?.language as Language || displaySettings.language,
               currency: displayData?.currency as Currency || displaySettings.currency,
               timezone: displayData?.timezone as Timezone || displaySettings.timezone,
-              theme: "light", // Default theme
+              theme: "light",
+            },
+            privacy: {
+              publicProfile: profileData?.privacy_settings?.public_profile ?? true,
+              dataSharing: profileData?.privacy_settings?.data_sharing ?? false,
+              profileVisibility: profileData?.visibility || 'public',
             }
           }));
           
-          // Update context for immediate effect
           if (displayData) {
             updateDisplaySettings({
               language: displayData.language as Language,
@@ -130,7 +132,6 @@ export function useSettings() {
       
       switch (settingsType) {
         case 'account':
-          // Handle account settings update logic here
           toast({
             title: t('accountSettingsUpdated'),
             description: t('accountSettingsSaved'),
@@ -138,7 +139,6 @@ export function useSettings() {
           break;
           
         case 'display':
-          // Update display settings in database
           const { error } = await supabase
             .from('display_settings')
             .update({
@@ -150,7 +150,6 @@ export function useSettings() {
           
           if (error) throw error;
           
-          // Update context for immediate effect
           updateDisplaySettings({
             language: settingsData.display.language as Language,
             currency: settingsData.display.currency as Currency,
@@ -164,7 +163,6 @@ export function useSettings() {
           break;
           
         case 'notifications':
-          // Handle notification settings update logic here
           toast({
             title: t('notificationSettingsUpdated'),
             description: t('notificationSettingsSaved'),
@@ -172,7 +170,25 @@ export function useSettings() {
           break;
           
         case 'privacy':
-          // Handle privacy settings update logic here
+          const { error: privacyError } = await supabase
+            .from('privacy_settings')
+            .update({
+              public_profile: settingsData.privacy.publicProfile,
+              data_sharing: settingsData.privacy.dataSharing
+            })
+            .eq('profile_id', user.id);
+          
+          if (privacyError) throw privacyError;
+          
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({
+              visibility: settingsData.privacy.profileVisibility
+            })
+            .eq('id', user.id);
+          
+          if (profileError) throw profileError;
+          
           toast({
             title: t('privacySettingsUpdated'),
             description: t('privacySettingsSaved'),
@@ -214,7 +230,7 @@ export function useSettings() {
     }));
   };
 
-  const updatePrivacySettingsField = (field: keyof PrivacySettings, value: boolean) => {
+  const updatePrivacySettingsField = (field: keyof PrivacySettings, value: any) => {
     setSettingsData(prev => ({
       ...prev,
       privacy: {
