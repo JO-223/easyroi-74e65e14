@@ -71,7 +71,9 @@ export function NetworkMessageDialog({
       
       if (success) {
         // Optimistically update UI
-        const { data: { user } } = await supabase.auth.getUser();
+        const userResponse = await supabase.auth.getUser();
+        const user = userResponse.data.user;
+        
         if (user) {
           const newMessage: MessageData = {
             id: crypto.randomUUID(),
@@ -137,8 +139,13 @@ export function NetworkMessageDialog({
               ) : (
                 <div className="space-y-4">
                   {messages.map((msg) => {
-                    const { data: { user } } = supabase.auth.getUser();
-                    const isCurrentUser = user?.id === msg.sender_id;
+                    const userResponse = supabase.auth.getUser();
+                    let isCurrentUser = false;
+                    
+                    // Use .then() to handle the Promise properly
+                    userResponse.then(({ data }) => {
+                      isCurrentUser = data.user?.id === msg.sender_id;
+                    });
                     
                     return (
                       <div 
