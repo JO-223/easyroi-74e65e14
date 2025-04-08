@@ -1,16 +1,13 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getConversation, sendMessage, MessageData } from "@/services/network";
-import { formatDistanceToNow } from "date-fns";
-import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
+import { MessageList } from "./message/MessageList";
+import { MessageInput } from "./message/MessageInput";
 
 interface NetworkMessageDialogProps {
   investorId: string;
@@ -25,13 +22,11 @@ export function NetworkMessageDialog({
   isOpen,
   onClose
 }: NetworkMessageDialogProps) {
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && investorId) {
@@ -40,10 +35,6 @@ export function NetworkMessageDialog({
       setMessages([]);
     }
   }, [isOpen, investorId]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   const loadMessages = async () => {
     try {
@@ -62,12 +53,12 @@ export function NetworkMessageDialog({
     }
   };
 
-  const handleSendMessage = async () => {
-    if (!message.trim()) return;
+  const handleSendMessage = async (messageContent: string) => {
+    if (!messageContent) return;
     
     try {
       setIsSending(true);
-      const success = await sendMessage(investorId, message.trim());
+      const success = await sendMessage(investorId, messageContent);
       
       if (success) {
         // Optimistically update UI
@@ -79,7 +70,7 @@ export function NetworkMessageDialog({
             id: crypto.randomUUID(),
             sender_id: user.id,
             recipient_id: investorId,
-            content: message.trim(),
+            content: messageContent,
             read: false,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
@@ -88,7 +79,6 @@ export function NetworkMessageDialog({
           };
           
           setMessages(prevMessages => [...prevMessages, newMessage]);
-          setMessage("");
         }
       } else {
         throw new Error("Failed to send message");
@@ -105,18 +95,6 @@ export function NetworkMessageDialog({
     }
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const formatMessageTime = (dateString: string) => {
-    try {
-      return formatDistanceToNow(new Date(dateString), { addSuffix: true });
-    } catch (e) {
-      return "Recently";
-    }
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent className="max-w-xl">
@@ -126,83 +104,17 @@ export function NetworkMessageDialog({
         </DialogHeader>
         
         <div className="flex flex-col h-[400px]">
-          {isLoading ? (
-            <div className="flex-1 flex items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-easyroi-navy" />
-            </div>
-          ) : (
-            <ScrollArea className="flex-1 pr-4">
-              {messages.length === 0 ? (
-                <div className="flex items-center justify-center h-full text-gray-500">
-                  {t('noMessagesYet')}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {messages.map((msg) => {
-                    const userResponse = supabase.auth.getUser();
-                    let isCurrentUser = false;
-                    
-                    // Use .then() to handle the Promise properly
-                    userResponse.then(({ data }) => {
-                      isCurrentUser = data.user?.id === msg.sender_id;
-                    });
-                    
-                    return (
-                      <div 
-                        key={msg.id} 
-                        className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div 
-                          className={`max-w-[70%] rounded-lg p-3 ${
-                            isCurrentUser
-                              ? 'bg-easyroi-navy text-white'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
-                        >
-                          <div className="text-sm">{msg.content}</div>
-                          <div className={`text-xs mt-1 ${
-                            isCurrentUser ? 'text-blue-100' : 'text-gray-500'
-                          }`}>
-                            {formatMessageTime(msg.created_at)}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  <div ref={messagesEndRef} />
-                </div>
-              )}
-            </ScrollArea>
-          )}
+          <MessageList 
+            messages={messages} 
+            isLoading={isLoading} 
+          />
           
           <Separator className="my-4" />
           
-          <div className="flex space-x-2">
-            <Textarea
-              placeholder={t('typeMessage')}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              className="flex-1"
-              disabled={isSending}
-            />
-            <Button 
-              onClick={handleSendMessage} 
-              disabled={isSending || !message.trim()}
-              className="bg-easyroi-navy hover:bg-easyroi-navy/90"
-            >
-              {isSending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
+          <MessageInput 
+            onSendMessage={handleSendMessage}
+            isSending={isSending}
+          />
         </div>
       </DialogContent>
     </Dialog>
