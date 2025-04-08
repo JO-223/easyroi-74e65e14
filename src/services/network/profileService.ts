@@ -12,7 +12,9 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     if (!user) return [];
     
     // Use a stored procedure to get network investors
-    const { data, error } = await supabase.rpc('get_network_investors') as { data: any[]; error: any };
+    const { data, error } = await supabase.rpc(
+      'get_network_investors'
+    );
     
     if (error) {
       console.error("RPC error:", error);
@@ -20,9 +22,9 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
       try {
         // Get visible profiles
         const { data: profilesData, error: profilesError } = await supabase.rpc(
-          'get_visible_profiles', 
+          'get_visible_profiles',
           { p_current_user_id: user.id }
-        ) as { data: any[]; error: any };
+        );
         
         if (profilesError) throw profilesError;
         if (!profilesData) return [];
@@ -44,7 +46,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
         const { data: connectionsData, error: connectionsError } = await supabase.rpc(
           'get_user_connections',
           { p_user_id: user.id }
-        ) as { data: any[]; error: any };
+        );
         
         if (connectionsError) {
           console.error("Error fetching connections:", connectionsError);
@@ -73,7 +75,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     }
     
     // Return the RPC result directly if it worked
-    return data as NetworkInvestor[] || [];
+    return (data as NetworkInvestor[]) || [];
   } catch (error) {
     console.error('Error fetching network investors:', error);
     return [];

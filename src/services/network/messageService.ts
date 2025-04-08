@@ -10,11 +10,14 @@ export async function sendMessage(recipientId: string, content: string): Promise
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
     
-    const { error } = await supabase.rpc('send_message', {
-      p_sender_id: user.id,
-      p_recipient_id: recipientId,
-      p_content: content
-    }) as { data: any; error: any };
+    const { error } = await supabase.rpc(
+      'send_message',
+      {
+        p_sender_id: user.id,
+        p_recipient_id: recipientId,
+        p_content: content
+      }
+    );
     
     return !error;
   } catch (error) {
@@ -32,18 +35,24 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
     if (!user) return [];
     
     // Get all messages between the two users
-    const { data, error } = await supabase.rpc('get_conversation', {
-      p_user1_id: user.id,
-      p_user2_id: otherUserId
-    }) as { data: any[]; error: any };
+    const { data, error } = await supabase.rpc(
+      'get_conversation',
+      {
+        p_user1_id: user.id,
+        p_user2_id: otherUserId
+      }
+    );
       
     if (error) throw error;
     
     // Mark messages as read
-    await supabase.rpc('mark_messages_as_read', {
-      p_recipient_id: user.id,
-      p_sender_id: otherUserId
-    }) as { data: any; error: any };
+    await supabase.rpc(
+      'mark_messages_as_read',
+      {
+        p_recipient_id: user.id,
+        p_sender_id: otherUserId
+      }
+    );
     
     return (data as MessageData[]) || [];
   } catch (error) {

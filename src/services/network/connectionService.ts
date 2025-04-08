@@ -10,10 +10,13 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
     if (!user) return false;
     
     // Use a stored procedure to create a connection
-    const { error } = await supabase.rpc('create_connection_request', {
-      p_from_id: user.id,
-      p_to_id: toUserId
-    }) as { data: any; error: any };
+    const { error } = await supabase.rpc(
+      'create_connection_request',
+      {
+        p_from_id: user.id,
+        p_to_id: toUserId
+      }
+    );
     
     if (error) {
       console.error("RPC error:", error);
@@ -32,10 +35,13 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
  */
 export async function acceptConnectionRequest(connectionId: string): Promise<boolean> {
   try {
-    const { error } = await supabase.rpc('update_connection_status', {
-      p_connection_id: connectionId,
-      p_status: 'accepted'
-    }) as { data: any; error: any };
+    const { error } = await supabase.rpc(
+      'update_connection_status',
+      {
+        p_connection_id: connectionId,
+        p_status: 'accepted'
+      }
+    );
     
     return !error;
   } catch (error) {
@@ -49,10 +55,13 @@ export async function acceptConnectionRequest(connectionId: string): Promise<boo
  */
 export async function rejectConnectionRequest(connectionId: string): Promise<boolean> {
   try {
-    const { error } = await supabase.rpc('update_connection_status', {
-      p_connection_id: connectionId,
-      p_status: 'rejected'
-    }) as { data: any; error: any };
+    const { error } = await supabase.rpc(
+      'update_connection_status',
+      {
+        p_connection_id: connectionId,
+        p_status: 'rejected'
+      }
+    );
     
     return !error;
   } catch (error) {
@@ -69,10 +78,13 @@ export async function removeConnection(toUserId: string): Promise<boolean> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
     
-    const { error } = await supabase.rpc('delete_user_connection', {
-      p_from_id: user.id,
-      p_to_id: toUserId
-    }) as { data: any; error: any };
+    const { error } = await supabase.rpc(
+      'delete_user_connection',
+      {
+        p_from_id: user.id,
+        p_to_id: toUserId
+      }
+    );
     
     return !error;
   } catch (error) {

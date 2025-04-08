@@ -36,7 +36,7 @@ const Network = () => {
           const { data: profileData, error: profileError } = await supabase.rpc(
             'get_user_profile_visibility',
             { p_user_id: user.id }
-          ) as { data: any[]; error: any };
+          );
           
           if (!profileError && profileData && Array.isArray(profileData) && profileData.length > 0) {
             const visibility = profileData[0]?.visibility as ProfileVisibility || 'public';
@@ -53,7 +53,7 @@ const Network = () => {
               const { data, error } = await supabase.rpc(
                 'get_profile_by_id',
                 { p_user_id: user.id }
-              ) as { data: any[]; error: any };
+              );
                 
               if (!error && data && Array.isArray(data) && data.length > 0) {
                 const visibility = data[0].visibility as ProfileVisibility || 'public';
