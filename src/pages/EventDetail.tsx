@@ -48,7 +48,7 @@ export default function EventDetail() {
   
   if (isLoading) {
     return (
-      <DashboardLayout>
+      <DashboardLayout title={t('eventDetails')} subtitle={t('loading')}>
         <div className="container mx-auto py-6">
           <Button variant="ghost" className="mb-4" onClick={() => navigate(-1)}>
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -85,7 +85,7 @@ export default function EventDetail() {
   
   if (error || !event) {
     return (
-      <DashboardLayout>
+      <DashboardLayout title={t('eventNotFound')} subtitle={t('errorLoadingEvent')}>
         <div className="container mx-auto py-6">
           <Button variant="ghost" className="mb-4" onClick={() => navigate(-1)}>
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -174,7 +174,7 @@ export default function EventDetail() {
   };
   
   return (
-    <DashboardLayout>
+    <DashboardLayout title={event.title} subtitle={event.event_type}>
       <div className="container mx-auto py-6">
         <Button variant="ghost" className="mb-4" onClick={() => navigate(-1)}>
           <ArrowLeft className="mr-2 h-4 w-4" />

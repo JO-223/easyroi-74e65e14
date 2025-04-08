@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
@@ -26,7 +27,7 @@ export default function DevelopmentDetail() {
   
   if (isLoading) {
     return (
-      <DashboardLayout>
+      <DashboardLayout title={t('projectDetails')} subtitle={t('loading')}>
         <div className="container mx-auto py-6">
           <div className="animate-pulse space-y-4">
             <div className="h-8 w-1/3 bg-muted rounded"></div>
@@ -40,7 +41,7 @@ export default function DevelopmentDetail() {
   
   if (error || !project) {
     return (
-      <DashboardLayout>
+      <DashboardLayout title={t('projectNotFound')} subtitle={t('errorLoadingProject')}>
         <div className="container mx-auto py-6">
           <Button variant="ghost" onClick={handleGoBack} className="mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" /> {t('back')}
@@ -67,7 +68,7 @@ export default function DevelopmentDetail() {
   const investorLevel = project.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond" | null;
   
   return (
-    <DashboardLayout>
+    <DashboardLayout title={project.name} subtitle={`${project.location.city}, ${project.location.country}`}>
       <div className="container mx-auto py-6">
         <Button variant="ghost" onClick={handleGoBack} className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" /> {t('back')}

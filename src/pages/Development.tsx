@@ -76,7 +76,7 @@ export default function Development() {
   };
   
   return (
-    <DashboardLayout>
+    <DashboardLayout title={t('developmentProjects')} subtitle={t('exploreCurrentProjectsInProgress')}>
       <div className="container mx-auto py-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>

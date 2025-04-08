@@ -45,7 +45,8 @@ export function NotificationDropdown() {
     try {
       setIsLoading(true);
       const notificationData = await getNotifications();
-      setNotifications(notificationData);
+      // Fixed type issue by ensuring we get an array back
+      setNotifications(Array.isArray(notificationData) ? notificationData : []);
     } catch (error) {
       console.error("Error loading notifications:", error);
     } finally {

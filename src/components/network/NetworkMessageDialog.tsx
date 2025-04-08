@@ -10,6 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getConversation, sendMessage, MessageData } from "@/services/network";
 import { formatDistanceToNow } from "date-fns";
 import { Separator } from "@/components/ui/separator";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NetworkMessageDialogProps {
   investorId: string;

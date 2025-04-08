@@ -41,7 +41,7 @@ export default function Events() {
   };
   
   return (
-    <DashboardLayout>
+    <DashboardLayout title={t('upcomingEvents')} subtitle={t('discoverEventsAndNetworkingOpportunities')}>
       <div className="container mx-auto py-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
