@@ -15,6 +15,10 @@ export default function Events() {
   const { toast } = useToast();
   const [activeFilters, setActiveFilters] = useState<EventFilter>({});
   
+  // In una vera applicazione, otterremmo il badge dell'utente dal contesto di autenticazione
+  // Per ora, utilizziamo un valore hardcoded per dimostrare la funzionalità
+  const userBadge = "silver"; // Simuliamo un utente con badge silver
+  
   const { data: events = [], isLoading, error } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
@@ -56,7 +60,8 @@ export default function Events() {
           <div className="md:col-span-3">
             <EventList 
               events={filteredEvents} 
-              isLoading={isLoading} 
+              isLoading={isLoading}
+              userBadge={userBadge}
             />
           </div>
         </div>

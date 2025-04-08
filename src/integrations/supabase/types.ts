@@ -157,6 +157,110 @@ export type Database = {
           },
         ]
       }
+      event_attendees: {
+        Row: {
+          event_id: string | null
+          id: string
+          priority: number | null
+          registration_date: string
+          user_badge: string | null
+          user_id: string
+        }
+        Insert: {
+          event_id?: string | null
+          id?: string
+          priority?: number | null
+          registration_date?: string
+          user_badge?: string | null
+          user_id: string
+        }
+        Update: {
+          event_id?: string | null
+          id?: string
+          priority?: number | null
+          registration_date?: string
+          user_badge?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_attendees_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          current_attendees: number
+          date: string
+          description: string
+          event_type: string
+          id: string
+          image_url: string | null
+          is_online: boolean
+          location: string
+          max_attendees: number | null
+          project_id: string | null
+          property_id: string | null
+          required_badges: string[] | null
+          time: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          current_attendees?: number
+          date: string
+          description: string
+          event_type: string
+          id?: string
+          image_url?: string | null
+          is_online?: boolean
+          location: string
+          max_attendees?: number | null
+          project_id?: string | null
+          property_id?: string | null
+          required_badges?: string[] | null
+          time: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          current_attendees?: number
+          date?: string
+          description?: string
+          event_type?: string
+          id?: string
+          image_url?: string | null
+          is_online?: boolean
+          location?: string
+          max_attendees?: number | null
+          project_id?: string | null
+          property_id?: string | null
+          required_badges?: string[] | null
+          time?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "development_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interests: {
         Row: {
           id: string

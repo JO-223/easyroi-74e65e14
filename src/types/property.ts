@@ -122,6 +122,8 @@ export type Event = {
   property_id?: string;
   project_id?: string;
   image_url?: string;
+  is_online: boolean;
+  required_badges?: string[];
 };
 
 export type EventFilter = {
@@ -130,4 +132,6 @@ export type EventFilter = {
   dateTo?: Date;
   location?: string;
   hasAvailability?: boolean;
+  isOnline?: boolean;
+  badge?: string;
 };

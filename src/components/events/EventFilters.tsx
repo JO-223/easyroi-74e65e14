@@ -25,6 +25,7 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
   const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
   const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
   const [hasAvailability, setHasAvailability] = useState<boolean>(false);
+  const [isOnline, setIsOnline] = useState<boolean | undefined>(undefined);
   
   const handleApplyFilters = () => {
     onApplyFilters({
@@ -33,6 +34,7 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
       dateFrom,
       dateTo,
       hasAvailability: hasAvailability || undefined,
+      isOnline,
     });
   };
   
@@ -42,6 +44,7 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
     setDateFrom(undefined);
     setDateTo(undefined);
     setHasAvailability(false);
+    setIsOnline(undefined);
     onApplyFilters({});
   };
   
@@ -69,6 +72,33 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="project_launch" id="project_launch" />
               <Label htmlFor="project_launch">{t('projectLaunch')}</Label>
+            </div>
+          </RadioGroup>
+        </div>
+        
+        <div className="space-y-2">
+          <Label>{t('eventFormat')}</Label>
+          <RadioGroup 
+            value={isOnline === undefined ? "" : isOnline ? "online" : "inperson"} 
+            onValueChange={(val) => {
+              if (val === "") {
+                setIsOnline(undefined);
+              } else {
+                setIsOnline(val === "online");
+              }
+            }}
+          >
+            <div className="flex items-center space-x-2 mb-2">
+              <RadioGroupItem value="" id="all_formats" />
+              <Label htmlFor="all_formats">{t('allFormats')}</Label>
+            </div>
+            <div className="flex items-center space-x-2 mb-2">
+              <RadioGroupItem value="online" id="online" />
+              <Label htmlFor="online">{t('onlineEvents')}</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="inperson" id="inperson" />
+              <Label htmlFor="inperson">{t('inPersonEvents')}</Label>
             </div>
           </RadioGroup>
         </div>

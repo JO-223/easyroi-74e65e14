@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { Event } from "@/types/property";
+import { Event, EventFilter } from "@/types/property";
 import { format } from "date-fns";
 
 export const fetchEvents = async () => {
@@ -32,7 +32,7 @@ export const fetchEvent = async (id: string) => {
   return data as Event;
 };
 
-export const registerForEvent = async (eventId: string, userId: string) => {
+export const registerForEvent = async (eventId: string, userId: string, userBadge: string = 'bronze') => {
   // First check if the user is already registered
   const { data: existingRegistration, error: checkError } = await supabase
     .from('event_attendees')
@@ -53,7 +53,7 @@ export const registerForEvent = async (eventId: string, userId: string) => {
   // Check if event has reached max attendees
   const { data: event, error: eventError } = await supabase
     .from('events')
-    .select('max_attendees, current_attendees')
+    .select('max_attendees, current_attendees, required_badges')
     .eq('id', eventId)
     .single();
   
@@ -66,11 +66,23 @@ export const registerForEvent = async (eventId: string, userId: string) => {
     return { success: false, message: 'This event is already at maximum capacity' };
   }
   
+  // Check if the user has the required badge
+  if (event.required_badges && event.required_badges.length > 0) {
+    if (!event.required_badges.includes(userBadge.toLowerCase())) {
+      return { success: false, message: 'You do not have the required badge level for this event' };
+    }
+  }
+  
   // Register the user
   const { error: registrationError } = await supabase
     .from('event_attendees')
     .insert([
-      { event_id: eventId, user_id: userId, registration_date: new Date().toISOString() }
+      { 
+        event_id: eventId, 
+        user_id: userId, 
+        user_badge: userBadge,
+        registration_date: new Date().toISOString() 
+      }
     ]);
   
   if (registrationError) {
@@ -147,7 +159,7 @@ export const cancelEventRegistration = async (eventId: string, userId: string) =
   return { success: true, message: 'Successfully canceled your registration' };
 };
 
-export const filterEvents = (events: Event[], filters: any) => {
+export const filterEvents = (events: Event[], filters: EventFilter) => {
   return events.filter(event => {
     // Filter by event type
     if (filters.eventType && event.event_type !== filters.eventType) {
@@ -183,6 +195,21 @@ export const filterEvents = (events: Event[], filters: any) => {
       return false;
     }
     
+    // Filter by online/offline events
+    if (filters.isOnline !== undefined && event.is_online !== filters.isOnline) {
+      return false;
+    }
+    
     return true;
   });
 };
+
+// Nuova funzione per verificare se un utente ha il badge richiesto per un evento
+export const checkUserEligibility = (event: Event, userBadge: string = 'bronze'): boolean => {
+  if (!event.required_badges || event.required_badges.length === 0) {
+    return true;
+  }
+  
+  return event.required_badges.includes(userBadge.toLowerCase());
+};
+

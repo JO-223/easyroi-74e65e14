@@ -1,22 +1,29 @@
 
 import { format } from "date-fns";
-import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, Globe, Monitor } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Event } from "@/types/property";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
+import { BadgeLevel } from "@/components/ui/badge-level";
 
 interface EventCardProps {
   event: Event;
   onClick: (event: Event) => void;
+  userBadge?: string;
 }
 
-export function EventCard({ event, onClick }: EventCardProps) {
+export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardProps) {
   const { t } = useLanguage();
   
   // Check if event is at capacity
   const isAtCapacity = event.max_attendees !== null && event.current_attendees >= event.max_attendees;
+  
+  // Check if user has required badge
+  const userHasRequiredBadge = !event.required_badges || 
+    event.required_badges.length === 0 || 
+    event.required_badges.includes(userBadge.toLowerCase());
   
   // Parse the date from the event
   const eventDate = new Date(event.date);
@@ -26,7 +33,8 @@ export function EventCard({ event, onClick }: EventCardProps) {
     <Card 
       className={cn(
         "group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer",
-        isAtCapacity ? "opacity-70" : ""
+        isAtCapacity ? "opacity-70" : "",
+        !userHasRequiredBadge ? "opacity-50" : ""
       )}
       onClick={() => onClick(event)}
     >
@@ -43,16 +51,31 @@ export function EventCard({ event, onClick }: EventCardProps) {
           </div>
         )}
         
-        <div className="absolute top-2 right-2">
+        <div className="absolute top-2 right-2 flex flex-col gap-1">
           <Badge className="bg-easyroi-gold text-easyroi-navy">
             {event.event_type}
           </Badge>
+          
+          {event.is_online && (
+            <Badge className="bg-blue-500">
+              <Monitor className="w-3 h-3 mr-1" />
+              {t('online')}
+            </Badge>
+          )}
         </div>
         
         {isAtCapacity && (
           <div className="absolute top-2 left-2">
             <Badge variant="destructive">
               {t('atCapacity')}
+            </Badge>
+          </div>
+        )}
+        
+        {!userHasRequiredBadge && (
+          <div className="absolute bottom-2 left-2 right-2">
+            <Badge variant="outline" className="w-full flex justify-center bg-black bg-opacity-70 text-white">
+              {t('upgradeRequiredToJoin')}
             </Badge>
           </div>
         )}
@@ -72,7 +95,11 @@ export function EventCard({ event, onClick }: EventCardProps) {
         </div>
         
         <div className="flex items-center text-sm text-gray-500 mb-1">
-          <MapPin className="w-4 h-4 mr-2" />
+          {event.is_online ? (
+            <Globe className="w-4 h-4 mr-2" />
+          ) : (
+            <MapPin className="w-4 h-4 mr-2" />
+          )}
           <span className="line-clamp-1">{event.location}</span>
         </div>
         
@@ -85,6 +112,14 @@ export function EventCard({ event, onClick }: EventCardProps) {
             }
           </span>
         </div>
+        
+        {event.required_badges && event.required_badges.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1">
+            {event.required_badges.map((badge) => (
+              <BadgeLevel key={badge} level={badge as any} className="scale-75 origin-left" />
+            ))}
+          </div>
+        )}
         
         <p className="mt-2 text-sm text-gray-600 line-clamp-2">{event.description}</p>
       </CardContent>
