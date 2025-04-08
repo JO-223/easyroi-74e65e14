@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { GetUserNotificationsResponse } from "@/integrations/supabase/rpcTypes";
 
 /**
  * Gets all notifications for the current user

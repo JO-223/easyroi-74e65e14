@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { ProfileData, NetworkInvestor, ProfileVisibility } from "./types";
+import { ProfileData, NetworkInvestor } from "./types";
 
 /**
  * Fetches network investors with visibility filters applied
@@ -12,9 +12,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     if (!user) return [];
     
     // Use a stored procedure to get network investors
-    const { data, error } = await supabase.rpc(
-      'get_network_investors'
-    );
+    const { data, error } = await supabase.rpc('get_network_investors');
     
     if (error) {
       console.error("RPC error:", error);
