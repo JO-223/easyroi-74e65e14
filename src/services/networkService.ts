@@ -66,42 +66,64 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     
     if (error) {
       console.error("RPC error:", error);
-      // Fallback to direct query using profiles only
-      const { data: profilesData, error: profilesError } = await supabase
-        .from('profiles')
-        .select(`
-          id, 
-          first_name, 
-          last_name, 
-          email, 
-          level, 
-          bio, 
-          location, 
-          avatar_url,
-          join_date,
-          visibility
-        `)
-        .neq('id', user.id)
-        .in('visibility', ['public', 'semi-public']);
+      // Fallback to direct query using RPC for profiles
+      try {
+        // Get visible profiles
+        const { data: profilesData, error: profilesError } = await supabase.rpc(
+          'get_visible_profiles',
+          { p_current_user_id: user.id }
+        );
         
-      if (profilesError) throw profilesError;
-      if (!profilesData) return [];
-      
-      return profilesData.map((profile) => ({
-        id: profile.id,
-        name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
-        email: profile.visibility === 'public' ? profile.email : '',
-        level: profile.level as UserRole || 'bronze',
-        location: profile.location || '',
-        bio: profile.bio || '',
-        avatar_url: profile.avatar_url || '/placeholder.svg',
-        join_date: profile.join_date,
-        connection_status: 'none'
-      }));
+        if (profilesError) throw profilesError;
+        if (!profilesData) return [];
+        
+        // Format data to match NetworkInvestor interface
+        const investorData = profilesData.map((profile: any) => ({
+          id: profile.id,
+          name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Unknown User',
+          email: profile.visibility === 'public' ? profile.email : '',
+          level: (profile.level as UserRole) || 'bronze',
+          location: profile.location || '',
+          bio: profile.bio || '',
+          avatar_url: profile.avatar_url || '/placeholder.svg',
+          join_date: profile.join_date,
+          connection_status: 'none'
+        })) as NetworkInvestor[];
+        
+        // Check connection status separately via RPC
+        const { data: connectionsData, error: connectionsError } = await supabase.rpc(
+          'get_user_connections',
+          { p_user_id: user.id }
+        );
+        
+        if (connectionsError) {
+          console.error("Error fetching connections:", connectionsError);
+          return investorData;
+        }
+        
+        // Update connection status
+        if (connectionsData && connectionsData.length > 0) {
+          connectionsData.forEach((connection: any) => {
+            const investorIndex = investorData.findIndex(inv => inv.id === connection.user_id);
+            if (investorIndex !== -1) {
+              investorData[investorIndex].connection_status = connection.status === 'accepted' 
+                ? 'connected' 
+                : connection.status === 'pending' 
+                  ? 'pending' 
+                  : 'none';
+            }
+          });
+        }
+        
+        return investorData;
+      } catch (fallbackError) {
+        console.error("Fallback error:", fallbackError);
+        return [];
+      }
     }
     
     // Return the RPC result directly if it worked
-    return data || [];
+    return data as NetworkInvestor[] || [];
   } catch (error) {
     console.error('Error fetching network investors:', error);
     return [];
@@ -118,8 +140,8 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
     
     // Use a stored procedure to create a connection
     const { error } = await supabase.rpc('create_connection_request', {
-      from_id: user.id,
-      to_id: toUserId
+      p_from_id: user.id,
+      p_to_id: toUserId
     });
     
     if (error) {
@@ -140,8 +162,8 @@ export async function sendConnectionRequest(toUserId: string): Promise<boolean> 
 export async function acceptConnectionRequest(connectionId: string): Promise<boolean> {
   try {
     const { error } = await supabase.rpc('update_connection_status', {
-      conn_id: connectionId,
-      status_value: 'accepted'
+      p_connection_id: connectionId,
+      p_status: 'accepted'
     });
     
     return !error;
@@ -157,8 +179,8 @@ export async function acceptConnectionRequest(connectionId: string): Promise<boo
 export async function rejectConnectionRequest(connectionId: string): Promise<boolean> {
   try {
     const { error } = await supabase.rpc('update_connection_status', {
-      conn_id: connectionId,
-      status_value: 'rejected'
+      p_connection_id: connectionId,
+      p_status: 'rejected'
     });
     
     return !error;
@@ -177,8 +199,8 @@ export async function removeConnection(toUserId: string): Promise<boolean> {
     if (!user) return false;
     
     const { error } = await supabase.rpc('delete_user_connection', {
-      from_id: user.id,
-      to_id: toUserId
+      p_from_id: user.id,
+      p_to_id: toUserId
     });
     
     return !error;
@@ -219,8 +241,8 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
     
     // Get all messages between the two users
     const { data, error } = await supabase.rpc('get_conversation', {
-      user1_id: user.id,
-      user2_id: otherUserId
+      p_user1_id: user.id,
+      p_user2_id: otherUserId
     });
       
     if (error) throw error;
@@ -231,7 +253,7 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
       p_sender_id: otherUserId
     });
     
-    return data as MessageData[];
+    return data as MessageData[] || [];
   } catch (error) {
     console.error('Error getting conversation:', error);
     return [];
@@ -252,7 +274,7 @@ export async function getNotifications() {
       
     if (error) throw error;
     
-    return data;
+    return data || [];
   } catch (error) {
     console.error('Error getting notifications:', error);
     return [];

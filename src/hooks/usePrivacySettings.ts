@@ -27,26 +27,34 @@ export function usePrivacySettings() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Get profile visibility
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('visibility')
-            .eq('id', user.id)
-            .single();
+          // Get profile visibility using RPC
+          const { data: profileData, error: profileError } = await supabase.rpc(
+            'get_profile_by_id',
+            { p_user_id: user.id }
+          );
           
-          if (profileError && profileError.code !== 'PGRST116') throw profileError;
+          if (profileError) throw profileError;
           
-          // Get privacy settings using an RPC call to avoid TypeScript errors
+          // Get privacy settings using an RPC call
           const { data: privacyData, error: privacyError } = await supabase.rpc(
             'get_privacy_settings', 
-            { user_id: user.id }
+            { p_user_id: user.id }
           );
           
           if (privacyError) throw privacyError;
           
-          const publicProfile = privacyData && privacyData.length > 0 ? !!privacyData[0]?.public_profile : true;
-          const dataSharing = privacyData && privacyData.length > 0 ? !!privacyData[0]?.data_sharing : false;
-          const profileVisibility = profileData?.visibility as ProfileVisibility || 'public';
+          // Extract data with type safety
+          const publicProfile = privacyData && privacyData.length > 0 
+            ? Boolean(privacyData[0]?.public_profile) 
+            : true;
+            
+          const dataSharing = privacyData && privacyData.length > 0 
+            ? Boolean(privacyData[0]?.data_sharing) 
+            : false;
+            
+          const profileVisibility = profileData && profileData.length > 0
+            ? (profileData[0]?.visibility as ProfileVisibility || 'public')
+            : 'public';
           
           setPrivacySettings({
             publicProfile,
@@ -76,11 +84,11 @@ export function usePrivacySettings() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No authenticated user");
       
-      // Use RPC function to update privacy settings to avoid TypeScript errors
+      // Use RPC function to update privacy settings
       const { error: privacyError } = await supabase.rpc(
         'update_privacy_settings',
         {
-          user_id: user.id,
+          p_user_id: user.id,
           p_public_profile: privacySettings.publicProfile,
           p_data_sharing: privacySettings.dataSharing
         }
@@ -89,12 +97,13 @@ export function usePrivacySettings() {
       if (privacyError) throw privacyError;
       
       // Update profile visibility
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          visibility: privacySettings.profileVisibility
-        })
-        .eq('id', user.id);
+      const { error: profileError } = await supabase.rpc(
+        'update_profile_visibility',
+        {
+          p_user_id: user.id,
+          p_visibility: privacySettings.profileVisibility
+        }
+      );
       
       if (profileError) throw profileError;
       

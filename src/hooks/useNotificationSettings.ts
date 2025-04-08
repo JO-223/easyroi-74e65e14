@@ -24,20 +24,19 @@ export function useNotificationSettings() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Get notification settings
-          const { data, error } = await supabase
-            .from('notification_settings')
-            .select('email_notifications, push_notifications')
-            .eq('profile_id', user.id)
-            .single();
+          // Get notification settings using RPC
+          const { data, error } = await supabase.rpc(
+            'get_notification_settings',
+            { p_user_id: user.id }
+          );
           
           // Don't throw if no data is found - it's OK for settings to be missing initially
           if (error && error.code !== 'PGRST116') throw error;
           
-          if (data) {
+          if (data && data.length > 0) {
             setNotificationSettings({
-              email: data.email_notifications ?? true,
-              push: data.push_notifications ?? false,
+              email: Boolean(data[0]?.email_notifications ?? true),
+              push: Boolean(data[0]?.push_notifications ?? false),
             });
           }
         }
@@ -63,15 +62,14 @@ export function useNotificationSettings() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No authenticated user");
       
-      const { error } = await supabase
-        .from('notification_settings')
-        .upsert({
-          profile_id: user.id,
-          email_notifications: notificationSettings.email,
-          push_notifications: notificationSettings.push
-        }, {
-          onConflict: 'profile_id'
-        });
+      const { error } = await supabase.rpc(
+        'update_notification_settings',
+        {
+          p_user_id: user.id,
+          p_email_notifications: notificationSettings.email,
+          p_push_notifications: notificationSettings.push
+        }
+      );
       
       if (error) throw error;
       
