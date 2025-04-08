@@ -1,9 +1,10 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { NetworkInvestor } from "@/services/network/types";
 import { sendConnectionRequest, removeConnection } from "@/services/network";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NetworkConnectionManagerProps {
   investors: NetworkInvestor[];
@@ -16,8 +17,39 @@ export function NetworkConnectionManager({
 }: NetworkConnectionManagerProps) {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  
+  // Check authentication state
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+      
+      // Subscribe to auth changes
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          setIsAuthenticated(!!session);
+        }
+      );
+      
+      return () => {
+        subscription.unsubscribe();
+      };
+    };
+    
+    checkAuth();
+  }, []);
 
   const handleConnect = async (investorId: string, investorName: string) => {
+    if (!isAuthenticated) {
+      toast({
+        title: t('authRequired'),
+        description: t('pleaseLoginToConnect'),
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
       const success = await sendConnectionRequest(investorId);
       
@@ -49,6 +81,15 @@ export function NetworkConnectionManager({
   };
 
   const handleDisconnect = async (investorId: string, investorName: string) => {
+    if (!isAuthenticated) {
+      toast({
+        title: t('authRequired'),
+        description: t('pleaseLoginToDisconnect'),
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
       const success = await removeConnection(investorId);
       
@@ -80,15 +121,23 @@ export function NetworkConnectionManager({
   };
 
   const handleMessage = (investorId: string, investorName: string) => {
-    toast({
-      title: t('messageCenter'),
-      description: `${t('openingConversation')} ${investorName}.`,
-    });
+    if (!isAuthenticated) {
+      toast({
+        title: t('authRequired'),
+        description: t('pleaseLoginToMessage'),
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // The actual messaging is now handled in the NetworkInvestorCard component
+    // with the NetworkMessageDialog
   };
 
   return {
     handleConnect,
     handleDisconnect,
-    handleMessage
+    handleMessage,
+    isAuthenticated
   };
 }

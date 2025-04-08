@@ -10,5 +10,12 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Create the typed client
 export const supabase = createClient<Database>(
   SUPABASE_URL, 
-  SUPABASE_PUBLISHABLE_KEY
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      storage: localStorage,
+      persistSession: true,
+      autoRefreshToken: true,
+    }
+  }
 ) as ReturnType<typeof createClient> & { rpc: SupabaseRPC['rpc'] };

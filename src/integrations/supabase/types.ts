@@ -829,7 +829,137 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_connection_request: {
+        Args: { p_from_id: string; p_to_id: string }
+        Returns: undefined
+      }
+      delete_user_connection: {
+        Args: { p_from_id: string; p_to_id: string }
+        Returns: undefined
+      }
+      get_conversation: {
+        Args: { p_user1_id: string; p_user2_id: string }
+        Returns: {
+          id: string
+          sender_id: string
+          recipient_id: string
+          content: string
+          created_at: string
+          read: boolean
+          sender_name: string
+          recipient_name: string
+        }[]
+      }
+      get_network_investors: {
+        Args: Record<PropertyKey, never>
+        Returns: Json[]
+      }
+      get_notification_settings: {
+        Args: { p_user_id: string }
+        Returns: {
+          email_notifications: boolean
+          push_notifications: boolean
+        }[]
+      }
+      get_privacy_settings: {
+        Args: { p_user_id: string }
+        Returns: {
+          public_profile: boolean
+          data_sharing: boolean
+        }[]
+      }
+      get_profile_by_id: {
+        Args: { p_user_id: string }
+        Returns: {
+          avatar_url: string | null
+          bio: string | null
+          email: string
+          first_name: string | null
+          id: string
+          join_date: string
+          last_name: string | null
+          level: string | null
+          location: string | null
+          phone: string | null
+          visibility: string
+        }[]
+      }
+      get_user_connections: {
+        Args: { p_user_id: string }
+        Returns: {
+          user_id: string
+          status: string
+        }[]
+      }
+      get_user_notifications: {
+        Args: { p_user_id: string }
+        Returns: {
+          id: string
+          title: string
+          message: string
+          type: string
+          read: boolean
+          created_at: string
+        }[]
+      }
+      get_user_profile_visibility: {
+        Args: { p_user_id: string }
+        Returns: {
+          visibility: string
+        }[]
+      }
+      get_visible_profiles: {
+        Args: { p_current_user_id: string }
+        Returns: {
+          avatar_url: string | null
+          bio: string | null
+          email: string
+          first_name: string | null
+          id: string
+          join_date: string
+          last_name: string | null
+          level: string | null
+          location: string | null
+          phone: string | null
+          visibility: string
+        }[]
+      }
+      mark_messages_as_read: {
+        Args: { p_recipient_id: string; p_sender_id: string }
+        Returns: undefined
+      }
+      mark_notifications_as_read: {
+        Args: { p_notification_ids: string[] }
+        Returns: undefined
+      }
+      send_message: {
+        Args: { p_sender_id: string; p_recipient_id: string; p_content: string }
+        Returns: undefined
+      }
+      update_connection_status: {
+        Args: { p_connection_id: string; p_status: string }
+        Returns: undefined
+      }
+      update_notification_settings: {
+        Args: {
+          p_user_id: string
+          p_email_notifications: boolean
+          p_push_notifications: boolean
+        }
+        Returns: undefined
+      }
+      update_privacy_settings: {
+        Args: {
+          p_user_id: string
+          p_public_profile: boolean
+          p_data_sharing: boolean
+        }
+        Returns: undefined
+      }
+      update_profile_visibility: {
+        Args: { p_user_id: string; p_visibility: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
