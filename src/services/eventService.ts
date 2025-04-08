@@ -14,7 +14,7 @@ export const fetchEvents = async () => {
     throw error;
   }
   
-  return data as Event[];
+  return data as unknown as Event[];
 };
 
 export const fetchEvent = async (id: string) => {
@@ -29,7 +29,7 @@ export const fetchEvent = async (id: string) => {
     throw error;
   }
   
-  return data as Event;
+  return data as unknown as Event;
 };
 
 export const registerForEvent = async (eventId: string, userId: string, userBadge: string = 'bronze') => {
@@ -61,14 +61,20 @@ export const registerForEvent = async (eventId: string, userId: string, userBadg
     console.error('Error fetching event:', eventError);
     throw eventError;
   }
+
+  const eventData = event as unknown as {
+    max_attendees: number | null;
+    current_attendees: number;
+    required_badges: string[] | null;
+  };
   
-  if (event.max_attendees !== null && event.current_attendees >= event.max_attendees) {
+  if (eventData.max_attendees !== null && eventData.current_attendees >= eventData.max_attendees) {
     return { success: false, message: 'This event is already at maximum capacity' };
   }
   
   // Check if the user has the required badge
-  if (event.required_badges && event.required_badges.length > 0) {
-    if (!event.required_badges.includes(userBadge.toLowerCase())) {
+  if (eventData.required_badges && eventData.required_badges.length > 0) {
+    if (!eventData.required_badges.includes(userBadge.toLowerCase())) {
       return { success: false, message: 'You do not have the required badge level for this event' };
     }
   }
@@ -93,7 +99,7 @@ export const registerForEvent = async (eventId: string, userId: string, userBadg
   // Update the event's current_attendees count
   const { error: updateError } = await supabase
     .from('events')
-    .update({ current_attendees: event.current_attendees + 1 })
+    .update({ current_attendees: eventData.current_attendees + 1 })
     .eq('id', eventId);
   
   if (updateError) {
@@ -145,10 +151,12 @@ export const cancelEventRegistration = async (eventId: string, userId: string) =
     console.error('Error fetching event:', eventError);
     throw eventError;
   }
+
+  const eventData = event as unknown as { current_attendees: number };
   
   const { error: updateError } = await supabase
     .from('events')
-    .update({ current_attendees: Math.max(0, event.current_attendees - 1) })
+    .update({ current_attendees: Math.max(0, eventData.current_attendees - 1) })
     .eq('id', eventId);
   
   if (updateError) {
@@ -200,6 +208,14 @@ export const filterEvents = (events: Event[], filters: EventFilter) => {
       return false;
     }
     
+    // Filter by badge requirement
+    if (filters.badge && 
+        event.required_badges && 
+        event.required_badges.length > 0 &&
+        !event.required_badges.includes(filters.badge)) {
+      return false;
+    }
+    
     return true;
   });
 };
@@ -212,4 +228,3 @@ export const checkUserEligibility = (event: Event, userBadge: string = 'bronze')
   
   return event.required_badges.includes(userBadge.toLowerCase());
 };
-
