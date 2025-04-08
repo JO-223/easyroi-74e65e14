@@ -1,0 +1,93 @@
+
+import { format } from "date-fns";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Event } from "@/types/property";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
+
+interface EventCardProps {
+  event: Event;
+  onClick: (event: Event) => void;
+}
+
+export function EventCard({ event, onClick }: EventCardProps) {
+  const { t } = useLanguage();
+  
+  // Check if event is at capacity
+  const isAtCapacity = event.max_attendees !== null && event.current_attendees >= event.max_attendees;
+  
+  // Parse the date from the event
+  const eventDate = new Date(event.date);
+  const formattedDate = format(eventDate, 'MMM d, yyyy');
+  
+  return (
+    <Card 
+      className={cn(
+        "group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer",
+        isAtCapacity ? "opacity-70" : ""
+      )}
+      onClick={() => onClick(event)}
+    >
+      <div className="relative h-48 bg-gray-200">
+        {event.image_url ? (
+          <img 
+            src={event.image_url} 
+            alt={event.title} 
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-200">
+            <Calendar className="h-12 w-12 text-gray-400" />
+          </div>
+        )}
+        
+        <div className="absolute top-2 right-2">
+          <Badge className="bg-easyroi-gold text-easyroi-navy">
+            {event.event_type}
+          </Badge>
+        </div>
+        
+        {isAtCapacity && (
+          <div className="absolute top-2 left-2">
+            <Badge variant="destructive">
+              {t('atCapacity')}
+            </Badge>
+          </div>
+        )}
+      </div>
+      
+      <CardContent className="p-4">
+        <h3 className="text-lg font-semibold mb-2 line-clamp-2">{event.title}</h3>
+        
+        <div className="flex items-center text-sm text-gray-500 mb-1">
+          <Calendar className="w-4 h-4 mr-2" />
+          <span>{formattedDate}</span>
+        </div>
+        
+        <div className="flex items-center text-sm text-gray-500 mb-1">
+          <Clock className="w-4 h-4 mr-2" />
+          <span>{event.time}</span>
+        </div>
+        
+        <div className="flex items-center text-sm text-gray-500 mb-1">
+          <MapPin className="w-4 h-4 mr-2" />
+          <span className="line-clamp-1">{event.location}</span>
+        </div>
+        
+        <div className="flex items-center text-sm text-gray-500">
+          <Users className="w-4 h-4 mr-2" />
+          <span>
+            {event.max_attendees 
+              ? `${event.current_attendees}/${event.max_attendees} ${t('attendees')}`
+              : `${event.current_attendees} ${t('attendees')}`
+            }
+          </span>
+        </div>
+        
+        <p className="mt-2 text-sm text-gray-600 line-clamp-2">{event.description}</p>
+      </CardContent>
+    </Card>
+  );
+}

@@ -1,4 +1,3 @@
-
 export type Property = {
   id: string;
   name: string;
@@ -64,7 +63,6 @@ export type PropertyFilter = {
   amenities?: string[];
 };
 
-// Add data import types
 export type DataImport = {
   id: string;
   source: string;
@@ -78,7 +76,6 @@ export type DataImport = {
   completed_at: string | null;
 };
 
-// User investments type
 export type UserInvestment = {
   id: string;
   user_id: string;
@@ -86,7 +83,6 @@ export type UserInvestment = {
   last_updated: string;
 };
 
-// Add user role types
 export type UserRole = 
   | 'user'
   | 'bronze' 
@@ -97,7 +93,6 @@ export type UserRole =
   | 'administrator'
   | 'owner';
 
-// Development project types for future construction projects
 export type DevelopmentProject = {
   id: string;
   name: string;
@@ -114,7 +109,6 @@ export type DevelopmentProject = {
   images: PropertyImage[];
 };
 
-// Event types for networking and property events
 export type Event = {
   id: string;
   title: string;
@@ -128,4 +122,12 @@ export type Event = {
   property_id?: string;
   project_id?: string;
   image_url?: string;
+};
+
+export type EventFilter = {
+  eventType?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+  location?: string;
+  hasAvailability?: boolean;
 };

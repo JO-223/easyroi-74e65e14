@@ -1,7 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Home, Settings, UserCircle, Users } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, Settings, UserCircle, Users } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -20,6 +20,11 @@ export function SidebarNav() {
       title: t('properties'),
       href: '/dashboard/properties',
       icon: Building2,
+    },
+    {
+      title: t('development'),
+      href: '/dashboard/development',
+      icon: Construction,
     },
     {
       title: t('analytics'),
@@ -79,7 +84,9 @@ export function SidebarNav() {
       </div>
       <nav className="space-y-1 px-3 flex-1">
         {items.map((item) => {
-          const isActive = location.pathname === item.href;
+          // Check if current path starts with item.href to highlight nested routes
+          const isActive = location.pathname === item.href || 
+                          (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
           return (
             <Link
               key={item.href}

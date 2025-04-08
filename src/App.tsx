@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Properties from "./pages/Properties";
 import Analytics from "./pages/Analytics";
 import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
 import Network from "./pages/Network";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/dashboard/development/:id" element={<DevelopmentDetail />} />
               <Route path="/dashboard/analytics" element={<Analytics />} />
               <Route path="/dashboard/events" element={<Events />} />
+              <Route path="/dashboard/events/:id" element={<EventDetail />} />
               <Route path="/dashboard/network" element={<Network />} />
               <Route path="/dashboard/profile" element={<Profile />} />
               <Route path="/dashboard/settings" element={<Settings />} />
