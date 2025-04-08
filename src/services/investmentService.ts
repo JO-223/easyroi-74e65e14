@@ -2,19 +2,35 @@
 import { supabase } from "@/integrations/supabase/client";
 import { UserInvestment } from "@/types/property";
 
-export const fetchUserInvestment = async (userId: string) => {
-  const { data, error } = await supabase
-    .from('user_investments')
-    .select('*')
-    .eq('user_id', userId)
-    .single();
-  
-  if (error) {
+export const fetchUserInvestment = async (userId: string): Promise<UserInvestment | null> => {
+  try {
+    // Usando una query generica per evitare errori di tipo
+    const { data, error } = await supabase
+      .from('user_investments')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+    
+    if (error) {
+      console.error('Errore nel recupero degli investimenti:', error);
+      return null;
+    }
+    
+    if (!data) return null;
+    
+    // Conversione esplicita dei dati al tipo UserInvestment
+    const investment: UserInvestment = {
+      id: data.id,
+      user_id: data.user_id,
+      total_investment: data.total_investment,
+      last_updated: data.last_updated
+    };
+    
+    return investment;
+  } catch (error) {
     console.error('Errore nel recupero degli investimenti:', error);
     return null;
   }
-  
-  return data as UserInvestment;
 };
 
 export const calculateRequiredForNextLevel = (currentInvestment: number) => {
