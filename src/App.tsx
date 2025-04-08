@@ -17,6 +17,8 @@ import Settings from "./pages/Settings";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Development from "./pages/Development";
+import DevelopmentDetail from "./pages/DevelopmentDetail";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -43,6 +45,8 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/properties" element={<Properties />} />
+              <Route path="/dashboard/development" element={<Development />} />
+              <Route path="/dashboard/development/:id" element={<DevelopmentDetail />} />
               <Route path="/dashboard/analytics" element={<Analytics />} />
               <Route path="/dashboard/events" element={<Events />} />
               <Route path="/dashboard/network" element={<Network />} />

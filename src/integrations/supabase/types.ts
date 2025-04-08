@@ -69,6 +69,65 @@ export type Database = {
         }
         Relationships: []
       }
+      development_projects: {
+        Row: {
+          available_units: number
+          construction_stage: string
+          created_at: string | null
+          description: string
+          expected_completion: string
+          expected_roi: number | null
+          id: string
+          investor_level: string
+          location_id: string
+          min_investment: number | null
+          name: string
+          progress_percentage: number
+          total_units: number
+          updated_at: string | null
+        }
+        Insert: {
+          available_units: number
+          construction_stage: string
+          created_at?: string | null
+          description: string
+          expected_completion: string
+          expected_roi?: number | null
+          id?: string
+          investor_level?: string
+          location_id: string
+          min_investment?: number | null
+          name: string
+          progress_percentage: number
+          total_units: number
+          updated_at?: string | null
+        }
+        Update: {
+          available_units?: number
+          construction_stage?: string
+          created_at?: string | null
+          description?: string
+          expected_completion?: string
+          expected_roi?: number | null
+          id?: string
+          investor_level?: string
+          location_id?: string
+          min_investment?: number | null
+          name?: string
+          progress_percentage?: number
+          total_units?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "development_projects_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "property_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       display_settings: {
         Row: {
           currency: string | null
@@ -219,6 +278,38 @@ export type Database = {
           phone?: string | null
         }
         Relationships: []
+      }
+      project_images: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_primary: boolean | null
+          project_id: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_primary?: boolean | null
+          project_id: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_primary?: boolean | null
+          project_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_images_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "development_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       properties: {
         Row: {
