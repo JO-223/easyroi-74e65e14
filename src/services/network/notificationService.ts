@@ -18,7 +18,7 @@ export async function getNotifications() {
       
     if (error) throw error;
     
-    return (data as any[]) || [];
+    return data || [];
   } catch (error) {
     console.error('Error getting notifications:', error);
     return [];

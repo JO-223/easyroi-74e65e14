@@ -54,7 +54,7 @@ export async function getConversation(otherUserId: string): Promise<MessageData[
       }
     );
     
-    return (data as MessageData[]) || [];
+    return data || [];
   } catch (error) {
     console.error('Error getting conversation:', error);
     return [];

@@ -75,7 +75,7 @@ export async function getNetworkInvestors(): Promise<NetworkInvestor[]> {
     }
     
     // Return the RPC result directly if it worked
-    return (data as NetworkInvestor[]) || [];
+    return data || [];
   } catch (error) {
     console.error('Error fetching network investors:', error);
     return [];
