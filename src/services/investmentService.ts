@@ -4,12 +4,12 @@ import { UserInvestment } from "@/types/property";
 
 export const fetchUserInvestment = async (userId: string): Promise<UserInvestment | null> => {
   try {
-    // Use a more generic approach to avoid TypeScript errors with tables not in the types
+    // Use a more generic approach with any type to avoid TypeScript errors
     const { data, error } = await supabase
       .from('user_investments')
       .select('*')
       .eq('user_id', userId)
-      .single();
+      .single() as { data: any, error: any };
     
     if (error) {
       console.error('Error fetching investments:', error);

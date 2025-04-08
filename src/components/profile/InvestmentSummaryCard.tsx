@@ -11,7 +11,7 @@ import { Building2 } from "lucide-react";
 import { BadgeLevel } from "@/components/ui/badge-level";
 import { supabase } from "@/integrations/supabase/client";
 import { UserInvestment } from "@/types/property";
-import { calculateRequiredForNextLevel } from "@/services/investmentService";
+import { calculateRequiredForNextLevel, fetchUserInvestment } from "@/services/investmentService";
 import { Progress } from "@/components/ui/progress";
 
 type SummaryItemProps = {
@@ -37,21 +37,9 @@ const InvestmentSummary = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          const { data, error } = await supabase
-            .from('user_investments')
-            .select('*')
-            .eq('user_id', user.id)
-            .single();
-          
-          if (error) {
-            console.error("Error fetching investment:", error);
-          } else if (data) {
-            setInvestment({
-              id: data.id,
-              user_id: data.user_id,
-              total_investment: data.total_investment,
-              last_updated: data.last_updated
-            });
+          const investmentData = await fetchUserInvestment(user.id);
+          if (investmentData) {
+            setInvestment(investmentData);
           }
         }
       } catch (error) {
