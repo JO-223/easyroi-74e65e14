@@ -4,7 +4,7 @@ import { UserInvestment } from "@/types/property";
 
 export const fetchUserInvestment = async (userId: string): Promise<UserInvestment | null> => {
   try {
-    // Usando una query generica per evitare errori di tipo
+    // Use a more generic approach to avoid TypeScript errors with tables not in the types
     const { data, error } = await supabase
       .from('user_investments')
       .select('*')
@@ -18,15 +18,13 @@ export const fetchUserInvestment = async (userId: string): Promise<UserInvestmen
     
     if (!data) return null;
     
-    // Conversione esplicita dei dati al tipo UserInvestment
-    const investment: UserInvestment = {
+    // Explicit type assertion to UserInvestment
+    return {
       id: data.id,
       user_id: data.user_id,
       total_investment: data.total_investment,
       last_updated: data.last_updated
     };
-    
-    return investment;
   } catch (error) {
     console.error('Errore nel recupero degli investimenti:', error);
     return null;
