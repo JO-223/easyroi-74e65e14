@@ -12,7 +12,7 @@ export const fetchUserInvestment = async (userId: string): Promise<UserInvestmen
       .single();
     
     if (error) {
-      console.error('Errore nel recupero degli investimenti:', error);
+      console.error('Error fetching investments:', error);
       return null;
     }
     
@@ -26,7 +26,7 @@ export const fetchUserInvestment = async (userId: string): Promise<UserInvestmen
       last_updated: data.last_updated
     };
   } catch (error) {
-    console.error('Errore nel recupero degli investimenti:', error);
+    console.error('Error fetching investments:', error);
     return null;
   }
 };
