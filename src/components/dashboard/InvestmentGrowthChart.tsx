@@ -12,16 +12,18 @@ import {
   ResponsiveContainer
 } from "recharts";
 import { InvestmentGrowth } from "@/services/dashboard/dashboardService";
+import { cn } from "@/lib/utils";
 
 interface InvestmentGrowthChartProps {
   data: InvestmentGrowth[];
+  className?: string;
 }
 
-export const InvestmentGrowthChart = ({ data }: InvestmentGrowthChartProps) => {
+export const InvestmentGrowthChart = ({ data, className }: InvestmentGrowthChartProps) => {
   const { t } = useLanguage();
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>{t('investmentGrowth')}</CardTitle>
       </CardHeader>

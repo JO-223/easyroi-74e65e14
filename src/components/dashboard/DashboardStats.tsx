@@ -35,7 +35,9 @@ const StatItem = ({ title, value, change, isPositive, icon: Icon }: StatItemProp
 };
 
 interface DashboardStatsProps {
-  stats: DashboardStatsType;
+  stats: DashboardStatsType & {
+    formattedInvestment: string;
+  };
 }
 
 export const DashboardStats = ({ stats }: DashboardStatsProps) => {
