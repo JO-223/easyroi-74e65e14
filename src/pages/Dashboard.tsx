@@ -51,39 +51,6 @@ const Dashboard = () => {
         setInvestmentGrowth(dashboardData.investmentGrowth);
         setPortfolioAllocation(dashboardData.portfolioAllocation);
         setPropertyList(dashboardData.properties);
-      } else {
-        // If no data available, use fallback demo data
-        setStats({
-          totalInvestment: 2450000,
-          investmentChange: 12.5,
-          propertiesCount: 8,
-          propertiesChange: 1,
-          averageRoi: 7.4,
-          roiChange: 0.6,
-          eventsCount: 3
-        });
-        
-        setInvestmentGrowth([
-          { name: "Jan", value: 12000 },
-          { name: "Feb", value: 19000 },
-          { name: "Mar", value: 16000 },
-          { name: "Apr", value: 25000 },
-          { name: "May", value: 28000 },
-          { name: "Jun", value: 20000 },
-        ]);
-        
-        setPortfolioAllocation([
-          { name: "Italy", value: 45 },
-          { name: "Dubai", value: 35 },
-          { name: "Spain", value: 20 },
-        ]);
-        
-        setPropertyList([
-          { id: "1", name: "Villa Toscana", location: "Florence, Italy", roi: "8.2%", value: "€650,000", status: t('active') },
-          { id: "2", name: "Marina Apartments", location: "Dubai, UAE", roi: "7.5%", value: "€820,000", status: t('active') },
-          { id: "3", name: "Vatican View", location: "Rome, Italy", roi: "6.9%", value: "€540,000", status: t('active') },
-          { id: "4", name: "Plaza Investment", location: "Madrid, Spain", roi: "7.2%", value: "€440,000", status: t('development') },
-        ]);
       }
       
       setIsLoading(false);
@@ -200,15 +167,21 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={investmentGrowth} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `€${value / 1000}k`} />
-                    <Tooltip formatter={(value) => [`€${value}`, "Value"]} />
-                    <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                {investmentGrowth.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={investmentGrowth} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                      <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `€${value / 1000}k`} />
+                      <Tooltip formatter={(value) => [`€${value}`, "Value"]} />
+                      <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-muted-foreground">
+                    {t('noDataAvailable')}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -219,25 +192,31 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="h-64 flex items-center justify-center">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={portfolioAllocation}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {portfolioAllocation.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
-                  </PieChart>
-                </ResponsiveContainer>
+                {portfolioAllocation.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={portfolioAllocation}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={5}
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {portfolioAllocation.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-muted-foreground">
+                    {t('noDataAvailable')}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -249,34 +228,40 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">{t('property')}</th>
-                    <th className="text-left py-3 px-4 font-medium">{t('location')}</th>
-                    <th className="text-left py-3 px-4 font-medium">{t('roi')}</th>
-                    <th className="text-left py-3 px-4 font-medium">{t('value')}</th>
-                    <th className="text-left py-3 px-4 font-medium">{t('status')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {propertyList.map((property) => (
-                    <tr key={property.id} className="border-b hover:bg-muted/50">
-                      <td className="py-3 px-4">{property.name}</td>
-                      <td className="py-3 px-4">{property.location}</td>
-                      <td className="py-3 px-4 text-easyroi-success">{property.roi}</td>
-                      <td className="py-3 px-4">{property.value}</td>
-                      <td className="py-3 px-4">
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          property.status === t('active') ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
-                        }`}>
-                          {property.status}
-                        </span>
-                      </td>
+              {propertyList.length > 0 ? (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4 font-medium">{t('property')}</th>
+                      <th className="text-left py-3 px-4 font-medium">{t('location')}</th>
+                      <th className="text-left py-3 px-4 font-medium">{t('roi')}</th>
+                      <th className="text-left py-3 px-4 font-medium">{t('value')}</th>
+                      <th className="text-left py-3 px-4 font-medium">{t('status')}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {propertyList.map((property) => (
+                      <tr key={property.id} className="border-b hover:bg-muted/50">
+                        <td className="py-3 px-4">{property.name}</td>
+                        <td className="py-3 px-4">{property.location}</td>
+                        <td className="py-3 px-4 text-easyroi-success">{property.roi}</td>
+                        <td className="py-3 px-4">{property.value}</td>
+                        <td className="py-3 px-4">
+                          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            property.status === t('active') ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
+                          }`}>
+                            {property.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="py-8 text-center text-muted-foreground">
+                  {t('noPropertiesFound')}
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

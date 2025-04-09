@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -28,6 +29,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -40,18 +42,49 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
+    setAuthError(null);
     
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      toast({
-        title: t('loginSuccessTitle'),
-        description: t('loginSuccessMsg'),
+    try {
+      // Use demo account for easy access
+      let email = values.email;
+      let password = values.password;
+      
+      // Allow demo@easyroi.com to log in without password for demo purposes
+      if (email.toLowerCase() === 'demo@easyroi.com') {
+        password = 'demo123456'; // Set a default password for demo account
+      }
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
       });
-      navigate("/dashboard");
-    }, 1500);
+      
+      if (error) {
+        setAuthError(error.message);
+        toast({
+          title: t('loginFailedTitle'),
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data.session) {
+        toast({
+          title: t('loginSuccessTitle'),
+          description: t('loginSuccessMsg'),
+        });
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast({
+        title: t('loginFailedTitle'),
+        description: t('loginErrorMsg'),
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -73,6 +106,15 @@ const Login = () => {
               </AlertDescription>
             </Alert>
             
+            {authError && (
+              <Alert className="mb-6 bg-red-50 text-red-800 border-red-200">
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <AlertDescription>
+                  {authError}
+                </AlertDescription>
+              </Alert>
+            )}
+            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -82,7 +124,7 @@ const Login = () => {
                     <FormItem>
                       <FormLabel>{t('email')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="your@email.com" {...field} />
+                        <Input placeholder="demo@easyroi.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -128,9 +170,15 @@ const Login = () => {
                   className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy shadow-md transition-all duration-300 flex items-center"
                 >
                   {t('scheduleMeeting')}
-                  <ArrowRight size={16} />
+                  <ArrowRight size={16} className="ml-2" />
                 </Button>
               </Link>
+            </div>
+            
+            <div className="mt-6 text-center border-t pt-4">
+              <p className="text-xs text-gray-500">
+                Per il demo utilizza: <strong>demo@easyroi.com</strong> (senza password)
+              </p>
             </div>
           </div>
         </div>

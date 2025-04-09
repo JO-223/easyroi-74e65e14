@@ -127,7 +127,7 @@ export const fetchDashboardData = async (): Promise<{
     
     // Get locations for properties
     const locationIds = propertyList?.map(property => property.location_id) || [];
-    let locations: Record<string, any> = {};
+    let locations: Record<string, string> = {};
     
     if (locationIds.length > 0) {
       const { data: locationData, error: locationError } = await supabase
@@ -141,41 +141,41 @@ export const fetchDashboardData = async (): Promise<{
         locations = locationData.reduce((acc, loc) => ({
           ...acc,
           [loc.id]: `${loc.city}, ${loc.country}`
-        }), {});
+        }), {} as Record<string, string>);
       }
     }
     
     // Format property list with location data
-    const formattedProperties = propertyList?.map(property => ({
-      id: property.id,
-      name: property.name,
-      location: locations[property.location_id] || 'Unknown',
+    const formattedProperties: PropertyListItem[] = propertyList?.map(property => ({
+      id: property.id as string,
+      name: property.name as string,
+      location: locations[property.location_id as string] || 'Unknown',
       roi: `${property.roi_percentage}%`,
       value: `€${Number(property.price).toLocaleString()}`,
-      status: property.status
+      status: property.status as string
     })) || [];
     
     // Format investment growth data
-    const formattedGrowthData = growthData?.map(item => ({
-      name: item.month,
-      value: item.value
+    const formattedGrowthData: InvestmentGrowthData = growthData?.map(item => ({
+      name: item.month as string,
+      value: Number(item.value)
     })) || [];
     
     // Format portfolio allocation data
-    const formattedAllocationData = allocationData?.map(item => ({
-      name: item.location,
-      value: item.percentage
+    const formattedAllocationData: PortfolioAllocation = allocationData?.map(item => ({
+      name: item.location as string,
+      value: Number(item.percentage)
     })) || [];
 
     return {
       stats: {
-        totalInvestment: investmentData?.total_investment || 0,
-        investmentChange: investmentData?.investment_change_percentage || 0,
-        propertiesCount: propertiesData?.count || 0,
-        propertiesChange: propertiesData?.change || 0,
-        averageRoi: roiData?.average_roi || 0,
-        roiChange: roiData?.roi_change || 0,
-        eventsCount: eventsData?.count || 0
+        totalInvestment: Number(investmentData?.total_investment || 0),
+        investmentChange: Number(investmentData?.investment_change_percentage || 0),
+        propertiesCount: Number(propertiesData?.count || 0),
+        propertiesChange: Number(propertiesData?.change || 0),
+        averageRoi: Number(roiData?.average_roi || 0),
+        roiChange: Number(roiData?.roi_change || 0),
+        eventsCount: Number(eventsData?.count || 0)
       },
       investmentGrowth: formattedGrowthData,
       portfolioAllocation: formattedAllocationData,

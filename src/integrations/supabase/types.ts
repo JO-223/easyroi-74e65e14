@@ -595,6 +595,7 @@ export type Database = {
           status: string
           type_id: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           bathrooms: number
@@ -615,6 +616,7 @@ export type Database = {
           status?: string
           type_id: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           bathrooms?: number
@@ -635,6 +637,7 @@ export type Database = {
           status?: string
           type_id?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -824,6 +827,147 @@ export type Database = {
           },
         ]
       }
+      user_events: {
+        Row: {
+          count: number
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_investment_growth: {
+        Row: {
+          id: string
+          month: string
+          month_index: number
+          user_id: string
+          value: number
+          year: number
+        }
+        Insert: {
+          id?: string
+          month: string
+          month_index: number
+          user_id: string
+          value?: number
+          year?: number
+        }
+        Update: {
+          id?: string
+          month?: string
+          month_index?: number
+          user_id?: string
+          value?: number
+          year?: number
+        }
+        Relationships: []
+      }
+      user_investments: {
+        Row: {
+          id: string
+          investment_change_percentage: number
+          total_investment: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          investment_change_percentage?: number
+          total_investment?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          investment_change_percentage?: number
+          total_investment?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_portfolio_allocation: {
+        Row: {
+          id: string
+          location: string
+          percentage: number
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          location: string
+          percentage?: number
+          user_id: string
+        }
+        Update: {
+          id?: string
+          location?: string
+          percentage?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_properties: {
+        Row: {
+          change: number
+          count: number
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          change?: number
+          count?: number
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          change?: number
+          count?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roi: {
+        Row: {
+          average_roi: number
+          id: string
+          roi_change: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          average_roi?: number
+          id?: string
+          roi_change?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          average_roi?: number
+          id?: string
+          roi_change?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -959,6 +1103,10 @@ export type Database = {
       update_profile_visibility: {
         Args: { p_user_id: string; p_visibility: string }
         Returns: undefined
+      }
+      update_user_investment: {
+        Args: { p_user_id: string; p_investment_amount: number }
+        Returns: boolean
       }
     }
     Enums: {
