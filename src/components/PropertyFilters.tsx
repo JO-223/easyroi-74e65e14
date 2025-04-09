@@ -181,7 +181,7 @@ export function PropertyFilters({
             <CollapsibleTrigger asChild>
               <Button variant="ghost" size="sm">
                 <ChevronDown className={`h-5 w-5 transition-transform ${filtersOpen ? 'rotate-180' : ''}`} />
-                <span className="ml-1">{filtersOpen ? t('nascondiAmenità') : t('mostraAmenità')}</span>
+                <span className="ml-1">{filtersOpen ? t('hideAmenities') : t('showAmenities')}</span>
               </Button>
             </CollapsibleTrigger>
           </div>

@@ -117,7 +117,6 @@ const es = {
   accountSettings: "Configuración de Cuenta",
   accountSettingsDesc: "Actualiza la información de tu cuenta personal",
   name: "Nombre",
-  email: "Correo Electrónico",
   updateAccount: "Actualizar Cuenta",
   displaySettings: "Configuración de Visualización",
   displaySettingsDesc: "Actualiza la apariencia y visualización de información de EasyROI",

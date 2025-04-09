@@ -173,7 +173,6 @@ const it = {
   investorPortal: "Portale Investitori",
   investorPortalDesc: "Accedi a opportunità di investimento esclusive",
   privatePortalAlert: "Questo è un portale privato riservato agli investitori verificati",
-  password: "Password",
   forgotPassword: "Password Dimenticata?",
   signingIn: "Accesso in corso...",
   signIn: "Accedi",
@@ -302,6 +301,9 @@ const it = {
   joinOurCommunity: "Unisciti alla Nostra Comunità Esclusiva",
   joinOurCommunityText: "Diventa parte della nostra rete di investitori sofisticati e ottieni accesso a opportunità di investimento premium.",
   loginCta: "Accedi al Portale",
+  
+  // Password field
+  password: "Password",
 };
 
 export default it;

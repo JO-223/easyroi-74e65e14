@@ -239,7 +239,6 @@ const en = {
   completed: "Completed",
   progressRange: "Progress Range",
   projectFilter: "Project Filter",
-  applyFilters: "Apply Filters",
   noProjectsFound: "No projects found",
   tryDifferentFilters: "Try different filters",
   projectDetails: "Project Details",

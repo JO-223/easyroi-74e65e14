@@ -173,7 +173,6 @@ const de = {
   investorPortal: "Investorenportal",
   investorPortalDesc: "Zugang zu exklusiven Investitionsmöglichkeiten",
   privatePortalAlert: "Dies ist ein privates Portal nur für verifizierte Investoren",
-  email: "E-Mail",
   password: "Passwort",
   forgotPassword: "Passwort vergessen?",
   signingIn: "Anmeldung läuft...",
