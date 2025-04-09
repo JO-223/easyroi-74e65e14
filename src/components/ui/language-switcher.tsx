@@ -27,7 +27,9 @@ export function LanguageSwitcher({ variant = "default", className = "" }: Langua
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
-  const currentLanguage = languageFlags[language];
+  // Safety check to ensure the language is valid before accessing languageFlags
+  const safeLanguage = Object.keys(languageFlags).includes(language) ? language : "en";
+  const currentLanguage = languageFlags[safeLanguage];
 
   const handleLanguageChange = (selectedLang: Language) => {
     setLanguage(selectedLang);
