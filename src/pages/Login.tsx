@@ -77,26 +77,44 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const success = await loginDemoPlatinumUser();
+      const result = await loginDemoPlatinumUser();
       
-      if (success) {
+      if (result.success) {
         toast({
           title: "Demo Login Successful",
           description: "Welcome to your EasyROI dashboard",
         });
         navigate("/dashboard");
       } else {
+        // Show the specific error message from Supabase
+        let errorMessage = "Please ensure the demo account is properly configured in Supabase.";
+        
+        // Customize error message based on the error type
+        if (result.error) {
+          if (result.error.includes("Invalid login credentials")) {
+            errorMessage = "Invalid credentials for demo account. The password may have been changed.";
+          } else if (result.error.includes("User not found")) {
+            errorMessage = "Demo user not found in Supabase. Please create the account.";
+          } else if (result.error.includes("Email not confirmed")) {
+            errorMessage = "Demo account email is not verified in Supabase.";
+          } else {
+            errorMessage = `Demo login error: ${result.error}`;
+          }
+        }
+        
+        console.error("Demo login error:", result.error);
+        
         toast({
           title: "Demo Login Failed",
-          description: "Please ensure the demo account is properly configured in Supabase.",
+          description: errorMessage,
           variant: "destructive"
         });
       }
     } catch (error) {
-      console.error("Demo login error:", error);
+      console.error("Demo login exception:", error);
       toast({
         title: "Demo Login Error",
-        description: "There was an issue logging in with the demo account.",
+        description: "There was an unexpected issue logging in with the demo account.",
         variant: "destructive"
       });
     } finally {
