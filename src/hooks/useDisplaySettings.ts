@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
+import { useLanguage, Language, Currency, Timezone, DisplaySettings } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 
 // Use 'export type' for re-exporting types when isolatedModules is enabled
