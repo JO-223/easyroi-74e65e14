@@ -7,13 +7,24 @@ import de from '@/locales/de';
 import { TranslationKey, isValidTranslationKey } from '@/utils/translationUtils';
 
 export type Language = 'en' | 'it' | 'es' | 'de';
+export type Currency = 'usd' | 'eur' | 'gbp';
+export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
+
 type Translations = Record<Language, Record<string, string>>;
+
+export interface DisplaySettings {
+  language: Language;
+  currency: Currency;
+  timezone: Timezone;
+}
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: TranslationKey) => string;
   supportedLanguages: { code: Language; name: string }[];
+  displaySettings: DisplaySettings;
+  updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
 }
 
 const translations: Translations = { en, it, es, de };
@@ -36,13 +47,46 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       : 'en';
   });
 
+  // Initialize display settings
+  const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(() => {
+    const savedSettings = localStorage.getItem('displaySettings');
+    if (savedSettings) {
+      try {
+        const parsed = JSON.parse(savedSettings);
+        return {
+          language: (supportedLanguages.some(l => l.code === parsed.language)) ? parsed.language : 'en',
+          currency: ['usd', 'eur', 'gbp'].includes(parsed.currency) ? parsed.currency : 'usd',
+          timezone: ['europe_rome', 'europe_london', 'america_newyork', 'europe_zurich'].includes(parsed.timezone) 
+            ? parsed.timezone : 'europe_london'
+        };
+      } catch (e) {
+        console.error("Error parsing display settings", e);
+        return { language: 'en', currency: 'usd', timezone: 'europe_london' };
+      }
+    }
+    return { language: language, currency: 'usd', timezone: 'europe_london' };
+  });
+
   useEffect(() => {
     localStorage.setItem('language', language);
     document.documentElement.lang = language;
   }, [language]);
 
+  useEffect(() => {
+    localStorage.setItem('displaySettings', JSON.stringify(displaySettings));
+    document.documentElement.lang = displaySettings.language;
+  }, [displaySettings]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
+    setDisplaySettings(prev => ({ ...prev, language: lang }));
+  };
+
+  const updateDisplaySettings = (settings: Partial<DisplaySettings>) => {
+    setDisplaySettings(prev => ({ ...prev, ...settings }));
+    if (settings.language) {
+      setLanguageState(settings.language);
+    }
   };
 
   const t = (key: TranslationKey): string => {
@@ -61,6 +105,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     setLanguage,
     t,
     supportedLanguages,
+    displaySettings,
+    updateDisplaySettings,
   };
 
   return (

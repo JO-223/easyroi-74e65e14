@@ -1,25 +1,19 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
+import { useLanguage, Language, Currency, Timezone, DisplaySettings } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 
-export interface DisplaySettings {
-  language: Language;
-  currency: Currency;
-  timezone: Timezone;
-  theme: string;
-}
+export { DisplaySettings };
 
 export function useDisplaySettings() {
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
-  const { displaySettings: contextDisplaySettings, updateDisplaySettings, t } = useLanguage();
-  const [displaySettings, setDisplaySettings] = useState<DisplaySettings>({
-    language: contextDisplaySettings.language,
-    currency: contextDisplaySettings.currency,
-    timezone: contextDisplaySettings.timezone,
-    theme: "light",
+  const { language, displaySettings, updateDisplaySettings, t } = useLanguage();
+  const [localDisplaySettings, setLocalDisplaySettings] = useState<DisplaySettings>({
+    language: displaySettings.language,
+    currency: displaySettings.currency,
+    timezone: displaySettings.timezone,
   });
 
   useEffect(() => {
@@ -40,13 +34,12 @@ export function useDisplaySettings() {
           
           if (displayData) {
             const updatedSettings = {
-              language: displayData.language as Language || contextDisplaySettings.language,
-              currency: displayData.currency as Currency || contextDisplaySettings.currency,
-              timezone: displayData.timezone as Timezone || contextDisplaySettings.timezone,
-              theme: "light"
+              language: displayData.language as Language || displaySettings.language,
+              currency: displayData.currency as Currency || displaySettings.currency,
+              timezone: displayData.timezone as Timezone || displaySettings.timezone,
             };
             
-            setDisplaySettings(updatedSettings);
+            setLocalDisplaySettings(updatedSettings);
             updateDisplaySettings({
               language: updatedSettings.language,
               currency: updatedSettings.currency,
@@ -60,10 +53,10 @@ export function useDisplaySettings() {
     };
     
     loadDisplaySettings();
-  }, [contextDisplaySettings, updateDisplaySettings]);
+  }, [displaySettings, updateDisplaySettings]);
 
   const updateDisplaySettingsField = (field: keyof DisplaySettings, value: any) => {
-    setDisplaySettings(prev => ({
+    setLocalDisplaySettings(prev => ({
       ...prev,
       [field]: value
     }));
@@ -80,9 +73,9 @@ export function useDisplaySettings() {
         .from('display_settings')
         .upsert({
           profile_id: user.id,
-          language: displaySettings.language,
-          currency: displaySettings.currency,
-          timezone: displaySettings.timezone
+          language: localDisplaySettings.language,
+          currency: localDisplaySettings.currency,
+          timezone: localDisplaySettings.timezone
         }, {
           onConflict: 'profile_id'
         });
@@ -90,9 +83,9 @@ export function useDisplaySettings() {
       if (error) throw error;
       
       updateDisplaySettings({
-        language: displaySettings.language,
-        currency: displaySettings.currency,
-        timezone: displaySettings.timezone
+        language: localDisplaySettings.language,
+        currency: localDisplaySettings.currency,
+        timezone: localDisplaySettings.timezone
       });
       
       toast({
@@ -115,7 +108,7 @@ export function useDisplaySettings() {
   };
 
   return {
-    displaySettings,
+    displaySettings: localDisplaySettings,
     isSaving,
     updateDisplaySettingsField,
     saveDisplaySettings

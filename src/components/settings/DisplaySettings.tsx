@@ -45,10 +45,10 @@ export function DisplaySettings({
               <SelectValue placeholder={t('selectLanguage')} />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              <SelectItem value="english">English</SelectItem>
-              <SelectItem value="italian">Italiano</SelectItem>
-              <SelectItem value="spanish">Español</SelectItem>
-              <SelectItem value="german">Deutsch</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="it">Italiano</SelectItem>
+              <SelectItem value="es">Español</SelectItem>
+              <SelectItem value="de">Deutsch</SelectItem>
             </SelectContent>
           </Select>
         </div>

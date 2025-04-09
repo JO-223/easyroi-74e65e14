@@ -11,10 +11,10 @@ import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 
 const languageFlags: Record<Language, { flag: string; name: string }> = {
-  english: { flag: "🇬🇧", name: "English" },
-  italian: { flag: "🇮🇹", name: "Italiano" },
-  spanish: { flag: "🇪🇸", name: "Español" },
-  german: { flag: "🇩🇪", name: "Deutsch" },
+  en: { flag: "🇬🇧", name: "English" },
+  it: { flag: "🇮🇹", name: "Italiano" },
+  es: { flag: "🇪🇸", name: "Español" },
+  de: { flag: "🇩🇪", name: "Deutsch" },
 };
 
 interface LanguageSwitcherProps {
@@ -23,25 +23,26 @@ interface LanguageSwitcherProps {
 }
 
 export function LanguageSwitcher({ variant = "default", className = "" }: LanguageSwitcherProps) {
-  const { displaySettings, updateDisplaySettings, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
-  const currentLanguage = languageFlags[displaySettings.language as Language];
+  const currentLanguage = languageFlags[language];
 
-  const handleLanguageChange = (language: Language) => {
-    updateDisplaySettings({ language });
+  const handleLanguageChange = (selectedLang: Language) => {
+    setLanguage(selectedLang);
     setOpen(false);
+    
+    const messages = {
+      'en': "Language changed to English",
+      'it': "Lingua cambiata in Italiano",
+      'es': "Idioma cambiado a Español",
+      'de': "Sprache auf Deutsch geändert"
+    };
     
     toast({
       title: t('language'),
-      description: language === 'english' 
-        ? "Language changed to English" 
-        : language === 'italian' 
-        ? "Lingua cambiata in Italiano" 
-        : language === 'spanish' 
-        ? "Idioma cambiado a Español" 
-        : "Sprache auf Deutsch geändert",
+      description: messages[selectedLang]
     });
   };
 
