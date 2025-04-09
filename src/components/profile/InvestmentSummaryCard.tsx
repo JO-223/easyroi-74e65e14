@@ -56,14 +56,19 @@ const InvestmentSummary = () => {
           .eq('user_id', user.id)
           .single();
         
-        // Calculate years investing based on join date
+        // Get user join date to calculate years investing
         const { data: profileData } = await supabase
           .from('profiles')
           .select('join_date')
           .eq('id', user.id)
           .single();
         
-        const joinDate = profileData?.join_date ? new Date(profileData.join_date as string) : new Date();
+        // Safely parse the join date
+        let joinDate = new Date();
+        if (profileData?.join_date) {
+          joinDate = new Date(profileData.join_date as string);
+        }
+        
         const currentDate = new Date();
         const yearsInvesting = Math.max(
           Math.floor((currentDate.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 365)),

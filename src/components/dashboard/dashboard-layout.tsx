@@ -54,10 +54,10 @@ export function DashboardLayout({
         
         if (data) {
           setProfileData({
-            firstName: data.first_name || "",
-            lastName: data.last_name || "",
-            email: data.email || "",
-            level: data.level
+            firstName: data.first_name as string || "",
+            lastName: data.last_name as string || "",
+            email: data.email as string || "",
+            level: data.level as string | null
           });
         }
       } catch (error) {
