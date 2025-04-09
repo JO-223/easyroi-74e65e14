@@ -20,7 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertTriangle, ArrowRight, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLanguage } from '@/contexts/LanguageContext';
-import { loginUser } from "@/services/auth/authService";
+import { loginUser, loginDemoPlatinumUser } from "@/services/auth/authService";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -45,19 +45,19 @@ const Login = () => {
     setLoading(true);
     
     try {
-      // Use our new auth service for login
+      // Use our auth service for login
       const success = await loginUser(values.email, values.password);
       
       if (success) {
         toast({
-          title: t('loginSuccessTitle'),
-          description: t('loginSuccessMsg'),
+          title: t('loginSuccessTitle') || "Login Successful",
+          description: t('loginSuccessMsg') || "Welcome to your dashboard",
         });
         navigate("/dashboard");
       } else {
         toast({
-          title: t('loginErrorTitle') || "Login Error",
-          description: t('loginErrorMsg') || "Invalid credentials. Please try again.",
+          title: "Login Error",
+          description: "Invalid credentials. Please try again.",
           variant: "destructive"
         });
       }
@@ -74,13 +74,34 @@ const Login = () => {
   }
 
   const handleDemoLogin = async () => {
-    form.setValue('email', 'demo.platinum@easyroi.com');
-    form.setValue('password', 'EasyROI2025!');
+    setLoading(true);
     
-    await onSubmit({
-      email: 'demo.platinum@easyroi.com',
-      password: 'EasyROI2025!'
-    });
+    try {
+      const success = await loginDemoPlatinumUser();
+      
+      if (success) {
+        toast({
+          title: "Demo Login Successful",
+          description: "Welcome to your EasyROI dashboard",
+        });
+        navigate("/dashboard");
+      } else {
+        toast({
+          title: "Demo Login Failed",
+          description: "Please ensure the demo account is properly configured in Supabase.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error("Demo login error:", error);
+      toast({
+        title: "Demo Login Error",
+        description: "There was an issue logging in with the demo account.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
