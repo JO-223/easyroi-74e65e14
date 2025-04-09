@@ -20,19 +20,14 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLanguage } from '@/contexts/LanguageContext';
-import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string(),
+  password: z.string().min(1, "Password is required"),
 });
-
-const DEMO_EMAIL = 'demo@easyroi.com';
-const DEMO_PASSWORD = 'demo123456';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -45,122 +40,18 @@ const Login = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    setAuthError(null);
     
-    try {
-      let email = values.email;
-      let password = values.password;
-      
-      // Gestione login demo
-      if (email.toLowerCase() === DEMO_EMAIL) {
-        // Per l'account demo, accetta qualsiasi password o usa la password predefinita
-        if (!password || password.trim() === '') {
-          password = DEMO_PASSWORD;
-        }
-        
-        console.log("Tentativo di accesso con account demo");
-        
-        // Prova a effettuare il login
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password: DEMO_PASSWORD // Usa sempre la password demo predefinita per l'account demo
-        });
-        
-        // Se il login fallisce perché l'account non esiste, registralo automaticamente
-        if (signInError && signInError.message.includes('Invalid login credentials')) {
-          console.log("Account demo non trovato, creazione in corso...");
-          
-          // Registra l'account demo
-          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-            email: DEMO_EMAIL,
-            password: DEMO_PASSWORD,
-            options: {
-              data: {
-                first_name: 'Demo',
-                last_name: 'User',
-              }
-            }
-          });
-          
-          if (signUpError) {
-            setAuthError(signUpError.message);
-            toast({
-              title: t('registrationFailedTitle'),
-              description: signUpError.message,
-              variant: "destructive",
-            });
-          } else {
-            // Dopo la registrazione, prova a effettuare il login
-            const { data, error } = await supabase.auth.signInWithPassword({
-              email: DEMO_EMAIL,
-              password: DEMO_PASSWORD
-            });
-            
-            if (error) {
-              setAuthError(error.message);
-              toast({
-                title: t('loginFailedTitle'),
-                description: error.message,
-                variant: "destructive",
-              });
-            } else if (data.session) {
-              toast({
-                title: t('loginSuccessTitle'),
-                description: t('loginSuccessMsg'),
-              });
-              navigate("/dashboard");
-            }
-          }
-        } else if (signInError) {
-          // Se c'è un altro tipo di errore durante il login
-          setAuthError(signInError.message);
-          toast({
-            title: t('loginFailedTitle'),
-            description: signInError.message,
-            variant: "destructive",
-          });
-        } else if (signInData.session) {
-          // Login riuscito
-          toast({
-            title: t('loginSuccessTitle'),
-            description: t('loginSuccessMsg'),
-          });
-          navigate("/dashboard");
-        }
-      } else {
-        // Login per account non demo
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
-        if (error) {
-          setAuthError(error.message);
-          toast({
-            title: t('loginFailedTitle'),
-            description: error.message,
-            variant: "destructive",
-          });
-        } else if (data.session) {
-          toast({
-            title: t('loginSuccessTitle'),
-            description: t('loginSuccessMsg'),
-          });
-          navigate("/dashboard");
-        }
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast({
-        title: t('loginFailedTitle'),
-        description: t('loginErrorMsg'),
-        variant: "destructive",
-      });
-    } finally {
+    // Simulate API call
+    setTimeout(() => {
       setLoading(false);
-    }
+      toast({
+        title: t('loginSuccessTitle'),
+        description: t('loginSuccessMsg'),
+      });
+      navigate("/dashboard");
+    }, 1500);
   }
 
   return (
@@ -182,15 +73,6 @@ const Login = () => {
               </AlertDescription>
             </Alert>
             
-            {authError && (
-              <Alert className="mb-6 bg-red-50 text-red-800 border-red-200">
-                <AlertTriangle className="h-4 w-4 text-red-500" />
-                <AlertDescription>
-                  {authError}
-                </AlertDescription>
-              </Alert>
-            )}
-            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -200,7 +82,7 @@ const Login = () => {
                     <FormItem>
                       <FormLabel>{t('email')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="demo@easyroi.com" {...field} />
+                        <Input placeholder="your@email.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -246,15 +128,9 @@ const Login = () => {
                   className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy shadow-md transition-all duration-300 flex items-center"
                 >
                   {t('scheduleMeeting')}
-                  <ArrowRight size={16} className="ml-2" />
+                  <ArrowRight size={16} />
                 </Button>
               </Link>
-            </div>
-            
-            <div className="mt-6 text-center border-t pt-4">
-              <p className="text-xs text-gray-500">
-                Per il demo utilizza: <strong>demo@easyroi.com</strong> e password <strong>demo123</strong>
-              </p>
             </div>
           </div>
         </div>

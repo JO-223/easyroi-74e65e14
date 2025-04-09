@@ -10,17 +10,13 @@ type ProfileBioProps = {
 };
 
 export const ProfileBio = ({ profile, isEditing, setProfile }: ProfileBioProps) => {
-  const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setProfile(prev => ({...prev, bio: e.target.value}));
-  };
-
   return (
     <div>
       <label className="text-sm font-medium">Bio</label>
       {isEditing ? (
         <Textarea 
           value={profile.bio || ''} 
-          onChange={handleBioChange}
+          onChange={(e) => setProfile({...profile, bio: e.target.value})}
           rows={4}
         />
       ) : (
