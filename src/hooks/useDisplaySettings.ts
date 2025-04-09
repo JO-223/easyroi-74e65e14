@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useLanguage, Language, Currency, Timezone, DisplaySettings } from "@/contexts/LanguageContext";
+import { useLanguage, Language, Currency, Timezone } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 
-export { DisplaySettings };
+// Use 'export type' for re-exporting types when isolatedModules is enabled
+export type { DisplaySettings } from "@/contexts/LanguageContext";
 
 export function useDisplaySettings() {
   const [isSaving, setIsSaving] = useState(false);
