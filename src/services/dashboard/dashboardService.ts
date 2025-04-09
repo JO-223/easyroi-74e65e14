@@ -152,7 +152,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       investmentGrowth,
       portfolioAllocation,
       properties,
-      userLevel: profileData?.level || null
+      userLevel: profileData?.level as string | null
     };
     
   } catch (error) {
