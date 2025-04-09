@@ -63,7 +63,7 @@ const InvestmentSummary = () => {
           .eq('id', user.id)
           .single();
         
-        const joinDate = profileData?.join_date ? new Date(profileData.join_date) : new Date();
+        const joinDate = profileData?.join_date ? new Date(profileData.join_date as string) : new Date();
         const currentDate = new Date();
         const yearsInvesting = Math.max(
           Math.floor((currentDate.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 365)),

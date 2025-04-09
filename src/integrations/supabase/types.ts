@@ -977,6 +977,10 @@ export type Database = {
         Args: { p_from_id: string; p_to_id: string }
         Returns: undefined
       }
+      create_demo_platinum_user: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       delete_user_connection: {
         Args: { p_from_id: string; p_to_id: string }
         Returns: undefined

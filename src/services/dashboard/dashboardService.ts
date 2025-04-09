@@ -92,41 +92,47 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     // Get user properties
     const { data: propertiesData } = await supabase
       .from('properties')
-      .select(`
-        id,
-        name,
-        price,
-        roi_percentage,
-        status,
-        property_locations:location_id (
-          city,
-          country
-        )
-      `)
+      .select('id, name, price, roi_percentage, status, location_id')
       .eq('user_id', user.id);
+    
+    // Get property locations
+    const locationMap = new Map();
+    if (propertiesData && propertiesData.length > 0) {
+      const locationIds = propertiesData.map(prop => prop.location_id);
+      const { data: locationsData } = await supabase
+        .from('property_locations')
+        .select('id, city, country')
+        .in('id', locationIds);
+      
+      if (locationsData) {
+        locationsData.forEach(loc => {
+          locationMap.set(loc.id, `${loc.city}, ${loc.country}`);
+        });
+      }
+    }
     
     // Get events count (using a placeholder until we have events data)
     const eventsCount = 3;
     
     // Format investment growth data
-    const investmentGrowth = growthData?.map(item => ({
-      name: item.month,
+    const investmentGrowth: InvestmentGrowth[] = growthData?.map(item => ({
+      name: item.month as string,
       value: Number(item.value),
     })) || [];
     
     // Format portfolio allocation data
-    const portfolioAllocation = allocationData?.map(item => ({
-      name: item.location,
+    const portfolioAllocation: PortfolioAllocation[] = allocationData?.map(item => ({
+      name: item.location as string,
       value: Number(item.percentage),
     })) || [];
     
     // Format properties data
-    const properties = propertiesData?.map(item => ({
-      id: item.id,
-      name: item.name,
-      location: `${item.property_locations.city}, ${item.property_locations.country}`,
+    const properties: Property[] = propertiesData?.map(item => ({
+      id: item.id as string,
+      name: item.name as string,
+      location: locationMap.get(item.location_id) || 'Unknown Location',
       roi: `${item.roi_percentage}%`,
-      value: `€${(item.price / 1000).toFixed(0)}k`,
+      value: `€${(Number(item.price) / 1000).toFixed(0)}k`,
       status: item.status === 'active' ? 'active' : 'development'
     })) || [];
     
