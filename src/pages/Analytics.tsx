@@ -14,7 +14,7 @@ const Analytics = () => {
     queryFn: fetchAnalyticsData,
   });
 
-  // Show loading state or error state while data is being fetched
+  // Show loading state while data is being fetched
   if (isLoading) {
     return (
       <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
@@ -25,7 +25,8 @@ const Analytics = () => {
     );
   }
 
-  if (error || !analyticsData) {
+  // Only show error if we have an actual error fetching data
+  if (error) {
     return (
       <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
         <div className="flex items-center justify-center h-96">
@@ -35,6 +36,7 @@ const Analytics = () => {
     );
   }
 
+  // Even with null data, render the content with appropriate empty states
   return (
     <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
       <AnalyticsContent analyticsData={analyticsData} />

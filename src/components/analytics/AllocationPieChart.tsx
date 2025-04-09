@@ -16,12 +16,21 @@ interface AllocationPieChartProps {
     name: string;
     value: number;
   }>;
+  emptyMessage?: string;
 }
 
 const COLORS = ["#0C2340", "#D4AF37", "#4CAF50", "#6E59A5"];
 
-export const AllocationPieChart = ({ title, data }: AllocationPieChartProps) => {
+// Default data for empty state
+const DEFAULT_DATA = [{ name: "No Data", value: 100 }];
+
+export const AllocationPieChart = ({ 
+  title, 
+  data, 
+  emptyMessage = "No data available" 
+}: AllocationPieChartProps) => {
   const { t } = useLanguage();
+  const isEmpty = !data || data.length === 0;
 
   return (
     <Card>
@@ -30,25 +39,31 @@ export const AllocationPieChart = ({ title, data }: AllocationPieChartProps) => 
       </CardHeader>
       <CardContent>
         <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={90}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {isEmpty ? (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-muted-foreground">{emptyMessage}</p>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={90}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </CardContent>
     </Card>

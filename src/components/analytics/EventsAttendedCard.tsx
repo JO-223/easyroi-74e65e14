@@ -18,7 +18,9 @@ export const EventsAttendedCard = ({ count }: EventsAttendedCardProps) => {
         <div className="flex items-center justify-center py-8">
           <div className="text-center">
             <p className="text-5xl font-bold">{count}</p>
-            <p className="text-muted-foreground mt-2">{t('totalEvents')}</p>
+            <p className="text-muted-foreground mt-2">
+              {count === 0 ? t('noEventsYet') : t('totalEvents')}
+            </p>
           </div>
         </div>
       </CardContent>

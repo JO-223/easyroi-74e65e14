@@ -46,14 +46,14 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       .from('user_roi')
       .select('average_roi, roi_change')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle(); // Use maybeSingle instead of single to avoid errors
 
     // 2. Get Annual Growth data from investment growth
     const { data: userInvestment } = await supabase
       .from('user_investments')
       .select('investment_change_percentage')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
 
     // 3. ROI Performance data (monthly)
     const { data: growthData } = await supabase
@@ -79,22 +79,22 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       .from('user_events')
       .select('count')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
 
-    // Format ROI Performance data with proper type casting
+    // Format ROI Performance data with proper type casting - handle nulls
     const roiPerformance = growthData?.map(item => ({
       month: String(item.month || ''),
       roi: Number(item.value) || 0,
       benchmark: MARKET_AVERAGE_ROI
-    })) || generateDefaultRoiPerformance();
+    })) || [];
 
-    // Format Asset Allocation with proper type casting
+    // Format Asset Allocation with proper type casting - handle nulls
     const assetAllocation = allocationData?.map(item => ({
       name: String(item.location || ''),
       value: Number(item.percentage) || 0
     })) || [];
 
-    // Format Geographic Distribution with proper type casting
+    // Format Geographic Distribution with proper type casting - handle nulls
     const geographicDistribution = geoDistribution?.map(item => ({
       name: String(item.location || ''),
       value: Number(item.percentage) || 0
@@ -107,11 +107,13 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     return {
       portfolioROI: {
         value: Number(roiData?.average_roi || 0),
-        change: roiData?.roi_change !== null ? Number(roiData.roi_change) : null
+        change: roiData?.roi_change !== null && roiData?.roi_change !== undefined ? 
+          Number(roiData.roi_change) : null
       },
       annualGrowth: {
         value: Number(userInvestment?.investment_change_percentage || 0),
-        change: userInvestment?.investment_change_percentage !== null ? 
+        change: userInvestment?.investment_change_percentage !== null && 
+          userInvestment?.investment_change_percentage !== undefined ? 
           Number(userInvestment.investment_change_percentage) : null
       },
       marketComparison: {
@@ -125,7 +127,7 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     };
   } catch (error) {
     console.error("Error fetching analytics data:", error);
-    return null;
+    throw error; // Let React Query handle this error
   }
 }
 

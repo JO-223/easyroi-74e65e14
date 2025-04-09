@@ -15,31 +15,37 @@ export const MetricsSection = ({ analyticsData }: MetricsSectionProps) => {
   const metrics = [
     {
       title: t('portfolioROI'),
-      value: `${analyticsData.portfolioROI.value}%`,
-      change: analyticsData.portfolioROI.change !== null ? 
+      value: analyticsData?.portfolioROI?.value !== undefined ? 
+        `${analyticsData.portfolioROI.value}%` : 
+        '–',
+      change: analyticsData?.portfolioROI?.change !== null && analyticsData?.portfolioROI?.change !== undefined ? 
         `${analyticsData.portfolioROI.change > 0 ? '+' : ''}${analyticsData.portfolioROI.change}%` : 
         t('noHistoricalData'),
-      isPositive: analyticsData.portfolioROI.change !== null ? analyticsData.portfolioROI.change >= 0 : true,
+      isPositive: analyticsData?.portfolioROI?.change !== null ? analyticsData?.portfolioROI?.change >= 0 : true,
       icon: Percent,
       description: t('vsPreviousYear'),
     },
     {
       title: t('annualGrowth'),
-      value: `${analyticsData.annualGrowth.value}%`,
-      change: analyticsData.annualGrowth.change !== null ? 
+      value: analyticsData?.annualGrowth?.value !== undefined ? 
+        `${analyticsData.annualGrowth.value}%` : 
+        '–',
+      change: analyticsData?.annualGrowth?.change !== null && analyticsData?.annualGrowth?.change !== undefined ? 
         `${analyticsData.annualGrowth.change > 0 ? '+' : ''}${analyticsData.annualGrowth.change}%` : 
         t('noHistoricalData'),
-      isPositive: analyticsData.annualGrowth.change !== null ? analyticsData.annualGrowth.change >= 0 : true,
+      isPositive: analyticsData?.annualGrowth?.change !== null ? analyticsData?.annualGrowth?.change >= 0 : true,
       icon: TrendingUp,
       description: t('vsPreviousYear'),
     },
     {
       title: t('marketComparison'),
-      value: `${analyticsData.marketComparison.status === 'above' ? '+' : '-'}${analyticsData.marketComparison.value}%`,
-      change: analyticsData.marketComparison.status === 'above' ? 
+      value: analyticsData?.marketComparison?.value !== undefined ? 
+        `${analyticsData.marketComparison.status === 'above' ? '+' : '-'}${analyticsData.marketComparison.value}%` : 
+        '–',
+      change: analyticsData?.marketComparison?.status === 'above' ? 
         t('aboveIndex') : 
         t('marketVolatility'),
-      isPositive: analyticsData.marketComparison.status === 'above',
+      isPositive: analyticsData?.marketComparison?.status === 'above',
       icon: LineChart,
       description: t('vsMarketAverage'),
     },
