@@ -37,6 +37,12 @@ const it = {
   maintenanceRequests: "Richieste di Manutenzione",
   rentCollection: "Raccolta Affitti",
   
+  // Portfolio related
+  portfolioROI: "ROI del Portafoglio",
+  aboveIndex: "Sopra l'indice",
+  yourPortfolio: "Il Tuo Portafoglio",
+  marketAverage: "Media di Mercato",
+  
   // Events
   upcomingEvents: "Prossimi Eventi",
   pastEvents: "Eventi Passati",
@@ -247,6 +253,8 @@ const it = {
   enterLocation: "Inserisci Posizione",
   selectStage: "Seleziona Fase",
   clearAll: "Cancella Tutto",
+  noProjectsFound: "Nessun progetto trovato",
+  tryDifferentFilters: "Prova filtri diversi",
   
   // Development project details
   projectDetails: "Dettagli Progetto",
@@ -276,7 +284,7 @@ const it = {
   silver: "Argento",
   gold: "Oro",
   platinum: "Platino",
-  diamond: "Diamante", // Added missing translation
+  diamond: "Diamante",
   basicInfo: "Informazioni di Base",
   bio: "Biografia",
   interests: "Interessi",
@@ -341,6 +349,124 @@ const it = {
   
   // Password field
   password: "Password",
+  
+  // Property detail tabs
+  details: "Dettagli",
+  features: "Caratteristiche",
+  prosAndCons: "Pro e Contro",
+  investment: "Investimento",
+  
+  // Property details
+  size: "Dimensione",
+  bedrooms: "Camere da Letto",
+  bathrooms: "Bagni",
+  occupationStatus: "Stato di Occupazione",
+  serviceCharges: "Spese di Servizio",
+  year: "Anno",
+  pros: "Pro",
+  cons: "Contro",
+  noProsListed: "Nessun pro elencato",
+  noConsListed: "Nessun contro elencato",
+  
+  // Error states
+  noData: "Nessun Dato",
+  refreshOrContactSupport: "Aggiorna la pagina o contatta il supporto",
+  
+  // Event components
+  noEventsFound: "Nessun evento trovato",
+  online: "Online",
+  upgradeRequiredToJoin: "Aggiornamento necessario per partecipare",
+  
+  // Event filters
+  filters: "Filtri",
+  eventType: "Tipo di Evento",
+  networking: "Networking",
+  propertyViewing: "Visita Proprietà",
+  investmentSeminar: "Seminario d'Investimento", 
+  projectLaunch: "Lancio Progetto",
+  eventFormat: "Formato Evento",
+  allFormats: "Tutti i Formati",
+  onlineEvents: "Eventi Online",
+  inPersonEvents: "Eventi in Presenza",
+  dateRange: "Intervallo di Date",
+  fromDate: "Data di Inizio",
+  toDate: "Data di Fine",
+  showOnlyAvailableEvents: "Mostra solo eventi con disponibilità",
+  clearFilters: "Cancella Filtri",
+
+  // Footer
+  footerDescription: "EasyROI offre accesso esclusivo a opportunità di investimento immobiliare premium con rendimenti eccezionali.",
+  quickLinks: "Link Rapidi",
+  home: "Home",
+  contact: "Contatti",
+  login: "Accedi",
+  
+  // Network components
+  authRequired: "Autenticazione Richiesta",
+  pleaseLoginToConnect: "Effettua l'accesso per connetterti con altri investitori",
+  connectionSent: "Richiesta di Connessione Inviata",
+  connectionSentMsg: "La tua richiesta di connessione è stata inviata",
+  error: "Errore",
+  connectionRequestError: "Impossibile inviare la richiesta di connessione",
+  pleaseLoginToDisconnect: "Effettua l'accesso per disconnetterti da questo investitore",
+  connectionRemoved: "Connessione Rimossa", 
+  connectionRemovedMsg: "Non sei più connesso con questo investitore",
+  connectionRemoveError: "Impossibile rimuovere la connessione",
+  pleaseLoginToMessage: "Effettua l'accesso per mandare un messaggio a questo investitore",
+  privateProfileNetworkRestricted: "Funzionalità di Rete Limitate per Profilo Privato",
+  privateProfileNetworkMessage: "Il tuo profilo è impostato come privato, questo limita le funzionalità di rete. Per abilitare tutte le funzionalità, aggiorna le tue impostazioni sulla privacy.",
+  goToPrivacySettings: "Vai alle Impostazioni sulla Privacy",
+  investor: "Investitore",
+  noBioAvailable: "Nessuna biografia disponibile",
+  failedToLoadMessages: "Impossibile caricare la cronologia messaggi",
+  failedToSendMessage: "Impossibile inviare il messaggio",
+  messagingWith: "Conversazione con",
+  messageExchangeDesc: "Scambia messaggi con la tua connessione",
+  investorsFound: "Investitori trovati",
+  typeMessage: "Scrivi un messaggio...",
+  
+  // Notifications
+  notificationsMarkedAsRead: "Notifiche Lette",
+  allNotificationsMarkedAsRead: "Tutte le notifiche sono state contrassegnate come lette",
+  errorMarkingNotificationsAsRead: "Errore nel contrassegnare le notifiche come lette",
+  markAllAsRead: "Segna tutte come lette",
+  noNotifications: "Nessuna notifica",
+  
+  // Settings descriptions
+  emailNotificationsDesc: "Ricevi aggiornamenti importanti e avvisi via email",
+  pushNotificationsDesc: "Ricevi notifiche in tempo reale nel tuo browser",
+  publicProfileDesc: "Controlla se il tuo profilo è visibile ad altri investitori",
+  dataSharingDesc: "Gestisci come i tuoi dati di investimento vengono condivisi con i nostri partner",
+  profilePublic: "Profilo Pubblico",
+  profilePublicDesc: "Il tuo profilo è visibile a tutti gli investitori",
+  profileSemiPublic: "Profilo Semi-Pubblico",
+  profileSemiPublicDesc: "Il tuo profilo è visibile solo agli investitori connessi",
+  profilePrivate: "Profilo Privato",
+  profilePrivateDesc: "Il tuo profilo non è visibile a nessuno",
+  
+  // Account settings
+  accountSettingsUpdated: "Impostazioni Account Aggiornate",
+  accountSettingsSaved: "Le impostazioni del tuo account sono state salvate",
+  errorOccurred: "Si è Verificato un Errore",
+  errorUpdatingSettings: "Errore nell'aggiornamento delle impostazioni del tuo account",
+  
+  // Display settings
+  displaySettingsUpdated: "Impostazioni di Visualizzazione Aggiornate", 
+  displaySettingsSaved: "Le tue preferenze di visualizzazione sono state salvate",
+  
+  // Notification settings
+  notificationSettingsUpdated: "Impostazioni di Notifica Aggiornate",
+  notificationSettingsSaved: "Le tue preferenze di notifica sono state salvate",
+  
+  // Privacy settings
+  privacySettingsUpdated: "Impostazioni Privacy Aggiornate",
+  privacySettingsSaved: "Le tue preferenze di privacy sono state salvate",
+  
+  // Network data
+  networkDataError: "Errore nel caricamento dei dati di rete",
+  
+  // Event details
+  errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
   
   // Missing keys from scan
   noInvestmentDataAvailable: "Nessun dato di investimento disponibile"

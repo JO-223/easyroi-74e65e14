@@ -36,6 +36,12 @@ const en = {
   tenantManagement: "Tenant Management",
   maintenanceRequests: "Maintenance Requests",
   rentCollection: "Rent Collection",
+
+  // Portfolio related
+  portfolioROI: "Portfolio ROI",
+  aboveIndex: "Above index",
+  yourPortfolio: "Your Portfolio",
+  marketAverage: "Market Average",
   
   // Events
   upcomingEvents: "Upcoming Events",
@@ -247,6 +253,8 @@ const en = {
   enterLocation: "Enter Location",
   selectStage: "Select Stage",
   clearAll: "Clear All",
+  noProjectsFound: "No projects found",
+  tryDifferentFilters: "Try different filters",
 
   // Development project details
   projectDetails: "Project Details",
@@ -276,7 +284,7 @@ const en = {
   silver: "Silver",
   gold: "Gold",
   platinum: "Platinum",
-  diamond: "Diamond", // Added missing translation
+  diamond: "Diamond",
   basicInfo: "Basic Information",
   bio: "Bio",
   interests: "Interests",
@@ -324,7 +332,7 @@ const en = {
   joinOurCommunityText: "Become part of our network of sophisticated investors and gain access to premium investment opportunities.",
   loginCta: "Access the Portal",
   
-  // Contact Page (Added missing keys)
+  // Contact Page
   contactDescription: "Get in touch with our investment specialists",
   visitUs: "Visit Us",
   emailUs: "Email Us",
@@ -342,6 +350,124 @@ const en = {
   // Password field
   password: "Password",
 
+  // Property detail tabs
+  details: "Details",
+  features: "Features",
+  prosAndCons: "Pros & Cons",
+  investment: "Investment",
+  
+  // Property details
+  size: "Size",
+  bedrooms: "Bedrooms",
+  bathrooms: "Bathrooms",
+  occupationStatus: "Occupation Status",
+  serviceCharges: "Service Charges",
+  year: "Year",
+  pros: "Pros",
+  cons: "Cons",
+  noProsListed: "No pros listed",
+  noConsListed: "No cons listed",
+  
+  // Error states
+  noData: "No Data",
+  refreshOrContactSupport: "Please refresh or contact support",
+  
+  // Event components
+  noEventsFound: "No events found",
+  online: "Online",
+  upgradeRequiredToJoin: "Upgrade required to join",
+  
+  // Event filters
+  filters: "Filters",
+  eventType: "Event Type",
+  networking: "Networking",
+  propertyViewing: "Property Viewing",
+  investmentSeminar: "Investment Seminar", 
+  projectLaunch: "Project Launch",
+  eventFormat: "Event Format",
+  allFormats: "All Formats",
+  onlineEvents: "Online Events",
+  inPersonEvents: "In-Person Events",
+  dateRange: "Date Range",
+  fromDate: "From Date",
+  toDate: "To Date",
+  showOnlyAvailableEvents: "Show only events with availability",
+  clearFilters: "Clear Filters",
+
+  // Footer
+  footerDescription: "EasyROI provides exclusive access to premium real estate investment opportunities with exceptional returns.",
+  quickLinks: "Quick Links",
+  home: "Home",
+  contact: "Contact",
+  login: "Login",
+  
+  // Network components
+  authRequired: "Authentication Required",
+  pleaseLoginToConnect: "Please login to connect with other investors",
+  connectionSent: "Connection Request Sent",
+  connectionSentMsg: "Your connection request has been sent",
+  error: "Error",
+  connectionRequestError: "Failed to send connection request",
+  pleaseLoginToDisconnect: "Please login to disconnect from this investor",
+  connectionRemoved: "Connection Removed", 
+  connectionRemovedMsg: "You are no longer connected with this investor",
+  connectionRemoveError: "Failed to remove connection",
+  pleaseLoginToMessage: "Please login to message this investor",
+  privateProfileNetworkRestricted: "Private Profile Network Restricted",
+  privateProfileNetworkMessage: "Your profile is set to private, which restricts network features. To enable full network functionality, update your privacy settings.",
+  goToPrivacySettings: "Go to Privacy Settings",
+  investor: "Investor",
+  noBioAvailable: "No bio available",
+  failedToLoadMessages: "Failed to load message history",
+  failedToSendMessage: "Failed to send message",
+  messagingWith: "Messaging with",
+  messageExchangeDesc: "Exchange messages with your connection",
+  investorsFound: "Investors found",
+  typeMessage: "Type a message...",
+  
+  // Notifications
+  notificationsMarkedAsRead: "Notifications Read",
+  allNotificationsMarkedAsRead: "All notifications marked as read",
+  errorMarkingNotificationsAsRead: "Error marking notifications as read",
+  markAllAsRead: "Mark all as read",
+  noNotifications: "No notifications",
+  
+  // Settings descriptions
+  emailNotificationsDesc: "Receive important updates and alerts via email",
+  pushNotificationsDesc: "Receive real-time notifications in your browser",
+  publicProfileDesc: "Control whether your profile is visible to other investors",
+  dataSharingDesc: "Manage how your investment data is shared with our partners",
+  profilePublic: "Public Profile",
+  profilePublicDesc: "Your profile is visible to all investors",
+  profileSemiPublic: "Semi-Public Profile",
+  profileSemiPublicDesc: "Your profile is only visible to connected investors",
+  profilePrivate: "Private Profile",
+  profilePrivateDesc: "Your profile is not visible to anyone",
+  
+  // Account settings
+  accountSettingsUpdated: "Account Settings Updated",
+  accountSettingsSaved: "Your account settings have been saved",
+  errorOccurred: "Error Occurred",
+  errorUpdatingSettings: "Error updating your account settings",
+  
+  // Display settings
+  displaySettingsUpdated: "Display Settings Updated", 
+  displaySettingsSaved: "Your display preferences have been saved",
+  
+  // Notification settings
+  notificationSettingsUpdated: "Notification Settings Updated",
+  notificationSettingsSaved: "Your notification preferences have been saved",
+  
+  // Privacy settings
+  privacySettingsUpdated: "Privacy Settings Updated",
+  privacySettingsSaved: "Your privacy preferences have been saved",
+  
+  // Network data
+  networkDataError: "Error loading network data",
+  
+  // Event details
+  errorFetchingEvent: "Error fetching event details",
+  
   // Missing keys from scan
   noInvestmentDataAvailable: "No investment data available"
 };

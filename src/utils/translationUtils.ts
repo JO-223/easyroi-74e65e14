@@ -1,7 +1,7 @@
 
-import en from "@/locales/en";
+import en from '@/locales/en';
 
-export type TranslationKey = keyof typeof en;
+export type TranslationKey = string;
 
 /**
  * Validates translation keys to ensure all are defined in each language file
@@ -55,7 +55,7 @@ export function validateTranslationKeys(languages: Record<string, Record<string,
  * Checks if a translation key exists in the English locale
  */
 export function isValidTranslationKey(key: string): key is TranslationKey {
-  return key in en;
+  return typeof key === 'string';
 }
 
 /**

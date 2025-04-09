@@ -6,7 +6,7 @@ import es from '@/locales/es';
 import de from '@/locales/de';
 import { TranslationKey, isValidTranslationKey } from '@/utils/translationUtils';
 
-type Language = 'en' | 'it' | 'es' | 'de';
+export type Language = 'en' | 'it' | 'es' | 'de';
 type Translations = Record<Language, Record<string, string>>;
 
 interface LanguageContextType {
@@ -46,22 +46,14 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = (key: TranslationKey): string => {
-    // First check if the key is valid
-    if (!isValidTranslationKey(key)) {
+    // Check if the key exists in any language
+    if (!translations[language]?.[key] && !translations.en[key]) {
       console.warn(`Missing translation key: ${key}`);
       return key; // Return the key as fallback
     }
 
     // Use the current language's translation or fallback to English
-    const translatedText = translations[language]?.[key] || translations.en[key];
-    
-    // If the translation is missing in both current language and English, fall back to key
-    if (!translatedText) {
-      console.warn(`Missing translation for key: ${key} in language: ${language}`);
-      return key;
-    }
-    
-    return translatedText;
+    return translations[language]?.[key] || translations.en[key] || key;
   };
 
   const value = {
