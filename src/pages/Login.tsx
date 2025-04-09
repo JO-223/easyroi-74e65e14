@@ -24,7 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
+  password: z.string(),
 });
 
 const Login = () => {
@@ -47,13 +47,17 @@ const Login = () => {
     setAuthError(null);
     
     try {
-      // Use demo account for easy access
       let email = values.email;
       let password = values.password;
       
-      // Allow demo@easyroi.com to log in without password for demo purposes
+      // Gestione login demo semplificata
       if (email.toLowerCase() === 'demo@easyroi.com') {
-        password = 'demo123456'; // Set a default password for demo account
+        // Per l'account demo, accetta qualsiasi password o nessuna password
+        if (!password || password.trim() === '') {
+          password = 'demo123456'; // Password di default per demo
+        }
+        
+        console.log("Accesso con account demo");
       }
       
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -177,7 +181,7 @@ const Login = () => {
             
             <div className="mt-6 text-center border-t pt-4">
               <p className="text-xs text-gray-500">
-                Per il demo utilizza: <strong>demo@easyroi.com</strong> (senza password)
+                Per il demo utilizza: <strong>demo@easyroi.com</strong> e password <strong>demo123</strong>
               </p>
             </div>
           </div>
