@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,18 +7,30 @@ import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SidebarNav } from "./sidebar-nav";
+import { BadgeLevel } from "../ui/badge-level";
+
+interface UserProfileData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  level: string | null;
+}
+
 interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
+  userData?: UserProfileData;
 }
+
 export function DashboardHeader({
   title,
-  subtitle
+  subtitle,
+  userData
 }: DashboardHeaderProps) {
-  const {
-    t
-  } = useLanguage();
-  return <div className="flex flex-col space-y-0 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center p-4 md:p-6 border-b shadow-sm rounded-none bg-slate-50">
+  const { t } = useLanguage();
+  
+  return (
+    <div className="flex flex-col space-y-0 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center p-4 md:p-6 border-b shadow-sm rounded-none bg-slate-50">
       <div className="flex items-center justify-between w-full sm:w-auto">
         <div className="flex items-center gap-2">
           <Sheet>
@@ -31,7 +44,7 @@ export function DashboardHeader({
               <div className="p-6">
                 <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
               </div>
-              <SidebarNav />
+              <SidebarNav userData={userData} />
             </SheetContent>
           </Sheet>
           
@@ -47,9 +60,15 @@ export function DashboardHeader({
         </div>
       </div>
       
-      <div className="hidden sm:flex items-center gap-3">
+      <div className="hidden sm:flex items-center gap-4">
+        {userData?.level && (
+          <div className="mr-2">
+            <BadgeLevel level={userData.level as any} />
+          </div>
+        )}
         <NotificationDropdown />
         <LanguageSwitcher />
       </div>
-    </div>;
+    </div>
+  );
 }

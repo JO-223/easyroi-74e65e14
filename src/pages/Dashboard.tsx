@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import {
@@ -12,74 +13,117 @@ import {
   PieChart,
   Pie,
   Cell,
+  Legend,
 } from "recharts";
-import { BarChart3, Building2, Calendar, TrendingUp } from "lucide-react";
+import { BarChart3, Building2, Calendar, Loader2, TrendingUp } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { 
+  fetchDashboardData, 
+  DashboardData, 
+  formatCurrency 
+} from "@/services/dashboard/dashboardService";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const { toast } = useToast();
   
-  // Sample data for demonstration purposes
-  const investmentData = [
-    { name: "Jan", value: 12000 },
-    { name: "Feb", value: 19000 },
-    { name: "Mar", value: 16000 },
-    { name: "Apr", value: 25000 },
-    { name: "May", value: 28000 },
-    { name: "Jun", value: 20000 },
-  ];
+  useEffect(() => {
+    async function checkAuthAndLoadData() {
+      // Check if user is authenticated
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+      
+      try {
+        setIsLoading(true);
+        const data = await fetchDashboardData();
+        setDashboardData(data);
+      } catch (error) {
+        console.error("Error loading dashboard data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load dashboard data",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    checkAuthAndLoadData();
+  }, [navigate, toast]);
 
-  const portfolioData = [
-    { name: "Italy", value: 45 },
-    { name: "Dubai", value: 35 },
-    { name: "Spain", value: 20 },
-  ];
-
+  // Define chart colors
   const COLORS = ["#0C2340", "#D4AF37", "#4CAF50", "#E57373"];
+  
+  if (isLoading) {
+    return (
+      <DashboardLayout title={t('dashboard')}>
+        <div className="flex items-center justify-center h-96">
+          <Loader2 className="h-12 w-12 animate-spin text-easyroi-navy" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+  
+  if (!dashboardData) {
+    return (
+      <DashboardLayout title={t('dashboard')}>
+        <div className="text-center py-10">
+          <h2 className="text-2xl font-bold mb-2">No data available</h2>
+          <p>Please try refreshing the page or contact support.</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
-  const stats = [
+  const { stats, investmentGrowth, portfolioAllocation, properties } = dashboardData;
+
+  const statItems = [
     {
       title: t('totalInvestment'),
-      value: "€2,450,000",
-      change: "+12.5%",
-      isPositive: true,
+      value: formatCurrency(stats.totalInvestment),
+      change: `${stats.investmentChange > 0 ? '+' : ''}${stats.investmentChange}%`,
+      isPositive: stats.investmentChange >= 0,
       icon: TrendingUp,
     },
     {
       title: t('properties'),
-      value: "8",
-      change: "+1",
-      isPositive: true,
+      value: stats.properties.toString(),
+      change: stats.propertiesChange > 0 ? `+${stats.propertiesChange}` : stats.propertiesChange.toString(),
+      isPositive: stats.propertiesChange >= 0,
       icon: Building2,
     },
     {
       title: t('roi'),
-      value: "7.4%",
-      change: "+0.6%",
-      isPositive: true,
+      value: `${stats.roi}%`,
+      change: `${stats.roiChange > 0 ? '+' : ''}${stats.roiChange}%`,
+      isPositive: stats.roiChange >= 0,
       icon: BarChart3,
     },
     {
       title: t('events'),
-      value: "3",
+      value: stats.events.toString(),
       change: t('events'),
       isPositive: true,
       icon: Calendar,
     },
   ];
 
-  const propertyList = [
-    { id: 1, name: "Villa Toscana", location: "Florence, Italy", roi: "8.2%", value: "€650,000", status: t('active') },
-    { id: 2, name: "Marina Apartments", location: "Dubai, UAE", roi: "7.5%", value: "€820,000", status: t('active') },
-    { id: 3, name: "Vatican View", location: "Rome, Italy", roi: "6.9%", value: "€540,000", status: t('active') },
-    { id: 4, name: "Plaza Investment", location: "Madrid, Spain", roi: "7.2%", value: "€440,000", status: t('development') },
-  ];
-
   return (
     <DashboardLayout title={t('dashboard')}>
       <div className="grid gap-4 md:gap-8 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((stat) => (
+          {statItems.map((stat) => (
             <Card key={stat.title}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -107,11 +151,17 @@ const Dashboard = () => {
             <CardContent>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={investmentData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <BarChart data={investmentGrowth} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `€${value / 1000}k`} />
-                    <Tooltip formatter={(value) => [`€${value}`, "Value"]} />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tickFormatter={(value) => `€${Math.floor(value / 1000)}k`} 
+                    />
+                    <Tooltip 
+                      formatter={(value: number) => [`€${value.toLocaleString()}`, "Value"]} 
+                    />
                     <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -128,7 +178,7 @@ const Dashboard = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={portfolioData}
+                      data={portfolioAllocation}
                       cx="50%"
                       cy="50%"
                       innerRadius={60}
@@ -137,7 +187,7 @@ const Dashboard = () => {
                       dataKey="value"
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                     >
-                      {portfolioData.map((entry, index) => (
+                      {portfolioAllocation.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -166,7 +216,7 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {propertyList.map((property) => (
+                  {properties.map((property) => (
                     <tr key={property.id} className="border-b hover:bg-muted/50">
                       <td className="py-3 px-4">{property.name}</td>
                       <td className="py-3 px-4">{property.location}</td>
@@ -174,9 +224,9 @@ const Dashboard = () => {
                       <td className="py-3 px-4">{property.value}</td>
                       <td className="py-3 px-4">
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          property.status === t('active') ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
+                          property.status === 'active' ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
                         }`}>
-                          {property.status}
+                          {property.status === 'active' ? t('active') : t('development')}
                         </span>
                       </td>
                     </tr>

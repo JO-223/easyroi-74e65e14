@@ -17,9 +17,10 @@ import { Input } from "@/components/ui/input";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
-import { AlertTriangle, ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useLanguage } from '@/contexts/LanguageContext';
+import { loginUser } from "@/services/auth/authService";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -40,19 +41,47 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // Use our new auth service for login
+      const success = await loginUser(values.email, values.password);
+      
+      if (success) {
+        toast({
+          title: t('loginSuccessTitle'),
+          description: t('loginSuccessMsg'),
+        });
+        navigate("/dashboard");
+      } else {
+        toast({
+          title: t('loginErrorTitle') || "Login Error",
+          description: t('loginErrorMsg') || "Invalid credentials. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       toast({
-        title: t('loginSuccessTitle'),
-        description: t('loginSuccessMsg'),
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
       });
-      navigate("/dashboard");
-    }, 1500);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  const handleDemoLogin = async () => {
+    form.setValue('email', 'demo.platinum@easyroi.com');
+    form.setValue('password', 'EasyROI2025!');
+    
+    await onSubmit({
+      email: 'demo.platinum@easyroi.com',
+      password: 'EasyROI2025!'
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -111,10 +140,32 @@ const Login = () => {
                   className="w-full bg-easyroi-navy hover:bg-easyroi-navy/90"
                   disabled={loading}
                 >
-                  {loading ? t('signingIn') : t('signIn')}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t('signingIn')}
+                    </>
+                  ) : (
+                    t('signIn')
+                  )}
                 </Button>
               </form>
             </Form>
+            
+            <div className="mt-4">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleDemoLogin}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Use Demo Platinum Account"
+                )}
+              </Button>
+            </div>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
