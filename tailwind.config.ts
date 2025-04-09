@@ -74,6 +74,19 @@ export default {
 					silver: "#C0C0C0",
 					platinum: "#E5E4E2",
 					diamond: "#B9F2FF",
+					// Badge colors
+					starter: {
+						light: "#D3D3D3",
+						dark: "#A9A9A9",
+					},
+					ruby: {
+						light: "#9B111E",
+						dark: "#C41E3A",
+					},
+					emerald: {
+						light: "#50C878",
+						dark: "#2E8B57",
+					},
 					// Refined purple brand colors
 					purple: {
 						50: "#F3F1F9",
@@ -117,11 +130,87 @@ export default {
 						transform: 'translateX(100%)',
 					},
 				},
+				'bronze-pulse': {
+					'0%, 100%': {
+						opacity: '1',
+					},
+					'50%': {
+						opacity: '0.85',
+					},
+				},
+				'silver-shimmer': {
+					'0%': {
+						backgroundPosition: '-200% 0',
+					},
+					'100%': {
+						backgroundPosition: '200% 0',
+					},
+				},
+				'gold-shimmer': {
+					'0%': {
+						backgroundPosition: '-100% 0',
+						opacity: '0.95',
+					},
+					'50%': {
+						opacity: '1',
+					},
+					'100%': {
+						backgroundPosition: '100% 0',
+						opacity: '0.95',
+					},
+				},
+				'ruby-pulse': {
+					'0%, 100%': {
+						transform: 'scale(1)',
+					},
+					'50%': {
+						transform: 'scale(1.03)',
+					},
+				},
+				'emerald-glint': {
+					'0%': {
+						backgroundPosition: '0% 0%',
+					},
+					'100%': {
+						backgroundPosition: '100% 100%',
+					},
+				},
+				'platinum-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 5px rgba(255, 255, 255, 0.5)',
+					},
+					'50%': {
+						boxShadow: '0 0 15px rgba(255, 255, 255, 0.8)',
+					},
+				},
+				'diamond-sparkle': {
+					'0%, 100%': {
+						backgroundPosition: '0% 0%',
+						boxShadow: '0 0 5px rgba(185, 242, 255, 0.5)',
+					},
+					'25%': {
+						boxShadow: '0 0 10px rgba(185, 242, 255, 0.7)',
+					},
+					'50%': {
+						backgroundPosition: '100% 100%',
+						boxShadow: '0 0 15px rgba(185, 242, 255, 0.9)',
+					},
+					'75%': {
+						boxShadow: '0 0 10px rgba(185, 242, 255, 0.7)',
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				shimmer: 'shimmer 1.5s infinite',
+				'bronze-pulse': 'bronze-pulse 10s ease-in-out infinite',
+				'silver-shimmer': 'silver-shimmer 3s linear infinite',
+				'gold-shimmer': 'gold-shimmer 2s ease infinite',
+				'ruby-pulse': 'ruby-pulse 3s ease infinite',
+				'emerald-glint': 'emerald-glint 5s ease infinite',
+				'platinum-glow': 'platinum-glow 4s ease-in-out infinite',
+				'diamond-sparkle': 'diamond-sparkle 6s linear infinite',
 			},
 			backgroundImage: {
 				'gradient-luxury': 'linear-gradient(135deg, #271B4D 0%, #5A42A0 100%)',

@@ -54,6 +54,7 @@ export interface RPCResponses {
   get_network_investors: any[];
   get_visible_profiles: any[];
   get_user_connections: any[];
+  update_user_investment: null;
 }
 
 // Type for RPC function parameters 
@@ -76,6 +77,7 @@ export interface RPCParams {
   get_network_investors: Record<string, never>;
   get_visible_profiles: { p_current_user_id: string };
   get_user_connections: { p_user_id: string };
+  update_user_investment: { p_user_id: string; p_investment_amount: number };
 }
 
 // Helper type to ensure type safety when calling RPC functions
