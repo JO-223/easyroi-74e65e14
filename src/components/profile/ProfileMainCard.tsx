@@ -4,29 +4,14 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { ProfileHeader } from "./ProfileHeader";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileForm } from "./ProfileForm";
-import { Database } from "@/integrations/supabase/types";
-
-type InvestorLevel = Database['public']['Tables']['profiles']['Row']['level'];
-
-type ProfileData = {
-  id: string;
-  first_name: string | null;
-  last_name: string | null;
-  email: string;
-  phone: string | null;
-  location: string | null;
-  bio: string | null;
-  join_date: string;
-  level: InvestorLevel | null;
-  avatar_url: string | null;
-};
+import { ProfileData, ProfileInterest } from "./hooks/useProfileData";
 
 type ProfileMainCardProps = {
   profile: ProfileData;
   isEditing: boolean;
   isSaving: boolean;
-  setProfile: React.Dispatch<React.SetStateAction<any>>;
-  interests: { name: string }[];
+  setProfile: React.Dispatch<React.SetStateAction<ProfileData>>;
+  interests: ProfileInterest[];
   availableInterests: { id: string, name: string }[];
   handleSaveProfile: () => Promise<void>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
