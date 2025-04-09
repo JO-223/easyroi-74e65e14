@@ -1,5 +1,12 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createTranslator } from '@/utils/translationUtils';
+
+// Import all language files
+import english from '@/locales/en';
+import italian from '@/locales/it';
+import spanish from '@/locales/es';
+import german from '@/locales/de';
 
 // Type definitions
 export type Language = 'english' | 'italian' | 'spanish' | 'german';
@@ -26,129 +33,12 @@ interface LanguageProviderProps {
   children: React.ReactNode;
 }
 
+// Combine all translations
 const translations = {
-  english: {
-    welcome: "Welcome",
-    dashboard: "Dashboard",
-    properties: "Properties",
-    development: "Development",
-    analytics: "Analytics",
-    events: "Events",
-    network: "Network",
-    profile: "Profile",
-    settings: "Settings",
-    logout: "Logout",
-    totalInvestment: "Total Investment",
-    roi: "ROI",
-    annualGrowth: "Annual Growth",
-    marketComparison: "Market Comparison",
-    vsPreviousYear: "vs Previous Year",
-    vsMarketAverage: "vs Market Average",
-    investmentGrowth: "Investment Growth",
-    portfolioAllocation: "Portfolio Allocation",
-    geographicDistribution: "Geographic Distribution",
-    propertyValue: "Property Value",
-    propertyStatus: "Property Status",
-    propertyLocation: "Property Location",
-    propertyROI: "Property ROI",
-    propertyDetails: "Property Details",
-    propertyValuation: "Property Valuation",
-    marketTrends: "Market Trends",
-    investmentTimeline: "Investment Timeline",
-    financialPerformance: "Financial Performance",
-    propertyManagement: "Property Management",
-    tenantManagement: "Tenant Management",
-    maintenanceRequests: "Maintenance Requests",
-    rentCollection: "Rent Collection",
-    upcomingEvents: "Upcoming Events",
-    pastEvents: "Past Events",
-    eventDetails: "Event Details",
-    attendees: "Attendees",
-    speakers: "Speakers",
-    contactInformation: "Contact Information",
-    connect: "Connect",
-    messages: "Messages",
-    notifications: "Notifications",
-    privacySettings: "Privacy Settings",
-    accountSettings: "Account Settings",
-    helpCenter: "Help Center",
-    aboutUs: "About Us",
-    contactUs: "Contact Us",
-    termsOfService: "Terms of Service",
-    privacyPolicy: "Privacy Policy",
-    comprehensiveAnalysis: "Comprehensive Analysis",
-    roiPerformance: "ROI Performance",
-    allocation: "Allocation",
-    historicalROI: "Historical ROI",
-    annualROI: "Annual ROI",
-    importProjects: "Import Projects",
-    loading: "Loading",
-    errorLoadingData: "Error loading data",
-    noHistoricalData: "No historical data",
-    marketVolatility: "Market volatility offset detected",
-    totalEvents: "Total Events Attended",
-  },
-  italian: {
-    welcome: "Benvenuto",
-    dashboard: "Cruscotto",
-    properties: "Immobili",
-    development: "Sviluppo",
-    analytics: "Analisi",
-    events: "Eventi",
-    network: "Rete",
-    profile: "Profilo",
-    settings: "Impostazioni",
-    logout: "Esci",
-    totalInvestment: "Investimento Totale",
-    roi: "ROI",
-    annualGrowth: "Crescita Annuale",
-    marketComparison: "Confronto con il Mercato",
-    vsPreviousYear: "vs Anno Precedente",
-    vsMarketAverage: "vs Media di Mercato",
-    investmentGrowth: "Crescita dell'Investimento",
-    portfolioAllocation: "Allocazione del Portafoglio",
-    geographicDistribution: "Distribuzione Geografica",
-    propertyValue: "Valore dell'Immobile",
-    propertyStatus: "Stato dell'Immobile",
-    propertyLocation: "Posizione dell'Immobile",
-    propertyROI: "ROI dell'Immobile",
-    propertyDetails: "Dettagli dell'Immobile",
-    propertyValuation: "Valutazione dell'Immobile",
-    marketTrends: "Tendenze di Mercato",
-    investmentTimeline: "Cronologia degli Investimenti",
-    financialPerformance: "Performance Finanziaria",
-    propertyManagement: "Gestione dell'Immobile",
-    tenantManagement: "Gestione degli Inquilini",
-    maintenanceRequests: "Richieste di Manutenzione",
-    rentCollection: "Raccolta Affitti",
-    upcomingEvents: "Prossimi Eventi",
-    pastEvents: "Eventi Passati",
-    eventDetails: "Dettagli dell'Evento",
-    attendees: "Partecipanti",
-    speakers: "Relatori",
-    contactInformation: "Informazioni di Contatto",
-    connect: "Connetti",
-    messages: "Messaggi",
-    notifications: "Notifiche",
-    privacySettings: "Impostazioni sulla Privacy",
-    accountSettings: "Impostazioni Account",
-    helpCenter: "Centro Assistenza",
-    aboutUs: "Chi Siamo",
-    contactUs: "Contattaci",
-    termsOfService: "Termini di Servizio",
-    privacyPolicy: "Politica sulla Privacy",
-    comprehensiveAnalysis: "Analisi Completa",
-    roiPerformance: "Performance ROI",
-    allocation: "Allocazione",
-    historicalROI: "ROI Storico",
-    annualROI: "ROI Annuale",
-    importProjects: "Importa Progetti",
-    loading: "Caricamento",
-    errorLoadingData: "Errore nel caricamento dei dati",
-    noHistoricalData: "Dati storici non disponibili",
-    marketVolatility: "Compensazione della volatilità di mercato rilevata",
-    totalEvents: "Eventi Partecipati Totali",
-  }
+  english,
+  italian,
+  spanish,
+  german
 };
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
@@ -165,7 +55,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   }, [language]);
 
   const t = useCallback((key: string) => {
-    return translations[language as keyof typeof translations][key] || key;
+    return createTranslator(translations, language as Language)(key);
   }, [language]);
 
   const updateDisplaySettings = useCallback((settings: Partial<DisplaySettings>) => {
