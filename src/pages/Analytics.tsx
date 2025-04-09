@@ -1,4 +1,6 @@
 
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,76 +21,74 @@ import {
   Legend
 } from "recharts";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { fetchAnalyticsData, AnalyticsData } from "@/services/analytics/analyticsService";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
 const Analytics = () => {
   const { t } = useLanguage();
   
-  // Sample data for charts
-  const performanceData = [
-    { month: "Jan", roi: 3.2, benchmark: 2.7 },
-    { month: "Feb", roi: 3.5, benchmark: 2.8 },
-    { month: "Mar", roi: 3.1, benchmark: 2.9 },
-    { month: "Apr", roi: 3.8, benchmark: 2.7 },
-    { month: "May", roi: 3.6, benchmark: 2.8 },
-    { month: "Jun", roi: 4.1, benchmark: 2.9 },
-    { month: "Jul", roi: 4.3, benchmark: 3.0 },
-    { month: "Aug", roi: 4.2, benchmark: 3.1 },
-    { month: "Sep", roi: 4.5, benchmark: 3.0 },
-    { month: "Oct", roi: 4.4, benchmark: 2.9 },
-    { month: "Nov", roi: 4.7, benchmark: 3.0 },
-    { month: "Dec", roi: 4.9, benchmark: 3.1 },
-  ];
-
-  const allocationData = [
-    { name: "Residential", value: 45 },
-    { name: "Commercial", value: 30 },
-    { name: "Mixed-Use", value: 15 },
-    { name: "Hospitality", value: 10 },
-  ];
-
-  const regionData = [
-    { name: "Italy", value: 40 },
-    { name: "Dubai", value: 35 },
-    { name: "Spain", value: 15 },
-    { name: "Portugal", value: 10 },
-  ];
-
-  const yearlyPerformance = [
-    { year: "2020", roi: 5.8 },
-    { year: "2021", roi: 6.2 },
-    { year: "2022", roi: 6.7 },
-    { year: "2023", roi: 7.1 },
-    { year: "2024 (YTD)", roi: 4.5 },
-  ];
+  // Fetch analytics data with React Query
+  const { data: analyticsData, isLoading, error } = useQuery({
+    queryKey: ['analyticsData'],
+    queryFn: fetchAnalyticsData,
+  });
 
   const COLORS = ["#0C2340", "#D4AF37", "#4CAF50", "#6E59A5"];
-
-  const metrics = [
+  
+  // Generate metrics based on real data
+  const metrics = analyticsData ? [
     {
       title: t('portfolioROI'),
-      value: "7.4%",
-      change: "+0.6%",
-      isPositive: true,
+      value: `${analyticsData.portfolioROI.value}%`,
+      change: analyticsData.portfolioROI.change !== null ? 
+        `${analyticsData.portfolioROI.change > 0 ? '+' : ''}${analyticsData.portfolioROI.change}%` : 
+        t('noHistoricalData'),
+      isPositive: analyticsData.portfolioROI.change !== null ? analyticsData.portfolioROI.change >= 0 : true,
       icon: Percent,
       description: t('vsPreviousYear'),
     },
     {
       title: t('annualGrowth'),
-      value: "12.3%",
-      change: "+2.1%",
-      isPositive: true,
+      value: `${analyticsData.annualGrowth.value}%`,
+      change: analyticsData.annualGrowth.change !== null ? 
+        `${analyticsData.annualGrowth.change > 0 ? '+' : ''}${analyticsData.annualGrowth.change}%` : 
+        t('noHistoricalData'),
+      isPositive: analyticsData.annualGrowth.change !== null ? analyticsData.annualGrowth.change >= 0 : true,
       icon: TrendingUp,
       description: t('vsPreviousYear'),
     },
     {
       title: t('marketComparison'),
-      value: "+4.2%",
-      change: t('aboveIndex'),
-      isPositive: true,
+      value: `${analyticsData.marketComparison.status === 'above' ? '+' : '-'}${analyticsData.marketComparison.value}%`,
+      change: analyticsData.marketComparison.status === 'above' ? 
+        t('aboveIndex') : 
+        t('marketVolatility'),
+      isPositive: analyticsData.marketComparison.status === 'above',
       icon: LineChart,
       description: t('vsMarketAverage'),
     },
-  ];
+  ] : [];
+
+  // Show loading state or error state while data is being fetched
+  if (isLoading) {
+    return (
+      <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
+        <div className="flex items-center justify-center h-96">
+          <p className="text-lg text-muted-foreground">{t('loading')}...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error || !analyticsData) {
+    return (
+      <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
+        <div className="flex items-center justify-center h-96">
+          <p className="text-lg text-easyroi-danger">{t('errorLoadingData')}</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
@@ -124,7 +124,7 @@ const Analytics = () => {
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsLineChart
-                  data={performanceData}
+                  data={analyticsData.roiPerformance}
                   margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -173,7 +173,7 @@ const Analytics = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={allocationData}
+                      data={analyticsData.assetAllocation}
                       cx="50%"
                       cy="50%"
                       innerRadius={60}
@@ -181,7 +181,7 @@ const Analytics = () => {
                       paddingAngle={5}
                       dataKey="value"
                     >
-                      {allocationData.map((entry, index) => (
+                      {analyticsData.assetAllocation.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -203,7 +203,7 @@ const Analytics = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={regionData}
+                      data={analyticsData.geographicDistribution}
                       cx="50%"
                       cy="50%"
                       innerRadius={60}
@@ -211,7 +211,7 @@ const Analytics = () => {
                       paddingAngle={5}
                       dataKey="value"
                     >
-                      {regionData.map((entry, index) => (
+                      {analyticsData.geographicDistribution.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -224,27 +224,17 @@ const Analytics = () => {
           </Card>
         </div>
 
-        {/* Historical Performance */}
+        {/* Historical Performance / Events Attended */}
         <Card>
           <CardHeader>
-            <CardTitle>{t('historicalROI')}</CardTitle>
+            <CardTitle>{t('eventsAttended')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={yearlyPerformance} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="year" axisLine={false} tickLine={false} />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    domain={[0, 'auto']}
-                    tickFormatter={(value) => `${value}%`}
-                  />
-                  <Tooltip formatter={(value) => [`${value}%`, "ROI"]} />
-                  <Bar dataKey="roi" fill="#D4AF37" radius={[4, 4, 0, 0]} name={t('annualROI')} />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <p className="text-5xl font-bold">{analyticsData.eventsAttended}</p>
+                <p className="text-muted-foreground mt-2">{t('totalEvents')}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
