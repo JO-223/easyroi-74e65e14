@@ -1,4 +1,3 @@
-
 const es = {
   // General
   welcome: "Bienvenido",
@@ -142,139 +141,35 @@ const es = {
   updateNotifications: "Actualizar Notificaciones",
   manageSettings: "Gestiona la configuración de tu cuenta",
   
-  // Help and Support
-  helpCenter: "Centro de Ayuda",
-  aboutUs: "Acerca de Nosotros",
-  contactUs: "Contáctanos",
-  termsOfService: "Términos de Servicio",
-  privacyPolicy: "Política de Privacidad",
+  // Settings descriptions
+  emailNotificationsDesc: "Recibe actualizaciones importantes y alertas por correo electrónico",
+  pushNotificationsDesc: "Recibe notificaciones en tiempo real en tu navegador",
+  publicProfileDesc: "Controla si tu perfil es visible para otros inversores",
+  dataSharingDesc: "Administra cómo se comparten tus datos de inversión con nuestros socios",
+  profilePublic: "Perfil Público",
+  profilePublicDesc: "Tu perfil es visible para todos los inversores",
+  profileSemiPublic: "Perfil Semi-Público",
+  profileSemiPublicDesc: "Tu perfil solo es visible para inversores conectados",
+  profilePrivate: "Perfil Privado",
+  profilePrivateDesc: "Tu perfil no es visible para nadie",
   
-  // Analysis & Data
-  comprehensiveAnalysis: "Análisis Completo",
-  roiPerformance: "Rendimiento ROI",
-  allocation: "Asignación",
-  historicalROI: "ROI Histórico",
-  annualROI: "ROI Anual",
+  // Account settings
+  accountSettingsUpdated: "Configuración de Cuenta Actualizada",
+  accountSettingsSaved: "Tu configuración de cuenta ha sido guardada",
+  errorOccurred: "Ocurrió un Error",
+  errorUpdatingSettings: "Error al actualizar tu configuración de cuenta",
   
-  // Admin
-  importProjects: "Importar Proyectos",
-  importProperties: "Importar Propiedades",
-  importProjectsDesc: "Importar datos de proyectos de desarrollo desde fuentes externas en formato JSON.",
-  developmentProjectImportComingSoon: "La funcionalidad de importación de proyectos de desarrollo se implementará pronto.",
+  // Display settings
+  displaySettingsUpdated: "Configuración de Visualización Actualizada", 
+  displaySettingsSaved: "Tus preferencias de visualización han sido guardadas",
   
-  // Status
-  loading: "Cargando",
-  errorLoadingData: "Error al cargar datos",
-  noHistoricalData: "Sin datos históricos",
-  marketVolatility: "Compensación de volatilidad del mercado detectada",
-
-  // Analytics empty states
-  noAssetAllocationData: "No hay datos de asignación de activos disponibles",
-  noGeographicData: "No hay datos de distribución geográfica disponibles",
-  noDataAvailable: "No hay datos disponibles",
-  dataWillAppearSoon: "Los datos aparecerán aquí tan pronto como estén disponibles",
-  noInvestments: "Aún no hay inversiones registradas",
+  // Notification settings
+  notificationSettingsUpdated: "Configuración de Notificaciones Actualizada",
+  notificationSettingsSaved: "Tus preferencias de notificación han sido guardadas",
   
-  // Auth
-  loginSuccessTitle: "Inicio de Sesión Exitoso",
-  loginSuccessMsg: "Bienvenido a tu panel de control",
-  investorPortal: "Portal del Inversor",
-  investorPortalDesc: "Accede a oportunidades de inversión exclusivas",
-  privatePortalAlert: "Este es un portal privado solo para inversores verificados",
-  forgotPassword: "¿Olvidaste tu Contraseña?",
-  signingIn: "Iniciando Sesión...",
-  signIn: "Iniciar Sesión",
-  needAssistance: "¿Necesitas ayuda? Contacta a nuestro equipo de relaciones con inversores",
-  scheduleMeeting: "Programar una Reunión",
-  
-  // Landing
-  premiumRealEstate: "Bienes Raíces Premium",
-  exceptionalReturns: "Retornos Excepcionales",
-  exclusiveAccess: "Acceso exclusivo a inversiones inmobiliarias de alto rendimiento para inversores exigentes",
-  scroll: "DESPLAZAR",
-  curated: "Oportunidades de Inversión Seleccionadas",
-  curatedDesc: "Seleccionamos cuidadosamente solo las propiedades más prometedoras con excelente potencial de ROI",
-  premiumProperties: "Propiedades Premium",
-  premiumPropertiesDesc: "Accede a oportunidades inmobiliarias exclusivas no disponibles en el mercado abierto",
-  portfolioAnalytics: "Análisis de Cartera",
-  portfolioAnalyticsDesc: "Supervisa tus inversiones con análisis detallados y métricas de rendimiento",
-  securePlatform: "Plataforma Segura",
-  securePlatformDesc: "Tus inversiones y datos están protegidos con seguridad de nivel empresarial",
-  featuredLocations: "Ubicaciones Destacadas",
-  readyToMaximize: "¿Listo para maximizar los retornos de tu cartera inmobiliaria?",
-  
-  // General UI
-  back: "Atrás",
-  resetFilters: "Restablecer Filtros",
-
-  // Properties Page
-  yourProperties: "Tus Propiedades",
-  property: "Propiedad",
-  location: "Ubicación",
-  value: "Valor",
-  status: "Estado",
-  active: "Activo",
-  price: "Precio",
-  expectedROI: "ROI Esperado",
-  minInvestment: "Inversión Mínima",
-  viewDetails: "Ver Detalles",
-  allLocations: "Todas las Ubicaciones",
-  priceRange: "Rango de Precio",
-  min: "Mín",
-  max: "Máx",
-  propertyType: "Tipo de Propiedad",
-  allTypes: "Todos los Tipos",
-  investorLevel: "Nivel de Inversor",
-  allLevels: "Todos los Niveles",
-  amenities: "Comodidades",
-  hideAmenities: "Ocultar Comodidades",
-  showAmenities: "Mostrar Comodidades",
-  applyFilters: "Aplicar Filtros",
-  exclusiveProperties: "Propiedades Exclusivas",
-  noPropertiesFound: "No se encontraron propiedades, prueba con diferentes filtros",
-  menu: "Menú",
-  
-  // Development Page
-  developmentProjects: "Proyectos de Desarrollo",
-  exploreCurrentProjectsInProgress: "Explora proyectos actuales en progreso",
-  errorFetchingProjects: "Error al obtener proyectos",
-  constructionStage: "Etapa de Construcción",
-  allStages: "Todas las Etapas",
-  planning: "Planificación",
-  foundation: "Cimientos",
-  structural: "Estructural",
-  finishing: "Acabados",
-  completed: "Completado",
-  progressRange: "Rango de Progreso",
-  projectFilter: "Filtro de Proyectos",
-  progress: "Progreso",
-  filterProjects: "Filtrar Proyectos",
-  selectInvestorLevel: "Seleccionar Nivel de Inversor",
-  enterLocation: "Ingresar Ubicación",
-  selectStage: "Seleccionar Etapa",
-  clearAll: "Limpiar Todo",
-  noProjectsFound: "No se encontraron proyectos",
-  tryDifferentFilters: "Prueba con filtros diferentes",
-  
-  // Development project details
-  projectDetails: "Detalles del Proyecto",
-  completion: "Finalización",
-  minInvestmentRequired: "Inversión Mín. Requerida",
-  investorLevelRequired: "Nivel de Inversor Requerido",
-  projectDescription: "Descripción del Proyecto",
-  constructionProgress: "Progreso de Construcción",
-  projectGallery: "Galería del Proyecto",
-  investmentDetails: "Detalles de Inversión",
-  expectedCompletion: "Finalización Esperada",
-  totalUnits: "Unidades Totales",
-  availableUnits: "Unidades Disponibles",
-  completionPercentage: "Porcentaje de Finalización",
-  requestInformation: "Solicitar Información",
-  tbd: "Por determinar",
-  notAvailable: "No disponible",
-  projectNotFound: "Proyecto no encontrado",
-  errorLoadingProject: "Error al cargar el proyecto",
-  projectMayHaveBeenRemoved: "Este proyecto puede haber sido eliminado",
+  // Privacy settings
+  privacySettingsUpdated: "Configuración de Privacidad Actualizada",
+  privacySettingsSaved: "Tus preferencias de privacidad han sido guardadas",
   
   // Profile Page
   myProfile: "Mi Perfil",
@@ -310,7 +205,7 @@ const es = {
   recentActivity: "Actividad Reciente",
   noRecentActivity: "No hay actividad reciente",
   viewAll: "Ver Todo",
-  
+
   // Access Control
   accessDenied: "Acceso Denegado",
   importPropertiesAdminOnly: "Solo los administradores pueden importar propiedades",
@@ -431,36 +326,6 @@ const es = {
   errorMarkingNotificationsAsRead: "Error al marcar notificaciones como leídas",
   markAllAsRead: "Marcar todas como leídas",
   noNotifications: "Sin notificaciones",
-  
-  // Settings descriptions
-  emailNotificationsDesc: "Recibe actualizaciones importantes y alertas por correo electrónico",
-  pushNotificationsDesc: "Recibe notificaciones en tiempo real en tu navegador",
-  publicProfileDesc: "Controla si tu perfil es visible para otros inversores",
-  dataSharingDesc: "Administra cómo se comparten tus datos de inversión con nuestros socios",
-  profilePublic: "Perfil Público",
-  profilePublicDesc: "Tu perfil es visible para todos los inversores",
-  profileSemiPublic: "Perfil Semi-Público",
-  profileSemiPublicDesc: "Tu perfil solo es visible para inversores conectados",
-  profilePrivate: "Perfil Privado",
-  profilePrivateDesc: "Tu perfil no es visible para nadie",
-  
-  // Account settings
-  accountSettingsUpdated: "Configuración de Cuenta Actualizada",
-  accountSettingsSaved: "Tu configuración de cuenta ha sido guardada",
-  errorOccurred: "Ocurrió un Error",
-  errorUpdatingSettings: "Error al actualizar tu configuración de cuenta",
-  
-  // Display settings
-  displaySettingsUpdated: "Configuración de Visualización Actualizada", 
-  displaySettingsSaved: "Tus preferencias de visualización han sido guardadas",
-  
-  // Notification settings
-  notificationSettingsUpdated: "Configuración de Notificaciones Actualizada",
-  notificationSettingsSaved: "Tus preferencias de notificación han sido guardadas",
-  
-  // Privacy settings
-  privacySettingsUpdated: "Configuración de Privacidad Actualizada",
-  privacySettingsSaved: "Tus preferencias de privacidad han sido guardadas",
   
   // Network data
   networkDataError: "Error al cargar datos de red",
