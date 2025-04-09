@@ -36,13 +36,13 @@ export function DevelopmentProjectImport() {
         <DialogHeader>
           <DialogTitle>{t('importProjects')}</DialogTitle>
           <DialogDescription>
-            {t('importProjectsDesc') || "Import development project data from external sources in JSON format."}
+            {t('importProjectsDesc')}
           </DialogDescription>
         </DialogHeader>
         
         {/* We can reuse the ImportForm component with small modifications later */}
         <div className="py-4">
-          <p>{t('developmentProjectImportComingSoon') || "Development project import functionality will be implemented soon."}</p>
+          <p>{t('developmentProjectImportComingSoon')}</p>
         </div>
       </DialogContent>
     </Dialog>

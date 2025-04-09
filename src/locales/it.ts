@@ -153,6 +153,8 @@ const it = {
   // Admin
   importProjects: "Importa Progetti",
   importProperties: "Importa Proprietà",
+  importProjectsDesc: "Importa dati di progetti di sviluppo da fonti esterne in formato JSON.",
+  developmentProjectImportComingSoon: "La funzionalità di importazione dei progetti di sviluppo sarà implementata presto.",
   
   // Status
   loading: "Caricamento",

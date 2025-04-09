@@ -153,6 +153,8 @@ const en = {
   // Admin
   importProjects: "Import Projects",
   importProperties: "Import Properties",
+  importProjectsDesc: "Import development project data from external sources in JSON format.",
+  developmentProjectImportComingSoon: "Development project import functionality will be implemented soon.",
   
   // Status
   loading: "Loading",

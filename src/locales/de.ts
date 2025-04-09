@@ -153,6 +153,8 @@ const de = {
   // Admin
   importProjects: "Projekte Importieren",
   importProperties: "Immobilien Importieren",
+  importProjectsDesc: "Importieren Sie Entwicklungsprojektdaten aus externen Quellen im JSON-Format.",
+  developmentProjectImportComingSoon: "Die Funktion zum Importieren von Entwicklungsprojekten wird bald implementiert.",
   
   // Status
   loading: "Wird geladen",
@@ -246,6 +248,7 @@ const de = {
   enterLocation: "Standort eingeben",
   selectStage: "Phase auswählen",
   clearAll: "Alles löschen",
+  contactUs: "Kontaktieren Sie uns",
   
   // Development project details
   projectDetails: "Projektdetails",
@@ -266,7 +269,6 @@ const de = {
   projectNotFound: "Projekt nicht gefunden",
   errorLoadingProject: "Fehler beim Laden des Projekts",
   projectMayHaveBeenRemoved: "Dieses Projekt wurde möglicherweise entfernt",
-  contactUs: "Kontaktieren Sie uns",
   
   // Profile Page
   myProfile: "Mein Profil",
