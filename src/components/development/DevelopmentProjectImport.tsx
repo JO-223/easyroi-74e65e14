@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button";
 import { Construction } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdminRole } from "@/hooks/use-admin-role";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function DevelopmentProjectImport() {
-  const { t } = useLanguage();
+  const t = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const { isAdmin, userRole, isLoading } = useAdminRole();
   
@@ -33,15 +34,15 @@ export function DevelopmentProjectImport() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Import Development Projects</DialogTitle>
+          <DialogTitle>{t('importProjects')}</DialogTitle>
           <DialogDescription>
-            Import development project data from external sources in JSON format.
+            {t('importProjectsDesc') || "Import development project data from external sources in JSON format."}
           </DialogDescription>
         </DialogHeader>
         
         {/* We can reuse the ImportForm component with small modifications later */}
         <div className="py-4">
-          <p>Development project import functionality will be implemented soon.</p>
+          <p>{t('developmentProjectImportComingSoon') || "Development project import functionality will be implemented soon."}</p>
         </div>
       </DialogContent>
     </Dialog>

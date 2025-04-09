@@ -240,13 +240,33 @@ const de = {
   completed: "Fertiggestellt",
   progressRange: "Fortschrittsbereich",
   projectFilter: "Projektfilter",
-  applyFilters: "Filter anwenden",
-  noProjectsFound: "Keine Projekte gefunden",
-  tryDifferentFilters: "Versuchen Sie andere Filter",
+  progress: "Fortschritt",
+  filterProjects: "Projekte filtern",
+  selectInvestorLevel: "Investorenlevel auswählen",
+  enterLocation: "Standort eingeben",
+  selectStage: "Phase auswählen",
+  clearAll: "Alles löschen",
+  
+  // Development project details
   projectDetails: "Projektdetails",
   completion: "Fertigstellung",
   minInvestmentRequired: "Min. Investition erforderlich",
   investorLevelRequired: "Erforderliches Investorenlevel",
+  projectDescription: "Projektbeschreibung",
+  constructionProgress: "Baufortschritt",
+  projectGallery: "Projektgalerie",
+  investmentDetails: "Investitionsdetails",
+  expectedCompletion: "Erwartete Fertigstellung",
+  totalUnits: "Gesamteinheiten",
+  availableUnits: "Verfügbare Einheiten",
+  completionPercentage: "Fertigstellungsgrad",
+  requestInformation: "Informationen anfordern",
+  tbd: "Wird noch festgelegt",
+  notAvailable: "Nicht verfügbar",
+  projectNotFound: "Projekt nicht gefunden",
+  errorLoadingProject: "Fehler beim Laden des Projekts",
+  projectMayHaveBeenRemoved: "Dieses Projekt wurde möglicherweise entfernt",
+  contactUs: "Kontaktieren Sie uns",
   
   // Profile Page
   myProfile: "Mein Profil",
@@ -301,23 +321,7 @@ const de = {
   exclusivityText: "Unsere Plattform gewährt Zugang zu einzigartigen Immobilien, die auf dem offenen Markt nicht verfügbar sind.",
   joinOurCommunity: "Treten Sie unserer exklusiven Gemeinschaft bei",
   joinOurCommunityText: "Werden Sie Teil unseres Netzwerks anspruchsvoller Investoren und erhalten Sie Zugang zu Premium-Investitionsmöglichkeiten.",
-  loginCta: "Portal zugreifen",
-  
-  // Development project details
-  projectDescription: "Projektbeschreibung",
-  constructionProgress: "Baufortschritt",
-  projectGallery: "Projektgalerie",
-  investmentDetails: "Investitionsdetails",
-  expectedCompletion: "Erwartete Fertigstellung",
-  totalUnits: "Gesamteinheiten",
-  availableUnits: "Verfügbare Einheiten",
-  completionPercentage: "Fertigstellungsgrad",
-  requestInformation: "Informationen anfordern",
-  tbd: "Wird noch festgelegt",
-  notAvailable: "Nicht verfügbar",
-  projectNotFound: "Projekt nicht gefunden",
-  errorLoadingProject: "Fehler beim Laden des Projekts",
-  projectMayHaveBeenRemoved: "Dieses Projekt wurde möglicherweise entfernt"
+  loginCta: "Portal zugreifen"
 };
 
 export default de;

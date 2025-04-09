@@ -240,13 +240,33 @@ const es = {
   completed: "Completado",
   progressRange: "Rango de Progreso",
   projectFilter: "Filtro de Proyectos",
-  applyFilters: "Aplicar Filtros",
-  noProjectsFound: "No se encontraron proyectos",
-  tryDifferentFilters: "Prueba diferentes filtros",
+  progress: "Progreso",
+  filterProjects: "Filtrar Proyectos",
+  selectInvestorLevel: "Seleccionar nivel de inversor",
+  enterLocation: "Introducir ubicación",
+  selectStage: "Seleccionar etapa",
+  clearAll: "Borrar todo",
+  contactUs: "Contáctanos",
+  
+  // Development project details
   projectDetails: "Detalles del Proyecto",
   completion: "Finalización",
   minInvestmentRequired: "Inversión Mínima Requerida",
   investorLevelRequired: "Nivel de Inversor Requerido",
+  projectDescription: "Descripción del Proyecto",
+  constructionProgress: "Progreso de Construcción",
+  projectGallery: "Galería del Proyecto",
+  investmentDetails: "Detalles de Inversión",
+  expectedCompletion: "Finalización Esperada",
+  totalUnits: "Unidades Totales",
+  availableUnits: "Unidades Disponibles",
+  completionPercentage: "Porcentaje de Finalización",
+  requestInformation: "Solicitar Información",
+  tbd: "Por determinar",
+  notAvailable: "No disponible",
+  projectNotFound: "Proyecto no encontrado",
+  errorLoadingProject: "Error al cargar el proyecto",
+  projectMayHaveBeenRemoved: "Este proyecto puede haber sido eliminado",
   
   // Profile Page
   myProfile: "Mi Perfil",
@@ -301,23 +321,7 @@ const es = {
   exclusivityText: "Nuestra plataforma otorga acceso a propiedades únicas no disponibles en el mercado abierto.",
   joinOurCommunity: "Únete a Nuestra Comunidad Exclusiva",
   joinOurCommunityText: "Forma parte de nuestra red de inversores sofisticados y obtén acceso a oportunidades de inversión premium.",
-  loginCta: "Acceder al Portal",
-  
-  // Development project details
-  projectDescription: "Descripción del Proyecto",
-  constructionProgress: "Progreso de Construcción",
-  projectGallery: "Galería del Proyecto",
-  investmentDetails: "Detalles de Inversión",
-  expectedCompletion: "Finalización Esperada",
-  totalUnits: "Unidades Totales",
-  availableUnits: "Unidades Disponibles",
-  completionPercentage: "Porcentaje de Finalización",
-  requestInformation: "Solicitar Información",
-  tbd: "Por determinar",
-  notAvailable: "No disponible",
-  projectNotFound: "Proyecto no encontrado",
-  errorLoadingProject: "Error al cargar el proyecto",
-  projectMayHaveBeenRemoved: "Este proyecto puede haber sido eliminado"
+  loginCta: "Acceder al Portal"
 };
 
 export default es;

@@ -239,13 +239,34 @@ const en = {
   completed: "Completed",
   progressRange: "Progress Range",
   projectFilter: "Project Filter",
-  noProjectsFound: "No projects found",
-  tryDifferentFilters: "Try different filters",
+  progress: "Progress",
+  filterProjects: "Filter Projects",
+  selectInvestorLevel: "Select Investor Level",
+  enterLocation: "Enter Location",
+  selectStage: "Select Stage",
+  clearAll: "Clear All",
+  contactUs: "Contact Us",
+
+  // Development project details
   projectDetails: "Project Details",
   completion: "Completion",
   minInvestmentRequired: "Min. Investment Required",
   investorLevelRequired: "Investor Level Required",
-
+  projectDescription: "Project Description",
+  constructionProgress: "Construction Progress",
+  projectGallery: "Project Gallery",
+  investmentDetails: "Investment Details",
+  expectedCompletion: "Expected Completion",
+  totalUnits: "Total Units",
+  availableUnits: "Available Units",
+  completionPercentage: "Completion Percentage",
+  requestInformation: "Request Information",
+  tbd: "To be determined",
+  notAvailable: "Not available",
+  projectNotFound: "Project not found",
+  errorLoadingProject: "Error loading project",
+  projectMayHaveBeenRemoved: "This project may have been removed",
+  
   // Profile Page
   myProfile: "My Profile",
   viewEditProfile: "View and edit your profile information",
@@ -302,7 +323,7 @@ const en = {
   loginCta: "Access the Portal",
   
   // Password field
-  password: "Password",
+  password: "Password"
 };
 
 export default en;
