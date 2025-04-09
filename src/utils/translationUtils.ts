@@ -1,52 +1,90 @@
 
-import { Language } from "@/contexts/LanguageContext";
 import en from "@/locales/en";
 
-// Type to ensure type safety when accessing translation keys
 export type TranslationKey = keyof typeof en;
 
 /**
- * Creates a translation function with a safe fallback to English
- * @param translations The translations object containing all languages
- * @param currentLanguage The current language setting
- * @returns A function that translates keys with fallbacks
+ * Validates translation keys to ensure all are defined in each language file
+ * @param languages Object containing all language translations
+ * @returns Boolean indicating if all keys are valid
  */
-export const createTranslator = (
-  translations: Record<Language, Record<string, string>>,
-  currentLanguage: Language
-) => {
-  return (key: string) => {
-    // Try to get the translation in the current language
-    const translation = translations[currentLanguage]?.[key];
+export function validateTranslationKeys(languages: Record<string, Record<string, string>>) {
+  const englishKeys = Object.keys(languages['en']);
+  let isValid = true;
+
+  Object.entries(languages).forEach(([lang, translations]) => {
+    if (lang === 'en') return; // Skip English as it's our reference
     
-    if (translation) {
-      return translation;
+    const currentKeys = Object.keys(translations);
+    
+    // Check for missing keys
+    const missingKeys = englishKeys.filter(key => !currentKeys.includes(key));
+    if (missingKeys.length > 0) {
+      console.error(`Language ${lang} is missing these keys: ${missingKeys.join(', ')}`);
+      isValid = false;
     }
     
-    // Fallback to English if the key exists there
-    const englishTranslation = translations.english?.[key];
-    if (englishTranslation) {
-      return englishTranslation;
+    // Check for extra keys not in English
+    const extraKeys = currentKeys.filter(key => !englishKeys.includes(key));
+    if (extraKeys.length > 0) {
+      console.warn(`Language ${lang} has extra keys not in English: ${extraKeys.join(', ')}`);
     }
     
-    // If we're in development, show a missing key indicator
-    if (process.env.NODE_ENV === "development") {
-      console.warn(`Translation key not found: ${key}`);
-      return `[missing key: ${key}]`;
-    }
+    // Check for duplicates within a language
+    const dupeCheck = new Set();
+    const dupes: string[] = [];
     
-    // Last resort: return the key itself
-    return key;
-  };
-};
+    Object.keys(translations).forEach(key => {
+      if (dupeCheck.has(key)) {
+        dupes.push(key);
+      } else {
+        dupeCheck.add(key);
+      }
+    });
+    
+    if (dupes.length > 0) {
+      console.error(`Language ${lang} has duplicate keys: ${dupes.join(', ')}`);
+      isValid = false;
+    }
+  });
+  
+  return isValid;
+}
 
 /**
- * Typed version of the translator that provides type checking for translation keys
+ * Checks if a translation key exists in the English locale
  */
-export const createTypedTranslator = (
-  translations: Record<Language, Record<string, string>>,
-  currentLanguage: Language
-) => {
-  const translator = createTranslator(translations, currentLanguage);
-  return (key: TranslationKey) => translator(key);
-};
+export function isValidTranslationKey(key: string): key is TranslationKey {
+  return key in en;
+}
+
+/**
+ * Sorts translation keys alphabetically within their categories
+ */
+export function getSortedTranslationKeys() {
+  const englishEntries = Object.entries(en);
+  const categories: Record<string, Record<string, string>> = {};
+  let currentCategory = 'uncategorized';
+  
+  englishEntries.forEach(([key, value]) => {
+    // Comments in the translation file indicate categories
+    if (typeof value === 'string' && value === '') {
+      currentCategory = key.replace(/\/\/ /, '').trim();
+      categories[currentCategory] = {};
+    } else {
+      if (!categories[currentCategory]) {
+        categories[currentCategory] = {};
+      }
+      categories[currentCategory][key] = value;
+    }
+  });
+  
+  // Sort keys within each category
+  Object.keys(categories).forEach(category => {
+    categories[category] = Object.fromEntries(
+      Object.entries(categories[category]).sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+    );
+  });
+  
+  return categories;
+}

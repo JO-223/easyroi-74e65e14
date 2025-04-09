@@ -13,6 +13,7 @@ import { Construction } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { useTranslation } from "@/hooks/useTranslation";
+import { TranslationKey } from "@/utils/translationUtils";
 
 export function DevelopmentProjectImport() {
   const t = useTranslation();
@@ -29,20 +30,20 @@ export function DevelopmentProjectImport() {
       <DialogTrigger asChild>
         <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 flex items-center gap-2">
           <Construction size={16} />
-          {t('importProjects')}
+          {t("importProjects")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>{t('importProjects')}</DialogTitle>
+          <DialogTitle>{t("importProjects")}</DialogTitle>
           <DialogDescription>
-            {t('importProjectsDesc')}
+            {t("importProjectsDesc")}
           </DialogDescription>
         </DialogHeader>
         
         {/* We can reuse the ImportForm component with small modifications later */}
         <div className="py-4">
-          <p>{t('developmentProjectImportComingSoon')}</p>
+          <p>{t("developmentProjectImportComingSoon")}</p>
         </div>
       </DialogContent>
     </Dialog>

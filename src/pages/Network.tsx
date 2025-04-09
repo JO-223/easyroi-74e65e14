@@ -1,11 +1,11 @@
 
 import React from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { NetworkPageContent } from "@/components/network/NetworkPageContent";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Network = () => {
-  const { t } = useLanguage();
+  const t = useTranslation();
   
   return (
     <DashboardLayout title={t('investorNetwork')} subtitle={t('connectInvestors')}>

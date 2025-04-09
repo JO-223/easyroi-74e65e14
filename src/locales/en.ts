@@ -276,6 +276,7 @@ const en = {
   silver: "Silver",
   gold: "Gold",
   platinum: "Platinum",
+  diamond: "Diamond", // Added missing translation
   basicInfo: "Basic Information",
   bio: "Bio",
   interests: "Interests",
@@ -323,8 +324,26 @@ const en = {
   joinOurCommunityText: "Become part of our network of sophisticated investors and gain access to premium investment opportunities.",
   loginCta: "Access the Portal",
   
+  // Contact Page (Added missing keys)
+  contactDescription: "Get in touch with our investment specialists",
+  visitUs: "Visit Us",
+  emailUs: "Email Us",
+  callUs: "Call Us",
+  businessHours: "Business Hours",
+  mondayToFriday: "Monday to Friday",
+  fullName: "Full Name",
+  fullNamePlaceholder: "Enter your full name",
+  emailPlaceholder: "Enter your email address",
+  subject: "Subject",
+  subjectPlaceholder: "What is this regarding?",
+  message: "Message",
+  messagePlaceholder: "How can we help you?",
+  
   // Password field
-  password: "Password"
+  password: "Password",
+
+  // Missing keys from scan
+  noInvestmentDataAvailable: "No investment data available"
 };
 
 export default en;

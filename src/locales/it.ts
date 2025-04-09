@@ -276,6 +276,7 @@ const it = {
   silver: "Argento",
   gold: "Oro",
   platinum: "Platino",
+  diamond: "Diamante", // Added missing translation
   basicInfo: "Informazioni di Base",
   bio: "Biografia",
   interests: "Interessi",
@@ -323,8 +324,26 @@ const it = {
   joinOurCommunityText: "Diventa parte della nostra rete di investitori sofisticati e ottieni accesso a opportunità di investimento premium.",
   loginCta: "Accedi al Portale",
   
+  // Contact Page
+  contactDescription: "Mettiti in contatto con i nostri specialisti di investimento",
+  visitUs: "Visitaci",
+  emailUs: "Mandaci un'email",
+  callUs: "Chiamaci",
+  businessHours: "Orari d'ufficio",
+  mondayToFriday: "Lunedì a Venerdì",
+  fullName: "Nome Completo",
+  fullNamePlaceholder: "Inserisci il tuo nome completo",
+  emailPlaceholder: "Inserisci il tuo indirizzo email",
+  subject: "Oggetto",
+  subjectPlaceholder: "Di cosa si tratta?",
+  message: "Messaggio",
+  messagePlaceholder: "Come possiamo aiutarti?",
+  
   // Password field
-  password: "Password"
+  password: "Password",
+  
+  // Missing keys from scan
+  noInvestmentDataAvailable: "Nessun dato di investimento disponibile"
 };
 
 export default it;

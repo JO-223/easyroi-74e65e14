@@ -1,52 +1,39 @@
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { createTranslator } from '@/utils/translationUtils';
+import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+import en from '@/locales/en';
+import it from '@/locales/it';
+import es from '@/locales/es';
+import de from '@/locales/de';
+import { TranslationKey, isValidTranslationKey } from '@/utils/translationUtils';
 
-// Import all language files
-import english from '@/locales/en';
-import italian from '@/locales/it';
-import spanish from '@/locales/es';
-import german from '@/locales/de';
+type Language = 'en' | 'it' | 'es' | 'de';
+type Translations = Record<Language, Record<string, string>>;
 
-// Type definitions
-export type Language = 'english' | 'italian' | 'spanish' | 'german';
-export type Currency = 'usd' | 'eur' | 'gbp';
-export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
-
-interface DisplaySettings {
+interface LanguageContextType {
   language: Language;
-  currency: Currency;
-  timezone: Timezone;
+  setLanguage: (lang: Language) => void;
+  t: (key: TranslationKey) => string;
+  supportedLanguages: { code: Language; name: string }[];
 }
 
-interface LanguageContextProps {
-  language: string;
-  setLanguage: (lang: string) => void;
-  t: (key: string) => string;
-  displaySettings: DisplaySettings;
-  updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
-}
+const translations: Translations = { en, it, es, de };
 
-const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
+const supportedLanguages = [
+  { code: 'en' as const, name: 'English' },
+  { code: 'it' as const, name: 'Italiano' },
+  { code: 'es' as const, name: 'Español' },
+  { code: 'de' as const, name: 'Deutsch' },
+];
 
-interface LanguageProviderProps {
-  children: React.ReactNode;
-}
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Combine all translations
-const translations = {
-  english,
-  italian,
-  spanish,
-  german
-};
-
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState(localStorage.getItem('language') || 'english');
-  const [displaySettings, setDisplaySettings] = useState<DisplaySettings>({
-    language: (localStorage.getItem('language') || 'english') as Language,
-    currency: 'usd',
-    timezone: 'europe_london'
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  // Get language from localStorage if available, otherwise default to English
+  const [language, setLanguageState] = useState<Language>(() => {
+    const savedLang = localStorage.getItem('language');
+    return (savedLang && (supportedLanguages.some(l => l.code === savedLang))) 
+      ? savedLang as Language 
+      : 'en';
   });
 
   useEffect(() => {
@@ -54,28 +41,38 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     document.documentElement.lang = language;
   }, [language]);
 
-  const t = useCallback((key: string) => {
-    return createTranslator(translations, language as Language)(key);
-  }, [language]);
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+  };
 
-  const updateDisplaySettings = useCallback((settings: Partial<DisplaySettings>) => {
-    setDisplaySettings(prev => {
-      const newSettings = { ...prev, ...settings };
-      if (settings.language) {
-        setLanguage(settings.language);
-      }
-      return newSettings;
-    });
-  }, []);
+  const t = (key: TranslationKey): string => {
+    // First check if the key is valid
+    if (!isValidTranslationKey(key)) {
+      console.warn(`Missing translation key: ${key}`);
+      return key; // Return the key as fallback
+    }
+
+    // Use the current language's translation or fallback to English
+    const translatedText = translations[language]?.[key] || translations.en[key];
+    
+    // If the translation is missing in both current language and English, fall back to key
+    if (!translatedText) {
+      console.warn(`Missing translation for key: ${key} in language: ${language}`);
+      return key;
+    }
+    
+    return translatedText;
+  };
+
+  const value = {
+    language,
+    setLanguage,
+    t,
+    supportedLanguages,
+  };
 
   return (
-    <LanguageContext.Provider value={{ 
-      language, 
-      setLanguage, 
-      t, 
-      displaySettings, 
-      updateDisplaySettings 
-    }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );
@@ -83,7 +80,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;

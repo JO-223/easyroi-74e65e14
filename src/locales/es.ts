@@ -78,7 +78,7 @@ const es = {
   
   // Network
   investorNetwork: "Red de Inversores",
-  connectInvestors: "Conéctate con otros inversores",
+  connectInvestors: "Conecta con otros inversores",
   contactInformation: "Información de Contacto",
   connect: "Conectar",
   messages: "Mensajes",
@@ -94,7 +94,7 @@ const es = {
   myConnections: "Mis Conexiones",
   pending: "Pendiente",
   noInvestorsFound: "No se encontraron inversores",
-  tryDifferentSearch: "Prueba un término de búsqueda diferente",
+  tryDifferentSearch: "Prueba con un término de búsqueda diferente",
   viewProfile: "Ver Perfil",
   connectRequest: "Solicitud de Conexión",
   acceptConnection: "Aceptar Conexión",
@@ -105,7 +105,7 @@ const es = {
   
   // Settings
   privacySettings: "Configuración de Privacidad",
-  privacySettingsDesc: "Controla la visibilidad de tu perfil y preferencias de compartición de datos",
+  privacySettingsDesc: "Controla la visibilidad de tu perfil y las preferencias de compartir datos",
   publicProfile: "Perfil Público",
   dataSharing: "Compartir Datos",
   profileVisibility: "Visibilidad del Perfil",
@@ -115,12 +115,12 @@ const es = {
   connectionsOnly: "Solo Conexiones",
   updatePrivacy: "Actualizar Configuración de Privacidad",
   accountSettings: "Configuración de Cuenta",
-  accountSettingsDesc: "Actualiza la información de tu cuenta personal",
+  accountSettingsDesc: "Actualiza tu información personal de cuenta",
   name: "Nombre",
-  email: "Correo Electrónico",
+  email: "Email",
   updateAccount: "Actualizar Cuenta",
   displaySettings: "Configuración de Visualización",
-  displaySettingsDesc: "Actualiza la apariencia y visualización de información de EasyROI",
+  displaySettingsDesc: "Actualiza cómo se ve EasyROI y muestra información",
   language: "Idioma",
   selectLanguage: "Seleccionar Idioma",
   currency: "Moneda",
@@ -131,21 +131,21 @@ const es = {
   updateDisplay: "Actualizar",
   notificationSettings: "Configuración de Notificaciones",
   notificationSettingsDesc: "Controla qué notificaciones recibes",
-  emailNotifications: "Notificaciones por Correo",
+  emailNotifications: "Notificaciones por Email",
   pushNotifications: "Notificaciones Push",
   updateNotifications: "Actualizar Notificaciones",
-  manageSettings: "Administra la configuración de tu cuenta",
+  manageSettings: "Gestiona la configuración de tu cuenta",
   
   // Help and Support
   helpCenter: "Centro de Ayuda",
-  aboutUs: "Sobre Nosotros",
+  aboutUs: "Acerca de Nosotros",
   contactUs: "Contáctanos",
   termsOfService: "Términos de Servicio",
   privacyPolicy: "Política de Privacidad",
   
   // Analysis & Data
-  comprehensiveAnalysis: "Análisis Exhaustivo",
-  roiPerformance: "Rendimiento del ROI",
+  comprehensiveAnalysis: "Análisis Completo",
+  roiPerformance: "Rendimiento ROI",
   allocation: "Asignación",
   historicalROI: "ROI Histórico",
   annualROI: "ROI Anual",
@@ -159,7 +159,7 @@ const es = {
   // Status
   loading: "Cargando",
   errorLoadingData: "Error al cargar datos",
-  noHistoricalData: "No hay datos históricos",
+  noHistoricalData: "Sin datos históricos",
   marketVolatility: "Compensación de volatilidad del mercado detectada",
 
   // Analytics empty states
@@ -175,28 +175,27 @@ const es = {
   investorPortal: "Portal del Inversor",
   investorPortalDesc: "Accede a oportunidades de inversión exclusivas",
   privatePortalAlert: "Este es un portal privado solo para inversores verificados",
-  password: "Contraseña",
   forgotPassword: "¿Olvidaste tu Contraseña?",
   signingIn: "Iniciando Sesión...",
   signIn: "Iniciar Sesión",
-  needAssistance: "¿Necesitas ayuda? Contacta con nuestro equipo de relaciones con inversores",
+  needAssistance: "¿Necesitas ayuda? Contacta a nuestro equipo de relaciones con inversores",
   scheduleMeeting: "Programar una Reunión",
   
   // Landing
-  premiumRealEstate: "Inmuebles Premium",
+  premiumRealEstate: "Bienes Raíces Premium",
   exceptionalReturns: "Retornos Excepcionales",
   exclusiveAccess: "Acceso exclusivo a inversiones inmobiliarias de alto rendimiento para inversores exigentes",
-  scroll: "DESPLÁZATE",
+  scroll: "DESPLAZAR",
   curated: "Oportunidades de Inversión Seleccionadas",
   curatedDesc: "Seleccionamos cuidadosamente solo las propiedades más prometedoras con excelente potencial de ROI",
   premiumProperties: "Propiedades Premium",
   premiumPropertiesDesc: "Accede a oportunidades inmobiliarias exclusivas no disponibles en el mercado abierto",
   portfolioAnalytics: "Análisis de Cartera",
-  portfolioAnalyticsDesc: "Rastrea tus inversiones con análisis detallados y métricas de rendimiento",
+  portfolioAnalyticsDesc: "Supervisa tus inversiones con análisis detallados y métricas de rendimiento",
   securePlatform: "Plataforma Segura",
   securePlatformDesc: "Tus inversiones y datos están protegidos con seguridad de nivel empresarial",
   featuredLocations: "Ubicaciones Destacadas",
-  readyToMaximize: "¿Listo para maximizar los rendimientos de tu cartera inmobiliaria?",
+  readyToMaximize: "¿Listo para maximizar los retornos de tu cartera inmobiliaria?",
   
   // General UI
   back: "Atrás",
@@ -231,28 +230,28 @@ const es = {
   
   // Development Page
   developmentProjects: "Proyectos de Desarrollo",
-  exploreCurrentProjectsInProgress: "Explora los proyectos actuales en progreso",
+  exploreCurrentProjectsInProgress: "Explora proyectos actuales en progreso",
   errorFetchingProjects: "Error al obtener proyectos",
   constructionStage: "Etapa de Construcción",
   allStages: "Todas las Etapas",
   planning: "Planificación",
-  foundation: "Cimentación",
-  structural: "Estructura",
+  foundation: "Cimientos",
+  structural: "Estructural",
   finishing: "Acabados",
   completed: "Completado",
   progressRange: "Rango de Progreso",
   projectFilter: "Filtro de Proyectos",
   progress: "Progreso",
   filterProjects: "Filtrar Proyectos",
-  selectInvestorLevel: "Seleccionar nivel de inversor",
-  enterLocation: "Introducir ubicación",
-  selectStage: "Seleccionar etapa",
-  clearAll: "Borrar todo",
+  selectInvestorLevel: "Seleccionar Nivel de Inversor",
+  enterLocation: "Ingresar Ubicación",
+  selectStage: "Seleccionar Etapa",
+  clearAll: "Limpiar Todo",
   
   // Development project details
   projectDetails: "Detalles del Proyecto",
   completion: "Finalización",
-  minInvestmentRequired: "Inversión Mínima Requerida",
+  minInvestmentRequired: "Inversión Mín. Requerida",
   investorLevelRequired: "Nivel de Inversor Requerido",
   projectDescription: "Descripción del Proyecto",
   constructionProgress: "Progreso de Construcción",
@@ -271,18 +270,19 @@ const es = {
   
   // Profile Page
   myProfile: "Mi Perfil",
-  viewEditProfile: "Ver y editar la información de tu perfil",
+  viewEditProfile: "Ver y editar tu información de perfil",
   joinedOn: "Se unió el",
   bronze: "Bronce",
   silver: "Plata",
   gold: "Oro",
   platinum: "Platino",
+  diamond: "Diamante", // Added missing translation
   basicInfo: "Información Básica",
   bio: "Biografía",
   interests: "Intereses",
   addInterest: "Añadir Interés",
   selectInterest: "Seleccionar Interés",
-  firstLastName: "Nombre y Apellido",
+  firstLastName: "Nombre y Apellidos",
   contactInfo: "Información de Contacto",
   phone: "Teléfono",
   saveChanges: "Guardar Cambios",
@@ -291,16 +291,16 @@ const es = {
   securityPrivacy: "Seguridad y Privacidad",
   changePassword: "Cambiar Contraseña",
   twoFactorAuth: "Autenticación de Dos Factores",
-  enable: "Activar",
-  disable: "Desactivar",
+  enable: "Habilitar",
+  disable: "Deshabilitar",
   dataPrivacy: "Privacidad de Datos",
   downloadData: "Descargar Mis Datos",
   deleteAccount: "Eliminar Cuenta",
-  investmentSummary: "Resumen de Inversiones",
+  investmentSummary: "Resumen de Inversión",
   totalPortfolioValue: "Valor Total de la Cartera",
   averageROI: "ROI Promedio",
   recentActivity: "Actividad Reciente",
-  noRecentActivity: "Sin actividad reciente",
+  noRecentActivity: "No hay actividad reciente",
   viewAll: "Ver Todo",
   
   // Access Control
@@ -308,21 +308,42 @@ const es = {
   importPropertiesAdminOnly: "Solo los administradores pueden importar propiedades",
   
   // About Page
-  aboutUsTitle: "Sobre EasyROI",
+  aboutUsTitle: "Acerca de EasyROI",
   aboutUsSubtitle: "Oportunidades de Inversión Exclusivas para Inversores Exigentes",
   ourStory: "Nuestra Historia",
-  ourStoryText1: "Fundada en 2020, EasyROI surgió de una visión para transformar cómo los individuos de alto patrimonio acceden a inversiones inmobiliarias premium.",
-  ourStoryText2: "Nuestra plataforma ofrece transparencia sin igual y acceso a propiedades exclusivas con rendimientos excepcionales.",
+  ourStoryText1: "Fundada en 2020, EasyROI surgió de una visión para transformar cómo las personas con alto patrimonio acceden a inversiones inmobiliarias premium.",
+  ourStoryText2: "Nuestra plataforma proporciona transparencia sin igual y acceso a propiedades exclusivas con retornos excepcionales.",
   ourValues: "Nuestros Valores",
   excellenceValue: "Excelencia",
-  excellenceText: "Seleccionamos solo las oportunidades de inversión de mayor calidad con potencial de ROI comprobado.",
+  excellenceText: "Seleccionamos solo las oportunidades de inversión de la más alta calidad con potencial de ROI comprobado.",
   integrityValue: "Integridad",
-  integrityText: "La transparencia y la honestidad guían cada interacción con nuestra comunidad de inversores.",
+  integrityText: "La transparencia y honestidad guían cada interacción con nuestra comunidad de inversores.",
   exclusivityValue: "Exclusividad",
   exclusivityText: "Nuestra plataforma otorga acceso a propiedades únicas no disponibles en el mercado abierto.",
   joinOurCommunity: "Únete a Nuestra Comunidad Exclusiva",
   joinOurCommunityText: "Forma parte de nuestra red de inversores sofisticados y obtén acceso a oportunidades de inversión premium.",
-  loginCta: "Acceder al Portal"
+  loginCta: "Acceder al Portal",
+  
+  // Contact Page
+  contactDescription: "Ponte en contacto con nuestros especialistas en inversiones",
+  visitUs: "Visítanos",
+  emailUs: "Envíanos un Email",
+  callUs: "Llámanos",
+  businessHours: "Horario Comercial",
+  mondayToFriday: "Lunes a Viernes",
+  fullName: "Nombre Completo",
+  fullNamePlaceholder: "Ingresa tu nombre completo",
+  emailPlaceholder: "Ingresa tu dirección de email",
+  subject: "Asunto",
+  subjectPlaceholder: "¿De qué se trata?",
+  message: "Mensaje",
+  messagePlaceholder: "¿Cómo podemos ayudarte?",
+  
+  // Password field
+  password: "Contraseña",
+  
+  // Missing keys from scan
+  noInvestmentDataAvailable: "No hay datos de inversión disponibles"
 };
 
 export default es;
