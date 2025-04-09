@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { 
   Form,
   FormControl,
@@ -36,7 +36,7 @@ interface ImportFormProps {
 }
 
 export function ImportForm({ onSuccess }: ImportFormProps) {
-  const { t } = useLanguage();
+  const t = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<ImportFormValues>({
@@ -145,7 +145,7 @@ export function ImportForm({ onSuccess }: ImportFormProps) {
             disabled={isLoading}
             className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90"
           >
-            {isLoading ? "Importing..." : "Import Data"}
+            {isLoading ? t('saving') : t('importProperties')}
           </Button>
         </DialogFooter>
       </form>

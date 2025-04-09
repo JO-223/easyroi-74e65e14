@@ -133,6 +133,37 @@ const en = {
   // General UI
   back: "Back",
   resetFilters: "Reset Filters",
+
+  // Properties Page
+  yourProperties: "Your Properties",
+  property: "Property",
+  location: "Location",
+  value: "Value",
+  status: "Status",
+  active: "Active",
+  price: "Price",
+  expectedROI: "Expected ROI",
+  minInvestment: "Min Investment",
+  viewDetails: "View Details",
+  allLocations: "All Locations",
+  priceRange: "Price Range",
+  min: "Min",
+  max: "Max",
+  propertyType: "Property Type",
+  allTypes: "All Types",
+  investorLevel: "Investor Level",
+  allLevels: "All Levels",
+  amenities: "Amenities",
+  nascondiAmenità: "Hide Amenities",
+  mostraAmenità: "Show Amenities",
+  applyFilters: "Apply Filters",
+  exclusiveProperties: "Exclusive Properties",
+  noPropertiesFound: "No properties found, try different filters",
+  menu: "Menu",
+  
+  // Access Control
+  accessDenied: "Access Denied",
+  importPropertiesAdminOnly: "Only administrators can import properties",
 };
 
 export default en;

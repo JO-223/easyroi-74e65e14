@@ -4,7 +4,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChevronDown } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { PropertyFilter } from "@/types/property";
 import { Input } from "@/components/ui/input";
 import {
@@ -30,7 +30,7 @@ export function PropertyFilters({
   amenities,
   investorLevels
 }: PropertyFiltersProps) {
-  const { t } = useLanguage();
+  const t = useTranslation();
   const [filtersOpen, setFiltersOpen] = useState(true);
   const [filters, setFilters] = useState<PropertyFilter>({});
   

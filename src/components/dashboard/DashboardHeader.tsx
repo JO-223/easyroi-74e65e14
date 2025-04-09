@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { SidebarNav } from "./sidebar-nav";
 import { BadgeLevel } from "../ui/badge-level";
 
@@ -27,7 +27,7 @@ export function DashboardHeader({
   subtitle,
   userData
 }: DashboardHeaderProps) {
-  const { t } = useLanguage();
+  const t = useTranslation();
   
   return (
     <div className="flex flex-col space-y-0 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center p-4 md:p-6 border-b shadow-sm rounded-none bg-slate-50">

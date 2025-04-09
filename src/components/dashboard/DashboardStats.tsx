@@ -2,7 +2,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { TrendingUp, Building2, BarChart3, Calendar } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { DashboardStats as DashboardStatsType } from "@/services/dashboard/dashboardService";
 
 interface StatItemProps {
@@ -41,7 +41,7 @@ interface DashboardStatsProps {
 }
 
 export const DashboardStats = ({ stats }: DashboardStatsProps) => {
-  const { t } = useLanguage();
+  const t = useTranslation();
 
   const statItems = [
     {

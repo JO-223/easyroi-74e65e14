@@ -7,7 +7,7 @@ import { PropertyPagination } from '@/components/PropertyPagination';
 import { PropertyImport } from '@/components/PropertyImport';
 import { Property, PropertyFilter } from '@/types/property';
 import { fetchProperties, fetchLocations, fetchPropertyTypes, fetchAmenities } from '@/services/propertyService';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
@@ -19,7 +19,7 @@ import { useAdminRole } from '@/hooks/use-admin-role';
 const PROPERTIES_PER_PAGE = 9;
 
 export default function Properties() {
-  const { t } = useLanguage();
+  const t = useTranslation();
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<PropertyFilter>({});
@@ -159,7 +159,7 @@ export default function Properties() {
           </>
         ) : (
           <div className="text-center py-12">
-            <p className="text-lg text-gray-500 mb-4">{t('nessuna proprietà trovata, prova con filtri diversi')}</p>
+            <p className="text-lg text-gray-500 mb-4">{t('noPropertiesFound')}</p>
             <Button 
               onClick={() => setFilters({})}
               className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90"

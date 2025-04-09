@@ -133,6 +133,37 @@ const de = {
   // General UI
   back: "Zurück",
   resetFilters: "Filter zurücksetzen",
+
+  // Properties Page
+  yourProperties: "Ihre Immobilien",
+  property: "Immobilie",
+  location: "Standort",
+  value: "Wert",
+  status: "Status",
+  active: "Aktiv",
+  price: "Preis",
+  expectedROI: "Erwarteter ROI",
+  minInvestment: "Mindestinvestition",
+  viewDetails: "Details anzeigen",
+  allLocations: "Alle Standorte",
+  priceRange: "Preisbereich",
+  min: "Min",
+  max: "Max",
+  propertyType: "Immobilientyp",
+  allTypes: "Alle Typen",
+  investorLevel: "Investorenlevel",
+  allLevels: "Alle Level",
+  amenities: "Ausstattung",
+  nascondiAmenità: "Ausstattung ausblenden",
+  mostraAmenità: "Ausstattung anzeigen",
+  applyFilters: "Filter anwenden",
+  exclusiveProperties: "Exklusive Immobilien",
+  noPropertiesFound: "Keine Immobilien gefunden, versuchen Sie andere Filter",
+  menu: "Menü",
+  
+  // Access Control
+  accessDenied: "Zugriff verweigert",
+  importPropertiesAdminOnly: "Nur Administratoren können Immobilien importieren",
 };
 
 export default de;

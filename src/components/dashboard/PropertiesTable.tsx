@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Property } from "@/services/dashboard/dashboardService";
 
 interface PropertiesTableProps {
@@ -9,7 +9,7 @@ interface PropertiesTableProps {
 }
 
 export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
-  const { t } = useLanguage();
+  const t = useTranslation();
 
   return (
     <Card>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { BadgeLevel } from "@/components/ui/badge-level";
 import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { formatCurrency } from "@/lib/utils";
 
 interface PropertyCardProps {
@@ -13,7 +13,7 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
-  const { t } = useLanguage();
+  const t = useTranslation();
   
   // Get primary image or placeholder
   const primaryImage = property.images.find(img => img.is_primary)?.url || 

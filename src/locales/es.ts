@@ -133,6 +133,37 @@ const es = {
   // General UI
   back: "Atrás",
   resetFilters: "Restablecer Filtros",
+
+  // Properties Page
+  yourProperties: "Tus Propiedades",
+  property: "Propiedad",
+  location: "Ubicación",
+  value: "Valor",
+  status: "Estado",
+  active: "Activo",
+  price: "Precio",
+  expectedROI: "ROI Esperado",
+  minInvestment: "Inversión Mínima",
+  viewDetails: "Ver Detalles",
+  allLocations: "Todas las Ubicaciones",
+  priceRange: "Rango de Precio",
+  min: "Mín",
+  max: "Máx",
+  propertyType: "Tipo de Propiedad",
+  allTypes: "Todos los Tipos",
+  investorLevel: "Nivel de Inversor",
+  allLevels: "Todos los Niveles",
+  amenities: "Comodidades",
+  nascondiAmenità: "Ocultar Comodidades",
+  mostraAmenità: "Mostrar Comodidades",
+  applyFilters: "Aplicar Filtros",
+  exclusiveProperties: "Propiedades Exclusivas",
+  noPropertiesFound: "No se encontraron propiedades, prueba con diferentes filtros",
+  menu: "Menú",
+  
+  // Access Control
+  accessDenied: "Acceso Denegado",
+  importPropertiesAdminOnly: "Solo los administradores pueden importar propiedades",
 };
 
 export default es;
