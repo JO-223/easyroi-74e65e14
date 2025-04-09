@@ -117,6 +117,7 @@ const es = {
   accountSettings: "Configuración de Cuenta",
   accountSettingsDesc: "Actualiza la información de tu cuenta personal",
   name: "Nombre",
+  email: "Correo Electrónico",
   updateAccount: "Actualizar Cuenta",
   displaySettings: "Configuración de Visualización",
   displaySettingsDesc: "Actualiza la apariencia y visualización de información de EasyROI",
@@ -172,7 +173,6 @@ const es = {
   investorPortal: "Portal del Inversor",
   investorPortalDesc: "Accede a oportunidades de inversión exclusivas",
   privatePortalAlert: "Este es un portal privado solo para inversores verificados",
-  email: "Correo Electrónico",
   password: "Contraseña",
   forgotPassword: "¿Olvidaste tu Contraseña?",
   signingIn: "Iniciando Sesión...",
@@ -302,6 +302,22 @@ const es = {
   joinOurCommunity: "Únete a Nuestra Comunidad Exclusiva",
   joinOurCommunityText: "Forma parte de nuestra red de inversores sofisticados y obtén acceso a oportunidades de inversión premium.",
   loginCta: "Acceder al Portal",
+  
+  // Development project details
+  projectDescription: "Descripción del Proyecto",
+  constructionProgress: "Progreso de Construcción",
+  projectGallery: "Galería del Proyecto",
+  investmentDetails: "Detalles de Inversión",
+  expectedCompletion: "Finalización Esperada",
+  totalUnits: "Unidades Totales",
+  availableUnits: "Unidades Disponibles",
+  completionPercentage: "Porcentaje de Finalización",
+  requestInformation: "Solicitar Información",
+  tbd: "Por determinar",
+  notAvailable: "No disponible",
+  projectNotFound: "Proyecto no encontrado",
+  errorLoadingProject: "Error al cargar el proyecto",
+  projectMayHaveBeenRemoved: "Este proyecto puede haber sido eliminado"
 };
 
 export default es;

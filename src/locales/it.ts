@@ -302,8 +302,24 @@ const it = {
   joinOurCommunityText: "Diventa parte della nostra rete di investitori sofisticati e ottieni accesso a opportunità di investimento premium.",
   loginCta: "Accedi al Portale",
   
+  // Development project details
+  projectDescription: "Descrizione del Progetto",
+  constructionProgress: "Avanzamento Costruzione",
+  projectGallery: "Galleria del Progetto",
+  investmentDetails: "Dettagli dell'Investimento",
+  expectedCompletion: "Completamento Previsto",
+  totalUnits: "Unità Totali",
+  availableUnits: "Unità Disponibili",
+  completionPercentage: "Percentuale di Completamento",
+  requestInformation: "Richiedi Informazioni",
+  tbd: "Da definire",
+  notAvailable: "Non disponibile",
+  projectNotFound: "Progetto non trovato",
+  errorLoadingProject: "Errore nel caricamento del progetto",
+  projectMayHaveBeenRemoved: "Questo progetto potrebbe essere stato rimosso",
+  
   // Password field
-  password: "Password",
+  password: "Password"
 };
 
 export default it;
