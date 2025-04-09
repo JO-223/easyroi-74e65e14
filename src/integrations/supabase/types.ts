@@ -827,6 +827,33 @@ export type Database = {
           },
         ]
       }
+      user_activities: {
+        Row: {
+          activity_type: string
+          created_at: string
+          description: string
+          id: string
+          related_id: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          description: string
+          id?: string
+          related_id?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          related_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_events: {
         Row: {
           count: number

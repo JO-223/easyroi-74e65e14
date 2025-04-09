@@ -25,8 +25,9 @@ export function PropertyImport() {
     return null;
   }
   
+  // Hide the component completely if user is not admin
   if (!isAdmin && userRole !== null) {
-    return <AccessDeniedAlert />;
+    return null;
   }
   
   return (

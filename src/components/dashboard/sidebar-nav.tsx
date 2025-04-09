@@ -7,6 +7,7 @@ import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface UserProfileData {
   firstName?: string;
@@ -71,6 +72,34 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       icon: Settings
     }
   ];
+  
+  // Show skeleton during loading
+  if (!userData || !userData.firstName) {
+    return (
+      <div className="flex flex-col h-full text-sidebar-foreground bg-easyroi-navy">
+        <div className="px-3 py-2">
+          <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-4">
+            <div className="flex items-center space-x-2">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div>
+                <Skeleton className="h-4 w-24 mb-2" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            </div>
+            <div className="mt-3">
+              <Skeleton className="h-5 w-28" />
+            </div>
+          </div>
+        </div>
+        {/* Skeleton nav items */}
+        <nav className="space-y-1 px-3 flex-1">
+          {Array(8).fill(0).map((_, i) => (
+            <Skeleton key={i} className="h-9 w-full rounded-md my-1" />
+          ))}
+        </nav>
+      </div>
+    );
+  }
   
   const initials = userData && userData.firstName && userData.lastName 
     ? `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`

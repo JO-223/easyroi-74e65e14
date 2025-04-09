@@ -111,8 +111,14 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       }
     }
     
-    // Get events count (using a placeholder until we have events data)
-    const eventsCount = 3;
+    // Get events count - fetch actual count from events table
+    const { count: eventsCount, error: eventsError } = await supabase
+      .from('events')
+      .select('*', { count: 'exact', head: true });
+      
+    if (eventsError) {
+      console.error("Error fetching events count:", eventsError);
+    }
     
     // Format investment growth data
     const investmentGrowth: InvestmentGrowth[] = growthData?.map(item => ({
@@ -141,7 +147,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       totalInvestment: Number(investmentData?.total_investment || 0),
       properties: Number(propertyData?.count || 0),
       roi: Number(roiData?.average_roi || 0),
-      events: eventsCount,
+      events: eventsCount || 0, // Use actual count from database
       investmentChange: Number(investmentData?.investment_change_percentage || 0),
       propertiesChange: Number(propertyData?.change || 0),
       roiChange: Number(roiData?.roi_change || 0)
