@@ -27,6 +27,9 @@ const formSchema = z.object({
   password: z.string(),
 });
 
+const DEMO_EMAIL = 'demo@easyroi.com';
+const DEMO_PASSWORD = 'demo123456';
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -50,34 +53,103 @@ const Login = () => {
       let email = values.email;
       let password = values.password;
       
-      // Gestione login demo semplificata
-      if (email.toLowerCase() === 'demo@easyroi.com') {
-        // Per l'account demo, accetta qualsiasi password o nessuna password
+      // Gestione login demo
+      if (email.toLowerCase() === DEMO_EMAIL) {
+        // Per l'account demo, accetta qualsiasi password o usa la password predefinita
         if (!password || password.trim() === '') {
-          password = 'demo123456'; // Password di default per demo
+          password = DEMO_PASSWORD;
         }
         
-        console.log("Accesso con account demo");
-      }
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-      
-      if (error) {
-        setAuthError(error.message);
-        toast({
-          title: t('loginFailedTitle'),
-          description: error.message,
-          variant: "destructive",
+        console.log("Tentativo di accesso con account demo");
+        
+        // Prova a effettuare il login
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password: DEMO_PASSWORD // Usa sempre la password demo predefinita per l'account demo
         });
-      } else if (data.session) {
-        toast({
-          title: t('loginSuccessTitle'),
-          description: t('loginSuccessMsg'),
+        
+        // Se il login fallisce perché l'account non esiste, registralo automaticamente
+        if (signInError && signInError.message.includes('Invalid login credentials')) {
+          console.log("Account demo non trovato, creazione in corso...");
+          
+          // Registra l'account demo
+          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+            email: DEMO_EMAIL,
+            password: DEMO_PASSWORD,
+            options: {
+              data: {
+                first_name: 'Demo',
+                last_name: 'User',
+              }
+            }
+          });
+          
+          if (signUpError) {
+            setAuthError(signUpError.message);
+            toast({
+              title: t('registrationFailedTitle'),
+              description: signUpError.message,
+              variant: "destructive",
+            });
+          } else {
+            // Dopo la registrazione, prova a effettuare il login
+            const { data, error } = await supabase.auth.signInWithPassword({
+              email: DEMO_EMAIL,
+              password: DEMO_PASSWORD
+            });
+            
+            if (error) {
+              setAuthError(error.message);
+              toast({
+                title: t('loginFailedTitle'),
+                description: error.message,
+                variant: "destructive",
+              });
+            } else if (data.session) {
+              toast({
+                title: t('loginSuccessTitle'),
+                description: t('loginSuccessMsg'),
+              });
+              navigate("/dashboard");
+            }
+          }
+        } else if (signInError) {
+          // Se c'è un altro tipo di errore durante il login
+          setAuthError(signInError.message);
+          toast({
+            title: t('loginFailedTitle'),
+            description: signInError.message,
+            variant: "destructive",
+          });
+        } else if (signInData.session) {
+          // Login riuscito
+          toast({
+            title: t('loginSuccessTitle'),
+            description: t('loginSuccessMsg'),
+          });
+          navigate("/dashboard");
+        }
+      } else {
+        // Login per account non demo
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
         });
-        navigate("/dashboard");
+        
+        if (error) {
+          setAuthError(error.message);
+          toast({
+            title: t('loginFailedTitle'),
+            description: error.message,
+            variant: "destructive",
+          });
+        } else if (data.session) {
+          toast({
+            title: t('loginSuccessTitle'),
+            description: t('loginSuccessMsg'),
+          });
+          navigate("/dashboard");
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
