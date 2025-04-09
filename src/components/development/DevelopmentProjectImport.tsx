@@ -12,20 +12,15 @@ import { Button } from "@/components/ui/button";
 import { Construction } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdminRole } from "@/hooks/use-admin-role";
-import { AccessDeniedAlert } from "@/components/property/AccessDeniedAlert";
 
 export function DevelopmentProjectImport() {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const { isAdmin, userRole, isLoading } = useAdminRole();
   
-  // If still loading role, show nothing to prevent flashing UI
-  if (isLoading) {
+  // If still loading role or user is not admin, return nothing
+  if (isLoading || (!isAdmin && userRole !== null)) {
     return null;
-  }
-  
-  if (!isAdmin && userRole !== null) {
-    return <AccessDeniedAlert />;
   }
   
   return (
