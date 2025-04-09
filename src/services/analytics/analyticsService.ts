@@ -81,23 +81,23 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       .eq('user_id', user.id)
       .single();
 
-    // Format ROI Performance data
+    // Format ROI Performance data with proper type casting
     const roiPerformance = growthData?.map(item => ({
-      month: item.month,
+      month: String(item.month || ''),
       roi: Number(item.value) || 0,
       benchmark: MARKET_AVERAGE_ROI
     })) || generateDefaultRoiPerformance();
 
-    // Format Asset Allocation
+    // Format Asset Allocation with proper type casting
     const assetAllocation = allocationData?.map(item => ({
-      name: item.location,
-      value: Number(item.percentage)
+      name: String(item.location || ''),
+      value: Number(item.percentage) || 0
     })) || [];
 
-    // Format Geographic Distribution
+    // Format Geographic Distribution with proper type casting
     const geographicDistribution = geoDistribution?.map(item => ({
-      name: item.location,
-      value: Number(item.percentage)
+      name: String(item.location || ''),
+      value: Number(item.percentage) || 0
     })) || [];
 
     // Calculate market comparison

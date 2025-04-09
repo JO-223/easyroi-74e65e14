@@ -1,9 +1,23 @@
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+
+// Type definitions
+export type Language = 'english' | 'italian' | 'spanish' | 'german';
+export type Currency = 'usd' | 'eur' | 'gbp';
+export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
+
+interface DisplaySettings {
+  language: Language;
+  currency: Currency;
+  timezone: Timezone;
+}
 
 interface LanguageContextProps {
   language: string;
   setLanguage: (lang: string) => void;
   t: (key: string) => string;
+  displaySettings: DisplaySettings;
+  updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
 }
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
@@ -139,6 +153,11 @@ const translations = {
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState(localStorage.getItem('language') || 'english');
+  const [displaySettings, setDisplaySettings] = useState<DisplaySettings>({
+    language: (localStorage.getItem('language') || 'english') as Language,
+    currency: 'usd',
+    timezone: 'europe_london'
+  });
 
   useEffect(() => {
     localStorage.setItem('language', language);
@@ -149,8 +168,24 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return translations[language as keyof typeof translations][key] || key;
   }, [language]);
 
+  const updateDisplaySettings = useCallback((settings: Partial<DisplaySettings>) => {
+    setDisplaySettings(prev => {
+      const newSettings = { ...prev, ...settings };
+      if (settings.language) {
+        setLanguage(settings.language);
+      }
+      return newSettings;
+    });
+  }, []);
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ 
+      language, 
+      setLanguage, 
+      t, 
+      displaySettings, 
+      updateDisplaySettings 
+    }}>
       {children}
     </LanguageContext.Provider>
   );

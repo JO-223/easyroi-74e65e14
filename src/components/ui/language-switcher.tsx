@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Language, useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 
 const languageFlags: Record<Language, { flag: string; name: string }> = {
@@ -27,7 +27,7 @@ export function LanguageSwitcher({ variant = "default", className = "" }: Langua
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
-  const currentLanguage = languageFlags[displaySettings.language];
+  const currentLanguage = languageFlags[displaySettings.language as Language];
 
   const handleLanguageChange = (language: Language) => {
     updateDisplaySettings({ language });
