@@ -138,10 +138,13 @@ export const fetchDashboardData = async (): Promise<{
       if (locationError) {
         console.error("Error fetching locations:", locationError);
       } else if (locationData) {
-        locations = locationData.reduce((acc, loc) => ({
-          ...acc,
-          [loc.id]: `${loc.city}, ${loc.country}`
-        }), {} as Record<string, string>);
+        locations = locationData.reduce((acc, loc) => {
+          // Fix: Convert the id to a string to ensure it's a valid key type
+          return {
+            ...acc,
+            [loc.id.toString()]: `${loc.city}, ${loc.country}`
+          };
+        }, {} as Record<string, string>);
       }
     }
     
@@ -149,7 +152,7 @@ export const fetchDashboardData = async (): Promise<{
     const formattedProperties: PropertyListItem[] = propertyList?.map(property => ({
       id: property.id as string,
       name: property.name as string,
-      location: locations[property.location_id as string] || 'Unknown',
+      location: locations[property.location_id?.toString() || ''] || 'Unknown',
       roi: `${property.roi_percentage}%`,
       value: `€${Number(property.price).toLocaleString()}`,
       status: property.status as string
