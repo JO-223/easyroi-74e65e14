@@ -1,3 +1,4 @@
+
 const es = {
   // General
   welcome: "Bienvenido",
@@ -338,3 +339,4 @@ const es = {
 };
 
 export default es;
+

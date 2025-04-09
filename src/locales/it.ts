@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuto",
@@ -156,6 +157,8 @@ const it = {
   // Account settings
   accountSettingsUpdated: "Impostazioni Account Aggiornate",
   accountSettingsSaved: "Le impostazioni del tuo account sono state salvate",
+  errorOccurred: "Si è Verificato un Errore",
+  errorUpdatingSettings: "Errore nell'aggiornamento delle impostazioni del tuo account",
   
   // Display settings
   displaySettingsUpdated: "Impostazioni di Visualizzazione Aggiornate", 
@@ -203,8 +206,6 @@ const it = {
   recentActivity: "Attività Recenti",
   noRecentActivity: "Nessuna attività recente",
   viewAll: "Visualizza Tutto",
-  errorOccurred: "Si è Verificato un Errore",
-  errorUpdatingSettings: "Errore nell'aggiornamento delle impostazioni del tuo account",
   
   // Help and Support
   helpCenter: "Centro Assistenza",
@@ -340,41 +341,6 @@ const it = {
   errorLoadingProject: "Errore nel caricamento del progetto",
   projectMayHaveBeenRemoved: "Questo progetto potrebbe essere stato rimosso",
   
-  // Profile Page
-  myProfile: "Il Mio Profilo",
-  viewEditProfile: "Visualizza e modifica le informazioni del tuo profilo",
-  joinedOn: "Iscritto il",
-  bronze: "Bronzo",
-  silver: "Argento",
-  gold: "Oro",
-  platinum: "Platino",
-  diamond: "Diamante",
-  basicInfo: "Informazioni di Base",
-  bio: "Biografia",
-  interests: "Interessi",
-  addInterest: "Aggiungi Interesse",
-  selectInterest: "Seleziona Interesse",
-  firstLastName: "Nome e Cognome",
-  contactInfo: "Informazioni di Contatto",
-  phone: "Telefono",
-  saveChanges: "Salva Modifiche",
-  editProfile: "Modifica Profilo",
-  cancelEditing: "Annulla",
-  securityPrivacy: "Sicurezza e Privacy",
-  changePassword: "Cambia Password",
-  twoFactorAuth: "Autenticazione a Due Fattori",
-  enable: "Attiva",
-  disable: "Disattiva",
-  dataPrivacy: "Privacy dei Dati",
-  downloadData: "Scarica i Miei Dati",
-  deleteAccount: "Elimina Account",
-  investmentSummary: "Riepilogo Investimenti",
-  totalPortfolioValue: "Valore Totale Portafoglio",
-  averageROI: "ROI Medio",
-  recentActivity: "Attività Recenti",
-  noRecentActivity: "Nessuna attività recente",
-  viewAll: "Visualizza Tutto",
-  
   // Access Control
   accessDenied: "Accesso Negato",
   importPropertiesAdminOnly: "Solo gli amministratori possono importare proprietà",
@@ -496,34 +462,6 @@ const it = {
   markAllAsRead: "Segna tutte come lette",
   noNotifications: "Nessuna notifica",
   
-  // Settings descriptions
-  emailNotificationsDesc: "Ricevi aggiornamenti importanti e avvisi via email",
-  pushNotificationsDesc: "Ricevi notifiche in tempo reale nel tuo browser",
-  publicProfileDesc: "Controlla se il tuo profilo è visibile ad altri investitori",
-  dataSharingDesc: "Gestisci come i tuoi dati di investimento vengono condivisi con i nostri partner",
-  profilePublic: "Profilo Pubblico",
-  profilePublicDesc: "Il tuo profilo è visibile a tutti gli investitori",
-  profileSemiPublic: "Profilo Semi-Pubblico",
-  profileSemiPublicDesc: "Il tuo profilo è visibile solo agli investitori connessi",
-  profilePrivate: "Profilo Privato",
-  profilePrivateDesc: "Il tuo profilo non è visibile a nessuno",
-  
-  // Account settings
-  accountSettingsUpdated: "Impostazioni Account Aggiornate",
-  accountSettingsSaved: "Le impostazioni del tuo account sono state salvate",
-  
-  // Display settings
-  displaySettingsUpdated: "Impostazioni di Visualizzazione Aggiornate", 
-  displaySettingsSaved: "Le tue preferenze di visualizzazione sono state salvate",
-  
-  // Notification settings
-  notificationSettingsUpdated: "Impostazioni di Notifica Aggiornate",
-  notificationSettingsSaved: "Le tue preferenze di notifica sono state salvate",
-  
-  // Privacy settings
-  privacySettingsUpdated: "Impostazioni Privacy Aggiornate",
-  privacySettingsSaved: "Le tue preferenze di privacy sono state salvate",
-  
   // Network data
   networkDataError: "Errore nel caricamento dei dati di rete",
   
@@ -535,3 +473,4 @@ const it = {
 };
 
 export default it;
+
