@@ -50,7 +50,8 @@ export async function getUserInvestment(): Promise<number> {
     }
     
     // Ensure we're returning a number by explicitly casting
-    return typeof data?.total_investment === 'number' ? data.total_investment : 0;
+    const totalInvestment = data?.total_investment;
+    return typeof totalInvestment === 'number' ? totalInvestment : 0;
   } catch (error) {
     console.error("Errore nel recupero dell'investimento:", error);
     return 0;
