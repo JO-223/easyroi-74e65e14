@@ -248,7 +248,6 @@ const de = {
   enterLocation: "Standort eingeben",
   selectStage: "Phase auswählen",
   clearAll: "Alles löschen",
-  contactUs: "Kontaktieren Sie uns",
   
   // Development project details
   projectDetails: "Projektdetails",

@@ -247,7 +247,6 @@ const it = {
   enterLocation: "Inserisci Posizione",
   selectStage: "Seleziona Fase",
   clearAll: "Cancella Tutto",
-  contactUs: "Contattaci",
   
   // Development project details
   projectDetails: "Dettagli Progetto",

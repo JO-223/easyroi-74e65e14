@@ -247,7 +247,6 @@ const en = {
   enterLocation: "Enter Location",
   selectStage: "Select Stage",
   clearAll: "Clear All",
-  contactUs: "Contact Us",
 
   // Development project details
   projectDetails: "Project Details",

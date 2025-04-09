@@ -248,7 +248,6 @@ const es = {
   enterLocation: "Introducir ubicación",
   selectStage: "Seleccionar etapa",
   clearAll: "Borrar todo",
-  contactUs: "Contáctanos",
   
   // Development project details
   projectDetails: "Detalles del Proyecto",
