@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -13,6 +12,7 @@ import { addNewEvent, fetchDevelopmentProjects, fetchProperties, useAdminActions
 import { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, CalendarCheck, Link, Loader2, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AdminProperty, AdminDevelopmentProject } from "@/types/admin";
 
 const formSchema = z.object({
   title: z.string().min(3, "Title is required"),
@@ -40,22 +40,12 @@ const investorLevelOptions = [
   { value: "diamond", label: "Diamond" }
 ];
 
-type Property = {
-  id: string;
-  name: string;
-};
-
-type DevelopmentProject = {
-  id: string;
-  name: string;
-};
-
 export function AdminEventForm() {
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [projects, setProjects] = useState<DevelopmentProject[]>([]);
+  const [properties, setProperties] = useState<AdminProperty[]>([]);
+  const [projects, setProjects] = useState<AdminDevelopmentProject[]>([]);
   const { handleAdminAction } = useAdminActions();
   const { toast } = useToast();
   
@@ -180,7 +170,6 @@ export function AdminEventForm() {
             )}
           />
 
-          {/* Date and Time */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -214,7 +203,6 @@ export function AdminEventForm() {
             />
           </div>
 
-          {/* Event details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -269,7 +257,6 @@ export function AdminEventForm() {
             />
           </div>
           
-          {/* Location */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -312,7 +299,6 @@ export function AdminEventForm() {
             />
           </div>
 
-          {/* Related items */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -379,7 +365,6 @@ export function AdminEventForm() {
             />
           </div>
 
-          {/* Image URL */}
           <FormField
             control={form.control}
             name="imageUrl"
@@ -400,7 +385,6 @@ export function AdminEventForm() {
             )}
           />
 
-          {/* Investor Level Access */}
           <FormField
             control={form.control}
             name="requiredBadges"

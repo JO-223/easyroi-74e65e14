@@ -7,3 +7,8 @@ export interface NavItem {
   icon: LucideIcon;
   adminOnly?: boolean;
 }
+
+export interface AdminRole {
+  role: string;
+  permissions: string[];
+}

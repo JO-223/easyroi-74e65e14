@@ -18,6 +18,7 @@ Per ogni punto completato:
 - ✅ Form per gestione delle proprietà in vendita - Creato `src/components/admin/AdminForSalePropertyForm.tsx` con form completo
 - ✅ Form per gestione dei progetti in sviluppo - Creato `src/components/admin/AdminDevelopmentProjectForm.tsx` con form completo
 - ✅ Gestione eventi (creazione, modifica, eliminazione) - Creato `src/components/admin/AdminEventForm.tsx` con form completo
+- ✅ Correzione degli errori TypeScript nei form admin - Aggiunto src/types/admin.ts con interfacce e sistemato typing nei componenti
 - [ ] Funzione Supabase: `addNewInvestor()`
 - [ ] Funzione Supabase: `addNewPropertyForUser()`
 - [ ] Funzione Supabase: `addPropertyForSale()`
@@ -98,3 +99,4 @@ _(Solo revisione, nessun check-off richiesto)_
 ✅ Form per inserimento nuovi investitori – creato `AdminAddInvestor.tsx`, integrato form con funzione `addNewInvestor()`
 
 ```
+

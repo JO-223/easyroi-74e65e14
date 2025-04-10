@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,6 +10,8 @@ import { addPropertyForUser, fetchInvestors, fetchPropertyTypes, useAdminActions
 import { useState, useEffect } from "react";
 import { Building2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Investor } from "@/types/admin";
+import { PropertyType } from "@/types/property";
 
 const formSchema = z.object({
   userId: z.string().min(1, "Investor is required"),
@@ -29,20 +30,6 @@ const formSchema = z.object({
   roiPercentage: z.number().optional(),
   serviceCharges: z.number().optional(),
 });
-
-type Investor = {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  level: string | null;
-};
-
-type PropertyType = {
-  id: string;
-  name: string;
-  description: string | null;
-};
 
 export function AdminPropertyForm() {
   const { t } = useLanguage();

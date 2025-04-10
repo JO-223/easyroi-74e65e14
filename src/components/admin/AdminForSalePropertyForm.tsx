@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,6 +10,7 @@ import { addPropertyForSale, fetchPropertyTypes, useAdminActions } from "@/servi
 import { useState, useEffect } from "react";
 import { Building2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { PropertyType } from "@/types/property";
 
 const formSchema = z.object({
   name: z.string().min(2, "Property name is required"),
@@ -27,12 +27,6 @@ const formSchema = z.object({
   roiPercentage: z.number().optional(),
   investorLevel: z.string().optional(),
 });
-
-type PropertyType = {
-  id: string;
-  name: string;
-  description: string | null;
-};
 
 export function AdminForSalePropertyForm() {
   const { t } = useLanguage();
