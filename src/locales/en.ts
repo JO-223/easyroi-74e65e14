@@ -1,3 +1,4 @@
+
 const en = {
   // General
   welcome: "Welcome",
@@ -468,19 +469,7 @@ const en = {
   errorFetchingEvent: "Error fetching event details",
   
   // Missing keys from scan
-  noInvestmentDataAvailable: "No investment data available",
-  
-  // Admin Function Tester
-  adminFunctionTester: "Admin Function Tester",
-  adminFunctionTesterDescription: "Test admin functions by executing them and view results",
-  testAdminFunctions: "Test and validate admin functionality",
-  testAddNewInvestor: "Add New Investor",
-  testAddNewInvestorDescription: "Creates a demo investor with random email",
-  testAddPropertyForUser: "Add Property",
-  testAddPropertyForUserDescription: "Adds a test property to the demo investor",
-  runTest: "Run Test",
-  testResults: "Test Results",
-  noTestResultsYet: "No test results yet. Run a test to see results here."
+  noInvestmentDataAvailable: "No investment data available"
 };
 
 export default en;

@@ -1,118 +1,77 @@
 
-import React from 'react';
-import { createBrowserRouter, RouterProvider, Navigate, RouteObject } from 'react-router-dom';
-import { ThemeProvider } from "@/components/theme-provider";
-import './App.css';
-import Dashboard from './pages/Dashboard';
-import NotFound from './pages/NotFound';
-import Profile from './pages/Profile';
-import Network from './pages/Network';
-import SettingsPage from './pages/SettingsPage';
-import PropertyDetails from './pages/PropertyDetails';
-import Messages from './pages/Messages';
-import Notifications from './pages/Notifications';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminRoute from './components/admin/AdminRoute';
-import Auth from './pages/Auth';
-import { supabase } from './integrations/supabase/client';
-import PublicRoute from './components/PublicRoute';
-import AdminTester from './pages/admin/AdminTester';
-import { SidebarProvider } from './contexts/SidebarContext';
-import { LanguageProvider } from './contexts/LanguageContext';
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { LanguageProvider } from "./contexts/LanguageContext";
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Properties from "./pages/Properties";
+import Analytics from "./pages/Analytics";
+import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
+import Network from "./pages/Network";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import NotFound from "./pages/NotFound";
+import Development from "./pages/Development";
+import DevelopmentDetail from "./pages/DevelopmentDetail";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminRoute from "./components/admin/AdminRoute";
+import { useEffect } from "react";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <PublicRoute />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: "",
-        element: <Navigate to="/dashboard" replace />,
-      },
-      {
-        path: "auth",
-        element: <Auth />,
-      },
-    ],
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/network",
-    element: <Network />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/settings",
-    element: <SettingsPage />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/property/:id",
-    element: <PropertyDetails />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/messages",
-    element: <Messages />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/notifications",
-    element: <Notifications />,
-    errorElement: <NotFound />,
-  },
+const queryClient = new QueryClient();
 
-  // Admin routes, protected by AdminRoute component
-  {
-    path: "/admin",
-    element: <AdminRoute />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: "",
-        element: <Navigate to="/admin/dashboard" replace />,
-      },
-      {
-        path: "dashboard",
-        element: <AdminDashboard />,
-      },
-      {
-        path: "tester",
-        element: <AdminTester />,
-      },
-    ],
-  },
+const App = () => {
+  // Initialize language settings from localStorage
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('displaySettings');
+    if (savedSettings) {
+      const { language } = JSON.parse(savedSettings);
+      document.documentElement.lang = language;
+    }
+  }, []);
 
-  {
-    path: '*',
-    element: <Navigate to="/dashboard" replace />,
-  },
-  {
-    path: '/404',
-    element: <NotFound />,
-  },
-]);
-
-function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="easyroi-theme">
-      <LanguageProvider>
-        <SidebarProvider>
-          <RouterProvider router={router} />
-        </SidebarProvider>
-      </LanguageProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <LanguageProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/properties" element={<Properties />} />
+              <Route path="/dashboard/development" element={<Development />} />
+              <Route path="/dashboard/development/:id" element={<DevelopmentDetail />} />
+              <Route path="/dashboard/analytics" element={<Analytics />} />
+              <Route path="/dashboard/events" element={<Events />} />
+              <Route path="/dashboard/events/:id" element={<EventDetail />} />
+              <Route path="/dashboard/network" element={<Network />} />
+              <Route path="/dashboard/profile" element={<Profile />} />
+              <Route path="/dashboard/settings" element={<Settings />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/about" element={<About />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
+              {/* Redirect /properties to /dashboard/properties for backward compatibility */}
+              <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </LanguageProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
