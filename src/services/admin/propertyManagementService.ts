@@ -10,6 +10,12 @@ export interface AddPropertyParams {
   status: string;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  name?: string;
+}
+
 /**
  * Add a new property for a specific user and update all related tables
  */
@@ -37,7 +43,7 @@ export async function addNewPropertyForUser(params: AddPropertyParams): Promise<
 /**
  * Get all users with basic profile information for admin selection
  */
-export async function getUsers() {
+export async function getUsers(): Promise<User[]> {
   try {
     const { data, error } = await supabase
       .from('profiles')
@@ -48,8 +54,8 @@ export async function getUsers() {
     }
     
     return data.map(user => ({
-      id: user.id,
-      email: user.email,
+      id: user.id as string,
+      email: user.email as string,
       name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || undefined
     }));
   } catch (error) {

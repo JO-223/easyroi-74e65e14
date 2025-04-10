@@ -1,3 +1,4 @@
+
 import {
   Home,
   LayoutDashboard,
@@ -11,10 +12,11 @@ import { useLanguage } from "@/contexts/LanguageContext"
 import { useAdminRole } from "@/hooks/use-admin-role"
 
 interface SidebarNavProps {
-  items: NavItem[]
+  items?: NavItem[]
+  userData?: any // Add userData prop to the interface
 }
 
-export function SidebarNav({ items }: SidebarNavProps) {
+export function SidebarNav({ items, userData }: SidebarNavProps) {
   const { t } = useLanguage();
   const { isAdmin } = useAdminRole();
 

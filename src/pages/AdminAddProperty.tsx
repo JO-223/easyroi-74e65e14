@@ -60,9 +60,10 @@ const AdminAddProperty = () => {
           throw error;
         }
         
-        const formattedUsers = data.map(user => ({
-          id: user.id,
-          email: user.email,
+        // Ensure proper typing for the mapped users array
+        const formattedUsers: User[] = data.map(user => ({
+          id: user.id as string,
+          email: user.email as string,
           name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || undefined
         }));
         
