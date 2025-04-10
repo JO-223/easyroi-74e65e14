@@ -17,40 +17,43 @@ const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("account");
   
   const { 
-    name, 
-    email, 
+    accountSettings,
     isSaving: isAccountSaving, 
-    updateAccountSettings 
+    saveAccountSettings
   } = useAccountSettings();
   
   const {
     displaySettings,
     isSaving: isDisplaySaving,
-    updateLanguage,
-    updateCurrency,
-    updateTimezone,
+    updateDisplaySettingsField,
     saveDisplaySettings
   } = useDisplaySettings();
   
   const {
-    emailNotifications,
-    pushNotifications,
+    notificationSettings,
     isSaving: isNotificationSaving,
-    updateEmailNotifications,
-    updatePushNotifications,
+    updateNotificationSettingsField,
     saveNotificationSettings
   } = useNotificationSettings();
   
   const {
-    publicProfile,
-    dataSharing,
-    profileVisibility,
+    privacySettings,
     isSaving: isPrivacySaving,
-    updatePublicProfile,
-    updateDataSharing,
-    updateProfileVisibility,
+    updatePrivacySettingsField,
     savePrivacySettings
   } = usePrivacySettings();
+
+  // Helper functions to adapt the interface
+  const handleLanguageChange = (value: any) => updateDisplaySettingsField('language', value);
+  const handleCurrencyChange = (value: any) => updateDisplaySettingsField('currency', value);
+  const handleTimezoneChange = (value: any) => updateDisplaySettingsField('timezone', value);
+  
+  const handleEmailNotificationsChange = (value: boolean) => updateNotificationSettingsField('email', value);
+  const handlePushNotificationsChange = (value: boolean) => updateNotificationSettingsField('push', value);
+  
+  const handlePublicProfileChange = (value: boolean) => updatePrivacySettingsField('publicProfile', value);
+  const handleDataSharingChange = (value: boolean) => updatePrivacySettingsField('dataSharing', value);
+  const handleProfileVisibilityChange = (value: any) => updatePrivacySettingsField('profileVisibility', value);
 
   return (
     <DashboardLayout title={t('settings')}>
@@ -65,10 +68,10 @@ const SettingsPage = () => {
           
           <TabsContent value="account">
             <AccountSettings 
-              name={name} 
-              email={email} 
+              name={accountSettings.name} 
+              email={accountSettings.email} 
               isSaving={isAccountSaving} 
-              onSave={updateAccountSettings} 
+              onSave={saveAccountSettings} 
             />
           </TabsContent>
           
@@ -78,33 +81,33 @@ const SettingsPage = () => {
               currency={displaySettings.currency}
               timezone={displaySettings.timezone}
               isSaving={isDisplaySaving}
-              onLanguageChange={updateLanguage}
-              onCurrencyChange={updateCurrency}
-              onTimezoneChange={updateTimezone}
+              onLanguageChange={handleLanguageChange}
+              onCurrencyChange={handleCurrencyChange}
+              onTimezoneChange={handleTimezoneChange}
               onSave={saveDisplaySettings}
             />
           </TabsContent>
           
           <TabsContent value="notifications">
             <NotificationSettings 
-              emailNotifications={emailNotifications}
-              pushNotifications={pushNotifications}
+              emailNotifications={notificationSettings.email}
+              pushNotifications={notificationSettings.push}
               isSaving={isNotificationSaving}
-              onEmailNotificationsChange={updateEmailNotifications}
-              onPushNotificationsChange={updatePushNotifications}
+              onEmailNotificationsChange={handleEmailNotificationsChange}
+              onPushNotificationsChange={handlePushNotificationsChange}
               onSave={saveNotificationSettings}
             />
           </TabsContent>
           
           <TabsContent value="privacy">
             <PrivacySettings 
-              publicProfile={publicProfile}
-              dataSharing={dataSharing}
-              profileVisibility={profileVisibility}
+              publicProfile={privacySettings.publicProfile}
+              dataSharing={privacySettings.dataSharing}
+              profileVisibility={privacySettings.profileVisibility}
               isSaving={isPrivacySaving}
-              onPublicProfileChange={updatePublicProfile}
-              onDataSharingChange={updateDataSharing}
-              onProfileVisibilityChange={updateProfileVisibility}
+              onPublicProfileChange={handlePublicProfileChange}
+              onDataSharingChange={handleDataSharingChange}
+              onProfileVisibilityChange={handleProfileVisibilityChange}
               onSave={savePrivacySettings}
             />
           </TabsContent>
