@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { useAuth } from "@/hooks/use-auth";
@@ -5,13 +6,25 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   LayoutDashboard, Settings, UserCircle, Building, BarChart3, HandCoins, 
-  CalendarDays, Users, MessagesSquare, BriefcaseBusiness, ShieldAlert, Flask
+  CalendarDays, Users, MessagesSquare, BriefcaseBusiness, ShieldAlert, TestTube
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { NavItem } from "@/types";
 import { useAdminRole } from "@/hooks/use-admin-role";
 
-export function SidebarNav() {
+interface UserProfileData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  level: string | null;
+  id?: string;
+}
+
+interface SidebarNavProps {
+  userData?: UserProfileData;
+}
+
+export function SidebarNav({ userData }: SidebarNavProps) {
   const { isOpen, toggleSidebar } = useSidebar();
   const { session, signOut } = useAuth();
   const { t } = useLanguage();
@@ -70,7 +83,7 @@ export function SidebarNav() {
       {
         title: t('adminFunctionTester'),
         href: '/admin/tester',
-        icon: Flask,
+        icon: TestTube,
         adminOnly: true,
       }
     ] : []),
@@ -87,10 +100,10 @@ export function SidebarNav() {
       <div className="px-4 py-6">
         <Avatar className="h-12 w-12 mx-auto">
           <AvatarImage src={session?.user?.user_metadata?.avatar_url} alt={session?.user?.user_metadata?.full_name} />
-          <AvatarFallback>{session?.user?.user_metadata?.full_name?.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{userData?.firstName?.charAt(0) || session?.user?.user_metadata?.full_name?.charAt(0)}</AvatarFallback>
         </Avatar>
-        <p className="text-center mt-2 font-medium">{session?.user?.user_metadata?.full_name}</p>
-        <p className="text-center text-sm text-muted-foreground">{session?.user?.email}</p>
+        <p className="text-center mt-2 font-medium">{userData?.firstName} {userData?.lastName}</p>
+        <p className="text-center text-sm text-muted-foreground">{userData?.email || session?.user?.email}</p>
       </div>
       <Separator />
       <nav className="flex flex-col flex-1 px-2 py-4 space-y-1">

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -156,7 +155,10 @@ export const AdminFunctionTester = () => {
       
       // Chiamata alla funzione RPC
       const result = await addPropertyForUser(testInvestorId, propertyData);
-      setTestPropertyId(result ? "Success" : "Failed");
+      
+      // Fix: result is a void function so we shouldn't check its truthiness
+      // Instead, just set a success message
+      setTestPropertyId("Success");
       
       // Log del successo
       addLogEntry({

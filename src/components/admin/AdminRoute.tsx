@@ -1,15 +1,11 @@
 
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-interface AdminRouteProps {
-  children: React.ReactNode;
-}
-
-const AdminRoute = ({ children }: AdminRouteProps) => {
+const AdminRoute = () => {
   const { isAdmin, isLoading } = useAdminRole();
   const [isChecking, setIsChecking] = useState(true);
   const { toast } = useToast();
@@ -37,7 +33,7 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
     );
   }
 
-  return isAdmin ? <>{children}</> : <Navigate to="/dashboard" replace />;
+  return isAdmin ? <Outlet /> : <Navigate to="/dashboard" replace />;
 };
 
 export default AdminRoute;

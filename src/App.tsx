@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { createBrowserRouter, RouterProvider, Navigate, RouteObject, createRoutesFromElements } from 'react-router-dom';
-import { ThemeProvider } from "@/components/theme-provider"
+
+import React from 'react';
+import { createBrowserRouter, RouterProvider, Navigate, RouteObject } from 'react-router-dom';
+import { ThemeProvider } from "@/components/theme-provider";
 import './App.css';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
@@ -12,11 +13,11 @@ import Messages from './pages/Messages';
 import Notifications from './pages/Notifications';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminRoute from './components/admin/AdminRoute';
-import { useUser } from '@supabase/auth-helpers-react';
 import Auth from './pages/Auth';
 import { supabase } from './integrations/supabase/client';
 import PublicRoute from './components/PublicRoute';
 import AdminTester from './pages/admin/AdminTester';
+import { SidebarProvider } from './contexts/SidebarContext';
 
 const router = createBrowserRouter([
   {
@@ -104,7 +105,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="easyroi-theme">
-      <RouterProvider router={router} />
+      <SidebarProvider>
+        <RouterProvider router={router} />
+      </SidebarProvider>
     </ThemeProvider>
   );
 }
