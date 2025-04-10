@@ -18,6 +18,7 @@ import { supabase } from './integrations/supabase/client';
 import PublicRoute from './components/PublicRoute';
 import AdminTester from './pages/admin/AdminTester';
 import { SidebarProvider } from './contexts/SidebarContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 const router = createBrowserRouter([
   {
@@ -105,9 +106,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="easyroi-theme">
-      <SidebarProvider>
-        <RouterProvider router={router} />
-      </SidebarProvider>
+      <LanguageProvider>
+        <SidebarProvider>
+          <RouterProvider router={router} />
+        </SidebarProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }
