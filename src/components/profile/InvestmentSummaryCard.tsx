@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Building2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { formatCurrency } from "@/services/dashboard/dashboardService";
+import { formatExactCurrency } from "@/services/dashboard/dashboardService";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 type SummaryItem = {
@@ -88,7 +88,7 @@ const InvestmentSummary = () => {
         
         setInvestmentData({
           properties: propertyCount.toString(),
-          totalValue: formatCurrency(totalInvestment),
+          totalValue: formatExactCurrency(totalInvestment),
           averageROI: `${averageRoi.toFixed(1)}%`,
           yearsInvesting: yearsInvesting.toString()
         });

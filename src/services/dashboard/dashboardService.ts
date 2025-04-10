@@ -40,6 +40,54 @@ export interface DashboardData {
 }
 
 /**
+ * Format number to currency string with proper formatting
+ */
+export function formatCurrency(value: number): string {
+  // For exact display without rounding to millions
+  if (value >= 1000000) {
+    const millions = value / 1000000;
+    // Check if it's a round million
+    if (millions === Math.floor(millions)) {
+      return `€${millions.toFixed(0)}M`;
+    } else {
+      // Format with correct precision to 2 decimals if needed
+      const precision = millions.toFixed(2).endsWith('.00') ? 0 : 2;
+      return `€${millions.toFixed(precision)}M`;
+    }
+  } else if (value >= 1000) {
+    return `€${(value / 1000).toFixed(0)}k`;
+  } else {
+    return `€${value.toFixed(0)}`;
+  }
+}
+
+/**
+ * Format exact value for detailed display
+ */
+export function formatExactCurrency(value: number): string {
+  return new Intl.NumberFormat('it-IT', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0
+  }).format(value);
+}
+
+/**
+ * Maps property status to localization keys
+ */
+export function getPropertyStatusKey(status: string): string {
+  const statusMap: Record<string, string> = {
+    'available': 'available',
+    'active': 'active', 
+    'sold': 'sold',
+    'development': 'development',
+    'in_development': 'development'
+  };
+  
+  return statusMap[status] || 'unknown';
+}
+
+/**
  * Fetches all dashboard data for the current user
  */
 export async function fetchDashboardData(): Promise<DashboardData | null> {
@@ -72,6 +120,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     
     // Get property locations
     const locationMap = new Map();
+    const countryMap = new Map();
     if (propertiesData && propertiesData.length > 0) {
       const locationIds = propertiesData.map(prop => prop.location_id);
       const { data: locationsData } = await supabase
@@ -82,6 +131,13 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       if (locationsData) {
         locationsData.forEach(loc => {
           locationMap.set(loc.id, `${loc.city}, ${loc.country}`);
+          
+          // Track investment by country for portfolio allocation
+          const property = propertiesData.find(p => p.location_id === loc.id);
+          if (property) {
+            const currentValue = countryMap.get(loc.country) || 0;
+            countryMap.set(loc.country, currentValue + Number(property.price));
+          }
         });
       }
     }
@@ -131,23 +187,12 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
         change: propsChange
       }, { onConflict: 'user_id' });
     
-    // Generate portfolio allocation data based on property locations
-    const portfolioByLocation = new Map();
-    if (propertiesData && propertiesData.length > 0) {
-      propertiesData.forEach(property => {
-        const location = locationMap.get(property.location_id) || 'Unknown';
-        const city = location.split(',')[0].trim();
-        const currentValue = portfolioByLocation.get(city) || 0;
-        portfolioByLocation.set(city, currentValue + Number(property.price));
-      });
-    }
-    
-    // Calculate percentages for portfolio allocation
+    // Generate portfolio allocation data based on property countries
     const portfolioAllocation: PortfolioAllocation[] = [];
     if (totalInvestment > 0) {
-      portfolioByLocation.forEach((value, city) => {
+      countryMap.forEach((value, country) => {
         portfolioAllocation.push({
-          name: city,
+          name: country,
           value: Math.round((value / totalInvestment) * 100)
         });
       });
@@ -173,46 +218,52 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
         .insert(allocationsToInsert);
     }
     
-    // Generate investment growth data for the chart (based on most recent data)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentMonth = new Date().getMonth();
-    const investmentGrowth: InvestmentGrowth[] = [];
-    
-    // Let's update the investment growth data
-    // First clear existing data
-    await supabase
+    // Get actual investment growth data from database
+    const { data: investmentGrowthData } = await supabase
       .from('user_investment_growth')
-      .delete()
-      .eq('user_id', user.id);
+      .select('month, value')
+      .eq('user_id', user.id)
+      .order('month_index', { ascending: true });
     
-    // Then generate new data
-    if (totalInvestment > 0) {
-      // Start with a base value
-      const baseValue = totalInvestment * 0.7;
+    let investmentGrowth: InvestmentGrowth[] = [];
+    
+    if (investmentGrowthData && investmentGrowthData.length > 0) {
+      // Use actual data from the database
+      investmentGrowth = investmentGrowthData.map(item => ({
+        name: item.month,
+        value: Number(item.value)
+      }));
+    } else {
+      // If no data exists, create placeholder data
+      // Generate the last 12 months for the timeline
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const currentMonth = new Date().getMonth();
       
+      // Create placeholder data with the total investment value
       for (let i = 0; i < 12; i++) {
         const monthIndex = (currentMonth - 11 + i) % 12;
         const monthName = months[monthIndex >= 0 ? monthIndex : monthIndex + 12];
         
-        // Generate a progressive growth trend
-        const growthFactor = 1 + (i * 0.03) + (Math.random() * 0.02);
-        const value = Math.round(baseValue * growthFactor);
-        
         investmentGrowth.push({
           name: monthName,
-          value: value
+          value: totalInvestment
         });
-        
-        // Insert into database
-        await supabase
-          .from('user_investment_growth')
-          .insert({
-            user_id: user.id,
-            month: monthName,
-            month_index: monthIndex >= 0 ? monthIndex : monthIndex + 12,
-            value: value
-          });
       }
+      
+      // Insert this placeholder data into the database
+      const growthToInsert = investmentGrowth.map((item, index) => {
+        const monthIndex = (currentMonth - 11 + index) % 12;
+        return {
+          user_id: user.id,
+          month: item.name,
+          month_index: monthIndex >= 0 ? monthIndex : monthIndex + 12,
+          value: item.value
+        };
+      });
+      
+      await supabase
+        .from('user_investment_growth')
+        .insert(growthToInsert);
     }
     
     // Get events count
@@ -226,8 +277,8 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       name: item.name as string,
       location: locationMap.get(item.location_id) || 'Unknown Location',
       roi: `${item.roi_percentage}%`,
-      value: formatCurrency(Number(item.price)),
-      status: item.status === 'active' ? 'active' : 'development'
+      value: formatExactCurrency(Number(item.price)),
+      status: item.status as string
     })) || [];
     
     // Get the investment change percentage
@@ -259,18 +310,5 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
     return null;
-  }
-}
-
-/**
- * Format number to currency string
- */
-export function formatCurrency(value: number): string {
-  if (value >= 1000000) {
-    return `€${(value / 1000000).toFixed(1)}M`;
-  } else if (value >= 1000) {
-    return `€${(value / 1000).toFixed(0)}k`;
-  } else {
-    return `€${value.toFixed(0)}`;
   }
 }
