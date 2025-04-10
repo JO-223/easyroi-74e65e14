@@ -32,6 +32,8 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
     return statusMap[status] || 'unknown';
   };
   
+  const statusKey = getStatusKey(property.status);
+  
   return (
     <Card className="luxury-card overflow-hidden backdrop-blur-md bg-white/5 border-white/10 text-white">
       <div className="aspect-video w-full overflow-hidden">
@@ -77,7 +79,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
           )}
           <div>
             <p className="text-sm text-white/70">{t('status')}</p>
-            <p className="font-bold text-green-400">{t(`status.${getStatusKey(property.status)}`)}</p>
+            <p className="font-bold text-green-400">{t(`status.${statusKey}`)}</p>
           </div>
         </div>
 

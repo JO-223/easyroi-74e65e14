@@ -93,15 +93,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     // Handle nested keys for status
     if (key.includes('.')) {
       const [parent, child] = key.split('.');
-      const parentObj = translations[language]?.[parent] || translations.en[parent];
+      const parentObj = translations[language]?.[parent];
+      
       if (parentObj && typeof parentObj === 'object' && child in parentObj) {
-        return parentObj[child];
+        return parentObj[child] as string;
       }
+      
       // Fallback to English if translation doesn't exist
       const enParent = translations.en[parent];
       if (enParent && typeof enParent === 'object' && child in enParent) {
-        return enParent[child];
+        return enParent[child] as string;
       }
+      
       console.warn(`Missing translation key: ${key}`);
       return key;
     }
@@ -113,7 +116,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
 
     // Use the current language's translation or fallback to English
-    return translations[language]?.[key] || translations.en[key] || key;
+    return translations[language]?.[key] as string || translations.en[key] as string || key;
   };
 
   const value = {
