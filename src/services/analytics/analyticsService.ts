@@ -41,157 +41,80 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     
     if (!user) return null;
 
-    // Get user properties directly
-    const { data: properties } = await supabase
-      .from('properties')
-      .select('price, roi_percentage, location_id')
-      .eq('user_id', user.id);
-
-    // Calculate ROI from properties
-    let averageRoi = 0;
-    if (properties && properties.length > 0) {
-      averageRoi = properties.reduce((sum, property) => 
-        sum + Number(property.roi_percentage || 0), 0) / properties.length;
-    }
-
-    // Calculate total investment from properties
-    const totalInvestment = properties?.reduce((sum, property) => 
-      sum + Number(property.price || 0), 0) || 0;
-    
-    // Get previous ROI data for change calculation
+    // 1. Get Portfolio ROI data
     const { data: roiData } = await supabase
       .from('user_roi')
       .select('average_roi, roi_change')
       .eq('user_id', user.id)
-      .maybeSingle();
+      .maybeSingle(); // Use maybeSingle instead of single to avoid errors
 
-    // Get locations for geographic distribution
-    const locationIds = properties?.map(prop => prop.location_id) || [];
-    const locationMap = new Map();
-    
-    if (locationIds.length > 0) {
-      const { data: locationsData } = await supabase
-        .from('property_locations')
-        .select('id, city, country')
-        .in('id', locationIds);
-      
-      if (locationsData) {
-        locationsData.forEach(loc => {
-          locationMap.set(loc.id, { city: loc.city, country: loc.country });
-        });
-      }
-    }
-
-    // Calculate geographic distribution
-    const geoDistribution = new Map();
-    if (properties && properties.length > 0) {
-      properties.forEach(property => {
-        const location = locationMap.get(property.location_id);
-        if (location) {
-          const city = location.city;
-          const currentValue = geoDistribution.get(city) || 0;
-          geoDistribution.set(city, currentValue + Number(property.price));
-        }
-      });
-    }
-    
-    // Calculate percentages
-    const geographicDistributionData = [];
-    if (totalInvestment > 0) {
-      geoDistribution.forEach((value, city) => {
-        geographicDistributionData.push({
-          name: city,
-          value: Math.round((value / totalInvestment) * 100)
-        });
-      });
-    }
-
-    // Get investment change data
+    // 2. Get Annual Growth data from investment growth
     const { data: userInvestment } = await supabase
       .from('user_investments')
       .select('investment_change_percentage')
       .eq('user_id', user.id)
       .maybeSingle();
 
-    // Generate ROI performance data (monthly)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentMonth = new Date().getMonth();
-    const roiPerformance = [];
-    
-    // Generate synthetic ROI performance data
-    if (averageRoi > 0) {
-      for (let i = 0; i < 12; i++) {
-        const monthIndex = (currentMonth - 11 + i) % 12;
-        const monthName = months[monthIndex >= 0 ? monthIndex : monthIndex + 12];
-        
-        // Generate a realistic ROI curve with some randomness
-        const trendFactor = 0.7 + (i * 0.05);
-        const randomFactor = 0.9 + (Math.random() * 0.2);
-        const monthRoi = averageRoi * trendFactor * randomFactor;
-        
-        roiPerformance.push({
-          month: monthName,
-          roi: parseFloat(monthRoi.toFixed(1)),
-          benchmark: MARKET_AVERAGE_ROI
-        });
-      }
-    } else {
-      // Default empty data
-      for (let i = 0; i < 12; i++) {
-        const monthIndex = (currentMonth - 11 + i) % 12;
-        const monthName = months[monthIndex >= 0 ? monthIndex : monthIndex + 12];
-        
-        roiPerformance.push({
-          month: monthName,
-          roi: 0,
-          benchmark: MARKET_AVERAGE_ROI
-        });
-      }
-    }
+    // 3. ROI Performance data (monthly)
+    const { data: growthData } = await supabase
+      .from('user_investment_growth')
+      .select('month, month_index, value')
+      .eq('user_id', user.id)
+      .order('month_index', { ascending: true });
 
-    // Calculate asset allocation (same as geographic for now, but could be different types of assets)
-    const assetAllocation = geographicDistributionData.length > 0 ? geographicDistributionData : [];
+    // 4. Asset Allocation
+    const { data: allocationData } = await supabase
+      .from('user_portfolio_allocation')
+      .select('location, percentage')
+      .eq('user_id', user.id);
 
-    // Calculate market comparison
-    const marketDifference = averageRoi - MARKET_AVERAGE_ROI;
+    // 5. Geographic Distribution (reusing the same data for now)
+    const { data: geoDistribution } = await supabase
+      .from('user_portfolio_allocation')
+      .select('location, percentage')
+      .eq('user_id', user.id);
 
-    // Get events attended count
+    // 6. Events attended count
     const { data: eventsData } = await supabase
       .from('user_events')
       .select('count')
       .eq('user_id', user.id)
       .maybeSingle();
 
-    // Update analytics tables with the new data
-    // Update user_roi table
-    await supabase
-      .from('user_roi')
-      .upsert({
-        user_id: user.id,
-        average_roi: averageRoi,
-        roi_change: roiData?.roi_change || 0
-      }, { onConflict: 'user_id' });
+    // Format ROI Performance data with proper type casting - handle nulls
+    const roiPerformance = growthData?.map(item => ({
+      month: String(item.month || ''),
+      roi: Number(item.value) || 0,
+      benchmark: MARKET_AVERAGE_ROI
+    })) || [];
 
-    // Update user_investments table
-    await supabase.rpc(
-      'update_user_investment',
-      {
-        p_user_id: user.id,
-        p_investment_amount: totalInvestment
-      }
-    );
+    // Format Asset Allocation with proper type casting - handle nulls
+    const assetAllocation = allocationData?.map(item => ({
+      name: String(item.location || ''),
+      value: Number(item.percentage) || 0
+    })) || [];
+
+    // Format Geographic Distribution with proper type casting - handle nulls
+    const geographicDistribution = geoDistribution?.map(item => ({
+      name: String(item.location || ''),
+      value: Number(item.percentage) || 0
+    })) || [];
+
+    // Calculate market comparison
+    const averageRoi = Number(roiData?.average_roi || 0);
+    const marketDifference = averageRoi - MARKET_AVERAGE_ROI;
 
     return {
       portfolioROI: {
-        value: averageRoi,
+        value: Number(roiData?.average_roi || 0),
         change: roiData?.roi_change !== null && roiData?.roi_change !== undefined ? 
-          Number(roiData.roi_change) : 0
+          Number(roiData.roi_change) : null
       },
       annualGrowth: {
         value: Number(userInvestment?.investment_change_percentage || 0),
         change: userInvestment?.investment_change_percentage !== null && 
           userInvestment?.investment_change_percentage !== undefined ? 
-          Number(userInvestment.investment_change_percentage) : 0
+          Number(userInvestment.investment_change_percentage) : null
       },
       marketComparison: {
         value: Math.abs(marketDifference),
@@ -199,11 +122,21 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       },
       roiPerformance,
       assetAllocation,
-      geographicDistribution: geographicDistributionData,
+      geographicDistribution,
       eventsAttended: Number(eventsData?.count || 0)
     };
   } catch (error) {
     console.error("Error fetching analytics data:", error);
     throw error; // Let React Query handle this error
   }
+}
+
+// Generate default ROI performance data if none exists
+function generateDefaultRoiPerformance() {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return months.map(month => ({
+    month,
+    roi: 0,
+    benchmark: MARKET_AVERAGE_ROI
+  }));
 }

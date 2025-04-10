@@ -3,7 +3,7 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { TrendingUp, Building2, BarChart3, Calendar } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { DashboardStats as DashboardStatsType, formatExactCurrency } from "@/services/dashboard/dashboardService";
+import { DashboardStats as DashboardStatsType } from "@/services/dashboard/dashboardService";
 
 interface StatItemProps {
   title: string;
@@ -35,7 +35,9 @@ const StatItem = ({ title, value, change, isPositive, icon: Icon }: StatItemProp
 };
 
 interface DashboardStatsProps {
-  stats: DashboardStatsType;
+  stats: DashboardStatsType & {
+    formattedInvestment: string;
+  };
 }
 
 export const DashboardStats = ({ stats }: DashboardStatsProps) => {
@@ -44,7 +46,7 @@ export const DashboardStats = ({ stats }: DashboardStatsProps) => {
   const statItems = [
     {
       title: t('totalInvestment'),
-      value: formatExactCurrency(stats.totalInvestment),
+      value: stats.formattedInvestment,
       change: `${stats.investmentChange > 0 ? '+' : ''}${stats.investmentChange}%`,
       isPositive: stats.investmentChange >= 0,
       icon: TrendingUp,
@@ -58,8 +60,8 @@ export const DashboardStats = ({ stats }: DashboardStatsProps) => {
     },
     {
       title: t('roi'),
-      value: `${stats.roi.toFixed(1)}%`,
-      change: `${stats.roiChange > 0 ? '+' : ''}${stats.roiChange.toFixed(1)}%`,
+      value: `${stats.roi}%`,
+      change: `${stats.roiChange > 0 ? '+' : ''}${stats.roiChange}%`,
       isPositive: stats.roiChange >= 0,
       icon: BarChart3,
     },

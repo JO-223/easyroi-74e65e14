@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { BadgeLevel } from "@/components/ui/badge-level";
 import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { formatExactCurrency } from "@/services/dashboard/dashboardService";
+import { formatCurrency } from "@/lib/utils";
 
 interface PropertyCardProps {
   property: Property;
@@ -18,21 +18,6 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
   // Get primary image or placeholder
   const primaryImage = property.images.find(img => img.is_primary)?.url || 
                        (property.images.length > 0 ? property.images[0].url : '/placeholder.svg');
-  
-  // Status mapping for translation keys
-  const getStatusKey = (status: string): string => {
-    const statusMap: Record<string, string> = {
-      'available': 'available',
-      'active': 'active', 
-      'sold': 'sold',
-      'development': 'development',
-      'in_development': 'development'
-    };
-    
-    return statusMap[status] || 'unknown';
-  };
-  
-  const statusKey = getStatusKey(property.status);
   
   return (
     <Card className="luxury-card overflow-hidden backdrop-blur-md bg-white/5 border-white/10 text-white">
@@ -63,28 +48,28 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-white/70">{t('price')}</p>
-            <p className="font-bold text-easyroi-gold">{formatExactCurrency(property.price)}</p>
+            <p className="font-bold text-easyroi-gold">{formatCurrency(property.price)}</p>
           </div>
           {property.roi_percentage && (
             <div>
               <p className="text-sm text-white/70">{t('expectedROI')}</p>
-              <p className="font-bold text-easyroi-gold text-base">{property.roi_percentage}%</p>
+              <p className="font-bold text-easyroi-gold">{property.roi_percentage}%</p>
             </div>
           )}
           {property.min_investment && (
             <div>
               <p className="text-sm text-white/70">{t('minInvestment')}</p>
-              <p className="font-bold text-white">{formatExactCurrency(property.min_investment)}</p>
+              <p className="font-bold text-white">{formatCurrency(property.min_investment)}</p>
             </div>
           )}
           <div>
             <p className="text-sm text-white/70">{t('status')}</p>
-            <p className="font-bold text-green-400">{t(`status.${statusKey}`)}</p>
+            <p className="font-bold text-green-400">{property.status}</p>
           </div>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {property.amenities && property.amenities.slice(0, 4).map((amenity, index) => (
+          {property.amenities.slice(0, 4).map((amenity, index) => (
             <span key={index} className="inline-flex items-center px-2 py-1 bg-white/10 rounded text-xs">
               {amenity.icon === 'droplet' && <Droplet className="h-3 w-3 mr-1" />}
               {amenity.icon === 'wifi' && <Wifi className="h-3 w-3 mr-1" />}

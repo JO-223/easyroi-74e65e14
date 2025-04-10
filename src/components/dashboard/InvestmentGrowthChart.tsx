@@ -11,7 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from "recharts";
-import { InvestmentGrowth, formatExactCurrency } from "@/services/dashboard/dashboardService";
+import { InvestmentGrowth } from "@/services/dashboard/dashboardService";
 import { cn } from "@/lib/utils";
 
 interface InvestmentGrowthChartProps {
@@ -22,22 +22,6 @@ interface InvestmentGrowthChartProps {
 export const InvestmentGrowthChart = ({ data, className }: InvestmentGrowthChartProps) => {
   const { t } = useLanguage();
 
-  const hasData = data && data.length > 0;
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 border rounded shadow">
-          <p className="text-sm font-medium">{label}</p>
-          <p className="text-sm text-gray-800 font-bold">
-            {formatExactCurrency(payload[0].value)}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <Card className={className}>
       <CardHeader>
@@ -45,36 +29,21 @@ export const InvestmentGrowthChart = ({ data, className }: InvestmentGrowthChart
       </CardHeader>
       <CardContent>
         <div className="h-64">
-          {hasData ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tickFormatter={(value) => {
-                    if (value >= 1000000) {
-                      return `€${Math.floor(value / 1000000)}M`;
-                    } else if (value >= 1000) {
-                      return `€${Math.floor(value / 1000)}K`;
-                    }
-                    return `€${value}`;
-                  }}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="h-full flex items-center justify-center">
-              <p className="text-muted-foreground">{t('noGrowthData')}</p>
-            </div>
-          )}
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tickFormatter={(value) => `€${Math.floor(value / 1000)}k`} 
+              />
+              <Tooltip 
+                formatter={(value: number) => [`€${value.toLocaleString()}`, "Value"]} 
+              />
+              <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </CardContent>
     </Card>

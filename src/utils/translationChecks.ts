@@ -1,5 +1,5 @@
 
-import english from "@/locales/en";
+import en from "@/locales/en";
 import it from "@/locales/it";
 import es from "@/locales/es";
 import de from "@/locales/de";
@@ -9,7 +9,7 @@ import de from "@/locales/de";
  * Used during development to ensure all locales have the same keys
  */
 export const checkMissingTranslationKeys = () => {
-  const enKeys = Object.keys(english);
+  const enKeys = Object.keys(en);
   const itKeys = Object.keys(it);
   const esKeys = Object.keys(es);
   const deKeys = Object.keys(de);
@@ -63,7 +63,7 @@ export const checkMissingTranslationKeys = () => {
  * in the translation files.
  */
 export const checkDuplicateTranslationKeys = () => {
-  const checkDuplicates = (obj: Record<string, any>, name: string) => {
+  const checkDuplicates = (obj: Record<string, string>, name: string) => {
     const keys = Object.keys(obj);
     const keySet = new Set();
     const duplicates: string[] = [];
@@ -84,7 +84,7 @@ export const checkDuplicateTranslationKeys = () => {
   };
   
   return {
-    duplicatesInEnglish: checkDuplicates(english, 'English'),
+    duplicatesInEnglish: checkDuplicates(en, 'English'),
     duplicatesInItalian: checkDuplicates(it, 'Italian'),
     duplicatesInSpanish: checkDuplicates(es, 'Spanish'),
     duplicatesInGerman: checkDuplicates(de, 'German')

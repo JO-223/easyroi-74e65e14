@@ -1,5 +1,5 @@
 
-import english from '@/locales/en';
+import en from '@/locales/en';
 
 export type TranslationKey = string;
 
@@ -62,7 +62,7 @@ export function isValidTranslationKey(key: string): key is TranslationKey {
  * Sorts translation keys alphabetically within their categories
  */
 export function getSortedTranslationKeys() {
-  const englishEntries = Object.entries(english);
+  const englishEntries = Object.entries(en);
   const categories: Record<string, Record<string, string>> = {};
   let currentCategory = 'uncategorized';
   
@@ -75,9 +75,7 @@ export function getSortedTranslationKeys() {
       if (!categories[currentCategory]) {
         categories[currentCategory] = {};
       }
-      // Make sure value is treated as string
-      const safeValue = typeof value === 'string' ? value : JSON.stringify(value);
-      categories[currentCategory][key] = safeValue;
+      categories[currentCategory][key] = value;
     }
   });
   

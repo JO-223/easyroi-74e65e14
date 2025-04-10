@@ -10,7 +10,7 @@ export type Language = 'en' | 'it' | 'es' | 'de';
 export type Currency = 'usd' | 'eur' | 'gbp';
 export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
 
-type Translations = Record<Language, Record<string, any>>;
+type Translations = Record<Language, Record<string, string>>;
 
 export interface DisplaySettings {
   language: Language;
@@ -90,33 +90,14 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = (key: TranslationKey): string => {
-    // Handle nested keys for status
-    if (key.includes('.')) {
-      const [parent, child] = key.split('.');
-      const parentObj = translations[language]?.[parent];
-      
-      if (parentObj && typeof parentObj === 'object' && child in parentObj) {
-        return parentObj[child] as string;
-      }
-      
-      // Fallback to English if translation doesn't exist
-      const enParent = translations.en[parent];
-      if (enParent && typeof enParent === 'object' && child in enParent) {
-        return enParent[child] as string;
-      }
-      
-      console.warn(`Missing translation key: ${key}`);
-      return key;
-    }
-    
-    // Handle regular keys
+    // Check if the key exists in any language
     if (!translations[language]?.[key] && !translations.en[key]) {
       console.warn(`Missing translation key: ${key}`);
       return key; // Return the key as fallback
     }
 
     // Use the current language's translation or fallback to English
-    return translations[language]?.[key] as string || translations.en[key] as string || key;
+    return translations[language]?.[key] || translations.en[key] || key;
   };
 
   const value = {
