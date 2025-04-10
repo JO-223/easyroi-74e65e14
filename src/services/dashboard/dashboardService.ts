@@ -228,9 +228,9 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     let investmentGrowth: InvestmentGrowth[] = [];
     
     if (investmentGrowthData && investmentGrowthData.length > 0) {
-      // Use actual data from the database
+      // Use actual data from the database, ensuring month is cast to string
       investmentGrowth = investmentGrowthData.map(item => ({
-        name: item.month,
+        name: String(item.month),
         value: Number(item.value)
       }));
     } else {

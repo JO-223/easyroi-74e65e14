@@ -1,4 +1,5 @@
-export const english = {
+
+const english = {
   "comingSoon": "Coming Soon!",
   "allRightsReserved": "All Rights Reserved",
   "easyRoi": "Easy ROI",
@@ -54,7 +55,6 @@ export const english = {
   "emailVerificationResendSuccess": "Verification email resent successfully!",
   "dashboard": "Dashboard",
   "totalInvestment": "Total Investment",
-  "properties": "Properties",
   "roi": "ROI",
   "events": "Events",
   "investmentGrowth": "Investment Growth",
@@ -63,7 +63,6 @@ export const english = {
   "property": "Property",
   "location": "Location",
   "value": "Value",
-  "status": "Status",
   "active": "Active",
   "development": "Development",
   "sold": "Sold",
@@ -148,13 +147,16 @@ export const english = {
   "badge": "Badge",
   "allocation": "Allocation",
   "status": {
-    available: "Available",
-    active: "Active",
-    development: "In Development",
-    sold: "Sold",
-    unknown: "Unknown"
+    "available": "Available",
+    "active": "Active", 
+    "development": "In Development",
+    "sold": "Sold",
+    "unknown": "Unknown"
   },
-  noGrowthData: "No growth data available",
-  noAllocationData: "No allocation data available",
-  noProperties: "No properties found"
+  "noGrowthData": "No growth data available",
+  "noAllocationData": "No allocation data available",
+  "noProperties": "No properties found",
+  "language": "Language"
 };
+
+export default english;
