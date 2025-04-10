@@ -3,3 +3,6 @@ project_id = "gqsetnzdaocxmutrbisp"
 
 [functions.import-properties]
 verify_jwt = true
+
+[functions.add-property-for-user]
+verify_jwt = true

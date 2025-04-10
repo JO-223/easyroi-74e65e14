@@ -1,4 +1,3 @@
-
 const en = {
   // General
   welcome: "Welcome",
@@ -469,7 +468,30 @@ const en = {
   errorFetchingEvent: "Error fetching event details",
   
   // Missing keys from scan
-  noInvestmentDataAvailable: "No investment data available"
+  noInvestmentDataAvailable: "No investment data available",
+  
+  // Add new translations
+  addNewProperty: 'Add New Property',
+  addPropertyForUser: 'Add a new property for a specific user',
+  fillFormToAddProperty: 'Fill out this form to add a property to a user\'s portfolio',
+  selectUser: 'Select User',
+  userRequired: 'User selection is required',
+  propertyName: 'Property Name',
+  enterPropertyName: 'Enter property name',
+  propertyNameRequired: 'Property name is required',
+  enterPropertyLocation: 'Enter property location (City, Country)',
+  locationFormatExample: 'Format',
+  validValueRequired: 'A valid value is required',
+  roiFormatExample: 'Format',
+  validRoiRequired: 'A valid ROI is required (between 0 and 1)',
+  selectStatus: 'Select property status',
+  statusRequired: 'Status is required',
+  adding: 'Adding',
+  propertyAdded: 'Property Added',
+  addProperty: 'Add Property',
+  propertyAddedSuccessfully: 'Property has been added successfully',
+  errorAddingProperty: 'Error adding property',
+  errorFetchingUsers: 'Error fetching users',
 };
 
 export default en;
