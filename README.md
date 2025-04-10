@@ -1,4 +1,5 @@
 
+
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -25,7 +26,7 @@ Per ogni punto completato:
 - ✅ Funzione client: `addNewDevelopmentProject()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
 - ✅ Funzione client: `addNewEvent()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
 - ✅ Funzione Supabase: `add_new_investor()` - Implementata funzione RPC che crea profilo, impostazioni e tabelle investimenti correlate
-- [ ] Funzione Supabase: `add_new_property_for_user()`
+- ✅ Funzione Supabase: `add_property_for_user()` - Implementata funzione RPC che aggiorna proprietà, investimenti e allocazione portafoglio
 - [ ] Funzione Supabase: `add_property_for_sale()`
 - [ ] Funzione Supabase: `add_new_development_project()`
 - [ ] Funzione Supabase: `add_new_event()`
@@ -103,3 +104,4 @@ _(Solo revisione, nessun check-off richiesto)_
 ```md
 ✅ Form per inserimento nuovi investitori – creato `AdminAddInvestor.tsx`, integrato form con funzione `addNewInvestor()`
 ```
+
