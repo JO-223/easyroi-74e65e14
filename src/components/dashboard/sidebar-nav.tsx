@@ -8,6 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAdminRole } from "@/hooks/use-admin-role";
 
 interface UserProfileData {
   firstName?: string;
@@ -24,6 +25,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { isAdmin } = useAdminRole();
   
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -72,6 +74,15 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       icon: Settings
     }
   ];
+
+  // Add admin property management page if user is admin
+  if (isAdmin) {
+    items.push({
+      title: t('addProperty'),
+      href: '/admin/add-property',
+      icon: Building2
+    });
+  }
   
   // Show skeleton during loading
   if (!userData || !userData.firstName) {
