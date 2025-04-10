@@ -63,9 +63,6 @@ const english = {
   "property": "Property",
   "location": "Location",
   "value": "Value",
-  "active": "Active",
-  "development": "Development",
-  "sold": "Sold",
   "expectedROI": "Expected ROI",
   "minInvestment": "Min. Investment",
   "viewDetails": "View Details",
@@ -156,7 +153,9 @@ const english = {
   "noGrowthData": "No growth data available",
   "noAllocationData": "No allocation data available",
   "noProperties": "No properties found",
-  "language": "Language"
+  "language": "Language",
+  "notifications": "Notifications",
+  "noNotifications": "No notifications"
 };
 
 export default english;
