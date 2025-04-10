@@ -1000,6 +1000,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_new_investor: {
+        Args: {
+          p_email: string
+          p_first_name: string
+          p_last_name: string
+          p_password: string
+          p_initial_investment?: number
+        }
+        Returns: Json
+      }
       create_connection_request: {
         Args: { p_from_id: string; p_to_id: string }
         Returns: undefined

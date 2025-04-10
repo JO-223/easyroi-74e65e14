@@ -17,14 +17,14 @@ Per ogni punto completato:
 - ✅ Form per aggiungere proprietà a investitori esistenti - Creato `src/components/admin/AdminPropertyForm.tsx` con form completo
 - ✅ Form per gestione delle proprietà in vendita - Creato `src/components/admin/AdminForSalePropertyForm.tsx` con form completo
 - ✅ Form per gestione dei progetti in sviluppo - Creato `src/components/admin/AdminDevelopmentProjectForm.tsx` con form completo
-- ✅ Gestione eventi (creazione, modifica, eliminazione) - Creato `src/components/admin/AdminEventForm.tsx` con form completo
+- ✅ Form per gestione eventi (creazione, modifica, eliminazione) - Creato `src/components/admin/AdminEventForm.tsx` con form completo
 - ✅ Correzione degli errori TypeScript nei form admin - Aggiunto src/types/admin.ts con interfacce e sistemato typing nei componenti
 - ✅ Funzione client: `addNewInvestor()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
 - ✅ Funzione client: `addNewPropertyForUser()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
 - ✅ Funzione client: `addPropertyForSale()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
 - ✅ Funzione client: `addNewDevelopmentProject()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
 - ✅ Funzione client: `addNewEvent()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
-- [ ] Funzione Supabase: `add_new_investor()`
+- ✅ Funzione Supabase: `add_new_investor()` - Implementata funzione RPC che crea profilo, impostazioni e tabelle investimenti correlate
 - [ ] Funzione Supabase: `add_new_property_for_user()`
 - [ ] Funzione Supabase: `add_property_for_sale()`
 - [ ] Funzione Supabase: `add_new_development_project()`
