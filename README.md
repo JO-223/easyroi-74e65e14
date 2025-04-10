@@ -1,73 +1,97 @@
-# Welcome to your Lovable project
+# ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
-## Project info
+Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
 
-**URL**: https://lovable.dev/projects/d872dc12-3dbd-46e4-afc6-46ee0129539c
+Per ogni punto completato:
+- Segna con `✅`
+- Aggiungi un breve commento su cosa è stato fatto e dove
+- Non modificare il testo originale
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🥇 Priorità 1 – Sistema di amministrazione completo
 
-**Use Lovable**
+- [ ] Pagina admin protetta con verifica ruolo (`useAdminRole`)
+- [ ] Form per inserimento nuovi investitori
+- [ ] Form per aggiungere proprietà a investitori esistenti
+- [ ] Form per gestione delle proprietà in vendita
+- [ ] Form per gestione dei progetti in sviluppo
+- [ ] Gestione eventi (creazione, modifica, eliminazione)
+- [ ] Funzione Supabase: `addNewInvestor()`
+- [ ] Funzione Supabase: `addNewPropertyForUser()`
+- [ ] Funzione Supabase: `addPropertyForSale()`
+- [ ] Funzione Supabase: `addNewDevelopmentProject()`
+- [ ] Funzione Supabase: `addNewEvent()`
+- [ ] Protezione route admin lato client (`useAdminRole`)
+- [ ] Controlli autorizzazione nelle funzioni RPC
+- [ ] Redirect automatico per utenti non autorizzati
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d872dc12-3dbd-46e4-afc6-46ee0129539c) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🎖️ Priorità 2 – Sistema badge utente
 
-**Use your preferred IDE**
+- [ ] Verifica collegamento trigger `update_user_level` a `user_investments`
+- [ ] Test aggiornamento badge al cambio proprietà
+- [ ] Visualizzazione badge in Dashboard
+- [ ] Visualizzazione badge nella Sidebar
+- [ ] Visualizzazione badge nel Profilo
+- [ ] Uso del componente `BadgeLevel`
+- [ ] Implementazione logica soglie badge (starter → diamond)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 📊 Priorità 3 – Gestione dati coerente
 
-Follow these steps:
+- [ ] Formattazione currency coerente (€3,450,000 o €3.45M)
+- [ ] Status proprietà localizzati (development, active, sold)
+- [ ] Portfolio aggregation per paese (non città)
+- [ ] Funzione RPC: `updateUserDashboardData()`
+- [ ] Refetch/Invalidate query con React Query
+- [ ] Stato condiviso via Context
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 💎 Priorità 4 – Demo Account Platinum
 
-# Step 3: Install the necessary dependencies.
-npm i
+- [ ] Creazione utente demo con 3 proprietà in diverse location
+- [ ] Inserimento dati ROI e crescita mensile dal 2024
+- [ ] Portafoglio con almeno 2 paesi diversi
+- [ ] ROI realistico e variegato
+- [ ] Funzione: `createDemoPlatinumUser()`
+- [ ] Accesso UI a funzione demo (admin-only)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## 🎨 Priorità 5 – UI, fallback e localizzazione
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- [ ] Placeholder visivi quando mancano dati
+- [ ] Component skeletons per caricamento
+- [ ] Error boundaries attivi
+- [ ] Responsive testato su desktop, tablet, mobile
+- [ ] Layout alternativi per grafici su mobile
+- [ ] Tutte le stringhe passano tramite `t()`
+- [ ] Completate traduzioni in IT / EN / ES / DE
+- [ ] Verifica visiva interfaccia in tutte le lingue
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🧠 Tabelle Supabase mappate
 
-## What technologies are used for this project?
+_(Solo revisione, nessun check-off richiesto)_
 
-This project is built with:
+- Utenti: `profiles`, `security_settings`, `display_settings`, `notification_settings`
+- Proprietà: `properties`, `property_locations`, `property_types`, etc.
+- Progetti: `development_projects`, `project_images`
+- Eventi: `events`, `event_attendees`
+- Dati utente: `user_properties`, `user_roi`, `user_investment_growth`, etc.
+- Social: `connections`, `messages`, `notifications`
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 📌 Note per Lovable
 
-Simply open [Lovable](https://lovable.dev/projects/d872dc12-3dbd-46e4-afc6-46ee0129539c) and click on Share -> Publish.
+- Questo file è una **checklist operativa**, non un file di specifiche.
+- Aggiornalo ogni volta che completi una voce, con una riga tipo:
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```md
+✅ Form per inserimento nuovi investitori – creato `AdminAddInvestor.tsx`, integrato form con funzione `addNewInvestor()`
