@@ -1,7 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, UserCircle, Users } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAdminRole } from "@/hooks/use-admin-role";
+import { NavItem } from '@/types';
 
 interface UserProfileData {
   firstName?: string;
@@ -32,7 +33,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
     navigate('/login');
   };
 
-  const items = [
+  const items: NavItem[] = [
     {
       title: t('dashboard'),
       href: '/dashboard',
@@ -75,12 +76,13 @@ export function SidebarNav({ userData }: SidebarNavProps) {
     }
   ];
 
-  // Add admin property management page if user is admin
+  // Add admin panel link if user is admin
   if (isAdmin) {
     items.push({
-      title: t('addProperty'),
-      href: '/admin/add-property',
-      icon: Building2
+      title: t('adminPanel'),
+      href: '/admin',
+      icon: Shield,
+      adminOnly: true
     });
   }
   
@@ -145,6 +147,10 @@ export function SidebarNav({ userData }: SidebarNavProps) {
           // Check if current path starts with item.href to highlight nested routes
           const isActive = location.pathname === item.href || 
             (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
+          
+          // Add a special style for admin links
+          const isAdminLink = item.adminOnly;
+          
           return (
             <Link 
               key={item.href} 
@@ -153,10 +159,11 @@ export function SidebarNav({ userData }: SidebarNavProps) {
                 "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors", 
                 isActive 
                   ? "bg-sidebar-accent text-easyroi-gold" 
-                  : "text-sidebar-foreground hover:text-easyroi-gold hover:bg-sidebar-accent/50"
+                  : "text-sidebar-foreground hover:text-easyroi-gold hover:bg-sidebar-accent/50",
+                isAdminLink && "border border-easyroi-gold/40 bg-sidebar-accent/30"
               )}
             >
-              <item.icon className="mr-3 h-5 w-5" />
+              <item.icon className={cn("mr-3 h-5 w-5", isAdminLink && "text-easyroi-gold")} />
               {item.title}
             </Link>
           );

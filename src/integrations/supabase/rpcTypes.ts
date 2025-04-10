@@ -34,6 +34,36 @@ export type GetPrivacySettingsResponse = {
   data_sharing: boolean;
 }[];
 
+export type AddNewInvestorResponse = {
+  user_id: string;
+  success: boolean;
+  message: string;
+}[];
+
+export type AddNewPropertyResponse = {
+  property_id: string;
+  success: boolean;
+  message: string;
+}[];
+
+export type AddPropertyForSaleResponse = {
+  property_id: string;
+  success: boolean;
+  message: string;
+}[];
+
+export type AddNewDevelopmentProjectResponse = {
+  project_id: string;
+  success: boolean;
+  message: string;
+}[];
+
+export type AddNewEventResponse = {
+  event_id: string;
+  success: boolean;
+  message: string;
+}[];
+
 // Response types for our RPC functions
 export interface RPCResponses {
   get_user_notifications: GetUserNotificationsResponse;
@@ -55,6 +85,11 @@ export interface RPCResponses {
   get_visible_profiles: any[];
   get_user_connections: any[];
   update_user_investment: null;
+  add_new_investor: AddNewInvestorResponse;
+  add_property_for_user: AddNewPropertyResponse;
+  add_property_for_sale: AddPropertyForSaleResponse;
+  add_new_development_project: AddNewDevelopmentProjectResponse;
+  add_new_event: AddNewEventResponse;
 }
 
 // Type for RPC function parameters 
@@ -78,6 +113,75 @@ export interface RPCParams {
   get_visible_profiles: { p_current_user_id: string };
   get_user_connections: { p_user_id: string };
   update_user_investment: { p_user_id: string; p_investment_amount: number };
+  add_new_investor: { 
+    p_email: string; 
+    p_first_name: string; 
+    p_last_name: string; 
+    p_password: string;
+    p_initial_investment?: number;
+  };
+  add_property_for_user: { 
+    p_user_id: string; 
+    p_name: string; 
+    p_address: string;
+    p_city: string;
+    p_country: string;
+    p_zone: string;
+    p_type_id: string;
+    p_price: number;
+    p_size_sqm: number;
+    p_bedrooms: number;
+    p_bathrooms: number;
+    p_occupation_status: string;
+    p_status: string;
+    p_roi_percentage?: number;
+    p_service_charges?: number;
+  };
+  add_property_for_sale: { 
+    p_name: string; 
+    p_address: string;
+    p_city: string;
+    p_country: string;
+    p_zone: string;
+    p_type_id: string;
+    p_price: number;
+    p_size_sqm: number;
+    p_bedrooms: number;
+    p_bathrooms: number;
+    p_min_investment?: number;
+    p_roi_percentage?: number;
+    p_investor_level?: string;
+  };
+  add_new_development_project: {
+    p_name: string;
+    p_description: string;
+    p_address: string;
+    p_city: string;
+    p_country: string;
+    p_zone: string;
+    p_expected_completion: string;
+    p_construction_stage: string;
+    p_progress_percentage: number;
+    p_total_units: number;
+    p_available_units: number;
+    p_min_investment?: number;
+    p_expected_roi?: number;
+    p_investor_level?: string;
+  };
+  add_new_event: {
+    p_title: string;
+    p_description: string;
+    p_date: string;
+    p_time: string;
+    p_location: string;
+    p_event_type: string;
+    p_max_attendees?: number;
+    p_property_id?: string;
+    p_project_id?: string;
+    p_image_url?: string;
+    p_is_online: boolean;
+    p_required_badges?: string[];
+  };
 }
 
 // Helper type to ensure type safety when calling RPC functions

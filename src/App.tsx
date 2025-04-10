@@ -20,6 +20,8 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Development from "./pages/Development";
 import DevelopmentDetail from "./pages/DevelopmentDetail";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminRoute from "./components/admin/AdminRoute";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -56,6 +58,10 @@ const App = () => {
               <Route path="/dashboard/settings" element={<Settings />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
               {/* Redirect /properties to /dashboard/properties for backward compatibility */}
               <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

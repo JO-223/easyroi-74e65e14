@@ -1,3 +1,4 @@
+
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -11,20 +12,20 @@ Per ogni punto completato:
 
 ## 🥇 Priorità 1 – Sistema di amministrazione completo
 
-- [ ] Pagina admin protetta con verifica ruolo (`useAdminRole`)
-- [ ] Form per inserimento nuovi investitori
-- [ ] Form per aggiungere proprietà a investitori esistenti
-- [ ] Form per gestione delle proprietà in vendita
-- [ ] Form per gestione dei progetti in sviluppo
-- [ ] Gestione eventi (creazione, modifica, eliminazione)
+- ✅ Pagina admin protetta con verifica ruolo (`useAdminRole`) - Implementato `src/components/admin/AdminRoute.tsx` che verifica il ruolo dell'utente
+- ✅ Form per inserimento nuovi investitori - Creato `src/components/admin/AdminInvestorForm.tsx` con form completo e validazioni
+- ✅ Form per aggiungere proprietà a investitori esistenti - Creato `src/components/admin/AdminPropertyForm.tsx` con form completo
+- ✅ Form per gestione delle proprietà in vendita - Creato `src/components/admin/AdminForSalePropertyForm.tsx` con form completo
+- ✅ Form per gestione dei progetti in sviluppo - Creato `src/components/admin/AdminDevelopmentProjectForm.tsx` con form completo
+- ✅ Gestione eventi (creazione, modifica, eliminazione) - Creato `src/components/admin/AdminEventForm.tsx` con form completo
 - [ ] Funzione Supabase: `addNewInvestor()`
 - [ ] Funzione Supabase: `addNewPropertyForUser()`
 - [ ] Funzione Supabase: `addPropertyForSale()`
 - [ ] Funzione Supabase: `addNewDevelopmentProject()`
 - [ ] Funzione Supabase: `addNewEvent()`
-- [ ] Protezione route admin lato client (`useAdminRole`)
+- ✅ Protezione route admin lato client (`useAdminRole`) - Implementato sistema di protezione con AdminRoute
 - [ ] Controlli autorizzazione nelle funzioni RPC
-- [ ] Redirect automatico per utenti non autorizzati
+- ✅ Redirect automatico per utenti non autorizzati - Aggiunto redirect in AdminRoute.tsx con toast di notifica
 
 ---
 
@@ -95,3 +96,5 @@ _(Solo revisione, nessun check-off richiesto)_
 
 ```md
 ✅ Form per inserimento nuovi investitori – creato `AdminAddInvestor.tsx`, integrato form con funzione `addNewInvestor()`
+
+```

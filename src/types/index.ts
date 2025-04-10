@@ -5,4 +5,5 @@ export interface NavItem {
   title: string;
   href: string;
   icon: LucideIcon;
+  adminOnly?: boolean;
 }
