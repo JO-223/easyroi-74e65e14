@@ -53,7 +53,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
           {property.roi_percentage && (
             <div>
               <p className="text-sm text-white/70">{t('expectedROI')}</p>
-              <p className="font-bold text-easyroi-gold">{property.roi_percentage}%</p>
+              <p className="font-bold text-easyroi-gold text-base">{property.roi_percentage}%</p>
             </div>
           )}
           {property.min_investment && (
@@ -69,7 +69,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {property.amenities.slice(0, 4).map((amenity, index) => (
+          {property.amenities && property.amenities.slice(0, 4).map((amenity, index) => (
             <span key={index} className="inline-flex items-center px-2 py-1 bg-white/10 rounded text-xs">
               {amenity.icon === 'droplet' && <Droplet className="h-3 w-3 mr-1" />}
               {amenity.icon === 'wifi' && <Wifi className="h-3 w-3 mr-1" />}
