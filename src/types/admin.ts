@@ -29,6 +29,7 @@ export interface NewInvestorData {
   level?: string;
   avatar_url?: string;
   password: string;
+  initialInvestment?: number;
 }
 
 export interface NewPropertyData {

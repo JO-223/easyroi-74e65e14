@@ -81,39 +81,124 @@ export const fetchDevelopmentProjects = async (): Promise<AdminDevelopmentProjec
   return ensureTypedResponse<AdminDevelopmentProject>(data);
 };
 
-// Temporarily mocked functions until we implement the actual RPC calls
+// Implementazione delle funzioni RPC di Supabase
 export const addNewInvestor = async (investorData: NewInvestorData): Promise<void> => {
-  console.log("Adding new investor:", investorData);
-  // TODO: Replace with actual Supabase RPC call
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+  const { error } = await supabase.rpc('add_new_investor', {
+    p_email: investorData.email,
+    p_first_name: investorData.first_name,
+    p_last_name: investorData.last_name,
+    p_password: investorData.password,
+    p_initial_investment: investorData.initialInvestment
+  });
+
+  if (error) {
+    console.error("Error adding new investor:", error);
+    throw error;
+  }
+  
   return Promise.resolve();
 };
 
 export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<void> => {
-  console.log("Adding property for user:", userId, propertyData);
-  // TODO: Replace with actual Supabase RPC call
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+  const { error } = await supabase.rpc('add_property_for_user', {
+    p_user_id: userId,
+    p_name: propertyData.name,
+    p_address: propertyData.address,
+    p_city: propertyData.city,
+    p_country: propertyData.country,
+    p_zone: propertyData.zone,
+    p_type_id: propertyData.typeId,
+    p_price: propertyData.price,
+    p_size_sqm: propertyData.sizeSqm,
+    p_bedrooms: propertyData.bedrooms,
+    p_bathrooms: propertyData.bathrooms,
+    p_occupation_status: propertyData.occupationStatus,
+    p_status: propertyData.status,
+    p_roi_percentage: propertyData.roiPercentage,
+    p_service_charges: propertyData.serviceCharges
+  });
+
+  if (error) {
+    console.error("Error adding property for user:", error);
+    throw error;
+  }
+  
   return Promise.resolve();
 };
 
 export const addPropertyForSale = async (propertyData: NewForSalePropertyData): Promise<void> => {
-  console.log("Adding property for sale:", propertyData);
-  // TODO: Replace with actual Supabase RPC call
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+  const { error } = await supabase.rpc('add_property_for_sale', {
+    p_name: propertyData.name,
+    p_address: propertyData.address,
+    p_city: propertyData.city,
+    p_country: propertyData.country,
+    p_zone: propertyData.zone,
+    p_type_id: propertyData.typeId,
+    p_price: propertyData.price,
+    p_size_sqm: propertyData.sizeSqm,
+    p_bedrooms: propertyData.bedrooms,
+    p_bathrooms: propertyData.bathrooms,
+    p_min_investment: propertyData.minInvestment,
+    p_roi_percentage: propertyData.roiPercentage,
+    p_investor_level: propertyData.investorLevel
+  });
+
+  if (error) {
+    console.error("Error adding property for sale:", error);
+    throw error;
+  }
+  
   return Promise.resolve();
 };
 
 export const addNewDevelopmentProject = async (projectData: NewDevelopmentProjectData): Promise<void> => {
-  console.log("Adding new development project:", projectData);
-  // TODO: Replace with actual Supabase RPC call
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+  const { error } = await supabase.rpc('add_new_development_project', {
+    p_name: projectData.name,
+    p_description: projectData.description,
+    p_address: projectData.address,
+    p_city: projectData.city,
+    p_country: projectData.country,
+    p_zone: projectData.zone,
+    p_expected_completion: projectData.expectedCompletion,
+    p_construction_stage: projectData.constructionStage,
+    p_progress_percentage: projectData.progressPercentage,
+    p_total_units: projectData.totalUnits,
+    p_available_units: projectData.availableUnits,
+    p_min_investment: projectData.minInvestment,
+    p_expected_roi: projectData.expectedRoi,
+    p_investor_level: projectData.investorLevel,
+    p_image_url: projectData.imageUrl
+  });
+
+  if (error) {
+    console.error("Error adding new development project:", error);
+    throw error;
+  }
+  
   return Promise.resolve();
 };
 
 export const addNewEvent = async (eventData: NewEventData): Promise<void> => {
-  console.log("Adding new event:", eventData);
-  // TODO: Replace with actual Supabase RPC call
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
+  const { error } = await supabase.rpc('add_new_event', {
+    p_title: eventData.title,
+    p_description: eventData.description,
+    p_date: eventData.date,
+    p_time: eventData.time,
+    p_location: eventData.location,
+    p_event_type: eventData.eventType,
+    p_max_attendees: eventData.maxAttendees,
+    p_property_id: eventData.propertyId,
+    p_project_id: eventData.projectId,
+    p_image_url: eventData.imageUrl,
+    p_is_online: eventData.isOnline,
+    p_required_badges: eventData.requiredBadges
+  });
+
+  if (error) {
+    console.error("Error adding new event:", error);
+    throw error;
+  }
+  
   return Promise.resolve();
 };
 

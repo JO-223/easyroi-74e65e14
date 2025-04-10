@@ -19,11 +19,16 @@ Per ogni punto completato:
 - ✅ Form per gestione dei progetti in sviluppo - Creato `src/components/admin/AdminDevelopmentProjectForm.tsx` con form completo
 - ✅ Gestione eventi (creazione, modifica, eliminazione) - Creato `src/components/admin/AdminEventForm.tsx` con form completo
 - ✅ Correzione degli errori TypeScript nei form admin - Aggiunto src/types/admin.ts con interfacce e sistemato typing nei componenti
-- [ ] Funzione Supabase: `addNewInvestor()`
-- [ ] Funzione Supabase: `addNewPropertyForUser()`
-- [ ] Funzione Supabase: `addPropertyForSale()`
-- [ ] Funzione Supabase: `addNewDevelopmentProject()`
-- [ ] Funzione Supabase: `addNewEvent()`
+- ✅ Funzione client: `addNewInvestor()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+- ✅ Funzione client: `addNewPropertyForUser()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+- ✅ Funzione client: `addPropertyForSale()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+- ✅ Funzione client: `addNewDevelopmentProject()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+- ✅ Funzione client: `addNewEvent()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+- [ ] Funzione Supabase: `add_new_investor()`
+- [ ] Funzione Supabase: `add_new_property_for_user()`
+- [ ] Funzione Supabase: `add_property_for_sale()`
+- [ ] Funzione Supabase: `add_new_development_project()`
+- [ ] Funzione Supabase: `add_new_event()`
 - ✅ Protezione route admin lato client (`useAdminRole`) - Implementato sistema di protezione con AdminRoute
 - [ ] Controlli autorizzazione nelle funzioni RPC
 - ✅ Redirect automatico per utenti non autorizzati - Aggiunto redirect in AdminRoute.tsx con toast di notifica
@@ -97,6 +102,4 @@ _(Solo revisione, nessun check-off richiesto)_
 
 ```md
 ✅ Form per inserimento nuovi investitori – creato `AdminAddInvestor.tsx`, integrato form con funzione `addNewInvestor()`
-
 ```
-

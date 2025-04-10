@@ -10,6 +10,7 @@ import { addNewInvestor } from "@/services/admin/adminService";
 import { useAdminActions } from "@/services/admin/adminService";
 import { useState } from "react";
 import { UserPlus, Loader2 } from "lucide-react";
+import { NewInvestorData } from "@/types/admin";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -40,13 +41,17 @@ export function AdminInvestorForm() {
     
     await handleAdminAction(
       async () => {
-        await addNewInvestor(
-          data.email,
-          data.firstName,
-          data.lastName,
-          data.password,
-          data.initialInvestment
-        );
+        // Costruire l'oggetto NewInvestorData da passare alla funzione
+        const investorData: NewInvestorData = {
+          email: data.email,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          password: data.password,
+          // Aggiungiamo il campo opzionale solo se presente
+          ...(data.initialInvestment && { initialInvestment: data.initialInvestment })
+        };
+        
+        await addNewInvestor(investorData);
         form.reset();
       },
       t('investorAddedSuccessfully'),
