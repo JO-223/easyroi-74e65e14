@@ -5,19 +5,17 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UserPlus, Loader2 } from "lucide-react";
 import { createOwnerUser, addNewInvestor } from "@/services/admin/adminService";
-import { NewInvestorData } from "@/types/admin";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  initialInvestment: z.number().optional()
+  password: z.string().min(8, "Password must be at least 8 characters")
 });
 
 export function AdminInvestorForm() {
@@ -31,58 +29,45 @@ export function AdminInvestorForm() {
       firstName: "",
       lastName: "",
       email: "",
-      password: "",
-      initialInvestment: undefined,
-    },
+      password: ""
+    }
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
 
     try {
-      // STEP 1: Crea l'utente tramite la edge function.
+      // STEP 1: Chiamata alla edge function per creare l'utente
       const createdUser = await createOwnerUser({
         email: data.email,
         password: data.password,
         firstName: data.firstName,
-        lastName: data.lastName,
+        lastName: data.lastName
       });
-
       const userId = createdUser.id;
 
-      // STEP 2: Completa la creazione del profilo investitore tramite RPC.
-      const investorData: NewInvestorData = {
+      // STEP 2: Chiamata alla RPC per aggiornare/creare il profilo e le impostazioni
+      const investorPayload = {
         user_id: userId,
-        email: data.email,
         first_name: data.firstName,
         last_name: data.lastName,
-        initialInvestment: data.initialInvestment,
+        email: data.email
       };
-
-      const rpcResult = await addNewInvestor(investorData);
+      const rpcResult = await addNewInvestor(investorPayload);
 
       toast({
         title: t("success"),
         description: rpcResult.message || t("investorAddedSuccessfully"),
         variant: "default"
       });
-
       form.reset();
     } catch (error) {
       console.error("Error during investor creation", error);
-      if (error instanceof Error && error.message.toLowerCase().includes("email already registered")) {
-        toast({
-          title: t("error"),
-          description: t("emailAlreadyExists"),
-          variant: "destructive"
-        });
-      } else {
-        toast({
-          title: t("error"),
-          description: error instanceof Error ? error.message : t("errorAddingInvestor"),
-          variant: "destructive"
-        });
-      }
+      toast({
+        title: t("error"),
+        description: error instanceof Error ? error.message : t("errorAddingInvestor"),
+        variant: "destructive"
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -107,7 +92,6 @@ export function AdminInvestorForm() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="lastName"
@@ -146,28 +130,6 @@ export function AdminInvestorForm() {
                 <FormControl>
                   <Input type="password" placeholder={t("enterPassword")} {...field} />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="initialInvestment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("initialInvestment")} (€)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="0"
-                    {...field}
-                    onChange={(e) =>
-                      field.onChange(e.target.value ? Number(e.target.value) : undefined)
-                    }
-                  />
-                </FormControl>
-                <FormDescription>{t("optionalField")}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
