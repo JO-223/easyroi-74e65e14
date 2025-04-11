@@ -83,6 +83,8 @@ export const fetchDevelopmentProjects = async (): Promise<AdminDevelopmentProjec
 
 // Implementazione delle funzioni RPC di Supabase
 export const addNewInvestor = async (investorData: NewInvestorData) => {
+  console.log("Calling addNewInvestor RPC with data:", investorData);
+  
   const { data, error } = await supabase.rpc("add_new_investor", {
     p_user_id: investorData.user_id,
     p_first_name: investorData.first_name,
@@ -96,6 +98,7 @@ export const addNewInvestor = async (investorData: NewInvestorData) => {
     throw new Error(error.message);
   }
 
+  console.log("RPC response:", data);
   return data;
 };
 

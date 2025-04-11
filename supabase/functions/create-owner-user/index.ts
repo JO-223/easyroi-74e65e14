@@ -36,6 +36,7 @@ serve(async (req) => {
     const { email, password, firstName, lastName } = await req.json() as UserCreationData;
     
     if (!email || !password) {
+      console.error("Missing required fields: email or password");
       return new Response(
         JSON.stringify({ success: false, message: "Email and password are required" }),
         { 
@@ -60,8 +61,17 @@ serve(async (req) => {
 
     if (createUserError) {
       console.error("Error creating user:", createUserError);
+      const rawMessage = createUserError.message || "";
+      const msg = rawMessage.toLowerCase();
+      
+      // More descriptive error message for email already exists
+      let errorMessage = createUserError.message;
+      if (msg.includes("email") && msg.includes("already")) {
+        errorMessage = "Email is already registered. Please use a different email address.";
+      }
+      
       return new Response(
-        JSON.stringify({ success: false, message: createUserError.message }),
+        JSON.stringify({ success: false, message: errorMessage }),
         { 
           headers: { ...corsHeaders, "Content-Type": "application/json" },
           status: 500 
@@ -78,7 +88,14 @@ serve(async (req) => {
     if (updateProfileError) {
       console.error("Error updating profile level:", updateProfileError);
       return new Response(
-        JSON.stringify({ success: false, message: updateProfileError.message }),
+        JSON.stringify({ 
+          success: false, 
+          message: "User created but profile not fully initialized. Error: " + updateProfileError.message,
+          user: {
+            id: userData.user.id,
+            email: userData.user.email
+          } 
+        }),
         { 
           headers: { ...corsHeaders, "Content-Type": "application/json" },
           status: 500 

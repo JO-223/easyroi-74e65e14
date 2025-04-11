@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -42,7 +43,9 @@ export function AdminInvestorForm() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
+      console.log("Starting investor creation process...");
       // Step 1: create user
+      console.log("Invoking create-owner-user edge function...");
       const response = await supabase.functions.invoke("create-owner-user", {
         body: {
           email: data.email,
@@ -51,6 +54,8 @@ export function AdminInvestorForm() {
           lastName: data.lastName
         }
       });
+
+      console.log("Edge function response:", response);
 
       const user = response.data?.user;
       const success = response.data?.success;
@@ -77,6 +82,7 @@ export function AdminInvestorForm() {
       }
 
       // Step 2: complete investor profile
+      console.log("User created successfully, now creating investor profile...");
       const investorData: NewInvestorData = {
         user_id: user.id,
         first_name: data.firstName,
@@ -87,6 +93,7 @@ export function AdminInvestorForm() {
 
       const rpcResult = await addNewInvestor(investorData);
 
+      console.log("RPC result:", rpcResult);
       if (!rpcResult?.[0]?.success) {
         toast({
           title: t("error"),
