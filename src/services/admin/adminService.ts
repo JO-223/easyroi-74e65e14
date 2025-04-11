@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -81,7 +80,31 @@ export const fetchDevelopmentProjects = async (): Promise<AdminDevelopmentProjec
   return ensureTypedResponse<AdminDevelopmentProject>(data);
 };
 
-// Implementazione delle funzioni RPC di Supabase
+/**
+ * Crea un nuovo utente tramite la edge function "create-owner-user".
+ * Restituisce un oggetto contenente { success, message, user }.
+ */
+export const createOwnerUser = async (userData: { email: string; password: string; firstName: string; lastName: string; }) => {
+  const { email, password, firstName, lastName } = userData;
+  const response = await supabase.functions.invoke("create-owner-user", {
+    body: { email, password, firstName, lastName }
+  });
+
+  if (response.error) {
+    throw new Error(response.error.message);
+  }
+
+  const responseData = response.data;
+  if (!responseData.success) {
+    throw new Error(responseData.message);
+  }
+  return responseData.user;  // Contiene almeno { id, ... }
+};
+
+/**
+ * Richiama la funzione RPC "add_new_investor" per completare la registrazione dell’investitore.
+ * Restituisce l'oggetto JSON con { success, message, user_id }.
+ */
 export const addNewInvestor = async (investorData: NewInvestorData) => {
   console.log("Calling addNewInvestor RPC with data:", investorData);
   
@@ -97,11 +120,13 @@ export const addNewInvestor = async (investorData: NewInvestorData) => {
     console.error("RPC error:", error);
     throw new Error(error.message);
   }
-
+  
   console.log("RPC response:", data);
+  if (!data || !data.success) {
+    throw new Error(data?.message || "Error adding investor");
+  }
   return data;
 };
-
 
 export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<void> => {
   const { error } = await supabase.rpc('add_property_for_user', {
