@@ -53,11 +53,37 @@ export function AdminInvestorForm() {
         }
       });
 
+      console.log("Edge function response:", createUserResponse);
+
+      // Gestione errori della edge function
       if (!createUserResponse.data?.success) {
-        console.error("Error creating user:", createUserResponse.error);
-        throw new Error(createUserResponse.error?.message || 
-                       createUserResponse.data?.message || 
-                       "Failed to create user");
+        // Verifica se è un errore di email già esistente
+        if (createUserResponse.error?.message?.includes("email") || 
+            createUserResponse.error?.message?.includes("already registered") ||
+            createUserResponse.data?.message?.includes("email") ||
+            createUserResponse.data?.message?.includes("already registered")) {
+          
+          toast({
+            title: t('error'),
+            description: t('emailAlreadyExists'),
+            variant: "destructive"
+          });
+          
+          setIsSubmitting(false);
+          return;
+        }
+        
+        // Altri tipi di errori della edge function
+        toast({
+          title: t('error'),
+          description: createUserResponse.error?.message || 
+                     createUserResponse.data?.message || 
+                     t('edgeFunctionFailure'),
+          variant: "destructive"
+        });
+        
+        setIsSubmitting(false);
+        return;
       }
 
       console.log("User created successfully:", createUserResponse.data);
@@ -76,9 +102,16 @@ export function AdminInvestorForm() {
       console.log("RPC result:", rpcResult);
       
       if (!rpcResult?.[0]?.success) {
-        throw new Error(rpcResult?.[0]?.message || "Error initializing investor profile");
+        toast({
+          title: t('error'),
+          description: rpcResult?.[0]?.message || t('errorAddingInvestor'),
+          variant: "destructive"
+        });
+        setIsSubmitting(false);
+        return;
       }
 
+      // Notifica di successo
       toast({
         title: t('success'),
         description: rpcResult[0].message || t('investorAddedSuccessfully'),
