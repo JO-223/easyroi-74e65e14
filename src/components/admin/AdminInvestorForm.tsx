@@ -13,26 +13,26 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addNewInvestor } from "@/services/admin/adminService";
+import { Loader2, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
-import { UserPlus, Loader2 } from "lucide-react";
-import { NewInvestorData } from "@/types/admin";
 import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
-  firstName: z.string().min(3, "First name must be at least 2 characters"),
-  lastName: z.string().min(3, "Last name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  initialInvestment: z.number().optional(),
+  firstName: z.string().min(2),
+  lastName: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(8),
+  initialInvestment: z
+    .string()
+    .transform((val) => val.trim() === "" ? undefined : Number(val))
+    .refine((val) => val === undefined || !isNaN(val), {
+      message: "Initial investment must be a number",
+    })
 });
 
 export function AdminInvestorForm() {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,75 +40,53 @@ export function AdminInvestorForm() {
       lastName: "",
       email: "",
       password: "",
-      initialInvestment: undefined,
-    },
+      initialInvestment: ""
+    }
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
     try {
-      // Step 1: Create user via Edge Function
-      const createUserResponse = await supabase.functions.invoke("create-owner-user", {
-        body: {
-          email: data.email,
-          password: data.password,
-          firstName: data.firstName,
-          lastName: data.lastName,
-        },
+      const { data: rpcResponse, error } = await supabase.rpc("add_new_investor", {
+        p_email: data.email,
+        p_first_name: data.firstName,
+        p_last_name: data.lastName,
+        p_password: data.password,
+        p_initial_investment: data.initialInvestment
       });
 
-      const edgeError = createUserResponse.error;
-      const edgeData = createUserResponse.data;
+      console.log("RPC Response:", rpcResponse, error);
 
-      if (!edgeData?.success || edgeError) {
-        const msg = edgeData?.message || edgeError?.message;
-        if (msg?.toLowerCase().includes("already registered") || msg?.toLowerCase().includes("email")) {
-          toast({ title: t("error"), description: t("emailAlreadyExists"), variant: "destructive" });
-        } else {
-          toast({ title: t("error"), description: msg || t("edgeFunctionFailure"), variant: "destructive" });
-        }
-        setIsSubmitting(false);
+      if (error || !rpcResponse) {
+        toast({
+          title: t("error"),
+          description: error?.message || "Unknown error",
+          variant: "destructive"
+        });
         return;
       }
 
-      const userId = edgeData.user.id;
-
-      // Step 2: Add investor profile via RPC
-      const investorData: NewInvestorData = {
-        user_id: userId,
-        email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        initialInvestment: data.initialInvestment,
-      };
-
-      const rpcResult = await addNewInvestor(investorData);
-
-      if (!rpcResult?.success) {
+      if (!rpcResponse.success) {
         toast({
           title: t("error"),
-          description: rpcResult.message || t("errorAddingInvestor"),
-          variant: "destructive",
+          description: rpcResponse.message || t("errorAddingInvestor"),
+          variant: "destructive"
         });
-        setIsSubmitting(false);
         return;
       }
 
       toast({
         title: t("success"),
-        description: rpcResult.message || t("investorAddedSuccessfully"),
-        variant: "default",
+        description: rpcResponse.message || t("investorAddedSuccessfully"),
+        variant: "default"
       });
-
       form.reset();
-    } catch (err) {
+    } catch (e: any) {
+      console.error("Submit error:", e);
       toast({
         title: t("error"),
-        description: err instanceof Error ? err.message : t("errorAddingInvestor"),
-        variant: "destructive",
+        description: e.message || t("errorAddingInvestor"),
+        variant: "destructive"
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -118,95 +96,51 @@ export function AdminInvestorForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("firstName")}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t("enterFirstName")} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormField name="firstName" control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("firstName")}</FormLabel>
+                <FormControl><Input {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
 
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("lastName")}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t("enterLastName")} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormField name="lastName" control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("lastName")}</FormLabel>
+                <FormControl><Input {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
           </div>
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("email")}</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="email@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormField name="email" control={form.control} render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("email")}</FormLabel>
+              <FormControl><Input type="email" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("password")}</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder={t("enterPassword")} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormField name="password" control={form.control} render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("password")}</FormLabel>
+              <FormControl><Input type="password" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
 
-          <FormField
-            control={form.control}
-            name="initialInvestment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("initialInvestment")} (€)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="0"
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
-                  />
-                </FormControl>
-                <FormDescription>{t("optionalField")}</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormField name="initialInvestment" control={form.control} render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("initialInvestment")} (€)</FormLabel>
+              <FormControl><Input type="number" {...field} /></FormControl>
+              <FormDescription>{t("optionalField")}</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )} />
 
-          <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("processing")}
-              </>
-            ) : (
-              <>
-                <UserPlus className="mr-2 h-4 w-4" />
-                {t("addInvestor")}
-              </>
-            )}
+          <Button type="submit" className="w-full md:w-auto">
+            <UserPlus className="mr-2 h-4 w-4" />
+            {t("addInvestor")}
           </Button>
         </form>
       </Form>
