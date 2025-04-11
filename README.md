@@ -11,28 +11,30 @@ Per ogni punto completato:
 
 ---
 
-## 🥇 Priorità 1 – Sistema di amministrazione completo
+🥇 Priorità 1 – Sistema di amministrazione completo
+✅ Pagina admin protetta con verifica ruolo (useAdminRole) - Implementato src/components/admin/AdminRoute.tsx che verifica il ruolo dell'utente
+✅ Form per inserimento nuovi investitori - Creato src/components/admin/AdminInvestorForm.tsx con form completo e validazioni
+✅ Form per aggiungere proprietà a investitori esistenti - Creato src/components/admin/AdminPropertyForm.tsx con form completo
+✅ Form per gestione delle proprietà in vendita - Creato src/components/admin/AdminForSalePropertyForm.tsx con form completo
+✅ Form per gestione dei progetti in sviluppo - Creato src/components/admin/AdminDevelopmentProjectForm.tsx con form completo
+✅ Form per gestione eventi (creazione, modifica, eliminazione) - Creato src/components/admin/AdminEventForm.tsx con form completo
+✅ Correzione degli errori TypeScript nei form admin - Aggiunto src/types/admin.ts con interfacce e sistemato typing nei componenti
+✅ Funzione client: addNewInvestor() - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+✅ Funzione client: addNewPropertyForUser() - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+✅ Funzione client: addPropertyForSale() - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+✅ Funzione client: addNewDevelopmentProject() - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+✅ Funzione client: addNewEvent() - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
+✅ Funzione Supabase: add_new_investor() - Implementata funzione RPC che completa il profilo e inizializza dati investitore partendo da un utente già presente in auth.users
+✅ Funzione Supabase: add_property_for_user() - Implementata funzione RPC che aggiorna proprietà, investimenti e allocazione portafoglio
+✅ Edge Function: create-owner-user() - Creata funzione edge che crea utente in auth.users e imposta livello owner in profiles
+- [ ] Funzione Supabase: add_property_for_sale()
+- [ ] Funzione Supabase: add_new_development_project()
+- [ ] Funzione Supabase: add_new_event()
+✅ Protezione route admin lato client (useAdminRole) - Implementato sistema di protezione con AdminRoute
 
-- ✅ Pagina admin protetta con verifica ruolo (`useAdminRole`) - Implementato `src/components/admin/AdminRoute.tsx` che verifica il ruolo dell'utente
-- ✅ Form per inserimento nuovi investitori - Creato `src/components/admin/AdminInvestorForm.tsx` con form completo e validazioni
-- ✅ Form per aggiungere proprietà a investitori esistenti - Creato `src/components/admin/AdminPropertyForm.tsx` con form completo
-- ✅ Form per gestione delle proprietà in vendita - Creato `src/components/admin/AdminForSalePropertyForm.tsx` con form completo
-- ✅ Form per gestione dei progetti in sviluppo - Creato `src/components/admin/AdminDevelopmentProjectForm.tsx` con form completo
-- ✅ Form per gestione eventi (creazione, modifica, eliminazione) - Creato `src/components/admin/AdminEventForm.tsx` con form completo
-- ✅ Correzione degli errori TypeScript nei form admin - Aggiunto src/types/admin.ts con interfacce e sistemato typing nei componenti
-- ✅ Funzione client: `addNewInvestor()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
-- ✅ Funzione client: `addNewPropertyForUser()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
-- ✅ Funzione client: `addPropertyForSale()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
-- ✅ Funzione client: `addNewDevelopmentProject()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
-- ✅ Funzione client: `addNewEvent()` - Implementata in src/services/admin/adminService.ts con tipi corretti e gestione errori
-- ✅ Funzione Supabase: `add_new_investor()` - Implementata funzione RPC che crea profilo, impostazioni e tabelle investimenti correlate
-- ✅ Funzione Supabase: `add_property_for_user()` - Implementata funzione RPC che aggiorna proprietà, investimenti e allocazione portafoglio
-- [ ] Funzione Supabase: `add_property_for_sale()`
-- [ ] Funzione Supabase: `add_new_development_project()`
-- [ ] Funzione Supabase: `add_new_event()`
-- ✅ Protezione route admin lato client (`useAdminRole`) - Implementato sistema di protezione con AdminRoute
-- [ ] Controlli autorizzazione nelle funzioni RPC
-- ✅ Redirect automatico per utenti non autorizzati - Aggiunto redirect in AdminRoute.tsx con toast di notifica
+ Controlli autorizzazione nelle funzioni RPC
+
+✅ Redirect automatico per utenti non autorizzati - Aggiunto redirect in AdminRoute.tsx con toast di notifica
 
 ---
 
