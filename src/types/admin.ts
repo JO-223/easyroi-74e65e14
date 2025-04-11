@@ -1,4 +1,3 @@
-
 import { PropertyType } from "./property";
 
 export interface Investor {
@@ -20,6 +19,7 @@ export interface AdminDevelopmentProject {
 }
 
 export interface NewInvestorData {
+  user_id: string;
   email: string;
   first_name: string;
   last_name: string;
@@ -28,7 +28,6 @@ export interface NewInvestorData {
   bio?: string;
   level?: string;
   avatar_url?: string;
-  password: string;
   initialInvestment?: number;
 }
 
