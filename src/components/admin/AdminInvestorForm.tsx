@@ -2,19 +2,27 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { addNewInvestor } from "@/services/admin/adminService";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { UserPlus, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import { NewInvestorData } from "@/types/admin";
-import { addNewInvestor } from "@/services/admin/adminService";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  firstName: z.string().min(3, "First name must be at least 2 characters"),
+  lastName: z.string().min(3, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   initialInvestment: z.number().optional(),
@@ -22,8 +30,8 @@ const formSchema = z.object({
 
 export function AdminInvestorForm() {
   const { t } = useLanguage();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,9 +46,8 @@ export function AdminInvestorForm() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-
     try {
-      // Step 1: Create user via edge function
+      // Step 1: Create user via Edge Function
       const createUserResponse = await supabase.functions.invoke("create-owner-user", {
         body: {
           email: data.email,
@@ -50,28 +57,23 @@ export function AdminInvestorForm() {
         },
       });
 
-      if (createUserResponse.error || !createUserResponse.data?.success) {
-        const msg = createUserResponse.data?.message || createUserResponse.error?.message;
-        if (msg?.toLowerCase().includes("already registered")) {
-          toast({
-            title: t("error"),
-            description: t("emailAlreadyExists"),
-            variant: "destructive",
-          });
+      const edgeError = createUserResponse.error;
+      const edgeData = createUserResponse.data;
+
+      if (!edgeData?.success || edgeError) {
+        const msg = edgeData?.message || edgeError?.message;
+        if (msg?.toLowerCase().includes("already registered") || msg?.toLowerCase().includes("email")) {
+          toast({ title: t("error"), description: t("emailAlreadyExists"), variant: "destructive" });
         } else {
-          toast({
-            title: t("error"),
-            description: msg || t("edgeFunctionFailure"),
-            variant: "destructive",
-          });
+          toast({ title: t("error"), description: msg || t("edgeFunctionFailure"), variant: "destructive" });
         }
         setIsSubmitting(false);
         return;
       }
 
-      const userId = createUserResponse.data.user.id;
+      const userId = edgeData.user.id;
 
-      // Step 2: Call RPC to complete investor profile
+      // Step 2: Add investor profile via RPC
       const investorData: NewInvestorData = {
         user_id: userId,
         email: data.email,
@@ -85,7 +87,7 @@ export function AdminInvestorForm() {
       if (!rpcResult?.success) {
         toast({
           title: t("error"),
-          description: rpcResult?.message || t("errorAddingInvestor"),
+          description: rpcResult.message || t("errorAddingInvestor"),
           variant: "destructive",
         });
         setIsSubmitting(false);
@@ -99,11 +101,10 @@ export function AdminInvestorForm() {
       });
 
       form.reset();
-    } catch (error) {
-      console.error("Unexpected error in form submission:", error);
+    } catch (err) {
       toast({
         title: t("error"),
-        description: error instanceof Error ? error.message : t("errorAddingInvestor"),
+        description: err instanceof Error ? err.message : t("errorAddingInvestor"),
         variant: "destructive",
       });
     } finally {
@@ -185,9 +186,7 @@ export function AdminInvestorForm() {
                     type="number"
                     placeholder="0"
                     {...field}
-                    onChange={(e) =>
-                      field.onChange(e.target.value ? Number(e.target.value) : undefined)
-                    }
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
                   />
                 </FormControl>
                 <FormDescription>{t("optionalField")}</FormDescription>
