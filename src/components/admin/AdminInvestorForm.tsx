@@ -12,6 +12,7 @@ import { useState } from "react";
 import { UserPlus, Loader2 } from "lucide-react";
 import { NewInvestorData } from "@/types/admin";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -25,6 +26,7 @@ export function AdminInvestorForm() {
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { handleAdminAction } = useAdminActions();
+  const { toast } = useToast();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,67 +42,60 @@ export function AdminInvestorForm() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    await handleAdminAction(
-      async () => {
-        // Passo 1: Crea l'utente tramite edge function
-        const createUserResponse = await supabase.functions.invoke('create-owner-user', {
-          body: {
-            email: data.email,
-            password: data.password,
-            firstName: data.firstName,
-            lastName: data.lastName
-          }
-        });
-
-        if (!createUserResponse.data?.success) {
-          console.error("Error creating user:", createUserResponse.error);
-          throw new Error(createUserResponse.error?.message || 
-                         createUserResponse.data?.message || 
-                         "Failed to create user");
-        }
-
-        const userId = createUserResponse.data.user.id;
-        
-        // Passo 2: Completa il profilo tramite RPC
-        // Costruire l'oggetto NewInvestorData
-        const investorData: NewInvestorData = {
-          user_id: userId,
-          first_name: data.firstName,
-          last_name: data.lastName,
+    try {
+      // Passo 1: Crea l'utente tramite edge function
+      const createUserResponse = await supabase.functions.invoke('create-owner-user', {
+        body: {
           email: data.email,
-          // Aggiungiamo il campo opzionale solo se presente
-          ...(data.initialInvestment && { initialInvestment: data.initialInvestment })
-        };
-        
-        const { data: rpcResult, error: rpcError } = await supabase.rpc(
-          'add_new_investor', 
-          {
-            p_user_id: userId, 
-            p_first_name: data.firstName,
-            p_last_name: data.lastName,
-            p_email: data.email,
-            p_initial_investment: data.initialInvestment
-          }
-        );
-
-        if (rpcError) {
-          console.error("Error in add_new_investor RPC:", rpcError);
-          throw new Error(`Failed to initialize investor: ${rpcError.message}`);
+          password: data.password,
+          firstName: data.firstName,
+          lastName: data.lastName
         }
+      });
 
-        if (!rpcResult[0]?.success) {
-          console.error("RPC returned failure:", rpcResult);
-          throw new Error(`Failed to initialize investor: ${rpcResult[0]?.message || "Unknown error"}`);
-        }
+      if (!createUserResponse.data?.success) {
+        console.error("Error creating user:", createUserResponse.error);
+        throw new Error(createUserResponse.error?.message || 
+                       createUserResponse.data?.message || 
+                       "Failed to create user");
+      }
 
-        console.log("Investor created successfully:", rpcResult);
-        form.reset();
-      },
-      t('investorAddedSuccessfully'),
-      t('errorAddingInvestor')
-    );
-    
-    setIsSubmitting(false);
+      console.log("User created successfully:", createUserResponse.data);
+      const userId = createUserResponse.data.user.id;
+      
+      // Passo 2: Completa il profilo tramite RPC
+      const investorData: NewInvestorData = {
+        user_id: userId,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        initialInvestment: data.initialInvestment
+      };
+      
+      const rpcResult = await addNewInvestor(investorData);
+      console.log("RPC result:", rpcResult);
+      
+      if (!rpcResult?.[0]?.success) {
+        throw new Error(rpcResult?.[0]?.message || "Error initializing investor profile");
+      }
+
+      toast({
+        title: t('success'),
+        description: rpcResult[0].message || t('investorAddedSuccessfully'),
+        variant: "default"
+      });
+
+      form.reset();
+    } catch (error) {
+      console.error("Error in investor creation process:", error);
+      toast({
+        title: t('error'),
+        description: error instanceof Error ? error.message : t('errorAddingInvestor'),
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

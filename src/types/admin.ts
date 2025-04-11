@@ -1,3 +1,4 @@
+
 import { PropertyType } from "./property";
 
 export interface Investor {
