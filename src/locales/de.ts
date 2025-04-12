@@ -1,3 +1,4 @@
+
 const translations = {
   welcome: 'Willkommen',
   cta: 'Loslegen',
@@ -197,8 +198,6 @@ const translations = {
   basic: 'Basic',
   advanced: 'Advanced',
   pro: 'Pro',
-  monthly: 'Monatlich',
-  annual: 'Jährlich',
   subscribe: 'Abonnieren',
   currentPlan: 'Aktueller Plan',
   accountSettings: 'Kontoeinstellungen',

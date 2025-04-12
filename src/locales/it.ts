@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuto",
@@ -551,7 +552,6 @@ const it = {
   active: "Attivo",
   pending: "In Attesa",
   sold: "Venduto",
-  notAvailable: "Non Disponibile",
   
   // Listing status
   not_listed: "Non in Elenco",
@@ -564,6 +564,12 @@ const it = {
   
   // Error messages
   errorFetchingFormData: "Errore nel recupero dei dati del modulo",
+  
+  // Added missing translations
+  singleLocationAllocation: "{location}: {percentage}%",
+  eventsInLastYear: "Eventi nell'ultimo anno",
+  monthly: "Mensile",
+  annual: "Annuale"
 };
 
 export default it;

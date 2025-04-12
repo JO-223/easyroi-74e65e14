@@ -1,3 +1,4 @@
+
 const en = {
   // General
   welcome: "Welcome",
@@ -470,7 +471,6 @@ const en = {
   addPropertyForUser: "Add Property for User",
   selectInvestor: "Select Investor",
   noInvestorsAvailable: "No investors available",
-  propertyName: "Property Name",
   enterPropertyName: "Enter property name",
   address: "Address",
   enterAddress: "Enter address",
@@ -519,7 +519,6 @@ const en = {
   
   // Property status
   active: "Active",
-  pending: "Pending",
   sold: "Sold",
   notAvailable: "Not Available",
   
@@ -530,10 +529,14 @@ const en = {
   
   // Button status
   saved: "Saved",
-  addProperty: "Add Property",
   
   // Error messages
   errorFetchingFormData: "Error fetching form data",
+  
+  // Added missing translation for singleLocationAllocation
+  singleLocationAllocation: "{location}: {percentage}%",
+  eventsInLastYear: "Events in the last year",
+  noInvestmentDataAvailable: "No investment data available"
 };
 
 export default en;

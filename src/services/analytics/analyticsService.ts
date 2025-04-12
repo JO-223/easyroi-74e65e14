@@ -126,7 +126,7 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     const averageRoi = Number(parseFloat(String(roiData?.average_roi || 0)).toFixed(2));
     const marketDifference = averageRoi - MARKET_AVERAGE_ROI;
 
-    const result = {
+    const result: AnalyticsData = {
       portfolioROI: {
         value: averageRoi,
         change: roiData?.roi_change !== null && roiData?.roi_change !== undefined ? 
