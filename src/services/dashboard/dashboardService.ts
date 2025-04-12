@@ -122,23 +122,23 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     
     // Format investment growth data
     const investmentGrowth: InvestmentGrowth[] = growthData?.map(item => ({
-      name: item.month as string,
-      value: Number(item.value),
+      name: String(item.month || ""),
+      value: Number(item.value || 0),
     })) || [];
     
-    // Format portfolio allocation data
+    // Format portfolio allocation data - ensure percentage is a number and formatted to 2 decimal places
     const portfolioAllocation: PortfolioAllocation[] = allocationData?.map(item => ({
-      name: item.location as string,
-      value: Number(parseFloat(item.percentage).toFixed(2)), // Format to 2 decimal places
+      name: String(item.location || ""),
+      value: Number(parseFloat(String(item.percentage || "0")).toFixed(2)), // Format to 2 decimal places
     })) || [];
     
     // Format properties data with rounded ROI percentages
     const properties: Property[] = propertiesData?.map(item => ({
-      id: item.id as string,
-      name: item.name as string,
+      id: String(item.id || ""),
+      name: String(item.name || ""),
       location: locationMap.get(item.location_id) || 'Unknown Location',
-      roi: `${parseFloat(item.roi_percentage).toFixed(2)}%`, // Format ROI to 2 decimal places
-      value: formatCurrency(Number(item.price)),
+      roi: `${parseFloat(String(item.roi_percentage || "0")).toFixed(2)}%`, // Format ROI to 2 decimal places
+      value: formatCurrency(Number(item.price || 0)),
       status: item.status === 'active' ? 'active' : 'development'
     })) || [];
     
@@ -148,9 +148,9 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       properties: Number(propertyData?.count || 0),
       roi: parseFloat((roiData?.average_roi || 0).toFixed(2)), // Format ROI to 2 decimal places
       events: eventsCount || 0,
-      investmentChange: parseFloat((investmentData?.investment_change_percentage || 0).toFixed(2)), // Format to 2 decimal places
+      investmentChange: parseFloat(String(investmentData?.investment_change_percentage || "0").toFixed(2)), // Format to 2 decimal places
       propertiesChange: Number(propertyData?.change || 0),
-      roiChange: parseFloat((roiData?.roi_change || 0).toFixed(2)) // Format to 2 decimal places
+      roiChange: parseFloat(String(roiData?.roi_change || "0").toFixed(2)) // Format to 2 decimal places
     };
     
     return {
