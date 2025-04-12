@@ -17,6 +17,9 @@ export function InvestorField({ control, investors }: InvestorFieldProps) {
   const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Add debug log to check investors being passed to the component
+  console.log("InvestorField - Received investors:", investors);
+
   return (
     <FormField
       control={control}

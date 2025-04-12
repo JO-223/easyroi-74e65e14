@@ -43,11 +43,12 @@ export const addNewInvestor = async (investorData: {
     throw error;
   }
 
-  // Ensure proper response structure
+  // Type assertion to ensure proper response structure
+  const typedResponse = data as InvestorRpcResponse;
   return {
-    success: data?.success === true,
-    message: data?.message || "Unknown response status",
-    user_id: data?.user_id
+    success: typedResponse.success === true,
+    message: typedResponse.message || "Unknown response status",
+    user_id: typedResponse.user_id
   };
 };
 

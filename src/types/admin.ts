@@ -101,6 +101,13 @@ export interface NewEventData {
   requiredBadges?: string[];
 }
 
+// Add the missing InvestorRpcResponse interface
+export interface InvestorRpcResponse {
+  success: boolean;
+  message: string;
+  user_id?: string;
+}
+
 export interface PropertyRpcResponse {
   property_id?: string;
   success: boolean;
