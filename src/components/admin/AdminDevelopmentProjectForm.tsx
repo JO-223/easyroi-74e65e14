@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { addNewDevelopmentProject, useAdminActions } from "@/services/admin/adminService";
+import { addNewDevelopmentProject } from "@/services/admin/projectService";
+import { useAdminActions } from "@/services/admin/hooks/useAdminActions";
 import { useState } from "react";
 import { Calendar, Construction, Loader2 } from "lucide-react";
 

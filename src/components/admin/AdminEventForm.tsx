@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -8,7 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { addNewEvent, fetchDevelopmentProjects, fetchProperties, useAdminActions } from "@/services/admin/adminService";
+import { addNewEvent } from "@/services/admin/eventService";
+import { fetchDevelopmentProjects } from "@/services/admin/projectService";
+import { fetchProperties } from "@/services/admin/propertyService";
+import { useAdminActions } from "@/services/admin/hooks/useAdminActions";
 import { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, CalendarCheck, Link, Loader2, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";

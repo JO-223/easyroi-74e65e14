@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { 
   NewPropertyData, 
   NewForSalePropertyData,
-  AdminProperty, 
-  PropertyType 
+  AdminProperty 
 } from "@/types/admin";
+import { PropertyType } from "@/types/property";
 import { ensureTypedResponse } from "./utils";
 
 // Fetch property types from the database

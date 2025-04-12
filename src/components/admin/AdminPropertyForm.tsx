@@ -7,7 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { fetchInvestors, fetchPropertyTypes, addPropertyForUser, useAdminActions } from "@/services/admin/adminService";
+import { fetchInvestors } from "@/services/admin/investorService";
+import { fetchPropertyTypes, addPropertyForUser } from "@/services/admin/propertyService";
+import { useAdminActions } from "@/services/admin/hooks/useAdminActions";
 import { useState, useEffect } from "react";
 import { Building2, Loader2, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
