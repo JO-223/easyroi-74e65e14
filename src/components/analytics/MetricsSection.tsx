@@ -12,14 +12,19 @@ interface MetricsSectionProps {
 export const MetricsSection = ({ analyticsData }: MetricsSectionProps) => {
   const { t } = useLanguage();
   
+  const formatPercentage = (value: number | undefined) => {
+    if (value === undefined) return '–';
+    return `${value.toFixed(2)}%`;
+  };
+  
   const metrics = [
     {
       title: t('portfolioROI'),
       value: analyticsData?.portfolioROI?.value !== undefined ? 
-        `${analyticsData.portfolioROI.value}%` : 
+        formatPercentage(analyticsData.portfolioROI.value) : 
         '–',
       change: analyticsData?.portfolioROI?.change !== null && analyticsData?.portfolioROI?.change !== undefined ? 
-        `${analyticsData.portfolioROI.change > 0 ? '+' : ''}${analyticsData.portfolioROI.change}%` : 
+        `${analyticsData.portfolioROI.change > 0 ? '+' : ''}${analyticsData.portfolioROI.change.toFixed(2)}%` : 
         t('noHistoricalData'),
       isPositive: analyticsData?.portfolioROI?.change !== null ? analyticsData?.portfolioROI?.change >= 0 : true,
       icon: Percent,
@@ -28,10 +33,10 @@ export const MetricsSection = ({ analyticsData }: MetricsSectionProps) => {
     {
       title: t('annualGrowth'),
       value: analyticsData?.annualGrowth?.value !== undefined ? 
-        `${analyticsData.annualGrowth.value}%` : 
+        formatPercentage(analyticsData.annualGrowth.value) : 
         '–',
       change: analyticsData?.annualGrowth?.change !== null && analyticsData?.annualGrowth?.change !== undefined ? 
-        `${analyticsData.annualGrowth.change > 0 ? '+' : ''}${analyticsData.annualGrowth.change}%` : 
+        `${analyticsData.annualGrowth.change > 0 ? '+' : ''}${analyticsData.annualGrowth.change.toFixed(2)}%` : 
         t('noHistoricalData'),
       isPositive: analyticsData?.annualGrowth?.change !== null ? analyticsData?.annualGrowth?.change >= 0 : true,
       icon: TrendingUp,
@@ -40,7 +45,7 @@ export const MetricsSection = ({ analyticsData }: MetricsSectionProps) => {
     {
       title: t('marketComparison'),
       value: analyticsData?.marketComparison?.value !== undefined ? 
-        `${analyticsData.marketComparison.status === 'above' ? '+' : '-'}${analyticsData.marketComparison.value}%` : 
+        `${analyticsData.marketComparison.status === 'above' ? '+' : '-'}${analyticsData.marketComparison.value.toFixed(2)}%` : 
         '–',
       change: analyticsData?.marketComparison?.status === 'above' ? 
         t('aboveIndex') : 

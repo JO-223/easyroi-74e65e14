@@ -84,40 +84,40 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     // Format ROI Performance data with proper type casting - handle nulls
     const roiPerformance = growthData?.map(item => ({
       month: String(item.month || ''),
-      roi: Number(item.value) || 0,
-      benchmark: MARKET_AVERAGE_ROI
+      roi: Number(parseFloat(String(item.value || 0)).toFixed(2)),
+      benchmark: Number(MARKET_AVERAGE_ROI.toFixed(2))
     })) || [];
 
     // Format Asset Allocation with proper type casting - handle nulls
     const assetAllocation = allocationData?.map(item => ({
       name: String(item.location || ''),
-      value: Number(item.percentage) || 0
+      value: Number(parseFloat(String(item.percentage || 0)).toFixed(2))
     })) || [];
 
     // Format Geographic Distribution with proper type casting - handle nulls
     const geographicDistribution = geoDistribution?.map(item => ({
       name: String(item.location || ''),
-      value: Number(item.percentage) || 0
+      value: Number(parseFloat(String(item.percentage || 0)).toFixed(2))
     })) || [];
 
     // Calculate market comparison
-    const averageRoi = Number(roiData?.average_roi || 0);
+    const averageRoi = Number(parseFloat(String(roiData?.average_roi || 0)).toFixed(2));
     const marketDifference = averageRoi - MARKET_AVERAGE_ROI;
 
     return {
       portfolioROI: {
-        value: Number(roiData?.average_roi || 0),
+        value: averageRoi,
         change: roiData?.roi_change !== null && roiData?.roi_change !== undefined ? 
-          Number(roiData.roi_change) : null
+          Number(parseFloat(String(roiData.roi_change)).toFixed(2)) : null
       },
       annualGrowth: {
-        value: Number(userInvestment?.investment_change_percentage || 0),
+        value: Number(parseFloat(String(userInvestment?.investment_change_percentage || 0)).toFixed(2)),
         change: userInvestment?.investment_change_percentage !== null && 
           userInvestment?.investment_change_percentage !== undefined ? 
-          Number(userInvestment.investment_change_percentage) : null
+          Number(parseFloat(String(userInvestment.investment_change_percentage)).toFixed(2)) : null
       },
       marketComparison: {
-        value: Math.abs(marketDifference),
+        value: Number(Math.abs(marketDifference).toFixed(2)),
         status: marketDifference >= 0 ? 'above' : 'below'
       },
       roiPerformance,
