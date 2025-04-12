@@ -1,3 +1,4 @@
+
 import { PropertyType } from "./property";
 
 export interface Investor {
@@ -6,6 +7,7 @@ export interface Investor {
   last_name: string;
   email: string;
   level: string | null;
+  is_active?: boolean;
 }
 
 export interface AdminProperty {
@@ -28,6 +30,7 @@ export interface NewInvestorData {
   bio?: string;
   level?: string;
   avatar_url?: string;
+  initialInvestment?: number;
 }
 
 export interface NewPropertyData {
@@ -43,6 +46,8 @@ export interface NewPropertyData {
   bathrooms: number;
   occupationStatus: string;
   status: string;
+  price_currency?: string;
+  listing_status?: string;
   roiPercentage?: number;
   serviceCharges?: number;
 }

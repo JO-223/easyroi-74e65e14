@@ -23,9 +23,7 @@ const ensureTypedResponse = <T,>(data: any): T[] => {
 // Fetch investors from the database
 export const fetchInvestors = async (): Promise<Investor[]> => {
   const { data, error } = await supabase
-    .from("profiles")
-    .select("id, first_name, last_name, email, level")
-    .order("first_name", { ascending: true });
+    .rpc('fetch_active_investors');
 
   if (error) {
     console.error("Error fetching investors:", error);
@@ -102,7 +100,7 @@ export const createOwnerUser = async (userData: { email: string; password: strin
 };
 
 /**
- * Richiama la funzione RPC "add_new_investor" per completare la registrazione dell’investitore.
+ * Richiama la funzione RPC "add_new_investor" per completare la registrazione dell'investitore.
  * Restituisce l'oggetto JSON con { success, message, user_id }.
  */
 export const addNewInvestor = async (investorData: NewInvestorData) => {
@@ -129,7 +127,9 @@ export const addNewInvestor = async (investorData: NewInvestorData) => {
 };
 
 export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<void> => {
-  const { error } = await supabase.rpc('add_property_for_user', {
+  console.log("Adding property for user:", userId, propertyData);
+  
+  const { data, error } = await supabase.rpc('add_property_for_user', {
     p_user_id: userId,
     p_name: propertyData.name,
     p_address: propertyData.address,
@@ -143,6 +143,8 @@ export const addPropertyForUser = async (userId: string, propertyData: NewProper
     p_bathrooms: propertyData.bathrooms,
     p_occupation_status: propertyData.occupationStatus,
     p_status: propertyData.status,
+    p_price_currency: propertyData.price_currency,
+    p_listing_status: propertyData.listing_status,
     p_roi_percentage: propertyData.roiPercentage,
     p_service_charges: propertyData.serviceCharges
   });
@@ -152,6 +154,7 @@ export const addPropertyForUser = async (userId: string, propertyData: NewProper
     throw error;
   }
   
+  console.log("Property added successfully:", data);
   return Promise.resolve();
 };
 

@@ -508,6 +508,7 @@ export type Database = {
           email: string
           first_name: string | null
           id: string
+          is_active: boolean | null
           join_date: string
           last_name: string | null
           level: string | null
@@ -521,6 +522,7 @@ export type Database = {
           email: string
           first_name?: string | null
           id: string
+          is_active?: boolean | null
           join_date?: string
           last_name?: string | null
           level?: string | null
@@ -534,6 +536,7 @@ export type Database = {
           email?: string
           first_name?: string | null
           id?: string
+          is_active?: boolean | null
           join_date?: string
           last_name?: string | null
           level?: string | null
@@ -583,11 +586,13 @@ export type Database = {
           data_source: string | null
           id: string
           investor_level: string | null
+          listing_status: string | null
           location_id: string
           min_investment: number | null
           name: string
           occupation_status: string
           price: number
+          price_currency: string | null
           roi_percentage: number | null
           service_charges: number | null
           size_sqm: number
@@ -604,11 +609,13 @@ export type Database = {
           data_source?: string | null
           id?: string
           investor_level?: string | null
+          listing_status?: string | null
           location_id: string
           min_investment?: number | null
           name: string
           occupation_status: string
           price: number
+          price_currency?: string | null
           roi_percentage?: number | null
           service_charges?: number | null
           size_sqm: number
@@ -625,11 +632,13 @@ export type Database = {
           data_source?: string | null
           id?: string
           investor_level?: string | null
+          listing_status?: string | null
           location_id?: string
           min_investment?: number | null
           name?: string
           occupation_status?: string
           price?: number
+          price_currency?: string | null
           roi_percentage?: number | null
           service_charges?: number | null
           size_sqm?: number
@@ -1002,32 +1011,51 @@ export type Database = {
     Functions: {
       add_new_investor: {
         Args: {
-          p_email: string
+          p_user_id: string
           p_first_name: string
           p_last_name: string
-          p_password: string
-          p_initial_investment?: number
+          p_email: string
         }
         Returns: Json
       }
       add_property_for_user: {
-        Args: {
-          p_user_id: string
-          p_name: string
-          p_address: string
-          p_city: string
-          p_country: string
-          p_zone: string
-          p_type_id: string
-          p_price: number
-          p_size_sqm: number
-          p_bedrooms: number
-          p_bathrooms: number
-          p_occupation_status: string
-          p_status: string
-          p_roi_percentage?: number
-          p_service_charges?: number
-        }
+        Args:
+          | {
+              p_user_id: string
+              p_name: string
+              p_address: string
+              p_city: string
+              p_country: string
+              p_zone: string
+              p_type_id: string
+              p_price: number
+              p_size_sqm: number
+              p_bedrooms: number
+              p_bathrooms: number
+              p_occupation_status: string
+              p_status: string
+              p_roi_percentage?: number
+              p_service_charges?: number
+            }
+          | {
+              p_user_id: string
+              p_name: string
+              p_address: string
+              p_city: string
+              p_country: string
+              p_zone: string
+              p_type_id: string
+              p_price: number
+              p_size_sqm: number
+              p_bedrooms: number
+              p_bathrooms: number
+              p_occupation_status: string
+              p_status: string
+              p_price_currency?: string
+              p_listing_status?: string
+              p_roi_percentage?: number
+              p_service_charges?: number
+            }
         Returns: Json
       }
       create_connection_request: {
@@ -1041,6 +1069,23 @@ export type Database = {
       delete_user_connection: {
         Args: { p_from_id: string; p_to_id: string }
         Returns: undefined
+      }
+      fetch_active_investors: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string | null
+          bio: string | null
+          email: string
+          first_name: string | null
+          id: string
+          is_active: boolean | null
+          join_date: string
+          last_name: string | null
+          level: string | null
+          location: string | null
+          phone: string | null
+          visibility: string
+        }[]
       }
       get_conversation: {
         Args: { p_user1_id: string; p_user2_id: string }
@@ -1081,6 +1126,7 @@ export type Database = {
           email: string
           first_name: string | null
           id: string
+          is_active: boolean | null
           join_date: string
           last_name: string | null
           level: string | null
@@ -1121,6 +1167,7 @@ export type Database = {
           email: string
           first_name: string | null
           id: string
+          is_active: boolean | null
           join_date: string
           last_name: string | null
           level: string | null
