@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Control } from "react-hook-form";
 import { PropertyFormValues } from "./types";
 import { Investor } from "@/types/admin";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface InvestorFieldProps {
   control: Control<PropertyFormValues>;
@@ -15,9 +15,8 @@ interface InvestorFieldProps {
 
 export function InvestorField({ control, investors }: InvestorFieldProps) {
   const { t } = useLanguage();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
-  // Add debug log to check investors being passed to the component
   console.log("InvestorField - Received investors:", investors);
 
   return (
@@ -27,7 +26,11 @@ export function InvestorField({ control, investors }: InvestorFieldProps) {
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            <FieldTooltip label={t("investor")} tooltip={t("tooltip.investor")} />
+            <FieldTooltip 
+              label={t("investor")} 
+              tooltip={t("tooltip", "investor")} 
+              tooltipKey="investor"
+            />
           </FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>

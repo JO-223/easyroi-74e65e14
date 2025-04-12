@@ -3,6 +3,7 @@ import en from "@/locales/en";
 import it from "@/locales/it";
 import es from "@/locales/es";
 import de from "@/locales/de";
+import { TranslationValue } from "@/contexts/LanguageContext";
 
 /**
  * Utility to check for missing translation keys between locales
@@ -63,7 +64,7 @@ export const checkMissingTranslationKeys = () => {
  * in the translation files.
  */
 export const checkDuplicateTranslationKeys = () => {
-  const checkDuplicates = (obj: Record<string, string>, name: string) => {
+  const checkDuplicates = (obj: Record<string, TranslationValue>, name: string) => {
     const keys = Object.keys(obj);
     const keySet = new Set();
     const duplicates: string[] = [];

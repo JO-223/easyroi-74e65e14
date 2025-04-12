@@ -10,7 +10,9 @@ export type Language = 'en' | 'it' | 'es' | 'de';
 export type Currency = 'usd' | 'eur' | 'gbp';
 export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
 
-type Translations = Record<Language, Record<string, string>>;
+// Update translation type to support nested objects
+export type TranslationValue = string | Record<string, string>;
+type Translations = Record<Language, Record<string, TranslationValue>>;
 
 export interface DisplaySettings {
   language: Language;
@@ -21,7 +23,7 @@ export interface DisplaySettings {
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: TranslationKey) => string;
+  t: (key: TranslationKey, nestedKey?: string) => string;
   supportedLanguages: { code: Language; name: string }[];
   displaySettings: DisplaySettings;
   updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
@@ -89,15 +91,30 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const t = (key: TranslationKey): string => {
-    // Check if the key exists in any language
-    if (!translations[language]?.[key] && !translations.en[key]) {
-      console.warn(`Missing translation key: ${key}`);
-      return key; // Return the key as fallback
+  // Enhanced translation function that supports nested objects
+  const t = (key: TranslationKey, nestedKey?: string): string => {
+    // Handle nested translation
+    if (nestedKey) {
+      const mainValue = translations[language]?.[key] || translations.en[key];
+      if (typeof mainValue === 'object' && mainValue !== null) {
+        return (mainValue as Record<string, string>)[nestedKey] || 
+               ((translations.en[key] as Record<string, string>)?.[nestedKey]) || 
+               nestedKey;
+      }
+      return String(mainValue);
     }
-
-    // Use the current language's translation or fallback to English
-    return translations[language]?.[key] || translations.en[key] || key;
+    
+    // Handle regular translation
+    const value = translations[language]?.[key] || translations.en[key];
+    if (typeof value === 'string') {
+      return value;
+    } else if (value === undefined) {
+      console.warn(`Missing translation key: ${key}`);
+      return key;
+    }
+    
+    // If we get here, it's an object but no nested key was provided
+    return key;
   };
 
   const value = {

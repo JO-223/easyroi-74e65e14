@@ -1,3 +1,4 @@
+
 const de = {
   // General
   welcome: "Willkommen",
@@ -378,7 +379,6 @@ const de = {
   location: "Standort",
   value: "Wert",
   status: "Status",
-  active: "Aktiv",
   price: "Preis",
   expectedROI: "Erwarteter ROI",
   minInvestment: "Min. Investition",
@@ -396,7 +396,7 @@ const de = {
   showAmenities: "Ausstattung anzeigen",
   applyFilters: "Filter anwenden",
   exclusiveProperties: "Exklusive Immobilien",
-  noPropertiesFound: "Keine Immobilien gefunden, versuchen Sie andere Filter",
+  noPropertiesFound: "Keine Immobilien gefunden, prova con filtri diversi",
   menu: "Menü",
   
   // Development Page
@@ -457,7 +457,6 @@ const de = {
   // Admin tabs
   investors: "Investoren",
   forSaleProperties: "Immobilien zum Verkauf",
-  developmentProjects: "Entwicklungsprojekte",
   
   // Admin Investor Form
   addNewInvestor: "Neuen Investor hinzufügen",
@@ -495,14 +494,11 @@ const de = {
   selectPropertyType: "Immobilientyp auswählen",
   sizeSqm: "Größe (qm)",
   sizeInSquareMeters: "Größe in Quadratmetern",
-  currency: "Währung",
   selectCurrency: "Währung auswählen",
-  occupationStatus: "Belegungsstatus",
   selectOccupationStatus: "Belegungsstatus auswählen",
   listingStatus: "Angebotsstatus",
   selectListingStatus: "Angebotsstatus auswählen",
   roiPercentage: "ROI-Prozentsatz",
-  serviceCharges: "Servicegebühren",
   serviceChargesDescription: "Jährliche Wartungs- und Servicegebühren",
   percentageExample: "z.B. 5 für 5%",
   propertyAddedSuccessfully: "Immobilie erfolgreich hinzugefügt",
@@ -538,7 +534,6 @@ const de = {
   active: "Aktiv",
   pending: "Ausstehend",
   sold: "Verkauft",
-  notAvailable: "Nicht verfügbar",
   
   // Listing status
   not_listed: "Nicht gelistet",
@@ -546,7 +541,6 @@ const de = {
   for_rent: "Zur Miete",
   
   // Button status
-  saving: "Speichern...",
   saved: "Gespeichert",
   addProperty: "Immobilie hinzufügen",
   

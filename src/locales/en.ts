@@ -1,3 +1,4 @@
+
 const en = {
   // General
   welcome: "Welcome",
@@ -212,7 +213,6 @@ const en = {
   location: "Location",
   value: "Value",
   status: "Status",
-  active: "Active",
   price: "Price",
   expectedROI: "Expected ROI",
   minInvestment: "Min Investment",
@@ -431,36 +431,6 @@ const en = {
   markAllAsRead: "Mark all as read",
   noNotifications: "No notifications",
   
-  // Settings descriptions
-  emailNotificationsDesc: "Receive important updates and alerts via email",
-  pushNotificationsDesc: "Receive real-time notifications in your browser",
-  publicProfileDesc: "Control whether your profile is visible to other investors",
-  dataSharingDesc: "Manage how your investment data is shared with our partners",
-  profilePublic: "Public Profile",
-  profilePublicDesc: "Your profile is visible to all investors",
-  profileSemiPublic: "Semi-Public Profile",
-  profileSemiPublicDesc: "Your profile is only visible to connected investors",
-  profilePrivate: "Private Profile",
-  profilePrivateDesc: "Your profile is not visible to anyone",
-  
-  // Account settings
-  accountSettingsUpdated: "Account Settings Updated",
-  accountSettingsSaved: "Your account settings have been saved",
-  errorOccurred: "Error Occurred",
-  errorUpdatingSettings: "Error updating your account settings",
-  
-  // Display settings
-  displaySettingsUpdated: "Display Settings Updated", 
-  displaySettingsSaved: "Your display preferences have been saved",
-  
-  // Notification settings
-  notificationSettingsUpdated: "Notification Settings Updated",
-  notificationSettingsSaved: "Your notification preferences have been saved",
-  
-  // Privacy settings
-  privacySettingsUpdated: "Privacy Settings Updated",
-  privacySettingsSaved: "Your privacy preferences have been saved",
-  
   // Network data
   networkDataError: "Error loading network data",
   
@@ -515,14 +485,11 @@ const en = {
   selectPropertyType: "Select property type",
   sizeSqm: "Size (sqm)",
   sizeInSquareMeters: "Size in square meters",
-  currency: "Currency",
   selectCurrency: "Select currency",
-  occupationStatus: "Occupation Status",
   selectOccupationStatus: "Select occupation status",
   listingStatus: "Listing Status",
   selectListingStatus: "Select listing status",
   roiPercentage: "ROI Percentage",
-  serviceCharges: "Service Charges",
   serviceChargesDescription: "Annual maintenance and service fees",
   percentageExample: "E.g. 5 for 5%",
   propertyAddedSuccessfully: "Property added successfully",
@@ -558,7 +525,6 @@ const en = {
   active: "Active",
   pending: "Pending",
   sold: "Sold",
-  notAvailable: "Not Available",
   
   // Listing status
   not_listed: "Not Listed",
@@ -566,7 +532,6 @@ const en = {
   for_rent: "For Rent",
   
   // Button status
-  saving: "Saving...",
   saved: "Saved",
   addProperty: "Add Property",
   

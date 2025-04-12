@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuto",
@@ -277,7 +278,6 @@ const it = {
   location: "Posizione",
   value: "Valore",
   status: "Stato",
-  active: "Attivo",
   price: "Prezzo",
   expectedROI: "ROI Previsto",
   minInvestment: "Investimento Minimo",
@@ -515,14 +515,11 @@ const it = {
   selectPropertyType: "Seleziona tipo di proprietà",
   sizeSqm: "Dimensione (mq)",
   sizeInSquareMeters: "Dimensione in metri quadrati",
-  currency: "Valuta",
   selectCurrency: "Seleziona valuta",
-  occupationStatus: "Stato di Occupazione",
   selectOccupationStatus: "Seleziona stato occupazione",
   listingStatus: "Stato Inserzione",
   selectListingStatus: "Seleziona stato inserzione",
   roiPercentage: "Percentuale ROI",
-  serviceCharges: "Spese di Servizio",
   serviceChargesDescription: "Spese di manutenzione e servizio annuali",
   percentageExample: "Es: 5 per 5%",
   propertyAddedSuccessfully: "Proprietà aggiunta con successo",
@@ -558,7 +555,6 @@ const it = {
   active: "Attivo",
   pending: "In Attesa",
   sold: "Venduto",
-  notAvailable: "Non Disponibile",
   
   // Listing status
   not_listed: "Non in Elenco",
@@ -566,7 +562,6 @@ const it = {
   for_rent: "In Affitto",
   
   // Button status
-  saving: "Salvataggio...",
   saved: "Salvato",
   addProperty: "Aggiungi Proprietà",
   

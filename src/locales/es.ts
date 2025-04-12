@@ -1,3 +1,4 @@
+
 const es = {
   // General
   welcome: "Bienvenido",
@@ -381,14 +382,11 @@ const es = {
   selectPropertyType: "Selecciona el tipo de propiedad",
   sizeSqm: "Tamaño (m²)",
   sizeInSquareMeters: "Tamaño en metros cuadrados",
-  currency: "Moneda",
   selectCurrency: "Selecciona la moneda",
-  occupationStatus: "Estado de Ocupación",
   selectOccupationStatus: "Selecciona el estado de ocupación",
   listingStatus: "Estado del Listado",
   selectListingStatus: "Selecciona el estado del listado",
   roiPercentage: "Porcentaje ROI",
-  serviceCharges: "Cargos por Servicios",
   serviceChargesDescription: "Tarifas anuales de mantenimiento y servicio",
   percentageExample: "Ej: 5 para 5%",
   propertyAddedSuccessfully: "Propiedad añadida con éxito",
@@ -432,7 +430,6 @@ const es = {
   for_rent: "En Alquiler",
   
   // Button status
-  saving: "Guardando...",
   saved: "Guardado",
   addProperty: "Añadir Propiedad",
   

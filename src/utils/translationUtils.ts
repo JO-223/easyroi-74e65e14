@@ -1,5 +1,6 @@
 
 import en from '@/locales/en';
+import { TranslationValue } from '@/contexts/LanguageContext';
 
 export type TranslationKey = string;
 
@@ -8,7 +9,7 @@ export type TranslationKey = string;
  * @param languages Object containing all language translations
  * @returns Boolean indicating if all keys are valid
  */
-export function validateTranslationKeys(languages: Record<string, Record<string, string>>) {
+export function validateTranslationKeys(languages: Record<string, Record<string, TranslationValue>>) {
   const englishKeys = Object.keys(languages['en']);
   let isValid = true;
 
@@ -63,7 +64,7 @@ export function isValidTranslationKey(key: string): key is TranslationKey {
  */
 export function getSortedTranslationKeys() {
   const englishEntries = Object.entries(en);
-  const categories: Record<string, Record<string, string>> = {};
+  const categories: Record<string, Record<string, TranslationValue>> = {};
   let currentCategory = 'uncategorized';
   
   englishEntries.forEach(([key, value]) => {
