@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -60,9 +59,8 @@ export function AdminDevelopmentProjectForm() {
     setIsSubmitting(true);
     
     await handleAdminAction(
-      async () => {
-        // Correzione: return esplicito del risultato della chiamata RPC
-        return await addNewDevelopmentProject({
+      async (): Promise<RpcResponse> => {
+        await addNewDevelopmentProject({
           name: data.name,
           description: data.description,
           address: data.address,
@@ -78,6 +76,7 @@ export function AdminDevelopmentProjectForm() {
           expectedRoi: data.expectedRoi,
           investorLevel: data.investorLevel,
         });
+        return { success: true, message: t('developmentProjectAddedSuccessfully') };
       },
       t('developmentProjectAddedSuccessfully'),
       t('errorAddingDevelopmentProject')
