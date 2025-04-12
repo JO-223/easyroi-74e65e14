@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -102,9 +101,8 @@ export function AdminEventForm() {
     setIsSubmitting(true);
     
     await handleAdminAction(
-      async () => {
-        // Correzione: return esplicito del risultato della chiamata RPC
-        return await addNewEvent({
+      async (): Promise<RpcResponse> => {
+        await addNewEvent({
           title: data.title,
           description: data.description,
           date: data.date,
@@ -118,6 +116,7 @@ export function AdminEventForm() {
           isOnline: data.isOnline,
           requiredBadges: data.requiredBadges,
         });
+        return { success: true, message: t('eventAddedSuccessfully') };
       },
       t('eventAddedSuccessfully'),
       t('errorAddingEvent')
