@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { InvestmentGrowth } from "@/services/dashboard/dashboardService";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/services/dashboard/dashboardService";
 
 interface InvestmentGrowthChartProps {
   data: InvestmentGrowth[];
@@ -36,10 +37,24 @@ export const InvestmentGrowthChart = ({ data, className }: InvestmentGrowthChart
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tickFormatter={(value) => `€${Math.floor(value / 1000)}k`} 
+                // Improved formatter to show M for millions
+                tickFormatter={(value) => {
+                  if (value >= 1000000) {
+                    return `€${(value / 1000000).toFixed(1)}M`;
+                  } else if (value >= 1000) {
+                    return `€${(value / 1000).toFixed(0)}k`;
+                  }
+                  return `€${value}`;
+                }}
               />
               <Tooltip 
-                formatter={(value: number) => [`€${value.toLocaleString()}`, "Value"]} 
+                formatter={(value: number) => [formatCurrency(value), "Value"]}
+                contentStyle={{
+                  backgroundColor: "white",
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                  borderRadius: "4px"
+                }}
               />
               <Bar dataKey="value" fill="#D4AF37" radius={[4, 4, 0, 0]} />
             </BarChart>

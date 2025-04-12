@@ -47,7 +47,7 @@ export const DashboardStats = ({ stats }: DashboardStatsProps) => {
     {
       title: t('totalInvestment'),
       value: stats.formattedInvestment,
-      change: `${stats.investmentChange > 0 ? '+' : ''}${stats.investmentChange}%`,
+      change: `${stats.investmentChange > 0 ? '+' : ''}${stats.investmentChange.toFixed(2)}%`,
       isPositive: stats.investmentChange >= 0,
       icon: TrendingUp,
     },
@@ -60,8 +60,8 @@ export const DashboardStats = ({ stats }: DashboardStatsProps) => {
     },
     {
       title: t('roi'),
-      value: `${stats.roi}%`,
-      change: `${stats.roiChange > 0 ? '+' : ''}${stats.roiChange}%`,
+      value: `${stats.roi.toFixed(2)}%`,
+      change: `${stats.roiChange > 0 ? '+' : ''}${stats.roiChange.toFixed(2)}%`,
       isPositive: stats.roiChange >= 0,
       icon: BarChart3,
     },

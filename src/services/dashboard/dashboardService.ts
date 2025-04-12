@@ -129,28 +129,28 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     // Format portfolio allocation data
     const portfolioAllocation: PortfolioAllocation[] = allocationData?.map(item => ({
       name: item.location as string,
-      value: Number(item.percentage),
+      value: Number(parseFloat(item.percentage).toFixed(2)), // Format to 2 decimal places
     })) || [];
     
-    // Format properties data
+    // Format properties data with rounded ROI percentages
     const properties: Property[] = propertiesData?.map(item => ({
       id: item.id as string,
       name: item.name as string,
       location: locationMap.get(item.location_id) || 'Unknown Location',
-      roi: `${item.roi_percentage}%`,
-      value: `€${(Number(item.price) / 1000).toFixed(0)}k`,
+      roi: `${parseFloat(item.roi_percentage).toFixed(2)}%`, // Format ROI to 2 decimal places
+      value: formatCurrency(Number(item.price)),
       status: item.status === 'active' ? 'active' : 'development'
     })) || [];
     
-    // Create stats object
+    // Create stats object with rounded percentages
     const stats: DashboardStats = {
       totalInvestment: Number(investmentData?.total_investment || 0),
       properties: Number(propertyData?.count || 0),
-      roi: Number(roiData?.average_roi || 0),
-      events: eventsCount || 0, // Use actual count from database
-      investmentChange: Number(investmentData?.investment_change_percentage || 0),
+      roi: parseFloat((roiData?.average_roi || 0).toFixed(2)), // Format ROI to 2 decimal places
+      events: eventsCount || 0,
+      investmentChange: parseFloat((investmentData?.investment_change_percentage || 0).toFixed(2)), // Format to 2 decimal places
       propertiesChange: Number(propertyData?.change || 0),
-      roiChange: Number(roiData?.roi_change || 0)
+      roiChange: parseFloat((roiData?.roi_change || 0).toFixed(2)) // Format to 2 decimal places
     };
     
     return {
@@ -172,9 +172,11 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
  */
 export function formatCurrency(value: number): string {
   if (value >= 1000000) {
-    return `€${(value / 1000000).toFixed(1)}M`;
+    // Format as X.YM (with one decimal place)
+    return `€${(value / 1000000).toFixed(1).replace('.0', '')}M`;
   } else if (value >= 1000) {
-    return `€${(value / 1000).toFixed(0)}k`;
+    // Format as X.Yk (with one decimal place)
+    return `€${(value / 1000).toFixed(1).replace('.0', '')}k`;
   } else {
     return `€${value.toFixed(0)}`;
   }

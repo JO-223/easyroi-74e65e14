@@ -38,13 +38,35 @@ export const PortfolioAllocationChart = ({ data }: PortfolioAllocationChartProps
                 outerRadius={80}
                 paddingAngle={5}
                 dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                // Improved label styling for better readability
+                label={({ name, percent }) => {
+                  return `${name}: ${(percent * 100).toFixed(0)}%`;
+                }}
+                labelLine={{ stroke: "#666", strokeWidth: 1 }}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={COLORS[index % COLORS.length]} 
+                    stroke="#fff"
+                    strokeWidth={1}
+                  />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [`${value}%`, t('allocation')]} />
+              <Tooltip 
+                formatter={(value: number) => [`${value.toFixed(2)}%`, t('allocation')]}
+                contentStyle={{
+                  backgroundColor: "white",
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  boxShadow: "0px 0px 10px rgba(0,0,0,0.1)"
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  marginBottom: "5px"
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
