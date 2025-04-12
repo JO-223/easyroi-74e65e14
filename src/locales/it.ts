@@ -471,14 +471,13 @@ const it = {
   noInvestmentDataAvailable: "Nessun dato di investimento disponibile",
   
   // Admin Panel
-  adminPanel: "Pannello di Amministrazione",
-  adminPanelSubtitle: "Gestisci investitori, proprietà, progetti e eventi",
+  adminPanel: "Pannello Amministrazione",
+  adminPanelSubtitle: "Gestisci investitori, proprietà, progetti ed eventi",
   
   // Admin tabs
   investors: "Investitori",
   forSaleProperties: "Proprietà in Vendita",
-  // Fixed duplicate key
-  developmentProjects: "Progetti di Sviluppo",
+  // Fixed duplicate key - removed
   
   // Admin Investor Form
   addNewInvestor: "Aggiungi Nuovo Investitore",
@@ -491,16 +490,16 @@ const it = {
   enterPassword: "Inserisci la password",
   firstNameTooltip: "Il nome dell'investitore",
   lastNameTooltip: "Il cognome dell'investitore",
-  emailTooltip: "L'email sarà utilizzata per accedere",
-  passwordTooltip: "La password deve contenere almeno 8 caratteri",
-  processing: "Elaborazione in corso...",
+  emailTooltip: "L'email sarà utilizzata per l'accesso",
+  passwordTooltip: "La password deve avere almeno 8 caratteri",
+  processing: "Elaborazione...",
   investorAddedSuccessfully: "Investitore aggiunto con successo",
   errorAddingInvestor: "Errore nell'aggiunta dell'investitore",
-  validation_error: "Errore di validazione",
-  success: "Operazione riuscita",
+  validation_error: "Errore di Validazione",
+  success: "Successo",
   
   // Admin Property Form
-  addPropertyForUser: "Aggiungi Proprietà per un Utente",
+  addPropertyForUser: "Aggiungi Proprietà per Utente",
   selectInvestor: "Seleziona Investitore",
   noInvestorsAvailable: "Nessun investitore disponibile",
   propertyName: "Nome Proprietà",
@@ -513,38 +512,37 @@ const it = {
   selectCountry: "Seleziona il paese",
   zone: "Zona",
   enterZone: "Inserisci la zona",
-  selectPropertyType: "Seleziona tipo di proprietà",
+  selectPropertyType: "Seleziona il tipo di proprietà",
   sizeSqm: "Dimensione (mq)",
   sizeInSquareMeters: "Dimensione in metri quadrati",
-  // Fixed duplicate key
-  selectCurrency: "Seleziona valuta",
-  selectOccupationStatus: "Seleziona stato occupazione",
+  // Fixed duplicate key - removed
+  // Fixed duplicate key - removed
   listingStatus: "Stato Inserzione",
-  selectListingStatus: "Seleziona stato inserzione",
+  selectListingStatus: "Seleziona lo stato dell'inserzione",
   roiPercentage: "Percentuale ROI",
-  serviceChargesDescription: "Spese di manutenzione e servizio annuali",
-  percentageExample: "Es: 5 per 5%",
+  serviceChargesDescription: "Spese annuali di manutenzione e servizio",
+  percentageExample: "Es. 5 per 5%",
   propertyAddedSuccessfully: "Proprietà aggiunta con successo",
   errorAddingProperty: "Errore nell'aggiunta della proprietà",
   
   // Property form tooltips
   tooltip: {
-    investor: "L'investitore a cui appartiene questa proprietà",
+    investor: "L'investitore proprietario di questa proprietà",
     propertyName: "Il nome o titolo della proprietà",
     address: "L'indirizzo completo della proprietà",
-    city: "La città in cui si trova la proprietà",
-    country: "Il paese in cui si trova la proprietà",
-    zone: "Il quartiere o zona all'interno della città",
-    propertyType: "La tipologia di immobile",
+    city: "La città dove si trova la proprietà",
+    country: "Il paese dove si trova la proprietà",
+    zone: "Il quartiere o area all'interno della città",
+    propertyType: "Il tipo di proprietà",
     price: "Il prezzo di acquisto della proprietà",
     currency: "La valuta del prezzo della proprietà",
     sizeSqm: "La dimensione della proprietà in metri quadrati",
     bedrooms: "Il numero di camere da letto",
     bathrooms: "Il numero di bagni",
-    occupationStatus: "Lo stato attuale di occupazione dell'immobile",
-    status: "Lo stato generale della proprietà",
-    listingStatus: "Lo stato dell'inserzione per questa proprietà",
-    roiPercentage: "Il rendimento percentuale annuo previsto",
+    occupationStatus: "Lo stato attuale di occupazione della proprietà",
+    status: "Lo stato complessivo della proprietà",
+    listingStatus: "Lo stato di inserzione per questa proprietà",
+    roiPercentage: "La percentuale annuale di ritorno sull'investimento prevista",
     serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)"
   },
   
@@ -557,6 +555,7 @@ const it = {
   active: "Attivo",
   pending: "In Attesa",
   sold: "Venduto",
+  notAvailable: "Non Disponibile",
   
   // Listing status
   not_listed: "Non in Elenco",
@@ -568,7 +567,7 @@ const it = {
   addProperty: "Aggiungi Proprietà",
   
   // Error messages
-  errorFetchingFormData: "Errore nel caricamento dei dati del modulo",
+  errorFetchingFormData: "Errore nel recupero dei dati del modulo",
 };
 
 export default it;

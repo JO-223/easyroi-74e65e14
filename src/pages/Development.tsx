@@ -5,7 +5,6 @@ import { fetchDevelopmentProjects } from "@/services/developmentProjectService";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { DevelopmentProjectList } from "@/components/development/DevelopmentProjectList";
 import { DevelopmentProjectFilters } from "@/components/development/DevelopmentProjectFilters";
-import { DevelopmentProjectImport } from "@/components/development/DevelopmentProjectImport";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
@@ -83,8 +82,6 @@ export default function Development() {
             <h1 className="text-2xl font-semibold tracking-tight">{t('developmentProjects')}</h1>
             <p className="text-muted-foreground">{t('exploreCurrentProjectsInProgress')}</p>
           </div>
-          
-          <DevelopmentProjectImport />
         </div>
         
         <Separator className="my-6" />

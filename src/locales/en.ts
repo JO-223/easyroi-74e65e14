@@ -447,8 +447,7 @@ const en = {
   // Admin tabs
   investors: "Investors",
   forSaleProperties: "For Sale Properties",
-  // Fixed duplicate key
-  developmentProjects: "Development Projects",
+  // Fixed duplicate key - removed
 
   // Admin Investor Form
   addNewInvestor: "Add New Investor",
@@ -486,9 +485,8 @@ const en = {
   selectPropertyType: "Select property type",
   sizeSqm: "Size (sqm)",
   sizeInSquareMeters: "Size in square meters",
-  // Fixed duplicate keys
-  selectCurrency: "Select currency",
-  selectOccupationStatus: "Select occupation status",
+  // Fixed duplicate key - removed
+  // Fixed duplicate key - removed
   listingStatus: "Listing Status",
   selectListingStatus: "Select listing status",
   roiPercentage: "ROI Percentage",
@@ -527,6 +525,7 @@ const en = {
   active: "Active",
   pending: "Pending",
   sold: "Sold",
+  notAvailable: "Not Available",
   
   // Listing status
   not_listed: "Not Listed",

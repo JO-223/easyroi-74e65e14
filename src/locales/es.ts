@@ -130,7 +130,6 @@ const es = {
   language: "Idioma",
   selectLanguage: "Seleccionar Idioma",
   currency: "Moneda",
-  selectCurrency: "Seleccionar Moneda",
   timezone: "Zona Horaria",
   selectTimezone: "Seleccionar Zona Horaria",
   saving: "Guardando...",
@@ -338,8 +337,7 @@ const es = {
   // Admin tabs
   investors: "Inversores",
   forSaleProperties: "Propiedades en Venta",
-  // Fixed duplicate key
-  developmentProjects: "Proyectos de Desarrollo",
+  // Fixed duplicate key - removed
   
   // Admin Investor Form
   addNewInvestor: "Añadir Nuevo Inversor",
@@ -377,7 +375,6 @@ const es = {
   selectPropertyType: "Selecciona el tipo de propiedad",
   sizeSqm: "Tamaño (m²)",
   sizeInSquareMeters: "Tamaño en metros cuadrados",
-  // Fixed this duplicate key
   selectCurrency: "Selecciona la moneda",
   selectOccupationStatus: "Selecciona el estado de ocupación",
   listingStatus: "Estado del Listado",

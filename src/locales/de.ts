@@ -396,7 +396,7 @@ const de = {
   showAmenities: "Ausstattung anzeigen",
   applyFilters: "Filter anwenden",
   exclusiveProperties: "Exklusive Immobilien",
-  noPropertiesFound: "Keine Immobilien gefunden, prova con filtri diversi",
+  noPropertiesFound: "Keine Immobilien gefunden, versuchen Sie andere Filter",
   menu: "Menü",
   
   // Development Page
@@ -457,7 +457,7 @@ const de = {
   // Admin tabs
   investors: "Investoren",
   forSaleProperties: "Immobilien zum Verkauf",
-  developmentProjects: "Entwicklungsprojekte", // Fixed duplicate key
+  // Fixed duplicate key - removing duplicate
   
   // Admin Investor Form
   addNewInvestor: "Neuen Investor hinzufügen",
@@ -495,8 +495,8 @@ const de = {
   selectPropertyType: "Immobilientyp auswählen",
   sizeSqm: "Größe (qm)",
   sizeInSquareMeters: "Größe in Quadratmetern",
-  selectCurrency: "Währung auswählen",
-  selectOccupationStatus: "Belegungsstatus auswählen",
+  // Fixed duplicate key - removed
+  // Fixed duplicate key - removed
   listingStatus: "Angebotsstatus",
   selectListingStatus: "Angebotsstatus auswählen",
   roiPercentage: "ROI-Prozentsatz",
