@@ -97,12 +97,12 @@ export function AdminEventForm() {
     fetchData();
   }, [toast, t]);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>): Promise<RpcResponse> => {
     setIsSubmitting(true);
     
-    await handleAdminAction(
-      async (): Promise<RpcResponse> => {
-        await addNewEvent({
+    return await handleAdminAction(
+      async () => {
+        return await addNewEvent({
           title: data.title,
           description: data.description,
           date: data.date,
@@ -116,14 +116,10 @@ export function AdminEventForm() {
           isOnline: data.isOnline,
           requiredBadges: data.requiredBadges,
         });
-        return { success: true, message: t('eventAddedSuccessfully') };
       },
       t('eventAddedSuccessfully'),
       t('errorAddingEvent')
     );
-    
-    form.reset();
-    setIsSubmitting(false);
   };
 
   if (isLoading) {
