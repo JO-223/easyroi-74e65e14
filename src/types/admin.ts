@@ -1,4 +1,3 @@
-
 import { PropertyType } from "./property";
 
 export interface Investor {
@@ -48,8 +47,8 @@ export interface NewPropertyData {
   status: string;
   price_currency?: string;
   listing_status?: string;
-  roiPercentage?: number;
-  serviceCharges?: number;
+  roiPercentage?: number | null;
+  serviceCharges?: number | null;
 }
 
 export interface NewForSalePropertyData {

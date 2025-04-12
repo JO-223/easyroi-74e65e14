@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -7,8 +6,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { fetchInvestors } from "@/services/admin/investorService";
-import { fetchPropertyTypes, addPropertyForUser } from "@/services/admin/propertyService";
+import { fetchInvestors, fetchPropertyTypes } from "@/services/admin/investorService";
+import { addPropertyForUser } from "@/services/admin/propertyService";
 import { useAdminActions } from "@/services/admin/hooks/useAdminActions";
 import { useState, useEffect } from "react";
 import { Building2, Loader2, Info } from "lucide-react";
@@ -17,22 +16,12 @@ import { Investor } from "@/types/admin";
 import { PropertyType } from "@/types/property";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-// Define available countries
 const AVAILABLE_COUNTRIES = ["Italy", "UAE", "Thailand", "Switzerland"];
-
-// Define occupation status options
 const OCCUPATION_STATUS_OPTIONS = ["rented", "occupied", "vacant", "partially_occupied"];
-
-// Property status options
 const STATUS_OPTIONS = ["active", "pending", "residential"];
-
-// Listing status options (in vendita / trattabile / non in vendita)
 const LISTING_STATUS_OPTIONS = ["for_sale", "negotiable", "not_listed"];
-
-// Currency options
 const CURRENCY_OPTIONS = ["EUR", "USD", "AED"];
 
-// Property rules for visibility and behavior based on status and occupation
 const PROPERTY_RULES = {
   active: {
     rented: {
@@ -155,10 +144,8 @@ export function AdminPropertyForm() {
     }
   });
 
-  // Watch the country value to show/hide service charges field
   const watchCountry = form.watch("country");
   
-  // Update showServiceCharges when country changes
   useEffect(() => {
     setShowServiceCharges(watchCountry === "UAE");
   }, [watchCountry]);
@@ -191,7 +178,7 @@ export function AdminPropertyForm() {
     setIsSubmitting(true);
     await handleAdminAction(
       async () => {
-        await addPropertyForUser(data.userId, {
+        const result = await addPropertyForUser(data.userId, {
           name: data.name,
           address: data.address,
           city: data.city,
@@ -209,7 +196,12 @@ export function AdminPropertyForm() {
           roiPercentage: data.roiPercentage,
           serviceCharges: data.serviceCharges
         });
-        form.reset();
+        
+        if (result && result.success) {
+          form.reset();
+        }
+        
+        return result;
       },
       t("propertyAddedSuccessfully"),
       t("errorAddingProperty")
@@ -246,7 +238,6 @@ export function AdminPropertyForm() {
       <h3 className="text-xl font-semibold mb-4">{t("addPropertyForUser")}</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Investor Selection */}
           <FormField
             control={form.control}
             name="userId"
@@ -274,7 +265,6 @@ export function AdminPropertyForm() {
             )}
           />
 
-          {/* Property Name */}
           <FormField
             control={form.control}
             name="name"
@@ -291,7 +281,6 @@ export function AdminPropertyForm() {
             )}
           />
 
-          {/* Grid for Location Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -372,7 +361,6 @@ export function AdminPropertyForm() {
             />
           </div>
 
-          {/* Property Type */}
           <FormField
             control={form.control}
             name="typeId"
@@ -400,7 +388,6 @@ export function AdminPropertyForm() {
             )}
           />
 
-          {/* Price and Currency Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -454,7 +441,6 @@ export function AdminPropertyForm() {
             />
           </div>
 
-          {/* Size, Bedrooms, Bathrooms Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FormField
               control={form.control}
@@ -521,7 +507,6 @@ export function AdminPropertyForm() {
             />
           </div>
 
-          {/* Status Fields Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FormField
               control={form.control}
@@ -605,7 +590,6 @@ export function AdminPropertyForm() {
             />
           </div>
 
-          {/* ROI Percentage */}
           <FormField
             control={form.control}
             name="roiPercentage"
@@ -630,7 +614,6 @@ export function AdminPropertyForm() {
             )}
           />
 
-          {/* Service Charges (Only for UAE) */}
           {showServiceCharges && (
             <FormField
               control={form.control}
@@ -656,7 +639,6 @@ export function AdminPropertyForm() {
             />
           )}
 
-          {/* Submit Button */}
           <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
             {isSubmitting ? (
               <>

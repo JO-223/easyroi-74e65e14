@@ -7,6 +7,7 @@ import {
 } from "@/types/admin";
 import { PropertyType } from "@/types/property";
 import { ensureTypedResponse } from "./utils";
+import { RpcResponse } from "./utils";
 
 // Fetch property types from the database
 export const fetchPropertyTypes = async (): Promise<PropertyType[]> => {
@@ -38,7 +39,7 @@ export const fetchProperties = async (): Promise<AdminProperty[]> => {
   return ensureTypedResponse<AdminProperty>(data);
 };
 
-export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<void> => {
+export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<RpcResponse> => {
   console.log("Adding property for user:", userId, propertyData);
   
   const { data, error } = await supabase.rpc('add_property_for_user', {
@@ -57,8 +58,8 @@ export const addPropertyForUser = async (userId: string, propertyData: NewProper
     p_status: propertyData.status,
     p_price_currency: propertyData.price_currency,
     p_listing_status: propertyData.listing_status,
-    p_roi_percentage: propertyData.roiPercentage,
-    p_service_charges: propertyData.serviceCharges
+    p_roi_percentage: propertyData.roiPercentage || null,
+    p_service_charges: propertyData.serviceCharges || null
   });
 
   if (error) {
@@ -66,12 +67,24 @@ export const addPropertyForUser = async (userId: string, propertyData: NewProper
     throw error;
   }
   
-  console.log("Property added successfully:", data);
-  return Promise.resolve();
+  // Log the complete response for debugging
+  console.log("RPC Response:", data);
+  
+  // Check if data is properly structured and has the expected format
+  if (!data || typeof data !== 'object') {
+    throw new Error("Invalid response format from add_property_for_user RPC");
+  }
+  
+  // Ensure proper response structure with default values if needed
+  return {
+    success: data.success === true, // Explicitly check for true
+    message: data.message || "Unknown response status",
+    property_id: data.property_id
+  };
 };
 
-export const addPropertyForSale = async (propertyData: NewForSalePropertyData): Promise<void> => {
-  const { error } = await supabase.rpc('add_property_for_sale', {
+export const addPropertyForSale = async (propertyData: NewForSalePropertyData): Promise<RpcResponse> => {
+  const { data, error } = await supabase.rpc('add_property_for_sale', {
     p_name: propertyData.name,
     p_address: propertyData.address,
     p_city: propertyData.city,
@@ -82,9 +95,9 @@ export const addPropertyForSale = async (propertyData: NewForSalePropertyData): 
     p_size_sqm: propertyData.sizeSqm,
     p_bedrooms: propertyData.bedrooms,
     p_bathrooms: propertyData.bathrooms,
-    p_min_investment: propertyData.minInvestment,
-    p_roi_percentage: propertyData.roiPercentage,
-    p_investor_level: propertyData.investorLevel
+    p_min_investment: propertyData.minInvestment || null,
+    p_roi_percentage: propertyData.roiPercentage || null,
+    p_investor_level: propertyData.investorLevel || 'bronze'
   });
 
   if (error) {
@@ -92,5 +105,17 @@ export const addPropertyForSale = async (propertyData: NewForSalePropertyData): 
     throw error;
   }
   
-  return Promise.resolve();
+  // Log the complete response for debugging
+  console.log("RPC Response:", data);
+  
+  // Check if data is properly structured
+  if (!data || typeof data !== 'object') {
+    throw new Error("Invalid response format from add_property_for_sale RPC");
+  }
+  
+  return {
+    success: data.success === true,
+    message: data.message || "Unknown response status",
+    property_id: data.property_id
+  };
 };
