@@ -138,7 +138,7 @@ export function AdminPropertyForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {withTooltip(t("investor"), "Select the user to whom this property will be assigned.")}
+                  {withTooltip(t("investor"), "Seleziona l'investitore a cui assegnare questa proprietà.")}
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
@@ -158,7 +158,7 @@ export function AdminPropertyForm() {
               </FormItem>
             )}
           />
-          {/* Continue wrapping other fields in withTooltip() similarly */}
+          {/* Qui vanno aggiunti gli altri campi del form con withTooltip applicato come sopra */}
           <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
