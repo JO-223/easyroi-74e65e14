@@ -10,8 +10,8 @@ export type Language = 'en' | 'it' | 'es' | 'de';
 export type Currency = 'usd' | 'eur' | 'gbp';
 export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
 
-// Update translation type to support nested objects
-export type TranslationValue = string | Record<string, string>;
+// Update translation type to support string values only (no nested objects)
+export type TranslationValue = string;
 type Translations = Record<Language, Record<string, TranslationValue>>;
 
 export interface DisplaySettings {
@@ -23,7 +23,7 @@ export interface DisplaySettings {
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: TranslationKey, nestedKey?: string) => string;
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string;
   supportedLanguages: { code: Language; name: string }[];
   displaySettings: DisplaySettings;
   updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
@@ -91,30 +91,23 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Enhanced translation function that supports nested objects
-  const t = (key: TranslationKey, nestedKey?: string): string => {
-    // Handle nested translation
-    if (nestedKey) {
-      const mainValue = translations[language]?.[key] || translations.en[key];
-      if (typeof mainValue === 'object' && mainValue !== null) {
-        return (mainValue as Record<string, string>)[nestedKey] || 
-               ((translations.en[key] as Record<string, string>)?.[nestedKey]) || 
-               nestedKey;
-      }
-      return String(mainValue);
-    }
+  // Enhanced translation function with string interpolation support
+  const t = (key: TranslationKey, params?: Record<string, string | number>): string => {
+    let value = translations[language]?.[key] || translations.en[key];
     
-    // Handle regular translation
-    const value = translations[language]?.[key] || translations.en[key];
-    if (typeof value === 'string') {
-      return value;
-    } else if (value === undefined) {
+    if (value === undefined) {
       console.warn(`Missing translation key: ${key}`);
       return key;
     }
     
-    // If we get here, it's an object but no nested key was provided
-    return key;
+    // If we have params, replace placeholders in the string
+    if (params) {
+      Object.entries(params).forEach(([paramKey, paramValue]) => {
+        value = value.replace(new RegExp(`{${paramKey}}`, 'g'), String(paramValue));
+      });
+    }
+    
+    return value;
   };
 
   const value = {

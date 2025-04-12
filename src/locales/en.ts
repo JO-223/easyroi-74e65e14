@@ -437,9 +437,6 @@ const en = {
   // Event details
   errorFetchingEvent: "Error fetching event details",
   
-  // Missing keys from scan
-  noInvestmentDataAvailable: "No investment data available",
-  
   // Admin Panel
   adminPanel: "Admin Panel",
   adminPanelSubtitle: "Manage investors, properties, projects and events",
@@ -471,6 +468,7 @@ const en = {
   addPropertyForUser: "Add Property for User",
   selectInvestor: "Select Investor",
   noInvestorsAvailable: "No investors available",
+  propertyName: "Property Name", // Fixed duplicate
   enterPropertyName: "Enter property name",
   address: "Address",
   enterAddress: "Enter address",
@@ -520,7 +518,6 @@ const en = {
   // Property status
   active: "Active",
   sold: "Sold",
-  notAvailable: "Not Available",
   
   // Listing status
   not_listed: "Not Listed",
@@ -529,6 +526,7 @@ const en = {
   
   // Button status
   saved: "Saved",
+  addProperty: "Add Property", // Fixed duplicate
   
   // Error messages
   errorFetchingFormData: "Error fetching form data",

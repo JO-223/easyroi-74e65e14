@@ -107,7 +107,7 @@ export const AllocationPieChart = ({
         <p className="text-sm text-muted-foreground mt-1">
           {t('singleLocationAllocation', { 
             location: formattedData[0].name,
-            percentage: formattedData[0].value.toFixed(2) 
+            percentage: formattedData[0].value.toFixed(2)
           })}
         </p>
       </div>
