@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -78,6 +79,13 @@ export const fetchDevelopmentProjects = async (): Promise<AdminDevelopmentProjec
   return ensureTypedResponse<AdminDevelopmentProject>(data);
 };
 
+// Type for Supabase RPC response with success and message
+interface RpcResponse {
+  success: boolean;
+  message: string;
+  [key: string]: any; // For additional fields like user_id, property_id, etc.
+}
+
 /**
  * Crea un nuovo utente tramite la edge function "create-owner-user".
  * Restituisce un oggetto contenente { success, message, user }.
@@ -92,7 +100,7 @@ export const createOwnerUser = async (userData: { email: string; password: strin
     throw new Error(response.error.message);
   }
 
-  const responseData = response.data;
+  const responseData = response.data as { success: boolean; message: string; user: any };
   if (!responseData.success) {
     throw new Error(responseData.message);
   }
@@ -120,10 +128,11 @@ export const addNewInvestor = async (investorData: NewInvestorData) => {
   }
   
   console.log("RPC response:", data);
-  if (!data || !data.success) {
-    throw new Error(data?.message || "Error adding investor");
+  const typedData = data as RpcResponse;
+  if (!typedData || !typedData.success) {
+    throw new Error(typedData?.message || "Error adding investor");
   }
-  return data;
+  return typedData;
 };
 
 export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<void> => {
