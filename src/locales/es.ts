@@ -1,4 +1,3 @@
-
 const es = {
   // General
   welcome: "Bienvenido",
@@ -335,8 +334,110 @@ const es = {
   errorFetchingEvent: "Error al obtener detalles del evento",
   
   // Missing keys from scan
-  noInvestmentDataAvailable: "No hay datos de inversión disponibles"
+  noInvestmentDataAvailable: "No hay datos de inversión disponibles",
+  
+  // Admin Panel
+  adminPanel: "Panel de Administración",
+  adminPanelSubtitle: "Gestiona inversores, propiedades, proyectos y eventos",
+  
+  // Admin tabs
+  investors: "Inversores",
+  forSaleProperties: "Propiedades en Venta",
+  developmentProjects: "Proyectos de Desarrollo",
+  
+  // Admin Investor Form
+  addNewInvestor: "Añadir Nuevo Inversor",
+  addInvestor: "Añadir Inversor",
+  firstName: "Nombre",
+  lastName: "Apellido",
+  enterFirstName: "Introduce el nombre",
+  enterLastName: "Introduce el apellido",
+  enterEmail: "Introduce el email",
+  enterPassword: "Introduce la contraseña",
+  firstNameTooltip: "El nombre del inversor",
+  lastNameTooltip: "El apellido del inversor",
+  emailTooltip: "El email se utilizará para iniciar sesión",
+  passwordTooltip: "La contraseña debe tener al menos 8 caracteres",
+  processing: "Procesando...",
+  investorAddedSuccessfully: "Inversor añadido con éxito",
+  errorAddingInvestor: "Error al añadir inversor",
+  validation_error: "Error de validación",
+  success: "Éxito",
+  
+  // Admin Property Form
+  addPropertyForUser: "Añadir Propiedad para Usuario",
+  selectInvestor: "Seleccionar Inversor",
+  noInvestorsAvailable: "No hay inversores disponibles",
+  propertyName: "Nombre de la Propiedad",
+  enterPropertyName: "Introduce el nombre de la propiedad",
+  address: "Dirección",
+  enterAddress: "Introduce la dirección",
+  city: "Ciudad",
+  enterCity: "Introduce la ciudad",
+  country: "País",
+  selectCountry: "Selecciona el país",
+  zone: "Zona",
+  enterZone: "Introduce la zona",
+  selectPropertyType: "Selecciona el tipo de propiedad",
+  sizeSqm: "Tamaño (m²)",
+  sizeInSquareMeters: "Tamaño en metros cuadrados",
+  currency: "Moneda",
+  selectCurrency: "Selecciona la moneda",
+  occupationStatus: "Estado de Ocupación",
+  selectOccupationStatus: "Selecciona el estado de ocupación",
+  listingStatus: "Estado del Listado",
+  selectListingStatus: "Selecciona el estado del listado",
+  roiPercentage: "Porcentaje ROI",
+  serviceCharges: "Cargos por Servicios",
+  serviceChargesDescription: "Tarifas anuales de mantenimiento y servicio",
+  percentageExample: "Ej: 5 para 5%",
+  propertyAddedSuccessfully: "Propiedad añadida con éxito",
+  errorAddingProperty: "Error al añadir propiedad",
+  
+  // Property form tooltips
+  tooltip: {
+    investor: "El inversor propietario de esta propiedad",
+    propertyName: "El nombre o título de la propiedad",
+    address: "La dirección completa de la propiedad",
+    city: "La ciudad donde se encuentra la propiedad",
+    country: "El país donde se encuentra la propiedad",
+    zone: "El barrio o área dentro de la ciudad",
+    propertyType: "El tipo de propiedad",
+    price: "El precio de compra de la propiedad",
+    currency: "La moneda del precio de la propiedad",
+    sizeSqm: "El tamaño de la propiedad en metros cuadrados",
+    bedrooms: "El número de dormitorios",
+    bathrooms: "El número de baños",
+    occupationStatus: "El estado actual de ocupación de la propiedad",
+    status: "El estado general de la propiedad",
+    listingStatus: "El estado del listado para esta propiedad",
+    roiPercentage: "El porcentaje anual esperado de retorno de inversión",
+    serviceCharges: "Tarifas anuales de mantenimiento y servicio (solo EAU)"
+  },
+  
+  // Occupation status
+  vacant: "Vacante",
+  occupied: "Ocupado",
+  underRenovation: "En Renovación",
+  
+  // Property status
+  active: "Activo",
+  pending: "Pendiente",
+  sold: "Vendido",
+  notAvailable: "No Disponible",
+  
+  // Listing status
+  not_listed: "No Listado",
+  for_sale: "En Venta",
+  for_rent: "En Alquiler",
+  
+  // Button status
+  saving: "Guardando...",
+  saved: "Guardado",
+  addProperty: "Añadir Propiedad",
+  
+  // Error messages
+  errorFetchingFormData: "Error al obtener los datos del formulario",
 };
 
 export default es;
-

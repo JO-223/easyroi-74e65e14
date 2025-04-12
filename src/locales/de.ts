@@ -1,4 +1,3 @@
-
 const de = {
   // General
   welcome: "Willkommen",
@@ -449,8 +448,110 @@ const de = {
   errorFetchingEvent: "Fehler beim Abrufen der Veranstaltungsdetails",
   
   // Missing keys from scan
-  noInvestmentDataAvailable: "Keine Investitionsdaten verfügbar"
+  noInvestmentDataAvailable: "Keine Investitionsdaten verfügbar",
+  
+  // Admin Panel
+  adminPanel: "Admin-Panel",
+  adminPanelSubtitle: "Verwalte Investoren, Immobilien, Projekte und Veranstaltungen",
+  
+  // Admin tabs
+  investors: "Investoren",
+  forSaleProperties: "Immobilien zum Verkauf",
+  developmentProjects: "Entwicklungsprojekte",
+  
+  // Admin Investor Form
+  addNewInvestor: "Neuen Investor hinzufügen",
+  addInvestor: "Investor hinzufügen",
+  firstName: "Vorname",
+  lastName: "Nachname",
+  enterFirstName: "Vorname eingeben",
+  enterLastName: "Nachname eingeben",
+  enterEmail: "E-Mail-Adresse eingeben",
+  enterPassword: "Passwort eingeben",
+  firstNameTooltip: "Der Vorname des Investors",
+  lastNameTooltip: "Der Nachname des Investors",
+  emailTooltip: "E-Mail wird zum Anmelden verwendet",
+  passwordTooltip: "Passwort muss mindestens 8 Zeichen lang sein",
+  processing: "Verarbeitung...",
+  investorAddedSuccessfully: "Investor erfolgreich hinzugefügt",
+  errorAddingInvestor: "Fehler beim Hinzufügen des Investors",
+  validation_error: "Validierungsfehler",
+  success: "Erfolg",
+  
+  // Admin Property Form
+  addPropertyForUser: "Immobilie für Benutzer hinzufügen",
+  selectInvestor: "Investor auswählen",
+  noInvestorsAvailable: "Keine Investoren verfügbar",
+  propertyName: "Immobilienname",
+  enterPropertyName: "Immobilienname eingeben",
+  address: "Adresse",
+  enterAddress: "Adresse eingeben",
+  city: "Stadt",
+  enterCity: "Stadt eingeben",
+  country: "Land",
+  selectCountry: "Land auswählen",
+  zone: "Zone",
+  enterZone: "Zone eingeben",
+  selectPropertyType: "Immobilientyp auswählen",
+  sizeSqm: "Größe (qm)",
+  sizeInSquareMeters: "Größe in Quadratmetern",
+  currency: "Währung",
+  selectCurrency: "Währung auswählen",
+  occupationStatus: "Belegungsstatus",
+  selectOccupationStatus: "Belegungsstatus auswählen",
+  listingStatus: "Angebotsstatus",
+  selectListingStatus: "Angebotsstatus auswählen",
+  roiPercentage: "ROI-Prozentsatz",
+  serviceCharges: "Servicegebühren",
+  serviceChargesDescription: "Jährliche Wartungs- und Servicegebühren",
+  percentageExample: "z.B. 5 für 5%",
+  propertyAddedSuccessfully: "Immobilie erfolgreich hinzugefügt",
+  errorAddingProperty: "Fehler beim Hinzufügen der Immobilie",
+  
+  // Property form tooltips
+  tooltip: {
+    investor: "Der Investor, dem diese Immobilie gehört",
+    propertyName: "Der Name oder Titel der Immobilie",
+    address: "Die vollständige Adresse der Immobilie",
+    city: "Die Stadt, in der sich die Immobilie befindet",
+    country: "Das Land, in dem sich die Immobilie befindet",
+    zone: "Das Viertel oder Gebiet innerhalb der Stadt",
+    propertyType: "Die Art der Immobilie",
+    price: "Der Kaufpreis der Immobilie",
+    currency: "Die Währung des Immobilienpreises",
+    sizeSqm: "Die Größe der Immobilie in Quadratmetern",
+    bedrooms: "Die Anzahl der Schlafzimmer",
+    bathrooms: "Die Anzahl der Badezimmer",
+    occupationStatus: "Der aktuelle Belegungsstatus der Immobilie",
+    status: "Der allgemeine Status der Immobilie",
+    listingStatus: "Der Angebotsstatus für diese Immobilie",
+    roiPercentage: "Der erwartete jährliche Renditeprozentsatz",
+    serviceCharges: "Jährliche Wartungs- und Servicegebühren (nur VAE)"
+  },
+  
+  // Occupation status
+  vacant: "Leer",
+  occupied: "Belegt",
+  underRenovation: "In Renovierung",
+  
+  // Property status
+  active: "Aktiv",
+  pending: "Ausstehend",
+  sold: "Verkauft",
+  notAvailable: "Nicht verfügbar",
+  
+  // Listing status
+  not_listed: "Nicht gelistet",
+  for_sale: "Zum Verkauf",
+  for_rent: "Zur Miete",
+  
+  // Button status
+  saving: "Speichern...",
+  saved: "Gespeichert",
+  addProperty: "Immobilie hinzufügen",
+  
+  // Error messages
+  errorFetchingFormData: "Fehler beim Abrufen der Formulardaten",
 };
 
 export default de;
-

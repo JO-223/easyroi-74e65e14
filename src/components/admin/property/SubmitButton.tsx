@@ -1,6 +1,6 @@
 
-import { Building2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Loader2, Home } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SubmitButtonProps {
@@ -15,11 +15,11 @@ export function SubmitButton({ isSubmitting }: SubmitButtonProps) {
       {isSubmitting ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {t("processing")}
+          {t("saving")}
         </>
       ) : (
         <>
-          <Building2 className="mr-2 h-4 w-4" />
+          <Home className="mr-2 h-4 w-4" />
           {t("addProperty")}
         </>
       )}

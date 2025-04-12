@@ -1,4 +1,3 @@
-
 const en = {
   // General
   welcome: "Welcome",
@@ -469,7 +468,110 @@ const en = {
   errorFetchingEvent: "Error fetching event details",
   
   // Missing keys from scan
-  noInvestmentDataAvailable: "No investment data available"
+  noInvestmentDataAvailable: "No investment data available",
+  
+  // Admin Panel
+  adminPanel: "Admin Panel",
+  adminPanelSubtitle: "Manage investors, properties, projects and events",
+  
+  // Admin tabs
+  investors: "Investors",
+  forSaleProperties: "For Sale Properties",
+  developmentProjects: "Development Projects",
+
+  // Admin Investor Form
+  addNewInvestor: "Add New Investor",
+  addInvestor: "Add Investor",
+  firstName: "First Name",
+  lastName: "Last Name",
+  enterFirstName: "Enter first name",
+  enterLastName: "Enter last name",
+  enterEmail: "Enter email address",
+  enterPassword: "Enter password",
+  firstNameTooltip: "The investor's first name",
+  lastNameTooltip: "The investor's last name",
+  emailTooltip: "Email will be used for login",
+  passwordTooltip: "Password must be at least 8 characters",
+  processing: "Processing...",
+  investorAddedSuccessfully: "Investor added successfully",
+  errorAddingInvestor: "Error adding investor",
+  validation_error: "Validation Error",
+  success: "Success",
+
+  // Admin Property Form
+  addPropertyForUser: "Add Property for User",
+  selectInvestor: "Select Investor",
+  noInvestorsAvailable: "No investors available",
+  propertyName: "Property Name",
+  enterPropertyName: "Enter property name",
+  address: "Address",
+  enterAddress: "Enter address",
+  city: "City",
+  enterCity: "Enter city",
+  country: "Country",
+  selectCountry: "Select country",
+  zone: "Zone",
+  enterZone: "Enter zone",
+  selectPropertyType: "Select property type",
+  sizeSqm: "Size (sqm)",
+  sizeInSquareMeters: "Size in square meters",
+  currency: "Currency",
+  selectCurrency: "Select currency",
+  occupationStatus: "Occupation Status",
+  selectOccupationStatus: "Select occupation status",
+  listingStatus: "Listing Status",
+  selectListingStatus: "Select listing status",
+  roiPercentage: "ROI Percentage",
+  serviceCharges: "Service Charges",
+  serviceChargesDescription: "Annual maintenance and service fees",
+  percentageExample: "E.g. 5 for 5%",
+  propertyAddedSuccessfully: "Property added successfully",
+  errorAddingProperty: "Error adding property",
+
+  // Property form tooltips
+  tooltip: {
+    investor: "The investor who owns this property",
+    propertyName: "The name or title of the property",
+    address: "The full address of the property",
+    city: "The city where the property is located",
+    country: "The country where the property is located",
+    zone: "The neighborhood or area within the city",
+    propertyType: "The type of property",
+    price: "The purchase price of the property",
+    currency: "The currency of the property price",
+    sizeSqm: "The size of the property in square meters",
+    bedrooms: "The number of bedrooms",
+    bathrooms: "The number of bathrooms",
+    occupationStatus: "The current occupation status of the property",
+    status: "The overall status of the property",
+    listingStatus: "The listing status for this property",
+    roiPercentage: "The expected annual return on investment percentage",
+    serviceCharges: "Annual maintenance and service fees (UAE only)"
+  },
+  
+  // Occupation status
+  vacant: "Vacant",
+  occupied: "Occupied",
+  underRenovation: "Under Renovation",
+  
+  // Property status
+  active: "Active",
+  pending: "Pending",
+  sold: "Sold",
+  notAvailable: "Not Available",
+  
+  // Listing status
+  not_listed: "Not Listed",
+  for_sale: "For Sale",
+  for_rent: "For Rent",
+  
+  // Button status
+  saving: "Saving...",
+  saved: "Saved",
+  addProperty: "Add Property",
+  
+  // Error messages
+  errorFetchingFormData: "Error fetching form data",
 };
 
 export default en;

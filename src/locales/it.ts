@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuto",
@@ -469,8 +468,110 @@ const it = {
   errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
   
   // Missing keys from scan
-  noInvestmentDataAvailable: "Nessun dato di investimento disponibile"
+  noInvestmentDataAvailable: "Nessun dato di investimento disponibile",
+  
+  // Admin Panel
+  adminPanel: "Pannello di Amministrazione",
+  adminPanelSubtitle: "Gestisci investitori, proprietà, progetti e eventi",
+  
+  // Admin tabs
+  investors: "Investitori",
+  forSaleProperties: "Proprietà in Vendita",
+  developmentProjects: "Progetti di Sviluppo",
+  
+  // Admin Investor Form
+  addNewInvestor: "Aggiungi Nuovo Investitore",
+  addInvestor: "Aggiungi Investitore",
+  firstName: "Nome",
+  lastName: "Cognome",
+  enterFirstName: "Inserisci il nome",
+  enterLastName: "Inserisci il cognome",
+  enterEmail: "Inserisci l'email",
+  enterPassword: "Inserisci la password",
+  firstNameTooltip: "Il nome dell'investitore",
+  lastNameTooltip: "Il cognome dell'investitore",
+  emailTooltip: "L'email sarà utilizzata per accedere",
+  passwordTooltip: "La password deve contenere almeno 8 caratteri",
+  processing: "Elaborazione in corso...",
+  investorAddedSuccessfully: "Investitore aggiunto con successo",
+  errorAddingInvestor: "Errore nell'aggiunta dell'investitore",
+  validation_error: "Errore di validazione",
+  success: "Operazione riuscita",
+  
+  // Admin Property Form
+  addPropertyForUser: "Aggiungi Proprietà per un Utente",
+  selectInvestor: "Seleziona Investitore",
+  noInvestorsAvailable: "Nessun investitore disponibile",
+  propertyName: "Nome Proprietà",
+  enterPropertyName: "Inserisci il nome della proprietà",
+  address: "Indirizzo",
+  enterAddress: "Inserisci l'indirizzo",
+  city: "Città",
+  enterCity: "Inserisci la città",
+  country: "Paese",
+  selectCountry: "Seleziona il paese",
+  zone: "Zona",
+  enterZone: "Inserisci la zona",
+  selectPropertyType: "Seleziona tipo di proprietà",
+  sizeSqm: "Dimensione (mq)",
+  sizeInSquareMeters: "Dimensione in metri quadrati",
+  currency: "Valuta",
+  selectCurrency: "Seleziona valuta",
+  occupationStatus: "Stato di Occupazione",
+  selectOccupationStatus: "Seleziona stato occupazione",
+  listingStatus: "Stato Inserzione",
+  selectListingStatus: "Seleziona stato inserzione",
+  roiPercentage: "Percentuale ROI",
+  serviceCharges: "Spese di Servizio",
+  serviceChargesDescription: "Spese di manutenzione e servizio annuali",
+  percentageExample: "Es: 5 per 5%",
+  propertyAddedSuccessfully: "Proprietà aggiunta con successo",
+  errorAddingProperty: "Errore nell'aggiunta della proprietà",
+  
+  // Property form tooltips
+  tooltip: {
+    investor: "L'investitore a cui appartiene questa proprietà",
+    propertyName: "Il nome o titolo della proprietà",
+    address: "L'indirizzo completo della proprietà",
+    city: "La città in cui si trova la proprietà",
+    country: "Il paese in cui si trova la proprietà",
+    zone: "Il quartiere o zona all'interno della città",
+    propertyType: "La tipologia di immobile",
+    price: "Il prezzo di acquisto della proprietà",
+    currency: "La valuta del prezzo della proprietà",
+    sizeSqm: "La dimensione della proprietà in metri quadrati",
+    bedrooms: "Il numero di camere da letto",
+    bathrooms: "Il numero di bagni",
+    occupationStatus: "Lo stato attuale di occupazione dell'immobile",
+    status: "Lo stato generale della proprietà",
+    listingStatus: "Lo stato dell'inserzione per questa proprietà",
+    roiPercentage: "Il rendimento percentuale annuo previsto",
+    serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)"
+  },
+  
+  // Occupation status
+  vacant: "Libero",
+  occupied: "Occupato",
+  underRenovation: "In Ristrutturazione",
+  
+  // Property status
+  active: "Attivo",
+  pending: "In Attesa",
+  sold: "Venduto",
+  notAvailable: "Non Disponibile",
+  
+  // Listing status
+  not_listed: "Non in Elenco",
+  for_sale: "In Vendita",
+  for_rent: "In Affitto",
+  
+  // Button status
+  saving: "Salvataggio...",
+  saved: "Salvato",
+  addProperty: "Aggiungi Proprietà",
+  
+  // Error messages
+  errorFetchingFormData: "Errore nel caricamento dei dati del modulo",
 };
 
 export default it;
-
