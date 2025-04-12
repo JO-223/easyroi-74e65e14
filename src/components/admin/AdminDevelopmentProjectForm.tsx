@@ -61,7 +61,7 @@ export function AdminDevelopmentProjectForm() {
     
     await handleAdminAction(
       async () => {
-        // Return the result of the RPC call explicitly
+        // Correzione: return esplicito del risultato della chiamata RPC
         return await addNewDevelopmentProject({
           name: data.name,
           description: data.description,

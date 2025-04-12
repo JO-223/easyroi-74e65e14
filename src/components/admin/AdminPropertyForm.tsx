@@ -161,7 +161,7 @@ export function AdminPropertyForm() {
           fetchPropertyTypes()
         ]);
         setInvestors(investorsData);
-        setPropertyTypes(propertyTypesData);
+        setPropertyTypes(propertyTypesData as PropertyType[]);
       } catch (error) {
         console.error("Error fetching form data:", error);
         toast({
@@ -180,7 +180,7 @@ export function AdminPropertyForm() {
     setIsSubmitting(true);
     await handleAdminAction(
       async () => {
-        const result = await addPropertyForUser(data.userId, {
+        return await addPropertyForUser(data.userId, {
           name: data.name,
           address: data.address,
           city: data.city,
@@ -198,12 +198,6 @@ export function AdminPropertyForm() {
           roiPercentage: data.roiPercentage,
           serviceCharges: data.serviceCharges
         });
-        
-        if (result && result.success) {
-          form.reset();
-        }
-        
-        return result;
       },
       t("propertyAddedSuccessfully"),
       t("errorAddingProperty")

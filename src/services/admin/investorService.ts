@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { NewInvestorData } from "@/types/admin";
+import { NewInvestorData, Investor } from "@/types/admin";
 import { RpcResponse } from "./utils";
 
 export interface InvestorRpcResponse extends RpcResponse {
@@ -42,8 +42,8 @@ export const addNewInvestor = async (investorData: NewInvestorData): Promise<Inv
   };
 };
 
-// Fetch active investors
-export const fetchInvestors = async () => {
+// Fetch active investors with proper typing
+export const fetchInvestors = async (): Promise<Investor[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select('id, first_name, last_name, email, level, is_active')
@@ -54,7 +54,8 @@ export const fetchInvestors = async () => {
     return [];
   }
 
-  return data || [];
+  // Ensure we always return an array of Investor type
+  return (data || []) as Investor[];
 };
 
 // Create owner user via edge function

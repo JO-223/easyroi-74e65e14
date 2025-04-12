@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -102,6 +103,7 @@ export function AdminEventForm() {
     
     await handleAdminAction(
       async () => {
+        // Correzione: return esplicito del risultato della chiamata RPC
         return await addNewEvent({
           title: data.title,
           description: data.description,
