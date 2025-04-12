@@ -20,8 +20,8 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
                        (property.images.length > 0 ? property.images[0].url : '/placeholder.svg');
   
   return (
-    <Card className="luxury-card overflow-hidden backdrop-blur-md bg-white/5 border-white/10 text-white">
-      <div className="aspect-video w-full overflow-hidden">
+    <Card className="h-full overflow-hidden border border-gray-200">
+      <div className="aspect-video w-full overflow-hidden h-48">
         <img 
           src={primaryImage} 
           alt={property.name} 
@@ -31,46 +31,46 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-xl font-bold">{property.name}</CardTitle>
+          <CardTitle className="text-xl font-bold text-gray-800">{property.name}</CardTitle>
           <BadgeLevel level={property.investor_level as any} />
         </div>
-        <div className="flex items-center text-sm text-white/70 mt-1">
+        <div className="flex items-center text-sm text-gray-500 mt-1">
           <MapPin className="h-3.5 w-3.5 mr-1" />
-          <CardDescription className="text-white/70">
+          <CardDescription className="text-gray-500">
             {property.location.city}, {property.location.country}
           </CardDescription>
         </div>
       </CardHeader>
       
       <CardContent className="pb-2">
-        <p className="text-sm text-white/80 mb-4 line-clamp-2">{property.type.name}</p>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{property.type.name}</p>
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-white/70">{t('price')}</p>
+            <p className="text-sm text-gray-500">{t('price')}</p>
             <p className="font-bold text-easyroi-gold">{formatCurrency(property.price)}</p>
           </div>
           {property.roi_percentage && (
             <div>
-              <p className="text-sm text-white/70">{t('expectedROI')}</p>
+              <p className="text-sm text-gray-500">{t('expectedROI')}</p>
               <p className="font-bold text-easyroi-gold">{property.roi_percentage}%</p>
             </div>
           )}
           {property.min_investment && (
             <div>
-              <p className="text-sm text-white/70">{t('minInvestment')}</p>
-              <p className="font-bold text-white">{formatCurrency(property.min_investment)}</p>
+              <p className="text-sm text-gray-500">{t('minInvestment')}</p>
+              <p className="font-bold text-gray-800">{formatCurrency(property.min_investment)}</p>
             </div>
           )}
           <div>
-            <p className="text-sm text-white/70">{t('status')}</p>
-            <p className="font-bold text-green-400">{property.status}</p>
+            <p className="text-sm text-gray-500">{t('status')}</p>
+            <p className="font-bold text-green-500">{property.status}</p>
           </div>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
           {property.amenities.slice(0, 4).map((amenity, index) => (
-            <span key={index} className="inline-flex items-center px-2 py-1 bg-white/10 rounded text-xs">
+            <span key={index} className="inline-flex items-center px-2 py-1 bg-gray-100 rounded text-xs text-gray-700">
               {amenity.icon === 'droplet' && <Droplet className="h-3 w-3 mr-1" />}
               {amenity.icon === 'wifi' && <Wifi className="h-3 w-3 mr-1" />}
               {amenity.icon === 'car' && <Car className="h-3 w-3 mr-1" />}
@@ -83,7 +83,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
         </div>
       </CardContent>
       
-      <CardFooter className="pt-0">
+      <CardFooter className="pt-0 mt-auto">
         <Button 
           className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy"
           onClick={() => onViewDetails(property)}

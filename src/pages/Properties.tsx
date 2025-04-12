@@ -4,7 +4,6 @@ import { PropertyCard } from '@/components/PropertyCard';
 import { PropertyFilters } from '@/components/PropertyFilters';
 import { PropertyDetailModal } from '@/components/PropertyDetailModal';
 import { PropertyPagination } from '@/components/PropertyPagination';
-import { PropertyImport } from '@/components/PropertyImport';
 import { Property, PropertyFilter } from '@/types/property';
 import { fetchProperties, fetchLocations, fetchPropertyTypes, fetchAmenities } from '@/services/propertyService';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -121,8 +120,8 @@ export default function Properties() {
         {isLoadingProperties ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.from({ length: 9 }).map((_, index) => (
-              <div key={index} className="luxury-card overflow-hidden backdrop-blur-md bg-white/5 border-white/10">
-                <Skeleton className="aspect-video w-full h-60" />
+              <div key={index} className="border border-gray-200 rounded-lg overflow-hidden h-full">
+                <Skeleton className="aspect-video w-full h-48" />
                 <div className="p-6">
                   <Skeleton className="h-6 w-3/4 mb-4" />
                   <Skeleton className="h-4 w-1/2 mb-2" />
@@ -175,11 +174,6 @@ export default function Properties() {
           isOpen={isDetailModalOpen}
           onClose={handleCloseDetailModal}
         />
-
-        {/* Property Import button (moved to bottom right corner) */}
-        <div className="fixed bottom-6 right-6 z-10">
-          <PropertyImport />
-        </div>
       </div>
     </DashboardLayout>
   );

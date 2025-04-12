@@ -127,30 +127,52 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     })) || [];
     
     // Format portfolio allocation data - ensure percentage is a number and formatted to 2 decimal places
-    const portfolioAllocation: PortfolioAllocation[] = allocationData?.map(item => ({
-      name: String(item.location || ""),
-      value: Number(parseFloat(String(item.percentage || "0")).toFixed(2)), // Format to 2 decimal places
-    })) || [];
+    const portfolioAllocation: PortfolioAllocation[] = allocationData?.map(item => {
+      let percentageValue = 0;
+      
+      // Handle all possible types for percentage value
+      if (typeof item.percentage === 'number') {
+        percentageValue = Number(item.percentage.toFixed(2));
+      } else if (typeof item.percentage === 'string') {
+        percentageValue = Number(parseFloat(item.percentage).toFixed(2));
+      }
+      
+      return {
+        name: String(item.location || ""),
+        value: percentageValue,
+      };
+    }) || [];
     
     // Format properties data with rounded ROI percentages
-    const properties: Property[] = propertiesData?.map(item => ({
-      id: String(item.id || ""),
-      name: String(item.name || ""),
-      location: locationMap.get(item.location_id) || 'Unknown Location',
-      roi: `${parseFloat(String(item.roi_percentage || "0")).toFixed(2)}%`, // Format ROI to 2 decimal places
-      value: formatCurrency(Number(item.price || 0)),
-      status: item.status === 'active' ? 'active' : 'development'
-    })) || [];
+    const properties: Property[] = propertiesData?.map(item => {
+      let roiValue = "0%";
+      
+      // Handle all possible types for roi_percentage
+      if (typeof item.roi_percentage === 'number') {
+        roiValue = `${item.roi_percentage.toFixed(2)}%`;
+      } else if (typeof item.roi_percentage === 'string') {
+        roiValue = `${parseFloat(item.roi_percentage).toFixed(2)}%`;
+      }
+      
+      return {
+        id: String(item.id || ""),
+        name: String(item.name || ""),
+        location: locationMap.get(item.location_id) || 'Unknown Location',
+        roi: roiValue,
+        value: formatCurrency(Number(item.price || 0)),
+        status: item.status === 'active' ? 'active' : 'development'
+      };
+    }) || [];
     
     // Create stats object with rounded percentages
     const stats: DashboardStats = {
       totalInvestment: Number(investmentData?.total_investment || 0),
       properties: Number(propertyData?.count || 0),
-      roi: parseFloat((roiData?.average_roi || 0).toFixed(2)), // Format ROI to 2 decimal places
+      roi: parseFloat(Number(roiData?.average_roi || 0).toFixed(2)),
       events: eventsCount || 0,
-      investmentChange: parseFloat(String(investmentData?.investment_change_percentage || "0").toFixed(2)), // Format to 2 decimal places
+      investmentChange: parseFloat(Number(investmentData?.investment_change_percentage || 0).toFixed(2)),
       propertiesChange: Number(propertyData?.change || 0),
-      roiChange: parseFloat(String(roiData?.roi_change || "0").toFixed(2)) // Format to 2 decimal places
+      roiChange: parseFloat(Number(roiData?.roi_change || 0).toFixed(2))
     };
     
     return {
