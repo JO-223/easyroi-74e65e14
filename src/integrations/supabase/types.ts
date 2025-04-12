@@ -1019,43 +1019,25 @@ export type Database = {
         Returns: Json
       }
       add_property_for_user: {
-        Args:
-          | {
-              p_user_id: string
-              p_name: string
-              p_address: string
-              p_city: string
-              p_country: string
-              p_zone: string
-              p_type_id: string
-              p_price: number
-              p_size_sqm: number
-              p_bedrooms: number
-              p_bathrooms: number
-              p_occupation_status: string
-              p_status: string
-              p_roi_percentage?: number
-              p_service_charges?: number
-            }
-          | {
-              p_user_id: string
-              p_name: string
-              p_address: string
-              p_city: string
-              p_country: string
-              p_zone: string
-              p_type_id: string
-              p_price: number
-              p_size_sqm: number
-              p_bedrooms: number
-              p_bathrooms: number
-              p_occupation_status: string
-              p_status: string
-              p_price_currency?: string
-              p_listing_status?: string
-              p_roi_percentage?: number
-              p_service_charges?: number
-            }
+        Args: {
+          p_user_id: string
+          p_name: string
+          p_address: string
+          p_city: string
+          p_country: string
+          p_zone: string
+          p_type_id: string
+          p_price: number
+          p_size_sqm: number
+          p_bedrooms: number
+          p_bathrooms: number
+          p_occupation_status: string
+          p_status: string
+          p_price_currency?: string
+          p_listing_status?: string
+          p_roi_percentage?: number
+          p_service_charges?: number
+        }
         Returns: Json
       }
       create_connection_request: {

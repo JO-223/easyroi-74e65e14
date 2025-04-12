@@ -1,87 +1,80 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { NewInvestorData, Investor } from "@/types/admin";
-import { RpcResponse } from "./utils";
+import { Investor, InvestorRpcResponse, RpcResponse } from "@/types/admin";
+import { ensureTypedResponse } from "./utils";
 
-export interface InvestorRpcResponse extends RpcResponse {
-  user_id?: string;
-}
+// Fetch investors for admin forms
+export const fetchInvestors = async (): Promise<Investor[]> => {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, first_name, last_name, email, level")
+      .eq("is_active", true)
+      .order("first_name", { ascending: true });
 
-// Add new investor through RPC
-export const addNewInvestor = async (investorData: NewInvestorData): Promise<InvestorRpcResponse> => {
-  const { user_id, email, first_name, last_name, phone, location, bio, level, avatar_url, initialInvestment } = investorData;
+    if (error) {
+      console.error("Error fetching investors:", error);
+      throw new Error("Failed to fetch investors");
+    }
 
+    return ensureTypedResponse<Investor>(data);
+  } catch (error) {
+    console.error("Error in fetchInvestors:", error);
+    throw error;
+  }
+};
+
+// Crea un nuovo investitore
+export const addNewInvestor = async (investorData: {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}): Promise<InvestorRpcResponse> => {
   const { data, error } = await supabase.rpc('add_new_investor', {
-    p_user_id: user_id,
-    p_email: email,
-    p_first_name: first_name,
-    p_last_name: last_name,
-    p_phone: phone,
-    p_location: location,
-    p_bio: bio,
-    p_level: level,
-    p_avatar_url: avatar_url,
-    p_initial_investment: initialInvestment
+    p_user_id: investorData.user_id,
+    p_first_name: investorData.first_name,
+    p_last_name: investorData.last_name,
+    p_email: investorData.email
   });
 
   if (error) {
-    console.error("Error adding new investor:", error);
-    return {
-      success: false,
-      message: error.message,
-    };
+    console.error("Error adding investor:", error);
+    throw error;
   }
 
-  // Explicitly type and check the response
-  const typedResponse = data as { user_id?: string };
-
+  // Ensure proper response structure
   return {
-    success: true,
-    message: "Investor added successfully",
-    user_id: typedResponse?.user_id
+    success: data?.success === true,
+    message: data?.message || "Unknown response status",
+    user_id: data?.user_id
   };
 };
 
-// Fetch active investors with proper typing
-export const fetchInvestors = async (): Promise<Investor[]> => {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, first_name, last_name, email, level, is_active')
-    .eq('is_active', true);
-
-  if (error) {
-    console.error("Error fetching investors:", error);
-    return [];
-  }
-
-  // Ensure we always return an array of Investor type
-  return (data || []) as Investor[];
-};
-
-// Create owner user via edge function
+// Crea un nuovo utente owner (mediante edge function)
 export const createOwnerUser = async (userData: {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
-}) => {
+}): Promise<{id: string}> => {
   try {
-    const response = await fetch('/api/create-owner-user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
+    const { data, error } = await supabase.functions.invoke('create-owner-user', {
+      body: userData
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to create user');
+    if (error) {
+      console.error("Edge function error:", error);
+      throw new Error(`Failed to create user: ${error.message}`);
     }
 
-    return await response.json();
+    if (!data || !data.id) {
+      throw new Error("Invalid response from edge function");
+    }
+
+    return { id: data.id };
   } catch (error) {
-    console.error('Error creating owner user:', error);
+    console.error("Error creating owner user:", error);
     throw error;
   }
 };

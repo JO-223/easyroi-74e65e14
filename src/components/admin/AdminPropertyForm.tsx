@@ -72,10 +72,19 @@ export function AdminPropertyForm() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const [investorsData, propertyTypesData] = await Promise.all([
-          fetchInvestors(),
-          fetchPropertyTypes()
-        ]);
+        
+        // Log per debug
+        console.log("Inizio caricamento dati del form...");
+        
+        // Carica prima gli investitori e verifica che i dati siano corretti
+        const investorsData = await fetchInvestors();
+        console.log("Investitori caricati:", investorsData);
+        
+        // Carica i tipi di proprietà
+        const propertyTypesData = await fetchPropertyTypes();
+        console.log("Tipi di proprietà caricati:", propertyTypesData);
+        
+        // Imposta i dati nel componente
         setInvestors(investorsData);
         setPropertyTypes(propertyTypesData as PropertyType[]);
       } catch (error) {
@@ -89,11 +98,14 @@ export function AdminPropertyForm() {
         setIsLoading(false);
       }
     };
+    
     fetchData();
   }, [toast, t]);
 
   const onSubmit = async (data: PropertyFormValues): Promise<RpcResponse> => {
     setIsSubmitting(true);
+    console.log("Submitting property form with data:", data);
+    
     return await handleAdminAction(
       async () => {
         return await addPropertyForUser(data.userId, {
