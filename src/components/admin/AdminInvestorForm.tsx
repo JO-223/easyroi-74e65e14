@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UserPlus, Loader2 } from "lucide-react";
-import { createOwnerUser, addNewInvestor } from "@/services/admin/adminService";
+import { createOwnerUser, addNewInvestor } from "@/services/admin/investorService";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
