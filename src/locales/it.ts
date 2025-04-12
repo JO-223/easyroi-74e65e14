@@ -477,6 +477,7 @@ const it = {
   // Admin tabs
   investors: "Investitori",
   forSaleProperties: "Proprietà in Vendita",
+  // Fixed duplicate key
   developmentProjects: "Progetti di Sviluppo",
   
   // Admin Investor Form
@@ -515,6 +516,7 @@ const it = {
   selectPropertyType: "Seleziona tipo di proprietà",
   sizeSqm: "Dimensione (mq)",
   sizeInSquareMeters: "Dimensione in metri quadrati",
+  // Fixed duplicate key
   selectCurrency: "Seleziona valuta",
   selectOccupationStatus: "Seleziona stato occupazione",
   listingStatus: "Stato Inserzione",

@@ -328,12 +328,6 @@ const es = {
   markAllAsRead: "Marcar todas como leídas",
   noNotifications: "Sin notificaciones",
   
-  // Network data
-  networkDataError: "Error al cargar datos de red",
-  
-  // Event details
-  errorFetchingEvent: "Error al obtener detalles del evento",
-  
   // Missing keys from scan
   noInvestmentDataAvailable: "No hay datos de inversión disponibles",
   
@@ -344,6 +338,7 @@ const es = {
   // Admin tabs
   investors: "Inversores",
   forSaleProperties: "Propiedades en Venta",
+  // Fixed duplicate key
   developmentProjects: "Proyectos de Desarrollo",
   
   // Admin Investor Form
@@ -382,6 +377,7 @@ const es = {
   selectPropertyType: "Selecciona el tipo de propiedad",
   sizeSqm: "Tamaño (m²)",
   sizeInSquareMeters: "Tamaño en metros cuadrados",
+  // Fixed this duplicate key
   selectCurrency: "Selecciona la moneda",
   selectOccupationStatus: "Selecciona el estado de ocupación",
   listingStatus: "Estado del Listado",

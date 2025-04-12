@@ -457,6 +457,7 @@ const de = {
   // Admin tabs
   investors: "Investoren",
   forSaleProperties: "Immobilien zum Verkauf",
+  developmentProjects: "Entwicklungsprojekte", // Fixed duplicate key
   
   // Admin Investor Form
   addNewInvestor: "Neuen Investor hinzufügen",
