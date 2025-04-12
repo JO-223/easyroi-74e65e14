@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuto",
@@ -17,8 +16,8 @@ const it = {
   roi: "ROI",
   annualGrowth: "Crescita Annuale",
   marketComparison: "Confronto con il Mercato",
-  vsPreviousYear: "vs Anno Precedente",
-  vsMarketAverage: "vs Media di Mercato",
+  vsPreviousYear: "vs. Anno precedente",
+  vsMarketAverage: "vs. Media di mercato",
   investmentGrowth: "Crescita dell'Investimento",
   portfolioAllocation: "Allocazione del Portafoglio",
   geographicDistribution: "Distribuzione Geografica",
@@ -234,11 +233,11 @@ const it = {
   marketVolatility: "Compensazione della volatilità di mercato rilevata",
 
   // Analytics empty states
-  noAssetAllocationData: "Nessun dato di allocazione degli asset disponibile",
-  noGeographicData: "Nessun dato di distribuzione geografica disponibile",
-  noDataAvailable: "Nessun dato disponibile",
-  dataWillAppearSoon: "I dati appariranno qui non appena saranno disponibili",
-  noInvestments: "Nessun investimento registrato",
+  noAssetAllocationData: 'Nessun dato di allocazione asset disponibile',
+  noGeographicData: 'Nessun dato geografico disponibile',
+  noDataAvailable: 'Nessun dato disponibile',
+  dataWillAppearSoon: 'I dati appariranno qui non appena saranno disponibili',
+  noInvestments: 'Nessun investimento registrato',
   
   // Auth
   loginSuccessTitle: "Accesso Riuscito",
@@ -477,7 +476,6 @@ const it = {
   // Admin tabs
   investors: "Investitori",
   forSaleProperties: "Proprietà in Vendita",
-  // Fixed duplicate key - removed
   
   // Admin Investor Form
   addNewInvestor: "Aggiungi Nuovo Investitore",
@@ -515,8 +513,6 @@ const it = {
   selectPropertyType: "Seleziona il tipo di proprietà",
   sizeSqm: "Dimensione (mq)",
   sizeInSquareMeters: "Dimensione in metri quadrati",
-  // Fixed duplicate key - removed
-  // Fixed duplicate key - removed
   listingStatus: "Stato Inserzione",
   selectListingStatus: "Seleziona lo stato dell'inserzione",
   roiPercentage: "Percentuale ROI",

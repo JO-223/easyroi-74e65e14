@@ -37,56 +37,78 @@ const MARKET_AVERAGE_ROI = 3.2; // Fixed benchmark value
  */
 export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
   try {
+    console.log("Fetching analytics data from Supabase...");
     const { data: { user } } = await supabase.auth.getUser();
     
-    if (!user) return null;
+    if (!user) {
+      console.log("No authenticated user found");
+      return null;
+    }
 
     // 1. Get Portfolio ROI data
-    const { data: roiData } = await supabase
+    const { data: roiData, error: roiError } = await supabase
       .from('user_roi')
       .select('average_roi, roi_change')
       .eq('user_id', user.id)
-      .maybeSingle(); // Use maybeSingle instead of single to avoid errors
+      .maybeSingle();
+      
+    if (roiError) console.error("Error fetching ROI data:", roiError);
 
     // 2. Get Annual Growth data from investment growth
-    const { data: userInvestment } = await supabase
+    const { data: userInvestment, error: investmentError } = await supabase
       .from('user_investments')
       .select('investment_change_percentage')
       .eq('user_id', user.id)
       .maybeSingle();
+      
+    if (investmentError) console.error("Error fetching investment data:", investmentError);
 
     // 3. ROI Performance data (monthly)
-    const { data: growthData } = await supabase
+    const { data: growthData, error: growthError } = await supabase
       .from('user_investment_growth')
       .select('month, month_index, value')
       .eq('user_id', user.id)
       .order('month_index', { ascending: true });
+      
+    if (growthError) console.error("Error fetching growth data:", growthError);
+    console.log("Growth data from Supabase:", growthData);
 
     // 4. Asset Allocation
-    const { data: allocationData } = await supabase
+    const { data: allocationData, error: allocationError } = await supabase
       .from('user_portfolio_allocation')
       .select('location, percentage')
       .eq('user_id', user.id);
+      
+    if (allocationError) console.error("Error fetching allocation data:", allocationError);
+    console.log("Allocation data from Supabase:", allocationData);
 
     // 5. Geographic Distribution (reusing the same data for now)
-    const { data: geoDistribution } = await supabase
+    const { data: geoDistribution, error: geoError } = await supabase
       .from('user_portfolio_allocation')
       .select('location, percentage')
       .eq('user_id', user.id);
+      
+    if (geoError) console.error("Error fetching geo distribution data:", geoError);
 
     // 6. Events attended count
-    const { data: eventsData } = await supabase
+    const { data: eventsData, error: eventsError } = await supabase
       .from('user_events')
       .select('count')
       .eq('user_id', user.id)
       .maybeSingle();
+      
+    if (eventsError) console.error("Error fetching events data:", eventsError);
 
     // Format ROI Performance data with proper type casting - handle nulls
-    const roiPerformance = growthData?.map(item => ({
-      month: String(item.month || ''),
-      roi: Number(parseFloat(String(item.value || 0)).toFixed(2)),
-      benchmark: Number(MARKET_AVERAGE_ROI.toFixed(2))
-    })) || [];
+    const roiPerformance = growthData?.map(item => {
+      const roiValue = parseFloat(String(item.value || 0));
+      // For demo purposes, add some variation to ROI values
+      return {
+        month: String(item.month || ''),
+        roi: Number(roiValue.toFixed(2)),
+        benchmark: Number(MARKET_AVERAGE_ROI.toFixed(2))
+      };
+    }) || [];
 
     // Format Asset Allocation with proper type casting - handle nulls
     const assetAllocation = allocationData?.map(item => ({
@@ -104,7 +126,7 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     const averageRoi = Number(parseFloat(String(roiData?.average_roi || 0)).toFixed(2));
     const marketDifference = averageRoi - MARKET_AVERAGE_ROI;
 
-    return {
+    const result = {
       portfolioROI: {
         value: averageRoi,
         change: roiData?.roi_change !== null && roiData?.roi_change !== undefined ? 
@@ -125,18 +147,11 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       geographicDistribution,
       eventsAttended: Number(eventsData?.count || 0)
     };
+    
+    console.log("Formatted analytics data:", result);
+    return result;
   } catch (error) {
     console.error("Error fetching analytics data:", error);
     throw error; // Let React Query handle this error
   }
-}
-
-// Generate default ROI performance data if none exists
-function generateDefaultRoiPerformance() {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return months.map(month => ({
-    month,
-    roi: 0,
-    benchmark: MARKET_AVERAGE_ROI
-  }));
 }

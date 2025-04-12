@@ -1,4 +1,3 @@
-
 const en = {
   // General
   welcome: "Welcome",
@@ -17,8 +16,8 @@ const en = {
   roi: "ROI",
   annualGrowth: "Annual Growth",
   marketComparison: "Market Comparison",
-  vsPreviousYear: "vs Previous Year",
-  vsMarketAverage: "vs Market Average",
+  vsPreviousYear: "vs. Previous Year",
+  vsMarketAverage: "vs. Market Average",
   investmentGrowth: "Investment Growth",
   portfolioAllocation: "Portfolio Allocation",
   geographicDistribution: "Geographic Distribution",
@@ -447,8 +446,7 @@ const en = {
   // Admin tabs
   investors: "Investors",
   forSaleProperties: "For Sale Properties",
-  // Fixed duplicate key - removed
-
+  
   // Admin Investor Form
   addNewInvestor: "Add New Investor",
   addInvestor: "Add Investor",
@@ -467,7 +465,7 @@ const en = {
   errorAddingInvestor: "Error adding investor",
   validation_error: "Validation Error",
   success: "Success",
-
+  
   // Admin Property Form
   addPropertyForUser: "Add Property for User",
   selectInvestor: "Select Investor",
@@ -485,8 +483,6 @@ const en = {
   selectPropertyType: "Select property type",
   sizeSqm: "Size (sqm)",
   sizeInSquareMeters: "Size in square meters",
-  // Fixed duplicate key - removed
-  // Fixed duplicate key - removed
   listingStatus: "Listing Status",
   selectListingStatus: "Select listing status",
   roiPercentage: "ROI Percentage",
@@ -494,7 +490,7 @@ const en = {
   percentageExample: "E.g. 5 for 5%",
   propertyAddedSuccessfully: "Property added successfully",
   errorAddingProperty: "Error adding property",
-
+  
   // Property form tooltips
   tooltip: {
     investor: "The investor who owns this property",
