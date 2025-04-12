@@ -3,11 +3,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { 
   NewPropertyData, 
   NewForSalePropertyData,
-  AdminProperty 
+  AdminProperty,
+  PropertyRpcResponse,
+  RpcResponse
 } from "@/types/admin";
 import { PropertyType } from "@/types/property";
 import { ensureTypedResponse } from "./utils";
-import { RpcResponse } from "./utils";
 
 // Fetch property types from the database
 export const fetchPropertyTypes = async (): Promise<PropertyType[]> => {
@@ -39,7 +40,7 @@ export const fetchProperties = async (): Promise<AdminProperty[]> => {
   return ensureTypedResponse<AdminProperty>(data);
 };
 
-export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<RpcResponse> => {
+export const addPropertyForUser = async (userId: string, propertyData: NewPropertyData): Promise<PropertyRpcResponse> => {
   console.log("Adding property for user:", userId, propertyData);
   
   const { data, error } = await supabase.rpc('add_property_for_user', {
@@ -75,15 +76,18 @@ export const addPropertyForUser = async (userId: string, propertyData: NewProper
     throw new Error("Invalid response format from add_property_for_user RPC");
   }
   
+  // Properly cast the response to our expected type
+  const response = data as PropertyRpcResponse;
+  
   // Ensure proper response structure with default values if needed
   return {
-    success: data.success === true, // Explicitly check for true
-    message: data.message || "Unknown response status",
-    property_id: data.property_id
+    success: response.success === true, // Explicitly check for true
+    message: response.message || "Unknown response status",
+    property_id: response.property_id
   };
 };
 
-export const addPropertyForSale = async (propertyData: NewForSalePropertyData): Promise<RpcResponse> => {
+export const addPropertyForSale = async (propertyData: NewForSalePropertyData): Promise<PropertyRpcResponse> => {
   const { data, error } = await supabase.rpc('add_property_for_sale', {
     p_name: propertyData.name,
     p_address: propertyData.address,
@@ -113,9 +117,12 @@ export const addPropertyForSale = async (propertyData: NewForSalePropertyData): 
     throw new Error("Invalid response format from add_property_for_sale RPC");
   }
   
+  // Properly cast the response
+  const response = data as PropertyRpcResponse;
+  
   return {
-    success: data.success === true,
-    message: data.message || "Unknown response status",
-    property_id: data.property_id
+    success: response.success === true,
+    message: response.message || "Unknown response status",
+    property_id: response.property_id
   };
 };

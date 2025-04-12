@@ -2,7 +2,7 @@
 import { useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { RpcResponse } from "../utils";
+import { RpcResponse } from "@/types/admin";
 
 export const useAdminActions = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,8 +10,8 @@ export const useAdminActions = () => {
   const { toast } = useToast();
 
   const handleAdminAction = useCallback(
-    async <T extends any>(
-      action: () => Promise<T | RpcResponse>,
+    async <T extends RpcResponse>(
+      action: () => Promise<T>,
       successMessage?: string,
       errorMessage?: string
     ): Promise<T | null> => {
@@ -20,15 +20,13 @@ export const useAdminActions = () => {
       try {
         const result = await action();
 
-        // Check if the result is an RPC response with a success flag
-        if (result && typeof result === 'object' && 'success' in result) {
-          const rpcResponse = result as RpcResponse;
-          
-          if (rpcResponse.success === true) {
+        // Check if the result has a success flag
+        if (result && 'success' in result) {
+          if (result.success === true) {
             // Only show success toast if operation was actually successful
             toast({
               title: t("success"),
-              description: rpcResponse.message || successMessage || t("operationSuccessful"),
+              description: result.message || successMessage || t("operationSuccessful"),
               variant: "default",
             });
             return result;
@@ -36,10 +34,10 @@ export const useAdminActions = () => {
             // Show error toast if operation failed (even though no exception was thrown)
             toast({
               title: t("error"),
-              description: rpcResponse.message || errorMessage || t("operationFailed"),
+              description: result.message || errorMessage || t("operationFailed"),
               variant: "destructive",
             });
-            console.error("Operation failed:", rpcResponse.message);
+            console.error("Operation failed:", result.message);
             return null;
           }
         } else {
@@ -49,7 +47,7 @@ export const useAdminActions = () => {
             description: successMessage || t("operationSuccessful"),
             variant: "default",
           });
-          return result as T;
+          return result;
         }
       } catch (error) {
         console.error("Admin action error:", error);

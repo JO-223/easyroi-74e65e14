@@ -1,3 +1,4 @@
+
 import { PropertyType } from "./property";
 
 export interface Investor {
@@ -98,4 +99,16 @@ export interface NewEventData {
   imageUrl?: string;
   isOnline: boolean;
   requiredBadges?: string[];
+}
+
+export interface PropertyRpcResponse {
+  property_id?: string;
+  success: boolean;
+  message: string;
+}
+
+export interface RpcResponse {
+  success: boolean;
+  message: string;
+  [key: string]: any;
 }

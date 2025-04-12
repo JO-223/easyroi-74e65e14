@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -6,7 +7,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { fetchInvestors, fetchPropertyTypes } from "@/services/admin/investorService";
+import { fetchInvestors } from "@/services/admin/investorService";
+import { fetchPropertyTypes } from "@/services/admin/propertyService";
 import { addPropertyForUser } from "@/services/admin/propertyService";
 import { useAdminActions } from "@/services/admin/hooks/useAdminActions";
 import { useState, useEffect } from "react";
