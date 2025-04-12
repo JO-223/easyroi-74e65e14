@@ -27,9 +27,11 @@ export const addNewEvent = async (eventData: NewEventData): Promise<RpcResponse>
     };
   }
 
+  // Fix: Ensure data is an object before spreading it
   return {
     success: true,
     message: "Event added successfully",
-    ...data
+    event_id: data && typeof data === 'object' && 'event_id' in data ? data.event_id : undefined,
+    ...((data && typeof data === 'object') ? data : {})
   };
 };
