@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { createOwnerUser, addNewInvestor } from "@/services/admin/investorService";
+import { addNewInvestor, createOwnerUser } from "@/services/admin/investorService";
 import { parseSupabaseError, validateInvestorData } from "@/services/admin/utils/investorUtils";
 import { investorFormSchema, InvestorFormData } from "@/types/investorForm";
 

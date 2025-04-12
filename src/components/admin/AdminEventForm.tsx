@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, CalendarCheck, Link, Loader2, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AdminProperty, AdminDevelopmentProject } from "@/types/admin";
+import { RpcResponse } from "@/services/admin/utils";
 
 const formSchema = z.object({
   title: z.string().min(3, "Title is required"),

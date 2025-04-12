@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Investor } from "@/types/admin";
 import { PropertyType } from "@/types/property";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { RpcResponse } from "@/services/admin/utils";
 
 const AVAILABLE_COUNTRIES = ["Italy", "UAE", "Thailand", "Switzerland"];
 const OCCUPATION_STATUS_OPTIONS = ["rented", "occupied", "vacant", "partially_occupied"];

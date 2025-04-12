@@ -12,6 +12,7 @@ import { addNewDevelopmentProject } from "@/services/admin/projectService";
 import { useAdminActions } from "@/services/admin/hooks/useAdminActions";
 import { useState } from "react";
 import { Calendar, Construction, Loader2 } from "lucide-react";
+import { RpcResponse } from "@/services/admin/utils";
 
 const formSchema = z.object({
   name: z.string().min(2, "Project name is required"),
@@ -60,7 +61,7 @@ export function AdminDevelopmentProjectForm() {
     
     await handleAdminAction(
       async () => {
-        // Return the result of the RPC call
+        // Return the result of the RPC call explicitly
         return await addNewDevelopmentProject({
           name: data.name,
           description: data.description,
@@ -77,7 +78,6 @@ export function AdminDevelopmentProjectForm() {
           expectedRoi: data.expectedRoi,
           investorLevel: data.investorLevel,
         });
-        // Form reset moved to the success callback of handleAdminAction
       },
       t('developmentProjectAddedSuccessfully'),
       t('errorAddingDevelopmentProject')
