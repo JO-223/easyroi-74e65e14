@@ -1,12 +1,17 @@
 
-import { RpcResponse } from "@/types/admin";
-
 // Ensure that the response data is of the expected type
 export function ensureTypedResponse<T>(data: unknown): T[] {
   if (!data || !Array.isArray(data)) {
     return [];
   }
   return data as T[];
+}
+
+// Interface for RPC response
+export interface RpcResponse {
+  success: boolean;
+  message: string;
+  [key: string]: any;
 }
 
 // Function to check the success of an RPC operation and handle it appropriately

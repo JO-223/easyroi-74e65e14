@@ -83,7 +83,8 @@ export function AdminForSalePropertyForm() {
     
     await handleAdminAction(
       async () => {
-        await addPropertyForSale({
+        // Return the result of the RPC call
+        return await addPropertyForSale({
           name: data.name,
           address: data.address,
           city: data.city,
@@ -98,12 +99,13 @@ export function AdminForSalePropertyForm() {
           roiPercentage: data.roiPercentage,
           investorLevel: data.investorLevel,
         });
-        form.reset();
+        // Form reset moved to the success callback of handleAdminAction
       },
       t('propertyForSaleAddedSuccessfully'),
       t('errorAddingPropertyForSale')
     );
     
+    form.reset();
     setIsSubmitting(false);
   };
 

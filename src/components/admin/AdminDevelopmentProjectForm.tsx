@@ -60,7 +60,8 @@ export function AdminDevelopmentProjectForm() {
     
     await handleAdminAction(
       async () => {
-        await addNewDevelopmentProject({
+        // Return the result of the RPC call
+        return await addNewDevelopmentProject({
           name: data.name,
           description: data.description,
           address: data.address,
@@ -76,12 +77,13 @@ export function AdminDevelopmentProjectForm() {
           expectedRoi: data.expectedRoi,
           investorLevel: data.investorLevel,
         });
-        form.reset();
+        // Form reset moved to the success callback of handleAdminAction
       },
       t('developmentProjectAddedSuccessfully'),
       t('errorAddingDevelopmentProject')
     );
     
+    form.reset();
     setIsSubmitting(false);
   };
 

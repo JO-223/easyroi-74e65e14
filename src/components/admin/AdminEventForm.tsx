@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -71,7 +70,6 @@ export function AdminEventForm() {
     },
   });
 
-  // Fetch properties and projects on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -103,7 +101,7 @@ export function AdminEventForm() {
     
     await handleAdminAction(
       async () => {
-        await addNewEvent({
+        return await addNewEvent({
           title: data.title,
           description: data.description,
           date: data.date,
@@ -117,16 +115,15 @@ export function AdminEventForm() {
           isOnline: data.isOnline,
           requiredBadges: data.requiredBadges,
         });
-        form.reset();
       },
       t('eventAddedSuccessfully'),
       t('errorAddingEvent')
     );
     
+    form.reset();
     setIsSubmitting(false);
   };
 
-  // Show loading state while fetching data
   if (isLoading) {
     return (
       <div className="p-6 bg-slate-50 rounded-lg border">

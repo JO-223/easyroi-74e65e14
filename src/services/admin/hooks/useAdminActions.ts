@@ -2,7 +2,7 @@
 import { useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { RpcResponse } from "@/types/admin";
+import { RpcResponse } from "../utils";
 
 export const useAdminActions = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +19,9 @@ export const useAdminActions = () => {
 
       try {
         const result = await action();
+        
+        // Log the complete result for debugging
+        console.log("Admin action result:", result);
 
         // Check if the result has a success flag
         if (result && 'success' in result) {
