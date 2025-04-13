@@ -1,6 +1,5 @@
 
 
-
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -44,19 +43,19 @@ Per ogni punto completato:
 ✅ Visualizzazione badge in Dashboard - Creato UserLevelCard.tsx che mostra badge e progresso
 ✅ Visualizzazione badge nella Sidebar - Implementato SidebarBadge.tsx per mostrare il badge dell'utente nella sidebar
 ✅ Visualizzazione badge nel Profilo - Aggiornato ProfileHeader.tsx per visualizzare il badge dell'utente
-✅ Uso del componente `BadgeLevel` - Creato componente UserBadge.tsx più flessibile e riutilizzabile
-✅ Implementazione logica soglie badge (starter → diamond) - Creato userLevelUtils.ts con funzioni per calcolare livello, progresso e soglie
+✅ Uso del componente `UserBadge` - Creato componente UserBadge.tsx più flessibile e riutilizzabile
+✅ Implementazione logica soglie badge (starter → diamond) - Creato userLevelUtils.ts e levelCalculations.ts con funzioni per calcolare livello, progresso e soglie
 
 ---
 
 ## 📊 Priorità 3 – Gestione dati coerente
 
-- [ ] Formattazione currency coerente (€3,450,000 o €3.45M)
-- [ ] Status proprietà localizzati (development, active, sold)
-- [ ] Portfolio aggregation per paese (non città)
+✅ Formattazione currency coerente (€3,450,000 o €3.45M) - Creato formatCurrency.ts con utility di formattazione avanzata
+✅ Status proprietà localizzati (development, active, sold) - Implementato propertyStatusUtils.ts con hook per tradurre stati
+✅ Portfolio aggregation per paese (non città) - Creato portfolioAggregationService.ts per aggregare dati per nazione
 - [ ] Funzione RPC: `updateUserDashboardData()`
-- [ ] Refetch/Invalidate query con React Query
-- [ ] Stato condiviso via Context
+✅ Refetch/Invalidate query con React Query - Implementato queryInvalidation.ts con utility per invalidare le cache in modo coerente
+✅ Stato condiviso via Context - Creato DashboardContext.tsx per la condivisione dello stato tra componenti
 
 ---
 
