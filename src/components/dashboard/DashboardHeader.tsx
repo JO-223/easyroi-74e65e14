@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 export interface DashboardHeaderProps {
   title: string;
   subtitle: string;
-  action?: ReactNode; // Add the action prop
+  action?: ReactNode; // This is equivalent to the 'action' prop
 }
 
 export function DashboardHeader({ title, subtitle, action }: DashboardHeaderProps) {

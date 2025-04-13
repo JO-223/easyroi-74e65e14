@@ -29,7 +29,13 @@ export const searchKeys = [
   'alertActive',
   'lastRun',
   'deleteSearch',
-  'confirmDeleteSearch'
+  'confirmDeleteSearch',
+  'errorFetchingSavedSearches',
+  'tryDifferentFilters',
+  'allSystemsNormal',
+  'noAlerts',
+  'alerts',
+  'propertyAlerts'
 ] as const;
 
 export type SearchKey = typeof searchKeys[number];

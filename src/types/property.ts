@@ -46,7 +46,7 @@ export interface Property {
   listing_status: string;
   price_currency: string;
   images: { url: string; id: string; is_primary: boolean }[];
-  amenities: { name: string; icon: string }[];
+  amenities: { name: string; id: string; icon: string }[];
   pros_cons: { id: string; description: string; is_pro: boolean }[];
   investor_level: string;
 }
@@ -72,6 +72,7 @@ export interface DevelopmentProject {
   expected_roi: number;
   investor_level: string;
   image_url?: string;
+  images?: { url: string; id: string; is_primary: boolean }[];
   created_at?: string;
   updated_at?: string;
 }
@@ -85,4 +86,14 @@ export interface PropertyType {
 export interface UserRole {
   id: string;
   name: "admin" | "investor" | "agent";
+}
+
+export interface EventFilter {
+  eventType?: string;
+  location?: string;
+  fromDate?: string;
+  toDate?: string;
+  onlyAvailable?: boolean;
+  eventFormat?: string;
+  badge?: string;
 }

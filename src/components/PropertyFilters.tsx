@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
@@ -86,8 +87,8 @@ export function PropertyFilters({
         <div>
           <h3 className="font-medium mb-2 text-gray-700">{t('location')}</h3>
           <Select 
-            value={filters.location || 'all'} 
-            onValueChange={(value) => handleFilterChange('location', value)}
+            value={filters.locations?.length ? filters.locations[0] : 'all'} 
+            onValueChange={(value) => handleFilterChange('locations', value !== 'all' ? [value] : undefined)}
           >
             <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
               <SelectValue placeholder={t('allLocations')} />
@@ -131,8 +132,8 @@ export function PropertyFilters({
         <div>
           <h3 className="font-medium mb-2 text-gray-700">{t('propertyType')}</h3>
           <Select 
-            value={filters.type || 'all'} 
-            onValueChange={(value) => handleFilterChange('type', value)}
+            value={filters.propertyTypes?.length ? filters.propertyTypes[0] : 'all'} 
+            onValueChange={(value) => handleFilterChange('propertyTypes', value !== 'all' ? [value] : undefined)}
           >
             <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
               <SelectValue placeholder={t('allTypes')} />

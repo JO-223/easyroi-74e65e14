@@ -1,4 +1,4 @@
-// Update only the fromDate and toDate types in the handleApplyFilters function
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { CalendarIcon, MapPinIcon } from 'lucide-react';
-import { EventFilter } from '@/types/property';
+import { EventFilter } from '@/types/event';
 
 interface EventFiltersProps {
   onApplyFilters: (filters: EventFilter) => void;
@@ -102,8 +102,8 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
         <div className="flex items-center space-x-2">
           <Checkbox 
             id="available" 
-            checked={filters.onlyAvailable || false}
-            onCheckedChange={(checked) => handleCheckboxChange('onlyAvailable', checked || false)}
+            checked={!!filters.onlyAvailable}
+            onCheckedChange={(checked) => handleCheckboxChange('onlyAvailable', !!checked)}
           />
           <Label htmlFor="available" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
             {t('showOnlyAvailableEvents')}

@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { DevelopmentProject } from "@/types/property";
 
@@ -16,23 +17,24 @@ export const fetchDevelopmentProjects = async (): Promise<DevelopmentProject[]> 
       throw new Error(error.message);
     }
     
+    // Type assertion with proper mapping to ensure correct types
     const formattedProjects: DevelopmentProject[] = data.map(project => ({
-      id: project.id,
-      name: project.name,
-      description: project.description,
-      location: project.location,
-      location_id: project.location_id, // Include location_id to fix the type error
-      expected_completion: project.expected_completion,
-      construction_stage: project.construction_stage,
-      progress_percentage: project.progress_percentage,
-      total_units: project.total_units,
-      available_units: project.available_units,
-      min_investment: project.min_investment,
-      expected_roi: project.expected_roi,
-      investor_level: project.investor_level,
-      image_url: project.image_url,
-      created_at: project.created_at,
-      updated_at: project.updated_at
+      id: project.id as string,
+      name: project.name as string,
+      description: project.description as string,
+      location: project.location as any, // Using any as we need to restructure the data
+      location_id: project.location_id as string,
+      expected_completion: project.expected_completion as string,
+      construction_stage: project.construction_stage as string,
+      progress_percentage: project.progress_percentage as number,
+      total_units: project.total_units as number,
+      available_units: project.available_units as number,
+      min_investment: project.min_investment as number,
+      expected_roi: project.expected_roi as number,
+      investor_level: project.investor_level as string,
+      image_url: project.image_url as string | undefined,
+      created_at: project.created_at as string | undefined,
+      updated_at: project.updated_at as string | undefined
     }));
     
     return formattedProjects;
@@ -42,7 +44,7 @@ export const fetchDevelopmentProjects = async (): Promise<DevelopmentProject[]> 
   }
 };
 
-export const fetchDevelopmentProject = async (id: string) => {
+export const fetchDevelopmentProject = async (id: string): Promise<DevelopmentProject> => {
   // Using a raw fetch instead of the typed client for now
   const { data, error } = await supabase
     .from('development_projects')
@@ -64,7 +66,8 @@ export const fetchDevelopmentProject = async (id: string) => {
     id: data.id as string,
     name: data.name as string,
     description: data.description as string,
-    location: data.location as any, // Using any here as we need to restructure the data
+    location: data.location as any,
+    location_id: data.location_id as string,
     expected_completion: data.expected_completion as string,
     construction_stage: data.construction_stage as string,
     progress_percentage: data.progress_percentage as number,
@@ -72,7 +75,8 @@ export const fetchDevelopmentProject = async (id: string) => {
     available_units: data.available_units as number,
     min_investment: data.min_investment as number,
     expected_roi: data.expected_roi as number,
-    investor_level: data.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond",
-    images: Array.isArray(data.images) ? data.images : []
+    investor_level: data.investor_level as string,
+    images: Array.isArray(data.images) ? data.images : [],
+    image_url: data.image_url as string | undefined
   } as DevelopmentProject;
 };

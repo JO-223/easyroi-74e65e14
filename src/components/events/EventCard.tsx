@@ -7,7 +7,7 @@ import { Event } from "@/types/event";
 import { Badge } from "@/components/ui/badge";
 import { BadgeLevel } from "@/components/ui/badge-level";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";

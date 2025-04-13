@@ -23,7 +23,7 @@ export function SavedSearchesList() {
     queryFn: () => fetchSavedSearches(),
     staleTime: 1000 * 60 * 5, // 5 minutes
     meta: {
-      onError: () => {
+      onError: (err: any) => {
         toast({
           title: "Error",
           description: t('errorFetchingSavedSearches'),

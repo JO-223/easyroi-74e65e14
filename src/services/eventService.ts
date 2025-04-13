@@ -1,7 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { Event } from "@/types/event";
-import { EventFilter } from "@/types/property";
+import { EventFilter } from "@/types/event";
 
 export const fetchEvents = async (filter?: EventFilter): Promise<Event[]> => {
   try {
@@ -50,7 +50,7 @@ export const fetchEvents = async (filter?: EventFilter): Promise<Event[]> => {
     }
     
     // Add proper type casting
-    return (data as unknown) as Event[];
+    return data as unknown as Event[];
   } catch (error) {
     console.error("Error in fetchEvents:", error);
     throw error;
@@ -71,7 +71,7 @@ export const fetchEvent = async (eventId: string): Promise<Event> => {
     }
     
     // Add proper type casting
-    return (data as unknown) as Event;
+    return data as unknown as Event;
   } catch (error) {
     console.error("Error in fetchEvent:", error);
     throw error;
@@ -127,7 +127,7 @@ export const registerForEvent = async (eventId: string, userId: string): Promise
     }
     
     // Add proper type casting
-    return (data as unknown) as Event;
+    return data as unknown as Event;
   } catch (error) {
     console.error("Error in registerForEvent:", error);
     throw error;
@@ -154,9 +154,7 @@ export const fetchSimilarEvents = async (eventId: string, limit = 3): Promise<Ev
       .select("*")
       .eq("event_type", event.event_type)
       .eq("is_online", event.is_online)
-      .neq("id", eventId) // Exclude the current event
-      .gte("date", new Date().toISOString().split('T')[0]) // Only future events
-      .order("date", { ascending: true })
+      .neq("id", eventId)
       .limit(limit);
     
     if (error) {
@@ -165,17 +163,15 @@ export const fetchSimilarEvents = async (eventId: string, limit = 3): Promise<Ev
     }
     
     // Add proper type casting
-    return (data as unknown) as Event[];
+    return data as unknown as Event[];
   } catch (error) {
     console.error("Error in fetchSimilarEvents:", error);
     throw error;
   }
 };
 
-// Add the filterEvents function
-export const filterEvents = (events: Event[], filter: EventFilter = {}): Event[] => {
-  if (!events || events.length === 0) return [];
-  
+// Helper function to filter events based on criteria
+export const filterEvents = (events: Event[], filter: EventFilter): Event[] => {
   return events.filter(event => {
     // Filter by event type
     if (filter.eventType && event.event_type !== filter.eventType) {
@@ -187,23 +183,21 @@ export const filterEvents = (events: Event[], filter: EventFilter = {}): Event[]
       return false;
     }
     
-    // Filter by from date
-    if (filter.fromDate && new Date(event.date) < new Date(filter.fromDate)) {
-      return false;
+    // Filter by date range
+    if (filter.fromDate) {
+      const eventDate = new Date(event.date);
+      const fromDate = new Date(filter.fromDate);
+      if (eventDate < fromDate) {
+        return false;
+      }
     }
     
-    // Filter by to date
-    if (filter.toDate && new Date(event.date) > new Date(filter.toDate)) {
-      return false;
-    }
-    
-    // Filter by online/in-person
-    if (filter.eventFormat === 'online' && !event.is_online) {
-      return false;
-    }
-    
-    if (filter.eventFormat === 'in-person' && event.is_online) {
-      return false;
+    if (filter.toDate) {
+      const eventDate = new Date(event.date);
+      const toDate = new Date(filter.toDate);
+      if (eventDate > toDate) {
+        return false;
+      }
     }
     
     // Filter by availability
@@ -211,7 +205,14 @@ export const filterEvents = (events: Event[], filter: EventFilter = {}): Event[]
       return false;
     }
     
-    // Filter by badge
+    // Filter by online/offline
+    if (filter.eventFormat === 'online' && !event.is_online) {
+      return false;
+    } else if (filter.eventFormat === 'in-person' && event.is_online) {
+      return false;
+    }
+    
+    // Filter by badge requirement
     if (filter.badge && (!event.required_badges || !event.required_badges.includes(filter.badge))) {
       return false;
     }

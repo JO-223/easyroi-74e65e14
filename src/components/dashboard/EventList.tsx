@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Event } from "@/types/event";
-import { EventCard } from '@/components/events/EventCard'; // Fix the import
+import { EventCard } from '@/components/events/EventCard'; 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';

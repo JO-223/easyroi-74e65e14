@@ -2,64 +2,65 @@
 import { supabase } from "@/integrations/supabase/client";
 import { Property, PropertyFilter } from "@/types/property";
 
-export const fetchProperties = async (filters?: PropertyFilter): Promise<Property[]> => {
+export const fetchProperties = async (filter?: PropertyFilter): Promise<Property[]> => {
   try {
-    let query = supabase
-      .from("properties")
-      .select(`
-        *,
-        type:type_id (*),
-        location:location_id (*),
-        images:property_images(*),
-        amenities:property_amenities(amenity_id(*)),
-        pros_cons:property_pros_cons(*)
-      `)
-      .order("created_at", { ascending: false });
+    let query = supabase.from("properties").select(`
+      *,
+      type:type_id(*),
+      location:location_id(*),
+      images:property_images(*),
+      amenities:property_amenities(amenities(*)),
+      pros_cons:property_pros_cons(*)
+    `);
 
     // Apply filters
-    if (filters) {
-      if (filters.location) {
-        query = query.or(`location.city.ilike.%${filters.location}%,location.country.ilike.%${filters.location}%,location.zone.ilike.%${filters.location}%`);
+    if (filter) {
+      // Location filter
+      if (filter.locations && filter.locations.length > 0) {
+        const locationText = filter.locations[0]; // Use the first location for now
+        query = query.or(
+          `location.city.ilike.%${locationText}%,location.country.ilike.%${locationText}%,location.zone.ilike.%${locationText}%,location.address.ilike.%${locationText}%`
+        );
       }
-      
-      if (filters.priceMin !== undefined) {
-        query = query.gte("price", filters.priceMin);
+
+      // Price range filter
+      if (filter.priceMin) {
+        query = query.gte("price", filter.priceMin);
       }
-      
-      if (filters.priceMax !== undefined) {
-        query = query.lte("price", filters.priceMax);
+      if (filter.priceMax) {
+        query = query.lte("price", filter.priceMax);
       }
-      
-      if (filters.type) {
-        query = query.eq("type_id", filters.type);
+
+      // Property type filter
+      if (filter.propertyTypes && filter.propertyTypes.length > 0) {
+        const propertyTypeIds = filter.propertyTypes;
+        query = query.in("type_id", propertyTypeIds);
       }
-      
-      if (filters.bedroomsMin !== undefined) {
-        query = query.gte("bedrooms", filters.bedroomsMin);
+
+      // Bedroom range filter
+      if (filter.bedroomsMin) {
+        query = query.gte("bedrooms", filter.bedroomsMin);
       }
-      
-      if (filters.bedroomsMax !== undefined) {
-        query = query.lte("bedrooms", filters.bedroomsMax);
+      if (filter.bedroomsMax) {
+        query = query.lte("bedrooms", filter.bedroomsMax);
       }
-      
-      if (filters.bathroomsMin !== undefined) {
-        query = query.gte("bathrooms", filters.bathroomsMin);
+
+      // Bathroom range filter
+      if (filter.bathroomsMin) {
+        query = query.gte("bathrooms", filter.bathroomsMin);
       }
-      
-      if (filters.bathroomsMax !== undefined) {
-        query = query.lte("bathrooms", filters.bathroomsMax);
+      if (filter.bathroomsMax) {
+        query = query.lte("bathrooms", filter.bathroomsMax);
       }
-      
-      if (filters.minRoi !== undefined) {
-        query = query.gte("roi_percentage", filters.minRoi);
+
+      // ROI filter
+      if (filter.roiMin) {
+        query = query.gte("roi_percentage", filter.roiMin);
       }
-      
-      // Handle amenities filter if implemented
-      // This would require a more complex query or post-filtering
-      
-      // Handle investor level filter if implemented
-      if (filters.investorLevel) {
-        query = query.eq("investor_level", filters.investorLevel);
+
+      // Investor level filter
+      if (filter.investorLevel) {
+        query = query.eq("investor_level", filter.investorLevel);
       }
     }
 
@@ -70,69 +71,18 @@ export const fetchProperties = async (filters?: PropertyFilter): Promise<Propert
       throw new Error(error.message);
     }
 
-    // Add proper type casting
-    return data as unknown as Property[];
+    // Transform the data to match our Property interface
+    const properties = data.map((property: any) => {
+      return {
+        ...property,
+        amenities: property.amenities.map((a: any) => a.amenities),
+        // Restructure other nested objects as needed
+      };
+    });
+
+    return properties as Property[];
   } catch (error) {
     console.error("Error in fetchProperties:", error);
-    throw error;
-  }
-};
-
-// Add implementations for fetchLocations, fetchPropertyTypes and fetchAmenities
-export const fetchLocations = async () => {
-  try {
-    const { data, error } = await supabase
-      .from("property_locations")
-      .select("city, country, zone")
-      .order("country", { ascending: true })
-      .order("city", { ascending: true });
-
-    if (error) {
-      console.error("Error fetching locations:", error);
-      throw new Error(error.message);
-    }
-
-    return data as Array<{city: string, country: string, zone: string}>;
-  } catch (error) {
-    console.error("Error in fetchLocations:", error);
-    throw error;
-  }
-};
-
-export const fetchPropertyTypes = async () => {
-  try {
-    const { data, error } = await supabase
-      .from("property_types")
-      .select("id, name")
-      .order("name", { ascending: true });
-
-    if (error) {
-      console.error("Error fetching property types:", error);
-      throw new Error(error.message);
-    }
-
-    return data as Array<{id: string, name: string}>;
-  } catch (error) {
-    console.error("Error in fetchPropertyTypes:", error);
-    throw error;
-  }
-};
-
-export const fetchAmenities = async () => {
-  try {
-    const { data, error } = await supabase
-      .from("amenities")
-      .select("id, name")
-      .order("name", { ascending: true });
-
-    if (error) {
-      console.error("Error fetching amenities:", error);
-      throw new Error(error.message);
-    }
-
-    return data as Array<{id: string, name: string}>;
-  } catch (error) {
-    console.error("Error in fetchAmenities:", error);
     throw error;
   }
 };

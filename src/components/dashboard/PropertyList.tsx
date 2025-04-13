@@ -1,13 +1,12 @@
 
 import React from 'react';
 import { Property } from '@/types/property';
-import { PropertyCard } from '@/components/PropertyCard'; // Fix the import
+import { PropertyCard } from '@/components/PropertyCard'; 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Home } from 'lucide-react';
 import { EmptyState } from '@/components/ui/empty-state';
-import { Home } from 'lucide-react';
 
 interface PropertyListProps {
   properties: Property[];

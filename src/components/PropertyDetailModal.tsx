@@ -115,7 +115,7 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {property.amenities.map((amenity) => (
                   <div 
-                    key={amenity.id} 
+                    key={amenity.name} 
                     className="flex items-center p-2 bg-white/5 rounded-md"
                   >
                     <ChevronRight className="h-4 w-4 text-easyroi-gold mr-2" />
