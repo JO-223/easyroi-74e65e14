@@ -164,12 +164,7 @@ const InvestorLevels = () => {
   return <DashboardLayout title={tInvestor('investorLevels')} subtitle={tInvestor('investorLevelsSubtitle') || "Discover the benefits of each investment tier"}>
       <div className="container mx-auto py-0 px-0">
         <Card className="border-0 shadow-xl bg-gradient-to-r from-gray-50 to-white">
-          <CardHeader className="text-center pb-0">
-            <CardTitle className="text-3xl font-bold tracking-tight mb-2">{tInvestor('investorLevelsTitle') || "Investor Levels Program"}</CardTitle>
-            <CardDescription className="text-lg max-w-3xl mx-auto">
-              {tInvestor('investorLevelsDescription') || "Our exclusive program rewards investors with enhanced benefits and opportunities as they increase their investment portfolio with us."}
-            </CardDescription>
-          </CardHeader>
+          
           <CardContent className="pt-6">
             {/* Level Tabs */}
             <Tabs defaultValue="overview" className="w-full" onValueChange={value => setSelectedLevel(value !== "overview" ? value : null)}>
@@ -179,7 +174,7 @@ const InvestorLevels = () => {
               <TabsContent value="overview">
                 
                 
-                <div className="bg-gray-50 rounded-xl p-8 mb-8">
+                <div className="bg-gray-50 rounded-xl p-8 mb-8 py-0 px-0">
                   <h2 className="text-2xl font-bold mb-6 text-center">{tInvestor('levelBenefitsComparison') || "Benefits Comparison"}</h2>
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
