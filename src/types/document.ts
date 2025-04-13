@@ -12,4 +12,5 @@ export interface PropertyDocument {
   upload_date: string;
   last_accessed?: string;
   description?: string;
+  created_at?: string;
 }

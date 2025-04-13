@@ -16,7 +16,8 @@ export const tooltipKeys = [
   'listingStatusTooltip',
   'roiPercentageTooltip',
   'serviceChargesTooltip',
-  // Add tooltip keys
+  'investorTooltip',
+  // Tooltip keys as nested structure
   'tooltip',
   'propertyName',
   'address',
@@ -38,3 +39,24 @@ export const tooltipKeys = [
 ] as const;
 
 export type TooltipKey = typeof tooltipKeys[number];
+
+// Add nested tooltips structure
+export type TooltipKeys = {
+  propertyName: string;
+  address: string;
+  city: string;
+  zone: string;
+  country: string;
+  price: string;
+  currency: string;
+  propertyType: string;
+  sizeSqm: string;
+  bedrooms: string;
+  bathrooms: string;
+  occupationStatus: string;
+  status: string;
+  listingStatus: string;
+  roiPercentage: string;
+  serviceCharges: string;
+  investor: string;
+};

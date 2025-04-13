@@ -1,110 +1,119 @@
+import { supabase } from "@/integrations/supabase/client";
+import { Event } from "@/types/event";
+import { EventFilter } from "@/types/property";
 
-import { supabase } from '@/integrations/supabase/client';
-import { Event, EventFilter } from '@/types/property';
-import { applyEventFilters } from './events/eventFilters';
-
-export const fetchEvents = async (filter?: EventFilter): Promise<Event[]> => {
-  try {
-    let query = supabase
-      .from('events')
-      .select('*')
-      .order('date', { ascending: true });
-    
-    if (filter) {
-      query = applyEventFilters(query, filter);
-    }
-    
-    const { data, error } = await query;
-    
-    if (error) {
-      console.error('Error fetching events:', error);
-      throw new Error('Failed to fetch events');
-    }
-    
-    return data as Event[];
-  } catch (error) {
-    console.error('Error in fetchEvents:', error);
-    throw error;
-  }
-};
-
-export const fetchUpcomingEvents = async (): Promise<Event[]> => {
-  const today = new Date().toISOString().split('T')[0];
+// Add the filterEvents function
+export function filterEvents(events: Event[], filter?: EventFilter): Event[] {
+  if (!filter) return events;
   
-  try {
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .gte('date', today)
-      .order('date', { ascending: true })
-      .limit(3);
-    
-    if (error) {
-      console.error('Error fetching upcoming events:', error);
-      throw new Error('Failed to fetch upcoming events');
+  return events.filter((event) => {
+    // Filter by event type
+    if (filter.eventType && filter.eventType !== 'all' && event.event_type !== filter.eventType) {
+      return false;
     }
     
-    return data as Event[];
-  } catch (error) {
-    console.error('Error in fetchUpcomingEvents:', error);
-    throw error;
-  }
-};
+    // Filter by format (online/in-person)
+    if (filter.eventFormat && filter.eventFormat !== 'all') {
+      if (filter.eventFormat === 'online' && !event.is_online) return false;
+      if (filter.eventFormat === 'inPerson' && event.is_online) return false;
+    }
+    
+    // Filter by location
+    if (filter.location && !event.location.toLowerCase().includes(filter.location.toLowerCase())) {
+      return false;
+    }
+    
+    // Filter by date range
+    if (filter.fromDate) {
+      const eventDate = new Date(event.date);
+      const fromDate = new Date(filter.fromDate);
+      if (eventDate < fromDate) return false;
+    }
+    
+    if (filter.toDate) {
+      const eventDate = new Date(event.date);
+      const toDate = new Date(filter.toDate);
+      if (eventDate > toDate) return false;
+    }
+    
+    // Filter by availability
+    if (filter.onlyAvailable && event.max_attendees && event.current_attendees >= event.max_attendees) {
+      return false;
+    }
+    
+    return true;
+  });
+}
 
-export const fetchEventById = async (id: string): Promise<Event | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('id', id)
-      .single();
-    
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return null; // No event found
-      }
-      console.error('Error fetching event:', error);
-      throw new Error('Failed to fetch event');
-    }
-    
-    return data as Event;
-  } catch (error) {
-    console.error('Error in fetchEventById:', error);
-    throw error;
+export async function fetchEvents(): Promise<Event[]> {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .order("date", { ascending: true });
+  
+  if (error) {
+    console.error("Error fetching events:", error);
+    throw new Error(error.message);
   }
-};
+  
+  return data as Event[];
+}
 
-export const fetchSimilarEvents = async (eventId: string): Promise<Event[]> => {
-  try {
-    // Get the event first to find similar ones
-    const { data: event, error: eventError } = await supabase
-      .from('events')
-      .select('*')
-      .eq('id', eventId)
-      .single();
-    
-    if (eventError) {
-      console.error('Error fetching event for similar events:', eventError);
-      return [];
-    }
-    
-    // Now find similar events based on event_type
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('event_type', event.event_type)
-      .neq('id', eventId)
-      .order('date', { ascending: true })
-      .limit(3);
-    
-    if (error) {
-      console.error('Error fetching similar events:', error);
-      return [];
-    }
-    
-    return data as Event[];
-  } catch (error) {
-    console.error('Error in fetchSimilarEvents:', error);
-    return [];
+// Add fetchEvent function
+export async function fetchEvent(id: string): Promise<Event> {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("id", id)
+    .single();
+  
+  if (error) {
+    console.error("Error fetching event:", error);
+    throw new Error(error.message);
   }
-};
+  
+  return data as Event;
+}
+
+// Add submitEventReview function
+export async function submitEventReview(review: any, userId: string): Promise<any> {
+  const { data, error } = await supabase
+    .from("event_reviews")
+    .insert([
+      {
+        ...review,
+        user_id: userId,
+        created_at: new Date().toISOString(),
+      },
+    ])
+    .select()
+    .single();
+  
+  if (error) {
+    console.error("Error submitting event review:", error);
+    throw new Error(error.message);
+  }
+  
+  return data as Event;
+}
+
+// Add fetchUpcomingEvents function
+export async function fetchUpcomingEvents(filter?: EventFilter): Promise<Event[]> {
+  let query = supabase
+    .from("events")
+    .select("*")
+    .order("date", { ascending: true });
+  
+  if (filter?.badge) {
+    query = query.eq("required_level", filter.badge);
+  }
+  
+  const { data, error } = await query;
+  
+  if (error) {
+    console.error("Error fetching upcoming events:", error);
+    throw new Error(error.message);
+  }
+  
+  return data as Event[];
+}

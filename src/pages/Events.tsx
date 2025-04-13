@@ -21,12 +21,12 @@ export default function Events() {
   
   const { data: events = [], isLoading, error } = useQuery({
     queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents(),
     meta: {
       onError: () => {
         toast({
-          title: t('errorFetchingEvents'),
-          description: t('pleaseTryAgainLater'),
+          title: t('error'),
+          description: t('error'),
           variant: "destructive",
         });
       },
@@ -41,12 +41,12 @@ export default function Events() {
   };
   
   return (
-    <DashboardLayout title={t('upcomingEvents')} subtitle={t('discoverEventsAndNetworkingOpportunities')}>
+    <DashboardLayout title={t('upcomingEvents')} subtitle={t('events')}>
       <div className="container mx-auto py-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">{t('upcomingEvents')}</h1>
-            <p className="text-muted-foreground">{t('discoverEventsAndNetworkingOpportunities')}</p>
+            <h1 className="text-2xl font-semibold tracking-tight">Upcoming Events</h1>
+            <p className="text-muted-foreground">Discover events and networking opportunities</p>
           </div>
         </div>
         

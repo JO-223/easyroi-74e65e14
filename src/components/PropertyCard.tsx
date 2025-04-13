@@ -1,19 +1,20 @@
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Property } from "@/types/property";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BadgeLevel } from "@/components/ui/badge-level";
-import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
-import { formatCurrency } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Home, MapPin, BedDouble, Bath, ArrowRight, Eye } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { formatCurrency } from "@/utils/formatters";
 
-interface PropertyCardProps {
+export interface PropertyCardProps {
   property: Property;
-  onViewDetails: (property: Property) => void;
+  onViewDetails?: (property: Property) => void; // Make onViewDetails optional
 }
 
 export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
-  const t = useTranslation();
+  const t = useLanguage();
   
   // Get primary image or placeholder
   const primaryImage = property.images.find(img => img.is_primary)?.url || 
@@ -32,7 +33,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-xl font-bold text-gray-800">{property.name}</CardTitle>
-          <BadgeLevel level={property.investor_level as any} />
+          <Badge level={property.investor_level as any} />
         </div>
         <div className="flex items-center text-sm text-gray-500 mt-1">
           <MapPin className="h-3.5 w-3.5 mr-1" />
@@ -86,7 +87,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       <CardFooter className="pt-0 mt-auto">
         <Button 
           className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy"
-          onClick={() => onViewDetails(property)}
+          onClick={() => onViewDetails && onViewDetails(property)}
         >
           {t('viewDetails')}
         </Button>

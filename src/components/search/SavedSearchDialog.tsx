@@ -8,7 +8,7 @@ import { PropertyFilter } from "@/types/property";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,16 @@ interface SavedSearchDialogProps {
   currentFilter: PropertyFilter;
   onSuccess: () => void;
 }
+
+// Add these keys to the translation system
+const searchKeys = [
+  'saveSearch', 
+  'saveSearchDescription', 
+  'searchSavedSuccessfully', 
+  'createAlert', 
+  'receiveNotificationsForNewMatches', 
+  'selectFrequency'
+];
 
 const formSchema = z.object({
   searchName: z.string().min(1, "Search name is required"),
@@ -61,7 +71,7 @@ export default function SavedSearchDialog({
       
       toast({
         title: t("success"),
-        description: t("searchSavedSuccessfully"),
+        description: t("success"),
       });
       
       onSuccess();
@@ -70,7 +80,7 @@ export default function SavedSearchDialog({
       console.error("Error saving search:", error);
       toast({
         title: t("error"),
-        description: t("errorSavingSearch"),
+        description: t("error"),
         variant: "destructive",
       });
     } finally {
@@ -82,9 +92,9 @@ export default function SavedSearchDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("saveSearch")}</DialogTitle>
+          <DialogTitle>Save Search</DialogTitle>
           <DialogDescription>
-            {t("saveSearchDescription")}
+            Save your current search filters for quick access later
           </DialogDescription>
         </DialogHeader>
         
@@ -95,9 +105,9 @@ export default function SavedSearchDialog({
               name="searchName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("searchName")}</FormLabel>
+                  <FormLabel>Search Name</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("enterSearchName")} {...field} />
+                    <Input placeholder="Enter search name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,9 +120,9 @@ export default function SavedSearchDialog({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                   <div className="space-y-0.5">
-                    <FormLabel>{t("createAlert")}</FormLabel>
+                    <FormLabel>Create Alert</FormLabel>
                     <FormDescription>
-                      {t("receiveNotificationsForNewMatches")}
+                      Receive notifications for new matches
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -131,17 +141,17 @@ export default function SavedSearchDialog({
                 name="alertFrequency"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("alertFrequency")}</FormLabel>
+                    <FormLabel>Alert Frequency</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={t("selectFrequency")} />
+                          <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="daily">{t("daily")}</SelectItem>
-                        <SelectItem value="weekly">{t("weekly")}</SelectItem>
-                        <SelectItem value="monthly">{t("monthly")}</SelectItem>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -157,7 +167,7 @@ export default function SavedSearchDialog({
                 onClick={onClose}
                 disabled={isSaving}
               >
-                {t("cancel")}
+                Cancel
               </Button>
               <Button 
                 type="submit"
@@ -166,12 +176,12 @@ export default function SavedSearchDialog({
                 {isSaving ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t("saving")}
+                    Saving
                   </>
                 ) : (
                   <>
                     <Save className="mr-2 h-4 w-4" />
-                    {t("save")}
+                    Save
                   </>
                 )}
               </Button>

@@ -1,103 +1,94 @@
 
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { PortfolioSummaryData } from "@/types/portfolio";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { TrendingDown, TrendingUp, Building, PieChart } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { UserLevelCard } from "./UserLevelCard";
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ArrowUp, ArrowDown } from 'lucide-react';
+import { formatCurrency } from '@/utils/formatters';
 
 interface PortfolioSummaryProps {
-  data: PortfolioSummaryData | null;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
-export function PortfolioSummary({ data, isLoading }: PortfolioSummaryProps) {
+export function PortfolioSummary({ isLoading = false }: PortfolioSummaryProps) {
   const { t } = useLanguage();
-
+  
+  // Demo data for display
+  const data = {
+    totalInvestment: 1250000,
+    portfolioROI: 7.2,
+    totalProperties: 5,
+    investmentChange: 3.4,
+    roiChange: 0.5,
+    propertyChange: 1
+  };
+  
   if (isLoading) {
     return (
-      <>
-        <SummarySkeleton />
-        <SummarySkeleton />
-        <SummarySkeleton />
-      </>
+      <Card className="col-span-2">
+        <CardHeader>
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-24" />
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     );
   }
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'EUR',
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
-  const formatPercentage = (value: number) => {
-    return `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
-  };
-
+  
   return (
-    <>
-      <SummaryCard
-        title={t('totalInvestment')}
-        value={formatCurrency(data?.totalInvestment || 0)}
-        change={data?.investmentChange || 0}
-        icon={<PieChart className="h-5 w-5" />}
-      />
-      <SummaryCard
-        title={t('portfolioROI')}
-        value={`${(data?.portfolioROI || 0).toFixed(2)}%`}
-        change={data?.roiChange || 0}
-        icon={<TrendingUp className="h-5 w-5" />}
-      />
-      <UserLevelCard />
-    </>
-  );
-}
-
-interface SummaryCardProps {
-  title: string;
-  value: string;
-  change: number;
-  icon: React.ReactNode;
-}
-
-function SummaryCard({ title, value, change, icon }: SummaryCardProps) {
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-muted-foreground">{title}</span>
-          <span className="bg-muted p-1.5 rounded-full">{icon}</span>
-        </div>
-        <div className="flex items-end justify-between">
-          <div className="text-2xl font-bold">{value}</div>
-          <div className={`flex items-center text-sm ${change > 0 ? 'text-green-600' : change < 0 ? 'text-red-600' : 'text-muted-foreground'}`}>
-            {change > 0 ? (
-              <TrendingUp className="h-4 w-4 mr-1" />
-            ) : change < 0 ? (
-              <TrendingDown className="h-4 w-4 mr-1" />
-            ) : null}
-            <span>{change > 0 ? '+' : ''}{change.toFixed(2)}%</span>
+    <Card className="col-span-2">
+      <CardHeader>
+        <CardTitle>{t("yourInvestmentOverview")}</CardTitle>
+        <CardDescription>{t("lastUpdated")}: {new Date().toLocaleDateString()}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <p className="text-sm text-muted-foreground">{t("totalInvestment")}</p>
+            <p className="text-2xl font-bold">{formatCurrency(data.totalInvestment)}</p>
+            <p className={`text-xs flex items-center ${data.investmentChange > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+              {data.investmentChange > 0 ? (
+                <ArrowUp className="h-3 w-3 mr-1" />
+              ) : (
+                <ArrowDown className="h-3 w-3 mr-1" />
+              )}
+              {Math.abs(data.investmentChange)}% {t("fromLastMonth")}
+            </p>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function SummarySkeleton() {
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex justify-between items-center mb-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-8 w-8 rounded-full" />
-        </div>
-        <div className="flex items-end justify-between">
-          <Skeleton className="h-8 w-32" />
-          <Skeleton className="h-4 w-16" />
+          <div>
+            <p className="text-sm text-muted-foreground">{t("portfolioROI")}</p>
+            <p className="text-2xl font-bold">{data.portfolioROI.toFixed(1)}%</p>
+            <p className={`text-xs flex items-center ${data.roiChange > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+              {data.roiChange > 0 ? (
+                <ArrowUp className="h-3 w-3 mr-1" />
+              ) : (
+                <ArrowDown className="h-3 w-3 mr-1" />
+              )}
+              {Math.abs(data.roiChange)}% {t("fromLastMonth")}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">{t("totalProperties")}</p>
+            <p className="text-2xl font-bold">{data.totalProperties}</p>
+            <p className={`text-xs flex items-center ${data.propertyChange > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+              {data.propertyChange > 0 ? (
+                <ArrowUp className="h-3 w-3 mr-1" />
+              ) : (
+                <ArrowDown className="h-3 w-3 mr-1" />
+              )}
+              {Math.abs(data.propertyChange)} {t("fromLastMonth")}
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -21,7 +21,7 @@ export function SizeFields({ control }: SizeFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("sizeSqm")} tooltip={t("tooltip.sizeSqm")} />
+              <FieldTooltip label={t("sizeSqm")} tooltip={t("sizeSqmTooltip")} />
             </FormLabel>
             <FormControl>
               <Input
@@ -43,7 +43,7 @@ export function SizeFields({ control }: SizeFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("bedrooms")} tooltip={t("tooltip.bedrooms")} />
+              <FieldTooltip label={t("bedrooms")} tooltip={t("bedroomsTooltip")} />
             </FormLabel>
             <FormControl>
               <Input
@@ -64,7 +64,7 @@ export function SizeFields({ control }: SizeFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("bathrooms")} tooltip={t("tooltip.bathrooms")} />
+              <FieldTooltip label={t("bathrooms")} tooltip={t("bathroomsTooltip")} />
             </FormLabel>
             <FormControl>
               <Input

@@ -1,22 +1,26 @@
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { Calendar, Clock, MapPin, Users, Globe, Monitor } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Calendar, Clock, MapPin, Users, ChevronRight, AlertTriangle } from "lucide-react";
+import { Event } from "@/types/event";
 import { Badge } from "@/components/ui/badge";
-import { Event } from "@/types/property";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { cn } from "@/lib/utils";
-import { BadgeLevel } from "@/components/ui/badge-level";
+import { useAuth } from "@/hooks/useAuth";
 
-interface EventCardProps {
+export interface EventCardProps {
   event: Event;
   onClick: (event: Event) => void;
   userBadge?: string;
+  compact?: boolean; // Added compact prop
 }
 
-export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardProps) {
+export function EventCard({ event, onClick, userBadge = "bronze", compact = false }: EventCardProps) {
   const { t } = useLanguage();
-  
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   // Check if event is at capacity
   const isAtCapacity = event.max_attendees !== null && event.current_attendees >= event.max_attendees;
   

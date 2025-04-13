@@ -23,7 +23,7 @@ export function PriceFields({ control, currencies }: PriceFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("price")} tooltip={t("tooltip.price")} />
+              <FieldTooltip label={t("price")} tooltip={t("priceTooltip")} />
             </FormLabel>
             <FormControl>
               <Input
@@ -44,7 +44,7 @@ export function PriceFields({ control, currencies }: PriceFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("currency")} tooltip={t("tooltip.currency")} />
+              <FieldTooltip label={t("currency")} tooltip={t("currencyTooltip")} />
             </FormLabel>
             <Select 
               onValueChange={field.onChange} 

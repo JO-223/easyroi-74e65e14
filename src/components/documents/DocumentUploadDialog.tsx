@@ -33,7 +33,7 @@ interface DocumentUploadDialogProps {
   isOpen: boolean;
   onClose: () => void;
   propertyId: string;
-  onUploadSuccess: () => void;
+  onSuccess: () => void;
 }
 
 const formSchema = z.object({
@@ -59,7 +59,7 @@ export default function DocumentUploadDialog({
   isOpen,
   onClose,
   propertyId,
-  onUploadSuccess,
+  onSuccess,
 }: DocumentUploadDialogProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
@@ -82,7 +82,7 @@ export default function DocumentUploadDialog({
     setIsUploading(true);
     try {
       await uploadPropertyDocument({
-        propertyId,
+        property_id: propertyId,
         userId: user.id,
         fileName: values.document_name,
         documentType: values.document_type,
@@ -96,7 +96,7 @@ export default function DocumentUploadDialog({
         description: t("documentUploadedSuccessfully")
       });
       
-      onUploadSuccess();
+      onSuccess();
       onClose();
     } catch (error) {
       console.error("Error uploading document:", error);

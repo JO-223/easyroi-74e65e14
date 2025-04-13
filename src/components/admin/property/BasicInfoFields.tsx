@@ -21,7 +21,7 @@ export function BasicInfoFields({ control }: BasicInfoFieldsProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("propertyName")} tooltip={t("tooltip.propertyName")} />
+              <FieldTooltip label={t("propertyName")} tooltip={t("propertyNameTooltip")} />
             </FormLabel>
             <FormControl>
               <Input placeholder={t("enterPropertyName")} {...field} />

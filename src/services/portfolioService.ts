@@ -1,100 +1,67 @@
 
-import { supabase } from '@/integrations/supabase/client';
-import { PortfolioSummaryData, PortfolioAllocation, InvestmentGrowth } from '@/types/portfolio';
+import { supabase } from "@/integrations/supabase/client";
+import { PortfolioSummaryData, PortfolioAllocation, InvestmentGrowth } from "@/types/portfolio";
 
-export const fetchPortfolioSummary = async (): Promise<PortfolioSummaryData> => {
-  // Get current user
-  const { data: { user } } = await supabase.auth.getUser();
+export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSummaryData> {
+  const { data, error } = await supabase
+    .from("portfolio_summary")
+    .select("*")
+    .eq("user_id", userId)
+    .single();
   
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (error) {
+    console.error("Error fetching portfolio summary:", error);
+    throw new Error(error.message);
   }
   
-  try {
-    // Fetch investment data
-    const { data: investment } = await supabase
-      .from('user_investments')
-      .select('total_investment, investment_change_percentage')
-      .eq('user_id', user.id)
-      .single();
-    
-    // Fetch ROI data
-    const { data: roi } = await supabase
-      .from('user_roi')
-      .select('average_roi, roi_change')
-      .eq('user_id', user.id)
-      .single();
-    
-    // Fetch property count
-    const { data: properties } = await supabase
-      .from('user_properties')
-      .select('count, change')
-      .eq('user_id', user.id)
-      .single();
-    
-    return {
-      totalInvestment: investment?.total_investment || 0,
-      portfolioROI: roi?.average_roi || 0,
-      totalProperties: properties?.count || 0,
-      investmentChange: investment?.investment_change_percentage || 0,
-      roiChange: roi?.roi_change || 0,
-      propertyChange: properties?.change || 0
-    };
-  } catch (error) {
-    console.error('Error fetching portfolio summary:', error);
-    throw error;
-  }
-};
+  // Return typed data with explicit type conversion
+  return {
+    totalInvestment: Number(data.total_investment),
+    portfolioROI: Number(data.portfolio_roi),
+    totalProperties: Number(data.total_properties),
+    investmentChange: Number(data.investment_change),
+    roiChange: Number(data.roi_change),
+    propertyChange: Number(data.property_change)
+  };
+}
 
-export const fetchPortfolioAllocation = async (): Promise<PortfolioAllocation[]> => {
-  // Get current user
-  const { data: { user } } = await supabase.auth.getUser();
+export async function fetchPortfolioAllocation(userId: string): Promise<PortfolioAllocation[]> {
+  const { data, error } = await supabase
+    .from("portfolio_allocation")
+    .select("location, percentage")
+    .eq("user_id", userId)
+    .order("percentage", { ascending: false });
   
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (error) {
+    console.error("Error fetching portfolio allocation:", error);
+    throw new Error(error.message);
   }
   
-  try {
-    const { data, error } = await supabase
-      .from('user_portfolio_allocation')
-      .select('location, percentage')
-      .eq('user_id', user.id)
-      .order('percentage', { ascending: false });
-    
-    if (error) {
-      throw error;
-    }
-    
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching portfolio allocation:', error);
-    throw error;
-  }
-};
+  // Return typed data with explicit type conversion
+  return data.map(item => ({
+    location: String(item.location),
+    percentage: Number(item.percentage)
+  }));
+}
 
-export const fetchInvestmentGrowth = async (): Promise<InvestmentGrowth[]> => {
-  // Get current user
-  const { data: { user } } = await supabase.auth.getUser();
+export async function fetchInvestmentGrowth(userId: string): Promise<InvestmentGrowth[]> {
+  const { data, error } = await supabase
+    .from("investment_growth")
+    .select("month, month_index, year, value")
+    .eq("user_id", userId)
+    .order("year")
+    .order("month_index");
   
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (error) {
+    console.error("Error fetching investment growth:", error);
+    throw new Error(error.message);
   }
   
-  try {
-    const { data, error } = await supabase
-      .from('user_investment_growth')
-      .select('month, month_index, year, value')
-      .eq('user_id', user.id)
-      .order('year')
-      .order('month_index');
-    
-    if (error) {
-      throw error;
-    }
-    
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching investment growth:', error);
-    throw error;
-  }
-};
+  // Return typed data with explicit type conversion
+  return data.map(item => ({
+    month: String(item.month),
+    month_index: Number(item.month_index),
+    year: Number(item.year),
+    value: Number(item.value)
+  }));
+}

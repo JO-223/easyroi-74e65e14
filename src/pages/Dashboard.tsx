@@ -1,148 +1,156 @@
 
-import React, { useEffect, useState } from 'react';
-import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { useTranslation } from '@/hooks/useTranslation';
-import { PropertyList } from '@/components/dashboard/PropertyList';
-import { EventList } from '@/components/dashboard/EventList';
-import { PortfolioSummary } from '@/components/dashboard/PortfolioSummary';
-import { PortfolioAllocation } from '@/components/dashboard/PortfolioAllocation';
-import { PerformanceChart } from '@/components/dashboard/PerformanceChart';
-import { PropertyAlerts } from '@/components/dashboard/PropertyAlerts';
-import { MarketInsights } from '@/components/dashboard/MarketInsights';
-import { useNavigate } from 'react-router-dom';
-import { fetchProperties } from '@/services/propertyService';
-import { fetchEvents } from '@/services/eventService';
-import { fetchPortfolioSummary } from '@/services/portfolioService';
-import { Property, Event } from '@/types/property';
-import { PortfolioSummaryData } from '@/types/portfolio';
-import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { RefreshCcw } from "lucide-react";
+import { SkeletonCard } from "@/components/ui/skeleton-card";
+import { DashboardError } from "@/components/dashboard/DashboardError";
+import { PropertyList } from "@/components/dashboard/PropertyList";
+import { EventList } from "@/components/dashboard/EventList";
+import { PortfolioSummary } from "@/components/dashboard/PortfolioSummary";
+import { PortfolioAllocation } from "@/components/dashboard/PortfolioAllocation";
+import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
+import { PropertyAlerts } from "@/components/dashboard/PropertyAlerts";
+import { MarketInsights } from "@/components/dashboard/MarketInsights";
+import { fetchProperties } from "@/services/propertyService";
+import { fetchEvents } from "@/services/eventService";
 
-const Dashboard = () => {
-  const t = useTranslation();
-  const navigate = useNavigate();
+export default function Dashboard() {
+  const { user } = useAuth();
+  const { t } = useLanguage();
+  const { toast } = useToast();
+  const [isUpdating, setIsUpdating] = useState(false);
   
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [portfolioSummary, setPortfolioSummary] = useState<PortfolioSummaryData | null>(null);
-  const [isLoadingProperties, setIsLoadingProperties] = useState(true);
-  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
-  const [isLoadingPortfolio, setIsLoadingPortfolio] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  
-  const fetchDashboardData = async () => {
+  const {
+    data: properties,
+    isLoading: isLoadingProperties,
+    error: propertiesError,
+    refetch: refetchProperties,
+  } = useQuery({
+    queryKey: ["userProperties", user?.id],
+    queryFn: () => fetchProperties(),
+    enabled: !!user?.id,
+  });
+
+  const {
+    data: events,
+    isLoading: isLoadingEvents,
+    error: eventsError,
+    refetch: refetchEvents,
+  } = useQuery({
+    queryKey: ["upcomingEvents"],
+    queryFn: () => fetchEvents(),
+  });
+
+  // Placeholder for updating dashboard data
+  const handleUpdateDashboard = async () => {
+    setIsUpdating(true);
     try {
-      setIsLoadingProperties(true);
-      setIsLoadingEvents(true);
-      setIsLoadingPortfolio(true);
+      // Refetch data
+      await Promise.all([refetchProperties(), refetchEvents()]);
       
-      // Fetch user properties
-      const userProperties = await fetchProperties();
-      setProperties(userProperties.slice(0, 3)); // Show only first 3
-      setIsLoadingProperties(false);
-      
-      // Fetch upcoming events
-      const upcomingEvents = await fetchEvents();
-      setEvents(upcomingEvents.slice(0, 3)); // Show only first 3
-      setIsLoadingEvents(false);
-      
-      // Fetch portfolio summary
-      const summary = await fetchPortfolioSummary();
-      setPortfolioSummary(summary);
-      setIsLoadingPortfolio(false);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      setIsLoadingProperties(false);
-      setIsLoadingEvents(false);
-      setIsLoadingPortfolio(false);
-    }
-  };
-  
-  const refreshDashboard = async () => {
-    setIsRefreshing(true);
-    try {
-      await fetchDashboardData();
       toast({
-        title: t('success'),
-        description: t('dashboardDataUpdated'),
+        title: t("success"),
+        description: "Dashboard data updated",
       });
     } catch (error) {
+      console.error("Error updating dashboard:", error);
       toast({
-        title: t('error'),
-        description: t('errorUpdatingDashboard'),
-        variant: 'destructive',
+        title: t("error"),
+        description: "Error updating dashboard",
+        variant: "destructive",
       });
     } finally {
-      setIsRefreshing(false);
+      setIsUpdating(false);
     }
   };
-  
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-  
-  // Functions for viewAll actions
-  const viewAllPropertiesAction = () => {
-    navigate('/dashboard/properties');
-  };
-  
-  const viewAllEventsAction = () => {
-    navigate('/dashboard/events');
-  };
+
+  // For demo purposes only - using hardcoded data
+  const hasSummaryData = true;
   
   return (
-    <DashboardLayout title={t('dashboard')} subtitle={t('yourInvestmentOverview')}>
-      <div className="flex justify-end mb-4">
+    <DashboardLayout
+      title={t("dashboard")}
+      subtitle={t("dashboard")}
+      headerAction={
         <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={refreshDashboard} 
-          disabled={isRefreshing}
-          className="flex items-center gap-1"
+          onClick={handleUpdateDashboard} 
+          variant="outline"
+          disabled={isUpdating}
+          className="ml-auto"
         >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          {t('refresh')}
+          <RefreshCcw className={`mr-2 h-4 w-4 ${isUpdating ? "animate-spin" : ""}`} />
+          {t("refreshDashboard")}
         </Button>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <PortfolioSummary 
-          data={portfolioSummary} 
-          isLoading={isLoadingPortfolio} 
-        />
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <PortfolioAllocation isLoading={isLoadingPortfolio} />
-        <PerformanceChart isLoading={isLoadingPortfolio} />
-      </div>
-      
-      <div className="mb-6">
-        <PropertyList 
-          properties={properties}
-          isLoading={isLoadingProperties}
-          actionLabel={t('viewAllProperties')}
-          action={viewAllPropertiesAction}
-        />
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <EventList 
-            events={events}
-            isLoading={isLoadingEvents}
-            actionLabel={t('viewAllEvents')}
-            action={viewAllEventsAction}
-          />
+      }
+    >
+      <div className="grid gap-6">
+        {/* Dashboard Main Content */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {hasSummaryData ? (
+            <>
+              <PortfolioSummary isLoading={isLoadingProperties} />
+              
+              <div className="grid gap-6">
+                <PortfolioAllocation isLoading={isLoadingProperties} />
+                <PropertyAlerts />
+              </div>
+              
+              <MarketInsights />
+            </>
+          ) : (
+            <DashboardError />
+          )}
         </div>
-        <div className="space-y-6">
-          <PropertyAlerts />
-          <MarketInsights />
+
+        {/* Properties Section */}
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight mb-4">Your Properties</h2>
+          
+          {isLoadingProperties ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
+            </div>
+          ) : propertiesError ? (
+            <DashboardError />
+          ) : (
+            properties && properties.length > 0 ? (
+              <PropertyList properties={properties.slice(0, 3)} />
+            ) : (
+              <DashboardError />
+            )
+          )}
+        </div>
+
+        {/* Performance Chart */}
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight mb-4">Performance</h2>
+          <PerformanceChart isLoading={isLoadingProperties} />
+        </div>
+
+        {/* Upcoming Events Section */}
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight mb-4">Upcoming Events</h2>
+          
+          {isLoadingEvents ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
+            </div>
+          ) : eventsError ? (
+            <DashboardError />
+          ) : (
+            events && events.length > 0 ? (
+              <EventList events={events.slice(0, 3)} />
+            ) : (
+              <DashboardError />
+            )
+          )}
         </div>
       </div>
     </DashboardLayout>
   );
-};
-
-export default Dashboard;
+}

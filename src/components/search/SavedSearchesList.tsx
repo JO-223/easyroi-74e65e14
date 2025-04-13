@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchSavedSearches, deleteSavedSearch, buildSearchQueryFromSaved } from "@/services/savedSearchService";
@@ -178,3 +177,5 @@ export function SavedSearchesList() {
     </div>
   );
 }
+
+export { SavedSearchesList };

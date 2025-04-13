@@ -1,146 +1,99 @@
 
-import { supabase } from '@/integrations/supabase/client';
-import { SavedPropertySearch } from '@/types/search';
-import { PropertyFilter } from '@/types/property';
+import { supabase } from "@/integrations/supabase/client";
+import { SavedPropertySearch } from "@/types/search";
+import { PropertyFilter } from "@/types/property";
 
-export const fetchSavedSearches = async (): Promise<SavedPropertySearch[]> => {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function fetchSavedSearches(): Promise<SavedPropertySearch[]> {
+  const { data: user } = await supabase.auth.getUser();
   
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (!user.user) {
+    throw new Error("User not authenticated");
   }
   
-  try {
-    const { data, error } = await supabase
-      .from('saved_property_searches')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-    
-    if (error) {
-      console.error('Error fetching saved searches:', error);
-      throw new Error('Failed to fetch saved searches');
-    }
-    
-    return data as SavedPropertySearch[];
-  } catch (error) {
-    console.error('Error in fetchSavedSearches:', error);
-    throw error;
+  const { data, error } = await supabase
+    .from("saved_searches")
+    .select("*")
+    .eq("user_id", user.user.id)
+    .order("created_at", { ascending: false });
+  
+  if (error) {
+    console.error("Error fetching saved searches:", error);
+    throw new Error(error.message);
   }
-};
+  
+  return data as SavedPropertySearch[];
+}
 
-export const savePropertySearch = async (
+export async function savePropertySearch(
   searchName: string,
   searchCriteria: PropertyFilter,
   isAlert: boolean = false,
   alertFrequency?: string
-): Promise<SavedPropertySearch> => {
-  const { data: { user } } = await supabase.auth.getUser();
+): Promise<SavedPropertySearch> {
+  const { data: user } = await supabase.auth.getUser();
   
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (!user.user) {
+    throw new Error("User not authenticated");
   }
   
-  try {
-    // Convert filter to proper format for database
-    const searchData = {
-      user_id: user.id,
+  // Extract relevant properties for database storage
+  const searchData = {
+    locations: searchCriteria.location ? [searchCriteria.location] : undefined,
+    price_range: searchCriteria.priceMin && searchCriteria.priceMax 
+      ? [searchCriteria.priceMin, searchCriteria.priceMax] as [number, number]
+      : undefined,
+    property_types: searchCriteria.type ? [searchCriteria.type] : undefined,
+    min_bedrooms: searchCriteria.bedroomsMin,
+    max_bedrooms: searchCriteria.bedroomsMax,
+    min_bathrooms: searchCriteria.bathroomsMin,
+    max_bathrooms: searchCriteria.bathroomsMax,
+    min_roi: searchCriteria.minRoi
+  };
+  
+  const { data, error } = await supabase
+    .from("saved_searches")
+    .insert({
+      user_id: user.user.id,
       search_name: searchName,
       search_criteria: searchCriteria,
       is_alert: isAlert,
-      alert_frequency: alertFrequency || null,
-      locations: searchCriteria.location ? [searchCriteria.location] : null,
-      price_range: (searchCriteria.priceMin || searchCriteria.priceMax) 
-        ? [searchCriteria.priceMin || 0, searchCriteria.priceMax || 999999999]
-        : null,
-      property_types: searchCriteria.type ? [searchCriteria.type] : null,
-      min_bedrooms: searchCriteria.bedroomsMin || null,
-      max_bedrooms: searchCriteria.bedroomsMax || null,
-      min_bathrooms: searchCriteria.bathroomsMin || null,
-      max_bathrooms: searchCriteria.bathroomsMax || null,
-    };
-    
-    const { data, error } = await supabase
-      .from('saved_property_searches')
-      .insert(searchData)
-      .select()
-      .single();
-    
-    if (error) {
-      console.error('Error saving property search:', error);
-      throw new Error('Failed to save property search');
-    }
-    
-    return data as SavedPropertySearch;
-  } catch (error) {
-    console.error('Error in savePropertySearch:', error);
-    throw error;
+      alert_frequency: isAlert ? alertFrequency : null,
+      ...searchData
+    })
+    .select("*")
+    .single();
+  
+  if (error) {
+    console.error("Error saving search:", error);
+    throw new Error(error.message);
   }
-};
+  
+  return data as SavedPropertySearch;
+}
 
-export const deleteSavedSearch = async (searchId: string): Promise<void> => {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function deleteSavedSearch(searchId: string): Promise<void> {
+  const { error } = await supabase
+    .from("saved_searches")
+    .delete()
+    .eq("id", searchId);
   
-  if (!user) {
-    throw new Error('User not authenticated');
+  if (error) {
+    console.error("Error deleting saved search:", error);
+    throw new Error(error.message);
   }
-  
-  try {
-    const { error } = await supabase
-      .from('saved_property_searches')
-      .delete()
-      .eq('id', searchId)
-      .eq('user_id', user.id);
-    
-    if (error) {
-      console.error('Error deleting saved search:', error);
-      throw new Error('Failed to delete saved search');
-    }
-  } catch (error) {
-    console.error('Error in deleteSavedSearch:', error);
-    throw error;
-  }
-};
+}
 
-export const getSavedSearchById = async (searchId: string): Promise<SavedPropertySearch> => {
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) {
-    throw new Error('User not authenticated');
-  }
-  
-  try {
-    const { data, error } = await supabase
-      .from('saved_property_searches')
-      .select('*')
-      .eq('id', searchId)
-      .eq('user_id', user.id)
-      .single();
-    
-    if (error) {
-      console.error('Error fetching saved search:', error);
-      throw new Error('Failed to fetch saved search');
-    }
-    
-    return data as SavedPropertySearch;
-  } catch (error) {
-    console.error('Error in getSavedSearchById:', error);
-    throw error;
-  }
-};
-
-export const buildSearchQueryFromSaved = (savedSearch: SavedPropertySearch): PropertyFilter => {
-  // Extract the search criteria and convert it to PropertyFilter format
-  const criteria: PropertyFilter = {
-    location: savedSearch.locations?.[0] || undefined,
-    type: savedSearch.property_types?.[0] || undefined,
-    priceMin: savedSearch.price_range?.[0] || undefined,
-    priceMax: savedSearch.price_range?.[1] || undefined,
-    bedroomsMin: savedSearch.min_bedrooms || undefined,
-    bedroomsMax: savedSearch.max_bedrooms || undefined,
-    bathroomsMin: savedSearch.min_bathrooms || undefined,
-    bathroomsMax: savedSearch.max_bathrooms || undefined,
+export function buildSearchQueryFromSaved(savedSearch: SavedPropertySearch): PropertyFilter {
+  // Convert from the database format to the application filter format
+  return {
+    location: savedSearch.locations?.[0] || '',
+    priceMin: savedSearch.price_range?.[0],
+    priceMax: savedSearch.price_range?.[1],
+    type: savedSearch.property_types?.[0] || '',
+    bedroomsMin: savedSearch.min_bedrooms,
+    bedroomsMax: savedSearch.max_bedrooms,
+    bathroomsMin: savedSearch.min_bathrooms,
+    bathroomsMax: savedSearch.max_bathrooms,
+    minRoi: savedSearch.min_roi
   };
-  
-  return criteria;
-};
+}

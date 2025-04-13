@@ -13,8 +13,8 @@ interface FieldTooltipProps {
 export function FieldTooltip({ label, tooltip, tooltipKey }: FieldTooltipProps) {
   const { t } = useLanguage();
   
-  // Use the tooltip text directly instead of trying to use a nested translation
-  const tooltipText = tooltipKey ? tooltip : tooltip;
+  // Use the tooltip text directly
+  const tooltipText = tooltip;
 
   return (
     <div className="flex items-center gap-1">

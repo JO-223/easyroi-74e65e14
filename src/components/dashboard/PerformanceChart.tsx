@@ -1,79 +1,98 @@
 
-import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import { useQuery } from "@tanstack/react-query";
-import { fetchInvestmentGrowth } from "@/services/portfolioService";
-import { Skeleton } from "@/components/ui/skeleton";
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-export function PerformanceChart({ isLoading = false }: { isLoading?: boolean }) {
+interface PerformanceChartProps {
+  isLoading?: boolean;
+}
+
+export function PerformanceChart({ isLoading = false }: PerformanceChartProps) {
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState('monthly');
   
-  const { data: growthData } = useQuery({
-    queryKey: ['investmentGrowth'],
-    queryFn: fetchInvestmentGrowth,
-    enabled: !isLoading,
-  });
+  // Demo data for display
+  const monthlyData = [
+    { month: 'Jan', value: 2000 },
+    { month: 'Feb', value: 2100 },
+    { month: 'Mar', value: 1900 },
+    { month: 'Apr', value: 2400 },
+    { month: 'May', value: 2200 },
+    { month: 'Jun', value: 2600 },
+    { month: 'Jul', value: 2800 },
+    { month: 'Aug', value: 3000 },
+    { month: 'Sep', value: 3200 },
+    { month: 'Oct', value: 3400 },
+    { month: 'Nov', value: 3600 },
+    { month: 'Dec', value: 3800 }
+  ];
+  
+  const yearlyData = [
+    { year: '2018', value: 20000 },
+    { year: '2019', value: 24000 },
+    { year: '2020', value: 22000 },
+    { year: '2021', value: 28000 },
+    { year: '2022', value: 34000 },
+    { year: '2023', value: 40000 },
+    { year: '2024', value: 38000 }
+  ];
   
   if (isLoading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle><Skeleton className="h-6 w-48" /></CardTitle>
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-32" />
         </CardHeader>
-        <CardContent className="h-[300px]">
-          <Skeleton className="h-full w-full rounded-lg opacity-50" />
+        <CardContent>
+          <Skeleton className="h-60 w-full" />
         </CardContent>
       </Card>
     );
   }
-
+  
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t('portfolioPerformance')}</CardTitle>
+        <CardTitle>{t("portfolioPerformance")}</CardTitle>
+        <Tabs defaultValue="monthly" className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-2 w-60">
+            <TabsTrigger value="monthly">{t("monthlyReturns")}</TabsTrigger>
+            <TabsTrigger value="yearly">{t("yearlyGrowth")}</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </CardHeader>
-      <CardContent className="h-[300px]">
-        {growthData && growthData.length > 0 ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={growthData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="month" 
-                tick={{ fontSize: 12 }}
-              />
-              <YAxis 
-                tickFormatter={(value) => `€${value / 1000}k`}
-                tick={{ fontSize: 12 }}
-              />
-              <Tooltip 
-                formatter={(value) => [`€${value.toLocaleString()}`, t('value')]} 
-                labelFormatter={(label) => label}
-              />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="#36B37E"
-                activeDot={{ r: 8 }}
-                name={t('investment')}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        ) : (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-muted-foreground">{t('noData')}</p>
-          </div>
-        )}
+      <CardContent className="pl-0">
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart
+            data={activeTab === 'monthly' ? monthlyData : yearlyData}
+            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <XAxis 
+              dataKey={activeTab === 'monthly' ? 'month' : 'year'} 
+              tick={{ fontSize: 12 }} 
+            />
+            <YAxis tick={{ fontSize: 12 }} />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip formatter={(value) => `$${value}`} />
+            <Area 
+              type="monotone" 
+              dataKey="value" 
+              stroke="#8884d8" 
+              fillOpacity={1} 
+              fill="url(#colorValue)" 
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );
