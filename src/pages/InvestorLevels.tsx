@@ -11,9 +11,7 @@ import { motion } from "framer-motion";
 import { USER_LEVEL_THRESHOLDS, formatUserLevel } from "@/utils/userLevelUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
-
-// Import framer-motion
-<lov-add-dependency>framer-motion@latest</lov-add-dependency>
+import { InvestorKey } from "@/utils/translations/investor";
 
 const InvestorLevels = () => {
   const { t } = useLanguage();
@@ -23,7 +21,7 @@ const InvestorLevels = () => {
   const levels = [
     { 
       id: 'starter', 
-      name: t('starter'),
+      name: t('starter' as InvestorKey),
       icon: Medal,
       color: "bg-gradient-to-r from-[#D3D3D3] to-[#A9A9A9]",
       textColor: "text-black",
@@ -31,11 +29,11 @@ const InvestorLevels = () => {
       events: 1,
       earlyAccess: "Base",
       support: "Standard",
-      description: t('starterLevelDesc') || "Begin your investment journey with access to our basic platform features."
+      description: t('starterLevelDesc' as InvestorKey) || "Begin your investment journey with access to our basic platform features."
     },
     { 
       id: 'bronze', 
-      name: t('bronze'),
+      name: t('bronze' as InvestorKey),
       icon: Medal,
       color: "bg-gradient-to-r from-[#CD7F32] to-[#B87333]",
       textColor: "text-white",
@@ -43,11 +41,11 @@ const InvestorLevels = () => {
       events: 2,
       earlyAccess: "Limited",
       support: "Priority",
-      description: t('bronzeLevelDesc') || "Unlock your first tier of premium features with access to more exclusive events."
+      description: t('bronzeLevelDesc' as InvestorKey) || "Unlock your first tier of premium features with access to more exclusive events."
     },
     { 
       id: 'silver', 
-      name: t('silver'),
+      name: t('silver' as InvestorKey),
       icon: Award,
       color: "bg-gradient-to-r from-[#C0C0C0] to-[#A8A9AD]",
       textColor: "text-white",
@@ -55,11 +53,11 @@ const InvestorLevels = () => {
       events: 4,
       earlyAccess: "Early",
       support: "Priority",
-      description: t('silverLevelDesc') || "Gain enhanced visibility and access to more premium investment opportunities."
+      description: t('silverLevelDesc' as InvestorKey) || "Gain enhanced visibility and access to more premium investment opportunities."
     },
     { 
       id: 'gold', 
-      name: t('gold'),
+      name: t('gold' as InvestorKey),
       icon: Crown,
       color: "bg-gradient-to-r from-[#FFD700] to-[#FFC300]",
       textColor: "text-black",
@@ -67,11 +65,11 @@ const InvestorLevels = () => {
       events: 8,
       earlyAccess: "Advanced",
       support: "Priority Plus",
-      description: t('goldLevelDesc') || "Join our gold tier for premium benefits and early access to high-yield investments."
+      description: t('goldLevelDesc' as InvestorKey) || "Join our gold tier for premium benefits and early access to high-yield investments."
     },
     { 
       id: 'ruby', 
-      name: t('ruby'),
+      name: t('ruby' as InvestorKey),
       icon: Gem,
       color: "bg-gradient-to-r from-[#9B111E] to-[#C41E3A]",
       textColor: "text-white",
@@ -79,11 +77,11 @@ const InvestorLevels = () => {
       events: 12,
       earlyAccess: "Premium",
       support: "Dedicated Line",
-      description: t('rubyLevelDesc') || "Experience exclusive investment opportunities with personalized guidance."
+      description: t('rubyLevelDesc' as InvestorKey) || "Experience exclusive investment opportunities with personalized guidance."
     },
     { 
       id: 'emerald', 
-      name: t('emerald'),
+      name: t('emerald' as InvestorKey),
       icon: Gem,
       color: "bg-gradient-to-r from-[#50C878] to-[#2E8B57]",
       textColor: "text-white",
@@ -91,11 +89,11 @@ const InvestorLevels = () => {
       events: 16,
       earlyAccess: "VIP",
       support: "Direct Consultant",
-      description: t('emeraldLevelDesc') || "Enjoy significant privileges with our emerald tier including direct consultant support."
+      description: t('emeraldLevelDesc' as InvestorKey) || "Enjoy significant privileges with our emerald tier including direct consultant support."
     },
     { 
       id: 'platinum', 
-      name: t('platinum'),
+      name: t('platinum' as InvestorKey),
       icon: Star,
       color: "bg-gradient-to-r from-[#E5E4E2] to-[#BCC6CC]",
       textColor: "text-black",
@@ -103,11 +101,11 @@ const InvestorLevels = () => {
       events: "Unlimited",
       earlyAccess: "Exclusive",
       support: "Personal Manager",
-      description: t('platinumLevelDesc') || "Access our platinum benefits including a personal investment manager."
+      description: t('platinumLevelDesc' as InvestorKey) || "Access our platinum benefits including a personal investment manager."
     },
     { 
       id: 'diamond', 
-      name: t('diamond'),
+      name: t('diamond' as InvestorKey),
       icon: Diamond,
       color: "bg-gradient-to-r from-[#B9F2FF] to-[#E0FFFF]",
       textColor: "text-black",
@@ -115,7 +113,7 @@ const InvestorLevels = () => {
       events: "All Access",
       earlyAccess: "First Look",
       support: "Director Access",
-      description: t('diamondLevelDesc') || "Enjoy our pinnacle tier with unparalleled access and investment opportunities."
+      description: t('diamondLevelDesc' as InvestorKey) || "Enjoy our pinnacle tier with unparalleled access and investment opportunities."
     }
   ];
   
@@ -161,13 +159,13 @@ const InvestorLevels = () => {
   };
 
   return (
-    <DashboardLayout title={t('investorLevels')} subtitle={t('investorLevelsSubtitle') || "Discover the benefits of each investment tier"}>
+    <DashboardLayout title={t('investorLevels' as InvestorKey)} subtitle={t('investorLevelsSubtitle' as InvestorKey) || "Discover the benefits of each investment tier"}>
       <div className="container mx-auto px-4 py-8">
         <Card className="border-0 shadow-xl bg-gradient-to-r from-gray-50 to-white">
           <CardHeader className="text-center pb-0">
-            <CardTitle className="text-3xl font-bold tracking-tight mb-2">{t('investorLevelsTitle') || "Investor Levels Program"}</CardTitle>
+            <CardTitle className="text-3xl font-bold tracking-tight mb-2">{t('investorLevelsTitle' as InvestorKey) || "Investor Levels Program"}</CardTitle>
             <CardDescription className="text-lg max-w-3xl mx-auto">
-              {t('investorLevelsDescription') || "Our exclusive program rewards investors with enhanced benefits and opportunities as they increase their investment portfolio with us."}
+              {t('investorLevelsDescription' as InvestorKey) || "Our exclusive program rewards investors with enhanced benefits and opportunities as they increase their investment portfolio with us."}
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
@@ -180,7 +178,7 @@ const InvestorLevels = () => {
               <div className="flex justify-center mb-8">
                 <TabsList className="bg-gray-100 p-1">
                   <TabsTrigger value="overview" className="px-4 py-2">
-                    {t('overview')}
+                    {t('overview' as InvestorKey)}
                   </TabsTrigger>
                   {levels.map((level) => (
                     <TabsTrigger key={level.id} value={level.id} className="px-4 py-2">
@@ -222,19 +220,19 @@ const InvestorLevels = () => {
                             <li className="flex gap-2 items-center">
                               <Calendar size={16} className="text-easyroi-gold" />
                               <span>
-                                <strong>{t('events')}:</strong> {level.events}
+                                <strong>{t('events' as InvestorKey)}:</strong> {level.events}
                               </span>
                             </li>
                             <li className="flex gap-2 items-center">
                               <Rocket size={16} className="text-easyroi-gold" />
                               <span>
-                                <strong>{t('earlyAccess')}:</strong> {level.earlyAccess}
+                                <strong>{t('earlyAccess' as InvestorKey)}:</strong> {level.earlyAccess}
                               </span>
                             </li>
                             <li className="flex gap-2 items-center">
                               <Headphones size={16} className="text-easyroi-gold" />
                               <span>
-                                <strong>{t('support')}:</strong> {level.support}
+                                <strong>{t('support' as InvestorKey)}:</strong> {level.support}
                               </span>
                             </li>
                           </ul>
@@ -245,7 +243,7 @@ const InvestorLevels = () => {
                               className={`w-full ${level.color} ${level.textColor} hover:opacity-90`}
                               onClick={() => setSelectedLevel(level.id)}
                             >
-                              {t('seeDetails')}
+                              {t('seeDetails' as InvestorKey)}
                             </Button>
                           </div>
                         </CardContent>
@@ -255,25 +253,25 @@ const InvestorLevels = () => {
                 </motion.div>
                 
                 <div className="bg-gray-50 rounded-xl p-8 mb-8">
-                  <h2 className="text-2xl font-bold mb-6 text-center">{t('levelBenefitsComparison') || "Benefits Comparison"}</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-center">{t('levelBenefitsComparison' as InvestorKey) || "Benefits Comparison"}</h2>
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead>
                         <tr>
                           <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {t('level')}
+                            {t('level' as InvestorKey)}
                           </th>
                           <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {t('investmentRequired')}
+                            {t('investmentRequired' as InvestorKey)}
                           </th>
                           <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {t('events')}
+                            {t('events' as InvestorKey)}
                           </th>
                           <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {t('earlyAccess')}
+                            {t('earlyAccess' as InvestorKey)}
                           </th>
                           <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {t('support')}
+                            {t('support' as InvestorKey)}
                           </th>
                         </tr>
                       </thead>
@@ -305,12 +303,12 @@ const InvestorLevels = () => {
                 </div>
                 
                 <div className="text-center">
-                  <h3 className="text-xl font-semibold mb-4">{t('readyToProgress') || "Ready to progress to the next level?"}</h3>
+                  <h3 className="text-xl font-semibold mb-4">{t('readyToProgress' as InvestorKey) || "Ready to progress to the next level?"}</h3>
                   <p className="mb-6 text-gray-600 max-w-2xl mx-auto">
-                    {t('progressNextLevelDescription') || "Increase your investment portfolio to unlock exclusive benefits and premium opportunities."}
+                    {t('progressNextLevelDescription' as InvestorKey) || "Increase your investment portfolio to unlock exclusive benefits and premium opportunities."}
                   </p>
                   <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90 px-8">
-                    {t('contactAdvisor')}
+                    {t('contactAdvisor' as InvestorKey)}
                   </Button>
                 </div>
               </TabsContent>
@@ -333,16 +331,16 @@ const InvestorLevels = () => {
                               <level.icon size={48} />
                             </div>
                             <CardTitle className="text-3xl font-bold">
-                              {level.name} {t('investor')}
+                              {level.name} {t('investor' as InvestorKey)}
                             </CardTitle>
                             <CardDescription className={`${level.textColor} opacity-85 font-medium`}>
-                              {t('investmentFrom')} {formatThreshold(level.threshold)}
+                              {t('investmentFrom' as InvestorKey)} {formatThreshold(level.threshold)}
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="bg-white/20 backdrop-blur-sm p-6 text-center">
                             <p className="mb-4">{level.description}</p>
                             <Button className="bg-white text-gray-800 hover:bg-gray-100">
-                              {t('upgradeNow')}
+                              {t('upgradeNow' as InvestorKey)}
                             </Button>
                           </CardContent>
                         </Card>
@@ -351,7 +349,7 @@ const InvestorLevels = () => {
                       {/* Benefits Details */}
                       <div className="w-full md:w-2/3">
                         <h2 className="text-2xl font-bold mb-6">
-                          {level.name} {t('levelBenefits')}
+                          {level.name} {t('levelBenefits' as InvestorKey)}
                         </h2>
                         
                         <div className="space-y-8">
@@ -360,16 +358,16 @@ const InvestorLevels = () => {
                               <CardHeader className="pb-2">
                                 <div className="flex items-center gap-3">
                                   <Calendar className="h-6 w-6 text-easyroi-gold" />
-                                  <CardTitle className="text-xl">{t('exclusiveEvents')}</CardTitle>
+                                  <CardTitle className="text-xl">{t('exclusiveEvents' as InvestorKey)}</CardTitle>
                                 </div>
                               </CardHeader>
                               <CardContent>
                                 <p className="mb-4">
-                                  {t('exclusiveEventsDescription') || "Access to invitation-only networking events, property previews, and investment seminars."}
+                                  {t('exclusiveEventsDescription' as InvestorKey) || "Access to invitation-only networking events, property previews, and investment seminars."}
                                 </p>
                                 <div className="bg-gray-50 p-3 rounded-md">
-                                  <span className="font-semibold">{level.name} {t('level')}: </span>
-                                  <span>{level.events} {t('eventsPerYear')}</span>
+                                  <span className="font-semibold">{level.name} {t('level' as InvestorKey)}: </span>
+                                  <span>{level.events} {t('eventsPerYear' as InvestorKey)}</span>
                                 </div>
                               </CardContent>
                             </Card>
@@ -380,16 +378,16 @@ const InvestorLevels = () => {
                               <CardHeader className="pb-2">
                                 <div className="flex items-center gap-3">
                                   <Rocket className="h-6 w-6 text-easyroi-gold" />
-                                  <CardTitle className="text-xl">{t('earlyAccess')}</CardTitle>
+                                  <CardTitle className="text-xl">{t('earlyAccess' as InvestorKey)}</CardTitle>
                                 </div>
                               </CardHeader>
                               <CardContent>
                                 <p className="mb-4">
-                                  {t('earlyAccessDescription') || "Priority access to new development projects and investment opportunities before they are publicly available."}
+                                  {t('earlyAccessDescription' as InvestorKey) || "Priority access to new development projects and investment opportunities before they are publicly available."}
                                 </p>
                                 <div className="bg-gray-50 p-3 rounded-md">
-                                  <span className="font-semibold">{level.name} {t('level')}: </span>
-                                  <span>{level.earlyAccess} {t('access')}</span>
+                                  <span className="font-semibold">{level.name} {t('level' as InvestorKey)}: </span>
+                                  <span>{level.earlyAccess} {t('access' as InvestorKey)}</span>
                                 </div>
                               </CardContent>
                             </Card>
@@ -400,15 +398,15 @@ const InvestorLevels = () => {
                               <CardHeader className="pb-2">
                                 <div className="flex items-center gap-3">
                                   <Headphones className="h-6 w-6 text-easyroi-gold" />
-                                  <CardTitle className="text-xl">{t('prioritySupport')}</CardTitle>
+                                  <CardTitle className="text-xl">{t('prioritySupport' as InvestorKey)}</CardTitle>
                                 </div>
                               </CardHeader>
                               <CardContent>
                                 <p className="mb-4">
-                                  {t('prioritySupportDescription') || "Dedicated support team to assist with all your investment needs and inquiries."}
+                                  {t('prioritySupportDescription' as InvestorKey) || "Dedicated support team to assist with all your investment needs and inquiries."}
                                 </p>
                                 <div className="bg-gray-50 p-3 rounded-md">
-                                  <span className="font-semibold">{level.name} {t('level')}: </span>
+                                  <span className="font-semibold">{level.name} {t('level' as InvestorKey)}: </span>
                                   <span>{level.support}</span>
                                 </div>
                               </CardContent>
@@ -418,7 +416,7 @@ const InvestorLevels = () => {
                         
                         <div className="mt-8 text-center">
                           <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90">
-                            {t('exploreAllLevels')}
+                            {t('exploreAllLevels' as InvestorKey)}
                           </Button>
                         </div>
                       </div>
@@ -429,13 +427,13 @@ const InvestorLevels = () => {
                       <div className="mt-16">
                         <Separator className="mb-8" />
                         <h3 className="text-2xl font-bold text-center mb-8">
-                          {t('whatInvestorsSay') || "What our investors say"}
+                          {t('whatInvestorsSay' as InvestorKey) || "What our investors say"}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <Card className="bg-gray-50">
                             <CardContent className="pt-6">
                               <p className="italic text-gray-600 mb-4">
-                                "{t(`${level.id}Testimonial1`) || "The exclusive events have been invaluable for networking and finding new investment opportunities. The early access to projects has given me a significant advantage."}"
+                                "The exclusive events have been invaluable for networking and finding new investment opportunities. The early access to projects has given me a significant advantage."
                               </p>
                               <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 rounded-full bg-easyroi-navy flex items-center justify-center text-white font-bold">
@@ -443,7 +441,7 @@ const InvestorLevels = () => {
                                 </div>
                                 <div>
                                   <p className="font-medium">Alessandro P.</p>
-                                  <p className="text-sm text-gray-500">{level.name} {t('investor')} {t('since')} 2022</p>
+                                  <p className="text-sm text-gray-500">{level.name} {t('investor' as InvestorKey)} {t('since' as InvestorKey)} 2022</p>
                                 </div>
                               </div>
                             </CardContent>
@@ -451,7 +449,7 @@ const InvestorLevels = () => {
                           <Card className="bg-gray-50">
                             <CardContent className="pt-6">
                               <p className="italic text-gray-600 mb-4">
-                                "{t(`${level.id}Testimonial2`) || "The dedicated support team has made managing my investments effortless. I appreciate the personalized attention and exclusive opportunities this level provides."}"
+                                "The dedicated support team has made managing my investments effortless. I appreciate the personalized attention and exclusive opportunities this level provides."
                               </p>
                               <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 rounded-full bg-easyroi-gold flex items-center justify-center text-white font-bold">
@@ -459,7 +457,7 @@ const InvestorLevels = () => {
                                 </div>
                                 <div>
                                   <p className="font-medium">Maria L.</p>
-                                  <p className="text-sm text-gray-500">{level.name} {t('investor')} {t('since')} 2021</p>
+                                  <p className="text-sm text-gray-500">{level.name} {t('investor' as InvestorKey)} {t('since' as InvestorKey)} 2021</p>
                                 </div>
                               </div>
                             </CardContent>

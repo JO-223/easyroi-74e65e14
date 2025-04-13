@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { NavItem } from '@/types';
+import { InvestorKey } from "@/utils/translations/investor";
 
 interface UserProfileData {
   firstName?: string;
@@ -65,7 +66,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       icon: Users
     },
     {
-      title: t('investorLevels') || "Investor Levels",
+      title: t('investorLevels' as InvestorKey),
       href: '/dashboard/investor-levels',
       icon: Award
     },
