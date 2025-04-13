@@ -55,6 +55,12 @@ export async function getPropertyTypeAllocation(userId: string) {
   
   if (data && Array.isArray(data)) {
     data.forEach(property => {
+      // Add null checking before accessing property.type
+      if (!property.type) {
+        // Skip this property if type is null
+        return;
+      }
+      
       // Safely access the type name with proper type checking
       const typeName = property.type && 
                       typeof property.type === 'object' && 
