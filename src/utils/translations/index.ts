@@ -7,7 +7,7 @@ import { eventsKeys, EventsKey } from './events';
 import { networkKeys, NetworkKey } from './network';
 import { settingsKeys, SettingsKey } from './settings';
 import { adminKeys, AdminKey } from './admin';
-import { uiKeys, UiKey } from './misc';
+import { uiKeys, UiKey } from './ui';
 import { miscKeys, MiscKey } from './misc';
 import { analyticsKeys, AnalyticsKey } from './analytics';
 import { landingKeys, LandingKey } from './landing';
