@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 export interface AnalyticsData {
@@ -39,7 +40,7 @@ export async function getPropertyTypeAllocation(userId: string) {
     .from('properties')
     .select(`
       price,
-      type:property_types!type_id(name)
+      type:property_types(name)
     `)
     .eq('user_id', userId);
     
@@ -49,25 +50,33 @@ export async function getPropertyTypeAllocation(userId: string) {
   }
   
   // Calculate totals by property type
-  const typeMap = new Map();
+  const typeMap = new Map<string, number>();
   let totalInvestment = 0;
   
-  data.forEach(property => {
-    const typeName = property.type?.name || 'Unknown';
-    const price = Number(property.price || 0);
-    totalInvestment += price;
-    
-    if (typeMap.has(typeName)) {
-      typeMap.set(typeName, typeMap.get(typeName) + price);
-    } else {
-      typeMap.set(typeName, price);
-    }
-  });
+  if (data && Array.isArray(data)) {
+    data.forEach(property => {
+      // Safely access the type name with proper type checking
+      const typeName = property.type && 
+                      typeof property.type === 'object' && 
+                      property.type !== null && 
+                      'name' in property.type ? 
+                      String(property.type.name) : 'Unknown';
+                      
+      const price = Number(property.price || 0);
+      totalInvestment += price;
+      
+      if (typeMap.has(typeName)) {
+        typeMap.set(typeName, (typeMap.get(typeName) || 0) + price);
+      } else {
+        typeMap.set(typeName, price);
+      }
+    });
+  }
   
   // Convert to percentage
   const typeAllocation = Array.from(typeMap.entries()).map(([name, value]) => ({
     name,
-    value: totalInvestment > 0 ? Number(((value as number) / totalInvestment * 100).toFixed(2)) : 0
+    value: totalInvestment > 0 ? Number(((value) / totalInvestment * 100).toFixed(2)) : 0
   }));
   
   return typeAllocation;
@@ -112,7 +121,7 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       .order('month_index', { ascending: true });
 
     // Fallback to user_investment_growth but convert to ROI percentages
-    let roiPerformanceData = [];
+    let roiPerformanceData: Array<{month: string; roi: number; benchmark: number}> = [];
     if (!monthlyRoiData || monthlyRoiData.length === 0 || monthlyRoiError) {
       // If we don't have monthly ROI data, we'll use investment growth and convert/simulate ROI
       const { data: growthData, error: growthError } = await supabase
@@ -125,20 +134,22 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       console.log("Growth data from Supabase:", growthData);
       
       // Convert growth data to ROI format (using ROI percentage, not absolute value)
-      roiPerformanceData = growthData?.map(item => {
-        // Use the actual ROI percentage from roiData, or a simulated value
-        const averageRoi = roiData?.average_roi || 4.5; // Default to 4.5% if we don't have real data
-        
-        // Add small random variation to make chart more realistic
-        const variation = (Math.random() * 2 - 1) * 0.5; // variation between -0.5 and +0.5
-        const monthlyRoi = Number((averageRoi + variation).toFixed(2));
-        
-        return {
-          month: String(item.month || ''),
-          roi: monthlyRoi,
-          benchmark: Number(MARKET_AVERAGE_ROI.toFixed(2))
-        };
-      }) || [];
+      if (growthData && Array.isArray(growthData)) {
+        roiPerformanceData = growthData.map(item => {
+          // Use the actual ROI percentage from roiData, or a simulated value
+          const averageRoi = roiData?.average_roi ? Number(roiData.average_roi) : 4.5; // Default to 4.5% if we don't have real data
+          
+          // Add small random variation to make chart more realistic
+          const variation = (Math.random() * 2 - 1) * 0.5; // variation between -0.5 and +0.5
+          const monthlyRoi = Number((averageRoi + variation).toFixed(2));
+          
+          return {
+            month: String(item.month || ''),
+            roi: monthlyRoi,
+            benchmark: Number(MARKET_AVERAGE_ROI.toFixed(2))
+          };
+        });
+      }
     } else {
       // We have proper monthly ROI data, use it directly
       roiPerformanceData = monthlyRoiData.map(item => ({
@@ -152,14 +163,14 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     const { data: propertyTypeData, error: propertyTypeError } = await supabase
       .rpc('get_allocation_by_property_type', { user_id: user.id });
       
-    let typeAllocationData = [];
+    let typeAllocationData: Array<{name: string; value: number}> = [];
     if (propertyTypeError) {
       console.error("Error fetching property type allocation:", propertyTypeError);
       console.log("Falling back to manual calculation for property type allocation");
       
       // Get property type allocation using the helper function
       typeAllocationData = await getPropertyTypeAllocation(user.id);
-    } else {
+    } else if (propertyTypeData && Array.isArray(propertyTypeData)) {
       // Format the data from the RPC call
       typeAllocationData = propertyTypeData.map(item => ({
         name: String(item.name || ''),
@@ -185,10 +196,11 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     if (eventsError) console.error("Error fetching events data:", eventsError);
 
     // Format Geographic Distribution with proper type casting - handle nulls
-    const geographicDistribution = geoDistribution?.map(item => ({
-      name: String(item.location || ''),
-      value: Number(parseFloat(String(item.percentage || 0)).toFixed(2))
-    })) || [];
+    const geographicDistribution = geoDistribution && Array.isArray(geoDistribution) ? 
+      geoDistribution.map(item => ({
+        name: String(item.location || ''),
+        value: Number(parseFloat(String(item.percentage || 0)).toFixed(2))
+      })) : [];
 
     // Calculate market comparison
     const averageRoi = Number(parseFloat(String(roiData?.average_roi || 0)).toFixed(2));
