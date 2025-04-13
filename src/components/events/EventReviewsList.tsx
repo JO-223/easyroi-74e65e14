@@ -8,9 +8,10 @@ import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { Star, Flag, ThumbsUp, AlertOctagon } from "lucide-react";
-import { EventReview } from "@/types/event";
+import { EventReview } from "@/types/eventReview";
 import EventReviewDialog from "./EventReviewDialog";
 import { EmptyState } from "@/components/ui/empty-state";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EventReviewsListProps {
   eventId: string;

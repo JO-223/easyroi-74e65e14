@@ -102,6 +102,7 @@ export const eventsKeys = [
   'submitting',
   'submitReview',
   'loginRequired',
+  'loginRequiredDescription',
   'pleaseLoginToVote',
   'errorVotingReviewHelpful',
   'confirmDeleteReview',

@@ -69,7 +69,7 @@ export default function EventReviewDialog({
     if (!user?.id) {
       toast({
         title: t("loginRequired"),
-        description: t("loginRequiredDescription"),
+        description: t("pleaseLoginToVote"),
         variant: "destructive",
       });
       return;

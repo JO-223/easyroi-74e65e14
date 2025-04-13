@@ -1,3 +1,4 @@
+
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError, User } from "@supabase/supabase-js";
@@ -79,13 +80,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error("Error fetching user details:", error);
-        const authErr: AuthError = {
+        const authErr = {
           name: error.code || 'Database error',
           message: error.message,
           status: 400,
-          __isAuthError: true,
           code: error.code
-        };
+        } as AuthError;
+        
         setAuthError(authErr);
       } else {
         setUserDetails({
@@ -100,13 +101,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error: any) {
       console.error("Unexpected error fetching user details:", error);
-      const authErr: AuthError = {
+      const authErr = {
         name: 'Unknown error',
         message: error.message || 'Unknown error occurred',
         status: 500,
-        __isAuthError: true,
         code: 'unknown'
-      };
+      } as AuthError;
+      
       setAuthError(authErr);
     }
   };

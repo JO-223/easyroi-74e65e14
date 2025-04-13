@@ -25,14 +25,14 @@ export async function fetchReviews(eventId: string): Promise<EventReview[]> {
     
     // Transform data to match EventReview type
     return (data || []).map(item => {
-      const profile = item.profiles || {};
+      const profile: any = item.profiles || {};
       return {
         id: String(item.id),
         event_id: String(item.event_id),
         user_id: String(item.user_id),
         rating: Number(item.rating),
-        review_title: item.review_title,
-        review_content: item.review_content,
+        review_title: item.review_title ? String(item.review_title) : undefined,
+        review_content: item.review_content ? String(item.review_content) : undefined,
         is_verified_attendee: Boolean(item.is_verified_attendee),
         is_anonymous: Boolean(item.is_anonymous),
         helpful_votes: Number(item.helpful_votes),
@@ -158,8 +158,8 @@ function transformEventReview(data: any): EventReview {
     event_id: String(data.event_id),
     user_id: String(data.user_id),
     rating: Number(data.rating),
-    review_title: data.review_title,
-    review_content: data.review_content,
+    review_title: data.review_title ? String(data.review_title) : undefined,
+    review_content: data.review_content ? String(data.review_content) : undefined,
     is_verified_attendee: Boolean(data.is_verified_attendee),
     is_anonymous: Boolean(data.is_anonymous),
     helpful_votes: Number(data.helpful_votes),

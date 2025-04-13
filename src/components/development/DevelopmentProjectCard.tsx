@@ -14,9 +14,10 @@ import { formatDateFromISO } from '@/utils/dates';
 
 interface DevelopmentProjectCardProps {
   project: DevelopmentProject;
+  onClick?: () => void;
 }
 
-export const DevelopmentProjectCard = ({ project }: DevelopmentProjectCardProps) => {
+export const DevelopmentProjectCard = ({ project, onClick }: DevelopmentProjectCardProps) => {
   const { t } = useLanguage();
   
   // Helper function to get appropriate color based on progress
@@ -30,8 +31,17 @@ export const DevelopmentProjectCard = ({ project }: DevelopmentProjectCardProps)
   // If there's a project image, use it; otherwise, use a placeholder
   const projectImage = project.image_url || '/assets/placeholder-property.jpg';
 
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-md">
+    <Card 
+      className="overflow-hidden transition-all hover:shadow-md cursor-pointer" 
+      onClick={handleCardClick}
+    >
       {/* Project image */}
       <div className="relative h-48 overflow-hidden">
         <img 
@@ -40,7 +50,7 @@ export const DevelopmentProjectCard = ({ project }: DevelopmentProjectCardProps)
           className="w-full h-full object-cover transition-transform hover:scale-105"
         />
         <div className="absolute top-2 right-2">
-          <BadgeLevel level={project.investor_level} />
+          <BadgeLevel level={project.investor_level as any} />
         </div>
       </div>
 
@@ -110,7 +120,7 @@ export const DevelopmentProjectCard = ({ project }: DevelopmentProjectCardProps)
         <Badge variant="outline" className="bg-white">
           {project.construction_stage}
         </Badge>
-        <Link to={`/development/${project.id}`}>
+        <Link to={`/development/${project.id}`} onClick={(e) => e.stopPropagation()}>
           <Button variant="outline" size="sm">
             {t('viewDetails')}
           </Button>

@@ -71,7 +71,7 @@ export default function EventDetail() {
           variant="card"
           icon={<AlertTriangle size={40} />}
           title={t('eventNotFound')}
-          description={t('eventNotFound')}
+          description={t('eventNotFoundDescription')}
         />
       </DashboardLayout>
     );

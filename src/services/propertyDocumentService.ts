@@ -21,7 +21,20 @@ export async function fetchPropertyDocuments(propertyId: string): Promise<Proper
       .order('upload_date', { ascending: false });
 
     if (error) throw error;
-    return data as PropertyDocument[];
+    
+    return (data || []).map(doc => ({
+      id: String(doc.id),
+      property_id: String(doc.property_id),
+      document_name: String(doc.document_name),
+      document_type: String(doc.document_type),
+      description: String(doc.description || ''),
+      file_path: String(doc.file_path),
+      file_size: Number(doc.file_size),
+      mime_type: String(doc.mime_type),
+      upload_date: String(doc.upload_date),
+      is_confidential: Boolean(doc.is_confidential),
+      uploaded_by: String(doc.uploaded_by)
+    }));
   } catch (error) {
     console.error('Error fetching property documents:', error);
     throw error;
@@ -53,12 +66,26 @@ export async function uploadPropertyDocument(params: DocumentUploadParams): Prom
         file_size: params.file.size,
         mime_type: params.file.type,
         uploaded_by: params.uploaded_by,
+        upload_date: new Date().toISOString()
       })
       .select()
       .single();
       
     if (error) throw error;
-    return data as PropertyDocument;
+    
+    return {
+      id: String(data.id),
+      property_id: String(data.property_id),
+      document_name: String(data.document_name),
+      document_type: String(data.document_type),
+      description: String(data.description || ''),
+      file_path: String(data.file_path),
+      file_size: Number(data.file_size),
+      mime_type: String(data.mime_type),
+      upload_date: String(data.upload_date),
+      is_confidential: Boolean(data.is_confidential),
+      uploaded_by: String(data.uploaded_by)
+    };
   } catch (error) {
     console.error('Error uploading document:', error);
     throw error;
@@ -80,7 +107,7 @@ export async function deletePropertyDocument(documentId: string): Promise<void> 
     if (document?.file_path) {
       const { error: deleteFileError } = await supabase.storage
         .from('documents')
-        .remove([document.file_path]);
+        .remove([String(document.file_path)]);
         
       if (deleteFileError) {
         console.error('Error deleting file from storage:', deleteFileError);
