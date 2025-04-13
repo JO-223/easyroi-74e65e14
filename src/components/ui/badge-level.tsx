@@ -22,7 +22,7 @@ const badgeConfig = {
     className: 'badge-bronze bg-gradient-to-b from-amber-400 to-amber-600 text-white',
     icon: Award,
     iconProps: { size: 14 },
-    animation: 'animate-bronze-pulse'
+    animation: ''
   },
   silver: {
     label: 'Silver',
@@ -40,24 +40,24 @@ const badgeConfig = {
   },
   ruby: {
     label: 'Ruby',
-    className: 'badge-ruby bg-gradient-to-b from-red-400 to-red-600 text-white',
+    className: 'badge-ruby bg-gradient-to-b from-red-400 to-red-600 text-white bg-ruby-shine bg-[length:200%_100%]',
     icon: Gem,
     iconProps: { size: 14 },
-    animation: 'animate-ruby-pulse'
+    animation: 'animate-ruby-reflection'
   },
   emerald: {
     label: 'Emerald',
     className: 'badge-emerald bg-gradient-to-b from-emerald-400 to-emerald-600 text-white',
     icon: Gem,
     iconProps: { size: 14 },
-    animation: 'animate-emerald-glint'
+    animation: 'animate-emerald-glow'
   },
   platinum: {
     label: 'Platinum',
-    className: 'badge-platinum bg-gradient-to-b from-slate-200 to-slate-300 text-slate-700',
+    className: 'badge-platinum bg-gradient-to-b from-slate-200 to-slate-300 text-slate-700 bg-platinum-diagonal bg-[length:200%_200%]',
     icon: Star,
     iconProps: { size: 14 },
-    animation: 'animate-platinum-glow'
+    animation: 'animate-platinum-wave'
   },
   diamond: {
     label: 'Diamond',
