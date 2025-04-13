@@ -451,7 +451,9 @@ export type TranslationKey =
   | "projectLaunch"
   | "save"
   | "edit"
-  | "listingStatus";
+  | "listingStatus"
+  | "zone"
+  | "enterZone";
 
 export const isValidTranslationKey = (key: string): key is TranslationKey => {
   return true as any;

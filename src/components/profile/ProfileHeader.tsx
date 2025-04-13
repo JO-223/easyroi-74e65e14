@@ -4,6 +4,7 @@ import { UserBadge } from "@/components/ui/user-badge";
 import { useUserLevel } from "@/hooks/useUserLevel";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ProfileData } from "./hooks/useProfileData";
+import { UserLevel } from "@/types/user";
 
 interface ProfileHeaderProps {
   name: string;
@@ -68,7 +69,7 @@ export function ProfileHeader({
         
         {displayLevel && (
           <UserBadge 
-            level={displayLevel} 
+            level={displayLevel as UserLevel} 
             size="lg" 
           />
         )}
