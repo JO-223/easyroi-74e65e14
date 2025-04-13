@@ -40,7 +40,7 @@ export function StatusFields({
               <SelectContent>
                 {occupationOptions.map((status) => (
                   <SelectItem key={status} value={status}>
-                    {t(status)}
+                    {status}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -67,7 +67,7 @@ export function StatusFields({
               <SelectContent>
                 {statusOptions.map((status) => (
                   <SelectItem key={status} value={status}>
-                    {t(status)}
+                    {status}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -94,7 +94,7 @@ export function StatusFields({
               <SelectContent>
                 {listingOptions.map((status) => (
                   <SelectItem key={status} value={status}>
-                    {t(status)}
+                    {status}
                   </SelectItem>
                 ))}
               </SelectContent>

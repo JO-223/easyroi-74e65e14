@@ -1,4 +1,3 @@
-
 export type TranslationKey =
   | "dashboard"
   | "analytics"
@@ -65,8 +64,6 @@ export type TranslationKey =
   | "description"
   | "enterProjectDescription"
   | "enterAddress"
-  | "zone"
-  | "enterZone"
   | "enterCity"
   | "enterCountry"
   | "progressPercentage"
@@ -448,10 +445,14 @@ export type TranslationKey =
   | "investors"
   | "forSaleProperties"
   | "operationSuccessful"
-  | "operationFailed";
+  | "operationFailed"
+  | "propertyViewing"
+  | "investmentSeminar"
+  | "projectLaunch"
+  | "save"
+  | "edit"
+  | "listingStatus";
 
 export const isValidTranslationKey = (key: string): key is TranslationKey => {
-  // This is a very long list of valid keys which would make this function impractically long.
-  // Instead, we'll use a type assertion to make TypeScript happy
   return true as any;
 };

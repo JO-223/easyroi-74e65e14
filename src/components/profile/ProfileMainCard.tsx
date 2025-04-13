@@ -35,6 +35,8 @@ export const ProfileMainCard = ({
     <Card>
       <CardHeader className="pb-0">
         <ProfileHeader 
+          name={`${profile.first_name || ''} ${profile.last_name || ''}`.trim()}
+          joinDate={profile.join_date}
           profile={profile}
           isEditing={isEditing}
           isSaving={isSaving}

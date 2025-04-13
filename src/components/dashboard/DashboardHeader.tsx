@@ -6,11 +6,12 @@ import { useUserLevel } from "@/hooks/useUserLevel";
 interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
-  userData?: any; // Added userData prop
+  userData?: any;
 }
 
 export function DashboardHeader({ title, subtitle, userData }: DashboardHeaderProps) {
   const { userLevel } = useUserLevel();
+  const displayLevel = userData?.level || userLevel;
   
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-4 border-b">
@@ -19,9 +20,9 @@ export function DashboardHeader({ title, subtitle, userData }: DashboardHeaderPr
         {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
       </div>
       
-      {userLevel && (
+      {displayLevel && (
         <div className="mt-2 md:mt-0">
-          <UserBadge level={userLevel} size="lg" />
+          <UserBadge level={displayLevel} size="lg" />
         </div>
       )}
     </div>

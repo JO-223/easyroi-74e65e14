@@ -63,15 +63,15 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
             </div>
             <div className="flex items-center space-x-2 mb-2">
               <RadioGroupItem value="property_viewing" id="property_viewing" />
-              <Label htmlFor="property_viewing">{t('propertyViewing')}</Label>
+              <Label htmlFor="property_viewing">Property Viewing</Label>
             </div>
             <div className="flex items-center space-x-2 mb-2">
               <RadioGroupItem value="investment_seminar" id="investment_seminar" />
-              <Label htmlFor="investment_seminar">{t('investmentSeminar')}</Label>
+              <Label htmlFor="investment_seminar">Investment Seminar</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="project_launch" id="project_launch" />
-              <Label htmlFor="project_launch">{t('projectLaunch')}</Label>
+              <Label htmlFor="project_launch">Project Launch</Label>
             </div>
           </RadioGroup>
         </div>

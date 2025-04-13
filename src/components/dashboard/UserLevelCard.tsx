@@ -42,7 +42,7 @@ export function UserLevelCard() {
         return { totalInvestment: 0 };
       }
       
-      return { totalInvestment: data?.total_investment || 0 };
+      return { totalInvestment: Number(data?.total_investment || 0) };
     },
   });
   

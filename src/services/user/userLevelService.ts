@@ -41,7 +41,7 @@ export async function verifyUserLevel(userId?: string): Promise<boolean> {
     
     // Calculate total investment
     const calculatedTotal = investments.reduce((sum, investment) => {
-      return sum + (investment.amount || 0);
+      return sum + (Number(investment.amount) || 0);
     }, 0);
     
     // Calculate appropriate level
@@ -53,7 +53,7 @@ export async function verifyUserLevel(userId?: string): Promise<boolean> {
         .from('profiles')
         .update({ 
           level: calculatedLevel,
-          total_investment: calculatedTotal as number  // Type assertion since we know it's a number
+          total_investment: calculatedTotal
         })
         .eq('id', userId);
         
@@ -92,7 +92,7 @@ export async function updateUserInvestmentTotal(
     }
     
     // Calculate new total
-    const currentTotal = userData.total_investment as number || 0;
+    const currentTotal = Number(userData.total_investment) || 0;
     const newTotal = currentTotal + newAmount;
     
     // Calculate appropriate level
