@@ -5,6 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Shield, TrendingUp, Users } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const About = () => {
   const { t } = useLanguage();
@@ -14,11 +15,24 @@ const About = () => {
       <Navbar />
       
       <main className="flex-grow mt-20">
-        {/* Hero Section */}
-        <section className="relative bg-easyroi-navy text-white py-24 md:py-32">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero Section con sfondo immagine */}
+        <section className="relative bg-easyroi-navy py-24 md:py-32 overflow-hidden">
+          {/* Immagine di sfondo con overlay */}
+          <div 
+            className="absolute inset-0 z-0 opacity-20" 
+            style={{
+              backgroundImage: "url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81')",
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            }}
+          />
+          
+          {/* Overlay gradiente */}
+          <div className="absolute inset-0 bg-gradient-to-r from-easyroi-navy via-easyroi-navy/90 to-easyroi-navy/80 z-10"></div>
+          
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <div className="max-w-3xl">
-              <h1 className="text-3xl md:text-5xl font-bold mb-6">{t('aboutUsTitle')}</h1>
+              <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white">{t('aboutUsTitle')}</h1>
               <p className="text-xl text-gray-300 mb-8">{t('aboutUsSubtitle')}</p>
               <Link to="/contact">
                 <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy">
@@ -29,64 +43,94 @@ const About = () => {
           </div>
         </section>
         
-        {/* Our Story */}
+        {/* Sezione "La nostra storia" migliorata */}
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold text-easyroi-purple-900 mb-6">{t('ourStory')}</h2>
-              <p className="text-lg text-gray-600">
-                {t('ourStoryText1')}
-              </p>
-              <p className="text-lg text-gray-600 mt-4">
-                {t('ourStoryText2')}
-              </p>
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-easyroi-purple-900 mb-4">{t('ourStory')}</h2>
+                <div className="w-20 h-1 bg-easyroi-gold mx-auto mb-6"></div>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <Card className="overflow-hidden border-0 shadow-lg">
+                    <img 
+                      src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" 
+                      alt="Team EasyROI" 
+                      className="w-full h-auto object-cover aspect-[4/3]" 
+                    />
+                  </Card>
+                </div>
+                <div>
+                  <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                    {t('ourStoryText1')}
+                  </p>
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    {t('ourStoryText2')}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
         
         {/* Our Values */}
-        <section className="py-16 md:py-24 bg-gray-50">
+        <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-easyroi-purple-900 mb-6">{t('ourValues')}</h2>
+              <h2 className="text-3xl font-bold text-easyroi-purple-900 mb-4">{t('ourValues')}</h2>
+              <div className="w-20 h-1 bg-easyroi-gold mx-auto mb-6"></div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-lg shadow-md text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-easyroi-gold/10 text-easyroi-gold mb-6">
-                  <TrendingUp className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold text-easyroi-purple-900 mb-3">{t('excellenceValue')}</h3>
-                <p className="text-gray-600">{t('excellenceText')}</p>
-              </div>
+              <Card className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-8 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-easyroi-gold/10 text-easyroi-gold mb-6">
+                    <TrendingUp className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-easyroi-purple-900 mb-3">{t('excellenceValue')}</h3>
+                  <p className="text-gray-600">{t('excellenceText')}</p>
+                </CardContent>
+              </Card>
               
-              <div className="bg-white p-8 rounded-lg shadow-md text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-easyroi-gold/10 text-easyroi-gold mb-6">
-                  <Shield className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold text-easyroi-purple-900 mb-3">{t('integrityValue')}</h3>
-                <p className="text-gray-600">{t('integrityText')}</p>
-              </div>
+              <Card className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-8 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-easyroi-gold/10 text-easyroi-gold mb-6">
+                    <Shield className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-easyroi-purple-900 mb-3">{t('integrityValue')}</h3>
+                  <p className="text-gray-600">{t('integrityText')}</p>
+                </CardContent>
+              </Card>
               
-              <div className="bg-white p-8 rounded-lg shadow-md text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-easyroi-gold/10 text-easyroi-gold mb-6">
-                  <Users className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold text-easyroi-purple-900 mb-3">{t('exclusivityValue')}</h3>
-                <p className="text-gray-600">{t('exclusivityText')}</p>
-              </div>
+              <Card className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-8 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-easyroi-gold/10 text-easyroi-gold mb-6">
+                    <Users className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-easyroi-purple-900 mb-3">{t('exclusivityValue')}</h3>
+                  <p className="text-gray-600">{t('exclusivityText')}</p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
         
         {/* Join Us CTA */}
-        <section className="py-16 md:py-24 bg-easyroi-purple-900 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-16 md:py-24 bg-easyroi-purple-900 text-white relative overflow-hidden">
+          {/* Pattern di sfondo decorativo */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-y-0 left-0 w-1/3 bg-easyroi-gold/20 transform -skew-x-12"></div>
+            <div className="absolute inset-y-0 right-0 w-1/3 bg-easyroi-gold/20 transform skew-x-12"></div>
+          </div>
+          
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-6">{t('joinOurCommunity')}</h2>
               <p className="text-lg text-gray-300 mb-8">{t('joinOurCommunityText')}</p>
               <Link to="/login">
-                <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy">
+                <Button className="bg-easyroi-gold hover:bg-easyroi-gold/90 text-easyroi-navy button-hover-glow">
                   {t('loginCta')}
                 </Button>
               </Link>
