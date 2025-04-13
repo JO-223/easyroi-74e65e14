@@ -22,7 +22,7 @@ const badgeConfig = {
     className: 'badge-bronze bg-gradient-to-b from-amber-400 to-amber-600 text-white',
     icon: Award,
     iconProps: { size: 14 },
-    animation: 'animate-bronze-pulse'
+    animation: ''
   },
   silver: {
     label: 'Silver',
@@ -43,7 +43,7 @@ const badgeConfig = {
     className: 'badge-ruby bg-gradient-to-b from-red-400 to-red-600 text-white',
     icon: Gem,
     iconProps: { size: 14 },
-    animation: 'animate-ruby-pulse'
+    animation: 'animate-ruby-shimmer'
   },
   emerald: {
     label: 'Emerald',
