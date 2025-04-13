@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 export interface AnalyticsData {
@@ -59,9 +60,10 @@ export async function getPropertyTypeAllocation(userId: string) {
         return;
       }
       
-      const typeName = property.type && 'name' in property.type 
-        ? String(property.type.name || 'Unknown') 
-        : 'Unknown';
+      // Use type assertion to tell TypeScript that property.type is an object with a name property
+      // and provide fallback for unknown types
+      const typeObj = property.type as { name?: string };
+      const typeName = typeObj.name ? String(typeObj.name) : 'Unknown';
                       
       const price = Number(property.price || 0);
       totalInvestment += price;
