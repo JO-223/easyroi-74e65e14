@@ -35,8 +35,8 @@ export async function fetchPortfolioByCountry(userId?: string): Promise<CountryA
       throw error;
     }
 
-    // Assicuriamoci di restituire sempre un array, anche se vuoto
-    return data || [];
+    // Assicuriamoci di restituire sempre un array, anche se i dati sono vuoti o null
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     console.error("Error in fetchPortfolioByCountry:", error);
     // Restituisci un array vuoto per corrispondere al tipo di ritorno CountryAllocation[]
