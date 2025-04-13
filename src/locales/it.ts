@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuti",
@@ -242,8 +243,6 @@ const it = {
   helpCenter: "Centro Assistenza",
   aboutUs: "Chi Siamo",
   contactUs: "Contattaci",
-  termsOfService: "Termini di Servizio",
-  privacyPolicy: "Politica sulla Privacy",
   
   // Analysis & Data
   comprehensiveAnalysis: "Analisi Completa",
@@ -686,7 +685,7 @@ const it = {
   
   // Sitemap page
   mainPages: "Pagine Principali",
-  legalPages: "Pagine Legali",
+  legalPages: "Pagine Legali"
 };
 
 export default it;

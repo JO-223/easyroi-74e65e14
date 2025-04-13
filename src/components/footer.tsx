@@ -2,9 +2,11 @@
 import { Link } from 'react-router-dom';
 import { Mail, MapPin, Phone, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useLegalTranslation } from '@/hooks/useLegalTranslation';
 
 export function Footer() {
   const { t } = useLanguage();
+  const tLegal = useLegalTranslation();
   
   return (
     <footer className="bg-easyroi-navy text-white py-12">
@@ -71,16 +73,16 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
               <Link to="/terms-of-service" className="hover:text-easyroi-gold transition-colors">
-                {t('termsOfService')}
+                {tLegal('termsOfService')}
               </Link>
               <Link to="/privacy-policy" className="hover:text-easyroi-gold transition-colors">
-                {t('privacyPolicy')}
+                {tLegal('privacyPolicy')}
               </Link>
               <Link to="/sitemap" className="hover:text-easyroi-gold transition-colors">
-                {t('sitemap')}
+                {tLegal('sitemap')}
               </Link>
               <Link to="/cookie-policy" className="hover:text-easyroi-gold transition-colors">
-                {t('cookiePolicy')}
+                {tLegal('cookiePolicy')}
               </Link>
             </div>
           </div>

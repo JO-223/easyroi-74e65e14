@@ -2,11 +2,13 @@
 import React from 'react';
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { useLegalTranslation } from '@/hooks/useLegalTranslation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 
 const Sitemap = () => {
   const { t } = useLanguage();
+  const tLegal = useLegalTranslation();
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -16,14 +18,14 @@ const Sitemap = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-easyroi-purple-900 mb-8">
-              {t('sitemap')}
+              {tLegal('sitemap')}
             </h1>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Main Pages */}
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold text-easyroi-purple-900 mb-4 border-b border-easyroi-gold pb-2">
-                  {t('mainPages')}
+                  {tLegal('mainPages')}
                 </h2>
                 <ul className="space-y-2">
                   <li><Link to="/" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{t('home')}</Link></li>
@@ -53,12 +55,12 @@ const Sitemap = () => {
               {/* Legal Pages */}
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold text-easyroi-purple-900 mb-4 border-b border-easyroi-gold pb-2">
-                  {t('legalPages')}
+                  {tLegal('legalPages')}
                 </h2>
                 <ul className="space-y-2">
-                  <li><Link to="/terms-of-service" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{t('termsOfService')}</Link></li>
-                  <li><Link to="/privacy-policy" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{t('privacyPolicy')}</Link></li>
-                  <li><Link to="/cookie-policy" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{t('cookiePolicy')}</Link></li>
+                  <li><Link to="/terms-of-service" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{tLegal('termsOfService')}</Link></li>
+                  <li><Link to="/privacy-policy" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{tLegal('privacyPolicy')}</Link></li>
+                  <li><Link to="/cookie-policy" className="text-easyroi-navy hover:text-easyroi-gold transition-colors">{tLegal('cookiePolicy')}</Link></li>
                 </ul>
               </div>
             </div>

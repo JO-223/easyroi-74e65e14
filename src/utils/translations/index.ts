@@ -17,6 +17,7 @@ import { uiKeys, UiKey } from './ui';
 import { miscKeys, MiscKey } from './misc';
 import { tooltipKeys, TooltipKey } from './tooltip';
 import { investorKeys, InvestorKey } from './investor';
+import { legalKeys, LegalKey } from './legal';
 
 // Union of all translation keys
 export type TranslationKey =
@@ -37,7 +38,8 @@ export type TranslationKey =
   | UiKey
   | MiscKey
   | TooltipKey
-  | InvestorKey;
+  | InvestorKey
+  | LegalKey;
 
 // Array of all translation keys, useful for validation
 const allTranslationKeys = [
@@ -58,7 +60,8 @@ const allTranslationKeys = [
   ...uiKeys,
   ...miscKeys,
   ...tooltipKeys,
-  ...investorKeys
+  ...investorKeys,
+  ...legalKeys
 ] as const;
 
 // Function to check if a string is a valid translation key
@@ -85,5 +88,6 @@ export {
   uiKeys,
   miscKeys,
   tooltipKeys,
-  investorKeys
+  investorKeys,
+  legalKeys
 };

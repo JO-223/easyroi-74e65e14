@@ -2,10 +2,10 @@
 import React from 'react';
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLegalTranslation } from '@/hooks/useLegalTranslation';
 
 const TermsOfService = () => {
-  const { t } = useLanguage();
+  const tLegal = useLegalTranslation();
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -15,70 +15,70 @@ const TermsOfService = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-easyroi-purple-900 mb-6">
-              {t('termsOfService')}
+              {tLegal('termsOfService')}
             </h1>
             
             <div className="prose prose-lg max-w-none">
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">1. {t('termsIntroduction')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">1. {tLegal('termsIntroduction')}</h2>
                 <p className="text-gray-700">
-                  {t('termsIntroductionText')}
+                  {tLegal('termsIntroductionText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">2. {t('termsUsage')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">2. {tLegal('termsUsage')}</h2>
                 <p className="text-gray-700">
-                  {t('termsUsageText')}
+                  {tLegal('termsUsageText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">3. {t('termsAccount')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">3. {tLegal('termsAccount')}</h2>
                 <p className="text-gray-700">
-                  {t('termsAccountText')}
+                  {tLegal('termsAccountText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">4. {t('termsIntellectualProperty')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">4. {tLegal('termsIntellectualProperty')}</h2>
                 <p className="text-gray-700">
-                  {t('termsIntellectualPropertyText')}
+                  {tLegal('termsIntellectualPropertyText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">5. {t('termsLimitations')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">5. {tLegal('termsLimitations')}</h2>
                 <p className="text-gray-700">
-                  {t('termsLimitationsText')}
+                  {tLegal('termsLimitationsText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">6. {t('termsTermination')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">6. {tLegal('termsTermination')}</h2>
                 <p className="text-gray-700">
-                  {t('termsTerminationText')}
+                  {tLegal('termsTerminationText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">7. {t('termsGoverning')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">7. {tLegal('termsGoverning')}</h2>
                 <p className="text-gray-700">
-                  {t('termsGoverningText')}
+                  {tLegal('termsGoverningText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">8. {t('termsChanges')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">8. {tLegal('termsChanges')}</h2>
                 <p className="text-gray-700">
-                  {t('termsChangesText')}
+                  {tLegal('termsChangesText')}
                 </p>
               </section>
               
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">9. {t('termsContact')}</h2>
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-4">9. {tLegal('termsContact')}</h2>
                 <p className="text-gray-700">
-                  {t('termsContactText')}
+                  {tLegal('termsContactText')}
                 </p>
               </section>
             </div>
