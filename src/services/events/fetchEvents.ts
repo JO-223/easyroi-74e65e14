@@ -16,7 +16,7 @@ export const fetchEvents = async () => {
   // Assicuriamoci che ogni evento abbia un'immagine predefinita di fallback se manca l'URL
   const eventsWithImages = data?.map(event => ({
     ...event,
-    image_url: event.image_url || getFallbackImageForEventType(event.event_type)
+    image_url: event.image_url || getFallbackImageForEventType(event.event_type as string)
   })) || [];
   
   return eventsWithImages as Event[];
@@ -37,7 +37,7 @@ export const fetchEvent = async (id: string) => {
   // Assicuriamoci che l'evento abbia un'immagine predefinita di fallback se manca l'URL
   const eventWithImage = {
     ...data,
-    image_url: data.image_url || getFallbackImageForEventType(data.event_type)
+    image_url: data.image_url || getFallbackImageForEventType(data.event_type as string)
   };
   
   return eventWithImage as Event;
