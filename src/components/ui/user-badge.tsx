@@ -3,20 +3,21 @@ import React from "react";
 import { Badge } from "./badge";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { Award, Crown, Diamond, Gem, Star, Settings } from "lucide-react";
 
 export type UserLevel = "starter" | "bronze" | "silver" | "gold" | "ruby" | "emerald" | "platinum" | "diamond" | null;
 
 const userBadgeVariants = cva("inline-flex items-center rounded-full", {
   variants: {
     variant: {
-      starter: "bg-gray-200 text-gray-700 border-gray-300",
-      bronze: "bg-amber-100 text-amber-800 border-amber-300",
-      silver: "bg-slate-200 text-slate-700 border-slate-300",
-      gold: "bg-yellow-100 text-yellow-800 border-yellow-300",
-      ruby: "bg-red-100 text-red-800 border-red-300",
-      emerald: "bg-emerald-100 text-emerald-800 border-emerald-300",
-      platinum: "bg-blue-100 text-blue-800 border-blue-300",
-      diamond: "bg-purple-100 text-purple-800 border-purple-300",
+      starter: "bg-gradient-to-b from-gray-300 to-gray-400 text-gray-800 border-gray-300 shadow-sm",
+      bronze: "bg-gradient-to-b from-amber-400 to-amber-600 text-white border-amber-300 shadow-sm",
+      silver: "bg-gradient-to-b from-gray-300 to-gray-400 text-gray-800 border-gray-300 shadow-sm",
+      gold: "bg-gradient-to-b from-yellow-300 to-yellow-500 text-yellow-900 border-yellow-300 shadow-md",
+      ruby: "bg-gradient-to-b from-red-400 to-red-600 text-white border-red-300 shadow-md animate-ruby-pulse",
+      emerald: "bg-gradient-to-b from-emerald-400 to-emerald-600 text-white border-emerald-300 shadow-md animate-emerald-glint",
+      platinum: "bg-gradient-to-b from-slate-200 to-slate-300 text-slate-700 border-slate-300 shadow-md animate-platinum-glow",
+      diamond: "bg-gradient-to-b from-blue-300 to-blue-400 text-blue-800 border-blue-300 shadow-md animate-diamond-sparkle",
     },
     size: {
       sm: "px-2 py-0.5 text-xs",
@@ -44,14 +45,14 @@ export interface UserBadgeProps
 }
 
 const levelIcons = {
-  starter: "⭐",
-  bronze: "🥉",
-  silver: "🥈",
-  gold: "🥇",
-  ruby: "💎",
-  emerald: "💚",
-  platinum: "✨",
-  diamond: "💎💎",
+  starter: Settings,
+  bronze: Award,
+  silver: Award,
+  gold: Crown,
+  ruby: Gem,
+  emerald: Gem,
+  platinum: Star,
+  diamond: Diamond,
 };
 
 export function UserBadge({
@@ -68,6 +69,7 @@ export function UserBadge({
   
   // Se il variant non è specificato, usa il livello come variant
   const actualVariant = variant || level as any;
+  const IconComponent = levelIcons[level as keyof typeof levelIcons];
   
   return (
     <div
@@ -77,19 +79,19 @@ export function UserBadge({
           size,
           withIcon: showIcon 
         }),
-        "font-medium border",
+        "font-medium border backdrop-blur-sm transition-all duration-300 hover:shadow-lg",
         className
       )}
       {...props}
     >
-      {showIcon && (
+      {showIcon && IconComponent && (
         <span className={cn("mr-1", iconClassName)} aria-hidden="true">
-          {levelIcons[level as keyof typeof levelIcons]}
+          <IconComponent className="h-3.5 w-3.5" />
         </span>
       )}
       {!hideLabel && (
         <span className="capitalize">
-          {level}
+          {level} Investor
         </span>
       )}
     </div>

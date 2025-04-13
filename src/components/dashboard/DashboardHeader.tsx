@@ -25,7 +25,7 @@ export function DashboardHeader({
         
         {displayLevel && (
           <div>
-            <UserBadge level={displayLevel} size="lg" className="my-5 mx-5" />
+            <UserBadge level={displayLevel} size="lg" className="my-2 mx-2" />
           </div>
         )}
       </div>
