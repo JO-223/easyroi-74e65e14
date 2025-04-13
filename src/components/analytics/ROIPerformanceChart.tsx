@@ -23,16 +23,17 @@ interface ROIPerformanceProps {
     roi: number;
     benchmark: number;
   }>;
+  hasData?: boolean;
 }
 
-export const ROIPerformanceChart = ({ data }: ROIPerformanceProps) => {
+export const ROIPerformanceChart = ({ data, hasData = true }: ROIPerformanceProps) => {
   const { t } = useLanguage();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [activeType, setActiveType] = useState<'line' | 'bar'>('line');
   
   // Generate default data if none exists
-  const isEmpty = !data || data.length === 0;
+  const isEmpty = !hasData || !data || data.length === 0;
   const displayData = isEmpty 
     ? generateDefaultRoiPerformance() 
     : data;

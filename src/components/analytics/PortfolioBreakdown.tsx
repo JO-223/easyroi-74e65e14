@@ -11,11 +11,15 @@ interface PortfolioBreakdownProps {
     name: string;
     value: number;
   }>;
+  hasAssetData?: boolean;
+  hasGeoData?: boolean;
 }
 
 export const PortfolioBreakdown = ({ 
   assetAllocation, 
-  geographicDistribution 
+  geographicDistribution,
+  hasAssetData = true,
+  hasGeoData = true
 }: PortfolioBreakdownProps) => {
   const { t } = useLanguage();
   
@@ -26,11 +30,13 @@ export const PortfolioBreakdown = ({
         title={t('assetAllocation')}
         data={assetAllocation}
         emptyMessage={t('noAssetAllocationData')}
+        hasData={hasAssetData}
       />
       <AllocationPieChart 
         title={t('geographicDistribution')}
         data={geographicDistribution}
         emptyMessage={t('noGeographicData')}
+        hasData={hasGeoData}
       />
     </div>
   );
