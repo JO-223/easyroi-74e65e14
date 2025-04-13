@@ -123,7 +123,14 @@ export const eventsKeys = [
   'date',
   'time',
   'eventDetail',
-  'errorLoadingEventDescription'
+  'errorLoadingEventDescription',
+  'reviews',
+  'noReviews',
+  'unknownUser',
+  'reportReview',
+  'units',
+  'unitsAvailable',
+  'notFound'
 ] as const;
 
 export type EventsKey = typeof eventsKeys[number];

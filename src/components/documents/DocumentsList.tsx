@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchPropertyDocuments, deletePropertyDocument } from "@/services/propertyDocumentService";
-import { PropertyDocument } from "@/types/propertyDocument";
+import { fetchPropertyDocuments, deletePropertyDocument, downloadFile } from "@/services/propertyDocumentService";
+import { PropertyDocument } from "@/types/document";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { File, FileText, Lock, Download, Trash2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-import { downloadFile } from "@/utils/documentHelpers";
 import { formatFileSize } from "@/utils/formatFileSize";
 import { EmptyState } from "@/components/ui/empty-state";
 import DocumentUploadDialog from "./DocumentUploadDialog";
@@ -44,9 +43,7 @@ export default function DocumentsList({
   
   const handleDownload = async (document: PropertyDocument) => {
     try {
-      // Create a function to get document URL based on file path
-      const downloadUrl = document.file_path;
-      downloadFile(downloadUrl, document.document_name);
+      downloadFile(document.file_path, document.document_name);
     } catch (error) {
       console.error('Error downloading document:', error);
       toast({

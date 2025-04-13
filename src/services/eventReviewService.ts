@@ -2,19 +2,10 @@
 import { supabase } from '@/integrations/supabase/client';
 import { EventReview, EventReviewFormData } from '@/types/eventReview';
 
-type EventReviewWithProfile = EventReview & {
-  profiles: {
-    first_name: string;
-    last_name: string;
-    avatar_url: string;
-    level: string;
-  };
-};
-
 /**
  * Fetch reviews for a specific event
  */
-export async function fetchEventReviews(eventId: string): Promise<EventReviewWithProfile[]> {
+export async function fetchReviews(eventId: string): Promise<EventReview[]> {
   try {
     const { data, error } = await supabase
       .from('event_reviews')
@@ -32,8 +23,25 @@ export async function fetchEventReviews(eventId: string): Promise<EventReviewWit
     
     if (error) throw error;
     
-    // Type cast the data to the expected format
-    return (data || []) as unknown as EventReviewWithProfile[];
+    // Transform data to match EventReview type
+    return (data || []).map(item => {
+      const profile = item.profiles || {};
+      return {
+        id: String(item.id),
+        event_id: String(item.event_id),
+        user_id: String(item.user_id),
+        rating: Number(item.rating),
+        review_title: item.review_title,
+        review_content: item.review_content,
+        is_verified_attendee: Boolean(item.is_verified_attendee),
+        is_anonymous: Boolean(item.is_anonymous),
+        helpful_votes: Number(item.helpful_votes),
+        created_at: String(item.created_at),
+        updated_at: item.updated_at ? String(item.updated_at) : undefined,
+        user_name: item.is_anonymous ? undefined : `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
+        user_avatar: item.is_anonymous ? undefined : profile.avatar_url
+      };
+    });
   } catch (error) {
     console.error('Error fetching event reviews:', error);
     return [];
@@ -72,7 +80,7 @@ export async function submitEventReview(
         .single();
       
       if (error) throw error;
-      return data as unknown as EventReview;
+      return transformEventReview(data);
     } else {
       // Check if user attended the event
       const { data: attendee } = await supabase
@@ -98,7 +106,7 @@ export async function submitEventReview(
         .single();
       
       if (error) throw error;
-      return data as unknown as EventReview;
+      return transformEventReview(data);
     }
   } catch (error) {
     console.error('Error submitting event review:', error);
@@ -111,15 +119,12 @@ export async function submitEventReview(
  */
 export async function voteReviewHelpful(reviewId: string): Promise<boolean> {
   try {
-    const { data, error } = await supabase
-      .from('event_reviews')
-      .update({ helpful_votes: supabase.rpc('increment', { x: 1 }) })
-      .eq('id', reviewId)
-      .select()
-      .single();
+    const { data, error } = await supabase.rpc('increment_review_helpful_votes', {
+      review_id: reviewId
+    });
       
     if (error) throw error;
-    return !!data;
+    return true;
   } catch (error) {
     console.error('Error voting review helpful:', error);
     return false;
@@ -144,4 +149,21 @@ export async function deleteEventReview(reviewId: string, userId: string): Promi
     console.error('Error deleting event review:', error);
     return false;
   }
+}
+
+// Helper to transform database response to EventReview type
+function transformEventReview(data: any): EventReview {
+  return {
+    id: String(data.id),
+    event_id: String(data.event_id),
+    user_id: String(data.user_id),
+    rating: Number(data.rating),
+    review_title: data.review_title,
+    review_content: data.review_content,
+    is_verified_attendee: Boolean(data.is_verified_attendee),
+    is_anonymous: Boolean(data.is_anonymous),
+    helpful_votes: Number(data.helpful_votes),
+    created_at: String(data.created_at),
+    updated_at: data.updated_at ? String(data.updated_at) : undefined
+  };
 }

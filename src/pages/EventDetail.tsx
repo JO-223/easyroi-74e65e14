@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchEvent, registerForEvent, fetchSimilarEvents } from '@/services/eventService';
@@ -46,7 +47,7 @@ export default function EventDetail() {
           variant="card"
           icon={<AlertTriangle size={40} />}
           title={t('error')}
-          description={t('error')}
+          description={t('errorLoadingEventDescription')}
         />
       </DashboardLayout>
     );
@@ -69,8 +70,8 @@ export default function EventDetail() {
         <EmptyState 
           variant="card"
           icon={<AlertTriangle size={40} />}
-          title={t('notFound')}
-          description={t('notFound')}
+          title={t('eventNotFound')}
+          description={t('eventNotFound')}
         />
       </DashboardLayout>
     );

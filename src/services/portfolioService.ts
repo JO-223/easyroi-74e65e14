@@ -13,11 +13,11 @@ export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSu
       throw error;
     }
 
-    // Type assertion for safety
+    // Safe type conversion with fallbacks
     return {
-      total_properties: Number(data?.total_properties) || 0,
-      total_investment: Number(data?.total_investment) || 0,
-      average_roi: Number(data?.average_roi) || 0
+      total_properties: data && typeof data.total_properties !== 'undefined' ? Number(data.total_properties) : 0,
+      total_investment: data && typeof data.total_investment !== 'undefined' ? Number(data.total_investment) : 0,
+      average_roi: data && typeof data.average_roi !== 'undefined' ? Number(data.average_roi) : 0
     };
   } catch (error) {
     console.error('Error fetching portfolio summary:', error);
@@ -71,31 +71,31 @@ export async function fetchPortfolioData(userId: string): Promise<Portfolio> {
       throw summaryError;
     }
 
-    // Map performance metrics to the expected format
+    // Map performance metrics to the expected format with safe type conversions
     const performanceMetrics: PerformanceData[] = [
-      { name: 'ROI', value: Number(performanceData?.average_roi) || 0 },
-      { name: 'Capital Growth', value: Number(performanceData?.capital_growth) || 0 },
-      { name: 'Rental Yield', value: Number(performanceData?.rental_yield) || 0 }
+      { name: 'ROI', value: performanceData && typeof performanceData.average_roi !== 'undefined' ? Number(performanceData.average_roi) : 0 },
+      { name: 'Capital Growth', value: performanceData && typeof performanceData.capital_growth !== 'undefined' ? Number(performanceData.capital_growth) : 0 },
+      { name: 'Rental Yield', value: performanceData && typeof performanceData.rental_yield !== 'undefined' ? Number(performanceData.rental_yield) : 0 }
     ];
 
-    // Construct the portfolio object
+    // Construct the portfolio object with safe type conversions
     const portfolio: Portfolio = {
-      total_properties: Number(summaryData?.total_properties) || 0,
-      total_investment: Number(summaryData?.total_investment) || 0,
-      average_roi: Number(summaryData?.average_roi) || 0,
-      total_value: Number(summaryData?.total_value) || 0,
-      portfolio_growth: Number(summaryData?.portfolio_growth) || 0,
-      allocation: allocationData?.map(item => ({
-        location: String(item.location),
-        percentage: Number(item.percentage)
-      })) || [],
+      total_properties: summaryData && typeof summaryData.total_properties !== 'undefined' ? Number(summaryData.total_properties) : 0,
+      total_investment: summaryData && typeof summaryData.total_investment !== 'undefined' ? Number(summaryData.total_investment) : 0,
+      average_roi: summaryData && typeof summaryData.average_roi !== 'undefined' ? Number(summaryData.average_roi) : 0,
+      total_value: summaryData && typeof summaryData.total_value !== 'undefined' ? Number(summaryData.total_value) : 0,
+      portfolio_growth: summaryData && typeof summaryData.portfolio_growth !== 'undefined' ? Number(summaryData.portfolio_growth) : 0,
+      allocation: (allocationData || []).map(item => ({
+        location: String(item.location || ''),
+        percentage: Number(item.percentage || 0)
+      })),
       performance_data: performanceMetrics,
-      investment_growth: growthData?.map(item => ({
-        month: String(item.month),
-        month_index: Number(item.month_index),
-        year: Number(item.year),
-        value: Number(item.value)
-      })) || []
+      investment_growth: (growthData || []).map(item => ({
+        month: String(item.month || ''),
+        month_index: Number(item.month_index || 0),
+        year: Number(item.year || 0),
+        value: Number(item.value || 0)
+      }))
     };
 
     return portfolio;

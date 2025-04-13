@@ -79,16 +79,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error("Error fetching user details:", error);
-        setAuthError({
-          name: error.code,
+        const authErr: AuthError = {
+          name: error.code || 'Database error',
           message: error.message,
           status: 400,
-          __isAuthError: true
-        } as AuthError);
+          __isAuthError: true,
+          code: error.code
+        };
+        setAuthError(authErr);
       } else {
         setUserDetails({
-          id: String(data.id),
-          email: String(data.email),
+          id: String(data.id || ''),
+          email: String(data.email || ''),
           firstName: data.firstName ? String(data.firstName) : undefined,
           lastName: data.lastName ? String(data.lastName) : undefined,
           level: data.level ? String(data.level) : undefined,
@@ -98,12 +100,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error: any) {
       console.error("Unexpected error fetching user details:", error);
-      setAuthError({
+      const authErr: AuthError = {
         name: 'Unknown error',
         message: error.message || 'Unknown error occurred',
         status: 500,
-        __isAuthError: true
-      } as AuthError);
+        __isAuthError: true,
+        code: 'unknown'
+      };
+      setAuthError(authErr);
     }
   };
 

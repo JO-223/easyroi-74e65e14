@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { Star, Flag, ThumbsUp, AlertOctagon } from "lucide-react";
 import { EventReview } from "@/types/event";
-import { EventReviewDialog } from "./EventReviewDialog";
+import EventReviewDialog from "./EventReviewDialog";
 import { EmptyState } from "@/components/ui/empty-state";
 
 interface EventReviewsListProps {
@@ -64,7 +64,7 @@ export function EventReviewsList({ eventId }: EventReviewsListProps) {
   return (
     <div className="space-y-4 mt-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg font-medium">{t('reviews')}</h2>
+        <h2 className="text-lg font-medium">{t('eventReviews')}</h2>
         <Button 
           variant="outline" 
           onClick={() => setShowAddReviewModal(true)}
@@ -77,7 +77,7 @@ export function EventReviewsList({ eventId }: EventReviewsListProps) {
         <EmptyState
           variant="card"
           icon={<Star className="w-10 h-10 mb-2" />}
-          title={t('noReviews')}
+          title={t('noReviewsYet')}
           description={t('beTheFirstToReview')}
           actionLabel={t('writeReview')}
           action={() => setShowAddReviewModal(true)}
