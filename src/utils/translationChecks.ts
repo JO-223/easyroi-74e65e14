@@ -4,6 +4,18 @@ import it from "@/locales/it";
 import es from "@/locales/es";
 import de from "@/locales/de";
 import { TranslationValue, TranslationRecord } from "@/contexts/LanguageContext";
+import { 
+  generalKeys, 
+  propertyKeys, 
+  developmentKeys, 
+  investorKeys, 
+  eventsKeys, 
+  networkKeys, 
+  settingsKeys, 
+  adminKeys, 
+  uiKeys, 
+  miscKeys 
+} from "@/utils/translationUtils";
 
 /**
  * Utility to check for missing translation keys between locales
@@ -86,24 +98,55 @@ const isTranslationObject = (value: unknown): value is Record<string, string | R
  * in the translation files.
  */
 export const checkDuplicateTranslationKeys = () => {
-  const checkDuplicates = (obj: Record<string, TranslationValue>, name: string) => {
+  // Verifica delle chiavi nei file di traduzione
+  const allDefinedKeys = [
+    ...generalKeys,
+    ...propertyKeys,
+    ...developmentKeys,
+    ...investorKeys,
+    ...eventsKeys,
+    ...networkKeys,
+    ...settingsKeys,
+    ...adminKeys,
+    ...uiKeys,
+    ...miscKeys
+  ];
+  
+  // Verifica duplicati nel set completo di chiavi
+  const allKeysSet = new Set();
+  const duplicates: string[] = [];
+  
+  for (const key of allDefinedKeys) {
+    if (allKeysSet.has(key)) {
+      duplicates.push(key);
+    } else {
+      allKeysSet.add(key);
+    }
+  }
+  
+  if (duplicates.length > 0) {
+    console.warn('Duplicate keys found across categories:', duplicates);
+  }
+  
+  // Verifica anche per le traduzioni effettive
+  const checkDuplicatesInTranslations = (obj: Record<string, TranslationValue>, name: string) => {
     const keys = Object.keys(obj);
     const keySet = new Set();
-    const duplicates: string[] = [];
+    const translationDuplicates: string[] = [];
     
     for (const key of keys) {
       if (keySet.has(key)) {
-        duplicates.push(key);
+        translationDuplicates.push(key);
       } else {
         keySet.add(key);
       }
     }
     
-    if (duplicates.length > 0) {
-      console.warn(`Duplicate keys found in ${name}:`, duplicates);
+    if (translationDuplicates.length > 0) {
+      console.warn(`Duplicate keys found in ${name}:`, translationDuplicates);
     }
     
-    return duplicates;
+    return translationDuplicates;
   };
   
   // Also check nested objects for duplicates
@@ -111,12 +154,12 @@ export const checkDuplicateTranslationKeys = () => {
     const allDuplicates: string[] = [];
     
     // First check top level
-    allDuplicates.push(...checkDuplicates(obj, name));
+    allDuplicates.push(...checkDuplicatesInTranslations(obj, name));
     
     // Then check nested objects
     Object.entries(obj).forEach(([key, value]) => {
       if (isTranslationObject(value)) {
-        allDuplicates.push(...checkDuplicates(value as Record<string, TranslationValue>, `${name}.${key}`));
+        allDuplicates.push(...checkDuplicatesInTranslations(value as Record<string, TranslationValue>, `${name}.${key}`));
       }
     });
     
@@ -124,9 +167,42 @@ export const checkDuplicateTranslationKeys = () => {
   };
   
   return {
+    duplicatesInCategories: duplicates,
     duplicatesInEnglish: checkNestedDuplicates(en, 'English'),
     duplicatesInItalian: checkNestedDuplicates(it, 'Italian'),
     duplicatesInSpanish: checkNestedDuplicates(es, 'Spanish'),
     duplicatesInGerman: checkNestedDuplicates(de, 'German')
+  };
+};
+
+// Funzione per verificare che tutte le chiavi definite nei nostri array siano effettivamente presenti nei file di traduzione
+export const checkTranslationKeyExistence = () => {
+  const allDefinedKeys = [
+    ...generalKeys,
+    ...propertyKeys,
+    ...developmentKeys,
+    ...investorKeys,
+    ...eventsKeys,
+    ...networkKeys,
+    ...settingsKeys,
+    ...adminKeys,
+    ...uiKeys,
+    ...miscKeys
+  ];
+  
+  const missingInEnglish = allDefinedKeys.filter(key => !(key in en));
+  const missingInItalian = allDefinedKeys.filter(key => !(key in it));
+  const missingInSpanish = allDefinedKeys.filter(key => 
+    !Object.keys(es).some(section => 
+      section === key || (typeof es[section] === 'object' && key in (es[section] as any))
+    )
+  );
+  const missingInGerman = allDefinedKeys.filter(key => !(key in de));
+  
+  return {
+    missingInEnglish,
+    missingInItalian,
+    missingInSpanish,
+    missingInGerman
   };
 };
