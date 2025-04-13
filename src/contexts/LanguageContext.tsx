@@ -10,9 +10,10 @@ export type Language = 'en' | 'it' | 'es' | 'de';
 export type Currency = 'usd' | 'eur' | 'gbp';
 export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
 
-// Update translation type to support both simple strings and nested objects
-export type TranslationValue = string | Record<string, string>;
-type Translations = Record<Language, Record<string, TranslationValue>>;
+// Update translation type to support deeply nested objects
+export type TranslationValue = string | Record<string, string | Record<string, string>>;
+export type TranslationRecord = Record<string, TranslationValue>;
+type Translations = Record<Language, TranslationRecord>;
 
 export interface DisplaySettings {
   language: Language;
@@ -91,9 +92,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Enhanced translation function that supports both string interpolation and nested objects
+  // Enhanced translation function that handles nested structures better
   const t = (key: TranslationKey, params?: string | Record<string, string | number>): string => {
-    // First, get the translation value
+    // First, try to get the direct translation value
     const translationValue = translations[language]?.[key] || translations.en[key];
     
     if (translationValue === undefined) {
@@ -101,9 +102,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       return key;
     }
     
-    // Handle nested translation case (e.g., tooltip.investor)
-    if (typeof params === 'string' && typeof translationValue === 'object') {
-      return translationValue[params] || params;
+    // Handle nested translation case with path notation (e.g., "tooltip.investor")
+    if (typeof params === 'string') {
+      if (typeof translationValue === 'object') {
+        const nestedValue = (translationValue as Record<string, string>)[params];
+        return nestedValue || params;
+      }
+      return translationValue as string;
     }
     
     // Handle string with interpolation case

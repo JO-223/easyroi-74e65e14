@@ -3,21 +3,33 @@ import en from "@/locales/en";
 import it from "@/locales/it";
 import es from "@/locales/es";
 import de from "@/locales/de";
-import { TranslationValue } from "@/contexts/LanguageContext";
+import { TranslationValue, TranslationRecord } from "@/contexts/LanguageContext";
 
 /**
  * Utility to check for missing translation keys between locales
  * Used during development to ensure all locales have the same keys
  */
 export const checkMissingTranslationKeys = () => {
-  const enKeys = Object.keys(en);
-  const itKeys = Object.keys(it);
-  const esKeys = Object.keys(es);
-  const deKeys = Object.keys(de);
+  // Collect top-level keys from each locale
+  const getTopLevelKeys = (obj: TranslationRecord) => {
+    return Object.keys(obj).filter(key => {
+      const value = obj[key];
+      // Only get direct keys, not nested objects with children
+      return typeof value === 'string' || 
+        (typeof value === 'object' && value !== null && !Array.isArray(value));
+    });
+  };
+
+  const enKeys = getTopLevelKeys(en);
+  const itKeys = getTopLevelKeys(it);
+  const esKeys = Object.keys(es); // Spanish is nested differently
+  const deKeys = getTopLevelKeys(de);
   
   // Check for keys in English that are missing in other locales
   const missingInItalian = enKeys.filter(key => !itKeys.includes(key));
-  const missingInSpanish = enKeys.filter(key => !esKeys.includes(key));
+  const missingInSpanish = enKeys.filter(key => !Object.keys(es).some(
+    section => section === key || (typeof es[section] === 'object' && key in (es[section] as any))
+  ));
   const missingInGerman = enKeys.filter(key => !deKeys.includes(key));
   
   if (missingInItalian.length > 0) {
@@ -34,7 +46,9 @@ export const checkMissingTranslationKeys = () => {
   
   // Check for keys in other locales that aren't in English
   const extraInItalian = itKeys.filter(key => !enKeys.includes(key));
-  const extraInSpanish = esKeys.filter(key => !enKeys.includes(key));
+  const extraInSpanish = Object.keys(es).filter(key => 
+    !enKeys.includes(key) && typeof es[key] === 'string'
+  );
   const extraInGerman = deKeys.filter(key => !enKeys.includes(key));
   
   if (extraInItalian.length > 0) {
@@ -63,7 +77,7 @@ export const checkMissingTranslationKeys = () => {
  * Helper function to check if a translation value is a simple string or an object
  * Used for type checking during development
  */
-const isTranslationObject = (value: unknown): value is Record<string, string> => {
+const isTranslationObject = (value: unknown): value is Record<string, string | Record<string, string>> => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
 
@@ -92,10 +106,27 @@ export const checkDuplicateTranslationKeys = () => {
     return duplicates;
   };
   
+  // Also check nested objects for duplicates
+  const checkNestedDuplicates = (obj: Record<string, any>, name: string) => {
+    const allDuplicates: string[] = [];
+    
+    // First check top level
+    allDuplicates.push(...checkDuplicates(obj, name));
+    
+    // Then check nested objects
+    Object.entries(obj).forEach(([key, value]) => {
+      if (isTranslationObject(value)) {
+        allDuplicates.push(...checkDuplicates(value as Record<string, TranslationValue>, `${name}.${key}`));
+      }
+    });
+    
+    return allDuplicates;
+  };
+  
   return {
-    duplicatesInEnglish: checkDuplicates(en, 'English'),
-    duplicatesInItalian: checkDuplicates(it, 'Italian'),
-    duplicatesInSpanish: checkDuplicates(es, 'Spanish'),
-    duplicatesInGerman: checkDuplicates(de, 'German')
+    duplicatesInEnglish: checkNestedDuplicates(en, 'English'),
+    duplicatesInItalian: checkNestedDuplicates(it, 'Italian'),
+    duplicatesInSpanish: checkNestedDuplicates(es, 'Spanish'),
+    duplicatesInGerman: checkNestedDuplicates(de, 'German')
   };
 };

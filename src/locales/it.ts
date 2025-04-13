@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuto",
@@ -528,7 +529,6 @@ const it = {
   
   // Property status
   active: "Attivo",
-  pending: "In Attesa",
   sold: "Venduto",
   
   // Listing status
@@ -548,6 +548,7 @@ const it = {
   eventsInLastYear: "Eventi nell'ultimo anno",
   monthly: "Mensile",
   annual: "Annuale",
+  investmentAmount: "Quantità di investimento", // Added this to fix a duplicate error
   
   // Tooltip section
   tooltip: {
