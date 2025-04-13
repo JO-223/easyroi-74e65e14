@@ -48,3 +48,9 @@ export interface MonthlyGrowthData {
   month_index: number;
   value: number | string;
 }
+
+// Define the structure for Supabase response type
+export interface MonthlyROIResult {
+  data: MonthlyROIData[] | null;
+  error: any;
+}

@@ -4,5 +4,5 @@
  */
 
 export { fetchAnalyticsData, getPropertyTypeAllocation } from "./analyticsService";
-export type { AnalyticsData } from "./types";
+export type { AnalyticsData, PropertyTypeAllocation, MonthlyROIData, MonthlyGrowthData } from "./types";
 export { MARKET_AVERAGE_ROI } from "./constants";

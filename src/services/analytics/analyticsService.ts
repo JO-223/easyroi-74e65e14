@@ -1,5 +1,6 @@
+
 import { supabase } from "@/integrations/supabase/client";
-import { AnalyticsData, MonthlyROIData, MonthlyGrowthData } from "./types";
+import { AnalyticsData, MonthlyROIData, MonthlyGrowthData, MonthlyROIResult } from "./types";
 import { getPropertyTypeAllocation } from "./propertyAllocationService";
 import { MARKET_AVERAGE_ROI } from "./constants";
 
@@ -34,8 +35,12 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     // Get property type allocation using the helper function
     const typeAllocationData = await getPropertyTypeAllocation(user.id);
 
-    // Process ROI performance data
-    let roiPerformanceData = processRoiPerformanceData(user.id, monthlyRoiData, roiData?.average_roi);
+    // Process ROI performance data - await the result since it's now an async function
+    const roiPerformanceData = await processRoiPerformanceData(
+      user.id, 
+      monthlyRoiData as MonthlyROIResult, 
+      roiData?.average_roi
+    );
 
     // Calculate market comparison
     const averageRoi = Number(parseFloat(String(roiData?.average_roi || 0)).toFixed(2));
@@ -109,15 +114,18 @@ async function fetchInvestmentData(userId: string) {
 /**
  * Fetches monthly ROI data
  */
-async function fetchMonthlyRoiData(userId: string) {
+async function fetchMonthlyRoiData(userId: string): Promise<MonthlyROIResult> {
   const { data, error } = await supabase
     .from('user_roi_monthly')
     .select('month, month_index, roi_value')
     .eq('user_id', userId)
     .order('month_index', { ascending: true });
 
+  // Cast the data to ensure it matches MonthlyROIData[] type
+  const typedData = data as MonthlyROIData[] | null;
+  
   if (error) console.error("Error fetching monthly ROI data:", error);
-  return { data, error };
+  return { data: typedData, error };
 }
 
 /**
@@ -152,9 +160,9 @@ async function fetchEventsAttendedData(userId: string) {
  */
 async function processRoiPerformanceData(
   userId: string, 
-  monthlyRoiResult: { data: MonthlyROIData[] | null, error: any },
+  monthlyRoiResult: MonthlyROIResult,
   averageRoi?: number
-) {
+): Promise<Array<{ month: string; roi: number; benchmark: number; }>> {
   const monthlyRoiData = monthlyRoiResult.data;
   const monthlyRoiError = monthlyRoiResult.error;
   
