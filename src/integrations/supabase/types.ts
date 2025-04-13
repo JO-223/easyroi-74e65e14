@@ -234,8 +234,66 @@ export type Database = {
           },
         ]
       }
+      event_reviews: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          helpful_votes: number | null
+          id: string
+          is_anonymous: boolean | null
+          is_verified_attendee: boolean | null
+          rating: number
+          review_content: string | null
+          review_title: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          helpful_votes?: number | null
+          id?: string
+          is_anonymous?: boolean | null
+          is_verified_attendee?: boolean | null
+          rating: number
+          review_content?: string | null
+          review_title?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          helpful_votes?: number | null
+          id?: string
+          is_anonymous?: boolean | null
+          is_verified_attendee?: boolean | null
+          rating?: number
+          review_content?: string | null
+          review_title?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_reviews_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
+          average_rating: number | null
           created_at: string
           current_attendees: number
           date: string
@@ -253,6 +311,7 @@ export type Database = {
           title: string
         }
         Insert: {
+          average_rating?: number | null
           created_at?: string
           current_attendees?: number
           date: string
@@ -270,6 +329,7 @@ export type Database = {
           title: string
         }
         Update: {
+          average_rating?: number | null
           created_at?: string
           current_attendees?: number
           date?: string
@@ -695,6 +755,66 @@ export type Database = {
           },
         ]
       }
+      property_documents: {
+        Row: {
+          description: string | null
+          document_name: string
+          document_type: string
+          file_path: string
+          file_size: number
+          id: string
+          is_confidential: boolean
+          last_accessed: string | null
+          mime_type: string
+          property_id: string
+          upload_date: string
+          uploaded_by: string
+        }
+        Insert: {
+          description?: string | null
+          document_name: string
+          document_type: string
+          file_path: string
+          file_size: number
+          id?: string
+          is_confidential?: boolean
+          last_accessed?: string | null
+          mime_type: string
+          property_id: string
+          upload_date?: string
+          uploaded_by: string
+        }
+        Update: {
+          description?: string | null
+          document_name?: string
+          document_type?: string
+          file_path?: string
+          file_size?: number
+          id?: string
+          is_confidential?: boolean
+          last_accessed?: string | null
+          mime_type?: string
+          property_id?: string
+          upload_date?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_documents_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_documents_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_images: {
         Row: {
           created_at: string
@@ -806,6 +926,71 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      saved_property_searches: {
+        Row: {
+          alert_frequency: string | null
+          created_at: string | null
+          id: string
+          is_alert: boolean | null
+          last_notification_sent: string | null
+          locations: string[] | null
+          max_bathrooms: number | null
+          max_bedrooms: number | null
+          min_bathrooms: number | null
+          min_bedrooms: number | null
+          min_roi: number | null
+          price_range: unknown | null
+          property_types: string[] | null
+          search_criteria: Json
+          search_name: string
+          user_id: string
+        }
+        Insert: {
+          alert_frequency?: string | null
+          created_at?: string | null
+          id?: string
+          is_alert?: boolean | null
+          last_notification_sent?: string | null
+          locations?: string[] | null
+          max_bathrooms?: number | null
+          max_bedrooms?: number | null
+          min_bathrooms?: number | null
+          min_bedrooms?: number | null
+          min_roi?: number | null
+          price_range?: unknown | null
+          property_types?: string[] | null
+          search_criteria: Json
+          search_name: string
+          user_id: string
+        }
+        Update: {
+          alert_frequency?: string | null
+          created_at?: string | null
+          id?: string
+          is_alert?: boolean | null
+          last_notification_sent?: string | null
+          locations?: string[] | null
+          max_bathrooms?: number | null
+          max_bedrooms?: number | null
+          min_bathrooms?: number | null
+          min_bedrooms?: number | null
+          min_roi?: number | null
+          price_range?: unknown | null
+          property_types?: string[] | null
+          search_criteria?: Json
+          search_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_property_searches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       security_settings: {
         Row: {
