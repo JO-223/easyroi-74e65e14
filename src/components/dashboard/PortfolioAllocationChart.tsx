@@ -7,17 +7,18 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recha
 import { PortfolioAllocation } from '@/types/portfolio';
 
 interface PortfolioAllocationChartProps {
-  allocationData: PortfolioAllocation[];
+  // Change from 'allocationData' to 'data' for consistency
+  data: PortfolioAllocation[];
   isLoading?: boolean;
 }
 
-export function PortfolioAllocationChart({ allocationData, isLoading = false }: PortfolioAllocationChartProps) {
+export function PortfolioAllocationChart({ data, isLoading = false }: PortfolioAllocationChartProps) {
   const { t } = useLanguage();
   
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
   
   // Transform data format for chart - convert from PortfolioAllocation to the format expected by the chart
-  const chartData = allocationData.map(item => ({
+  const chartData = data.map(item => ({
     name: item.location,
     value: item.percentage
   }));

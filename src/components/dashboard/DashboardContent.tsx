@@ -30,6 +30,7 @@ export const DashboardContent = ({ dashboardData }: DashboardContentProps) => {
         </div>
         <div className="space-y-4 md:space-y-8">
           <UserLevelCard />
+          {/* Update to use data prop instead of allocationData */}
           <PortfolioAllocationChart data={portfolioAllocation} />
         </div>
       </div>

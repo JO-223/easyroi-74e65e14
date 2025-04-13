@@ -2,6 +2,13 @@
 import { supabase } from "@/integrations/supabase/client";
 import { PortfolioSummaryData, PortfolioAllocation, InvestmentGrowth } from "@/types/portfolio";
 
+// Define the PerformanceMetrics type directly here since it's missing from the portfolio types
+export interface PerformanceMetrics {
+  average_roi: number;
+  capital_growth: number;
+  rental_yield: number;
+}
+
 export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSummaryData> {
   try {
     const { data, error } = await supabase
@@ -9,12 +16,12 @@ export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSu
       
     if (error) throw error;
     
-    // Safely handle the data using type guards
     if (!data) {
       throw new Error("No portfolio data found");
     }
     
-    return {
+    // Create typed object with safe type checking and default values
+    const typedData = {
       total_properties: typeof data.total_properties === 'number' ? data.total_properties : 0,
       total_investment: typeof data.total_investment === 'number' ? data.total_investment : 0,
       average_roi: typeof data.average_roi === 'number' ? data.average_roi : 0,
@@ -26,8 +33,11 @@ export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSu
       growth_percentage: typeof data.growth_percentage === 'number' ? data.growth_percentage : 0,
       yield_percentage: typeof data.yield_percentage === 'number' ? data.yield_percentage : 0
     };
+    
+    return typedData;
   } catch (error) {
     console.error("Error fetching portfolio summary:", error);
+    // Return default values on error
     return {
       total_properties: 0,
       total_investment: 0,
@@ -50,11 +60,11 @@ export async function fetchPortfolioAllocation(userId: string): Promise<Portfoli
       
     if (error) throw error;
     
-    // Safely handle the data with type checking
     if (!data || !Array.isArray(data)) {
       return [];
     }
     
+    // Safely map data with type checking
     return data.map(item => ({
       location: String(item?.location || ''),
       percentage: Number(item?.percentage || 0)
@@ -72,11 +82,11 @@ export async function fetchInvestmentGrowth(userId: string): Promise<InvestmentG
       
     if (error) throw error;
     
-    // Safely handle the data with type checking
     if (!data || !Array.isArray(data)) {
       return [];
     }
     
+    // Safely map data with type checking
     return data.map(item => ({
       month: String(item?.month || ''),
       month_index: Number(item?.month_index || 0),
@@ -89,12 +99,6 @@ export async function fetchInvestmentGrowth(userId: string): Promise<InvestmentG
   }
 }
 
-export interface PerformanceMetrics {
-  average_roi: number;
-  capital_growth: number;
-  rental_yield: number;
-}
-
 export async function fetchPerformanceMetrics(userId: string): Promise<PerformanceMetrics> {
   try {
     const { data, error } = await supabase
@@ -102,16 +106,18 @@ export async function fetchPerformanceMetrics(userId: string): Promise<Performan
       
     if (error) throw error;
     
-    // Safely handle the data with type checking
     if (!data) {
       throw new Error("No metrics data found");
     }
     
-    return {
+    // Create typed object with safe type checking
+    const typedData = {
       average_roi: typeof data.average_roi === 'number' ? data.average_roi : 0,
       capital_growth: typeof data.capital_growth === 'number' ? data.capital_growth : 0,
       rental_yield: typeof data.rental_yield === 'number' ? data.rental_yield : 0
     };
+    
+    return typedData;
   } catch (error) {
     console.error("Error fetching performance metrics:", error);
     return {

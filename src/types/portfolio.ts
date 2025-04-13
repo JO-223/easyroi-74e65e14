@@ -31,7 +31,7 @@ export interface PortfolioSummaryData {
   total_properties: number;
   total_investment: number;
   average_roi: number;
-  portfolio_value: number;  // This field was missing from the type
+  portfolio_value: number;
   monthly_income: number;
   yearly_income: number;
   total_cities: number;
@@ -40,6 +40,7 @@ export interface PortfolioSummaryData {
   yield_percentage: number;
 }
 
+// Adding PerformanceMetrics interface here for consistency
 export interface PerformanceMetrics {
   average_roi: number;
   capital_growth: number;

@@ -67,7 +67,20 @@ export const dashboardKeys = [
   'noAlerts',
   'allSystemsNormal',
   'alerts',
-  'eventsInLastYear'
+  'eventsInLastYear',
+  // Add missing translations
+  'comparedToMarket',
+  'marketComparison',
+  'yourPortfolioIs',
+  'aboveMarket',
+  'belowMarket',
+  'portfolioOutperformingMarket',
+  'portfolioUnderperformingMarket',
+  'percentage',
+  'noDataAvailable',
+  'dataWillAppearSoon',
+  'investorLevel'
 ] as const;
 
 export type DashboardKey = typeof dashboardKeys[number];
+

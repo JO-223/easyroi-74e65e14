@@ -63,7 +63,6 @@ const Dashboard = () => {
   return (
     <DashboardLayout title="Dashboard" subtitle={`Welcome back, ${userDetails?.firstName || 'User'}!`}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Pass props correctly based on component definition */}
         <PortfolioSummary isLoading={isLoading} />
         
         <InvestmentChart 
@@ -72,7 +71,7 @@ const Dashboard = () => {
         />
         
         <PortfolioAllocationChart 
-          allocationData={data?.allocation || []} 
+          data={data?.allocation || []} 
           isLoading={isLoading} 
         />
       </div>
