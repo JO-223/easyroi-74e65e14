@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { AuthProvider, RequireAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -43,30 +44,92 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/properties" element={<Properties />} />
-              <Route path="/dashboard/development" element={<Development />} />
-              <Route path="/dashboard/development/:id" element={<DevelopmentDetail />} />
-              <Route path="/dashboard/analytics" element={<Analytics />} />
-              <Route path="/dashboard/events" element={<Events />} />
-              <Route path="/dashboard/events/:id" element={<EventDetail />} />
-              <Route path="/dashboard/network" element={<Network />} />
-              <Route path="/dashboard/profile" element={<Profile />} />
-              <Route path="/dashboard/settings" element={<Settings />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <AuthProvider>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/login" element={<Login />} />
+                
+                {/* Protected Routes */}
+                <Route path="/dashboard" element={
+                  <RequireAuth>
+                    <Dashboard />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/properties" element={
+                  <RequireAuth>
+                    <Properties />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/development" element={
+                  <RequireAuth>
+                    <Development />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/development/:id" element={
+                  <RequireAuth>
+                    <DevelopmentDetail />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/analytics" element={
+                  <RequireAuth>
+                    <Analytics />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/events" element={
+                  <RequireAuth>
+                    <Events />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/events/:id" element={
+                  <RequireAuth>
+                    <EventDetail />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/network" element={
+                  <RequireAuth>
+                    <Network />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/profile" element={
+                  <RequireAuth>
+                    <Profile />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/settings" element={
+                  <RequireAuth>
+                    <Settings />
+                  </RequireAuth>
+                } />
+                
+                {/* Admin Routes */}
+                <Route path="/admin" element={
+                  <RequireAuth>
+                    <AdminRoute>
+                      <AdminDashboard />
+                    </AdminRoute>
+                  </RequireAuth>
+                } />
+                
+                {/* Public Routes */}
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/about" element={<About />} />
 
-              {/* Redirect /properties to /dashboard/properties for backward compatibility */}
-              <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+                {/* Redirect /properties to /dashboard/properties for backward compatibility */}
+                <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
+                
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
           </BrowserRouter>
         </LanguageProvider>
       </TooltipProvider>

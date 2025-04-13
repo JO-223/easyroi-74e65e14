@@ -10,7 +10,15 @@ export const authKeys = [
   "signingIn",
   "signIn",
   "needAssistance",
-  "login"
+  "login",
+  "authInitError",
+  "signOutError",
+  "authRequired",
+  "redirectingToLogin",
+  "invalidCredentials",
+  "demoLoginSuccess",
+  "demoLoginError",
+  "sessionExpired"
 ] as const;
 
 export type AuthKey = typeof authKeys[number];

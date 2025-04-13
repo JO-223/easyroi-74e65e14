@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SidebarNav } from "./sidebar-nav";
 import { DashboardHeader } from "./DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UserProfileData {
   firstName: string;
@@ -48,7 +48,7 @@ export function DashboardLayout({
   subtitle
 }: DashboardLayoutProps) {
   const { t } = useLanguage();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState<UserProfileData>({
     firstName: "",
@@ -59,20 +59,16 @@ export function DashboardLayout({
   });
   
   useEffect(() => {
-    // Check authentication and load user data (only once)
+    // Load user profile data (only once)
     async function loadUserData() {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        navigate('/login');
-        return;
-      }
+      if (!user) return;
       
       try {
+        console.log("DashboardLayout: Loading profile data for user:", user.id);
         const { data, error } = await supabase
           .from('profiles')
           .select('first_name, last_name, email, level')
-          .eq('id', session.user.id)
+          .eq('id', user.id)
           .single();
         
         if (error) throw error;
@@ -83,7 +79,7 @@ export function DashboardLayout({
             lastName: data.last_name as string || "",
             email: data.email as string || "",
             level: data.level as string | null,
-            id: session.user.id
+            id: user.id
           });
         }
       } catch (error) {
@@ -93,8 +89,10 @@ export function DashboardLayout({
       }
     }
     
-    loadUserData();
-  }, [navigate]);
+    if (user) {
+      loadUserData();
+    }
+  }, [user]);
   
   // Create the context value with profile data
   const contextValue: UserProfileContextType = {

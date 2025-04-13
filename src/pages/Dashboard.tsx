@@ -5,21 +5,20 @@ import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { DashboardLoading } from "@/components/dashboard/DashboardLoading";
 import { DashboardError } from "@/components/dashboard/DashboardError";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { fetchDashboardData, DashboardData } from "@/services/dashboard/dashboardService";
 import { useToast } from "@/hooks/use-toast";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
   
   const loadDashboardData = async () => {
     try {
@@ -39,20 +38,11 @@ const Dashboard = () => {
   };
   
   useEffect(() => {
-    async function checkAuthAndLoadData() {
-      // Check if user is authenticated
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        navigate('/login');
-        return;
-      }
-      
+    console.log("Dashboard: Loading user data for user ID:", user?.id);
+    if (user) {
       loadDashboardData();
     }
-    
-    checkAuthAndLoadData();
-  }, [navigate, toast]);
+  }, [user]);
 
   const renderContent = () => {
     if (isLoading) {
