@@ -460,7 +460,6 @@ const en = {
   finishing: "Finishing",
   framing: "Framing",
   interior: "Interior",
-  completed: "Completed",
   progressRange: "Progress Range",
   projectFilter: "Project Filter",
   progress: "Progress",
@@ -559,7 +558,6 @@ const en = {
   callUs: "Call Us",
   businessHours: "Business Hours",
   mondayToFriday: "Monday to Friday",
-  contactInfo: "Contact Information",
   
   // Analytics
   unableToLoadData: "Unable to load data",
