@@ -69,7 +69,7 @@ export function DevelopmentProjectCard({ project, onClick }: DevelopmentProjectC
           <div className="flex items-center">
             <Building className="w-4 h-4 mr-1 text-gray-500" />
             <span className="text-gray-700">
-              {project.available_units} / {project.total_units} {t('unitsAvailable')}
+              {project.available_units} / {project.total_units} {t('units')}
             </span>
           </div>
           

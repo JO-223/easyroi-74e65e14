@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { Event } from "@/types/property";
+import { Event } from "@/types/event";
 
 export const fetchEvents = async () => {
   const { data, error } = await supabase
@@ -13,7 +13,7 @@ export const fetchEvents = async () => {
     throw error;
   }
   
-  return data as unknown as Event[];
+  return data as Event[];
 };
 
 export const fetchEvent = async (id: string) => {
@@ -28,5 +28,5 @@ export const fetchEvent = async (id: string) => {
     throw error;
   }
   
-  return data as unknown as Event;
+  return data as Event;
 };

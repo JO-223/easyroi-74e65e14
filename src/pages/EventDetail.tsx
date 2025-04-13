@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchEvent, registerForEvent, fetchSimilarEvents } from '@/services/eventService';
@@ -15,23 +14,15 @@ import { Calendar, Clock, MapPin, Users, AlertTriangle, Globe, Building, Constru
 import { Badge } from '@/components/ui/badge';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { EventList } from '@/components/events/EventList';
-import EventReviewsList from '@/components/events/EventReviewsList';
+import { EventReviewsList } from '@/components/events/EventReviewsList';
 import { EmptyState } from '@/components/ui/empty-state';
-import { UserDetails } from '@/hooks/useAuth';
 
 export default function EventDetail() {
   const { eventId } = useParams<{ eventId: string }>();
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, userDetails } = useAuth();
   const { toast } = useToast();
   const [registeringInProgress, setRegisteringInProgress] = useState(false);
-  
-  // Mock userDetails until we update the Auth context
-  const userDetails: UserDetails = {
-    id: user?.id || '',
-    level: 'silver',
-    email: user?.email || ''
-  };
   
   // Fetch event details
   const { data: event, isLoading, error } = useQuery({
@@ -54,8 +45,8 @@ export default function EventDetail() {
         <EmptyState 
           variant="card"
           icon={<AlertTriangle size={40} />}
-          title={t('errorLoadingEvent')}
-          description={t('errorFetchingEventDetails')}
+          title={t('error')}
+          description={t('error')}
         />
       </DashboardLayout>
     );
@@ -78,8 +69,8 @@ export default function EventDetail() {
         <EmptyState 
           variant="card"
           icon={<AlertTriangle size={40} />}
-          title={t('eventNotFound')}
-          description={t('eventNotFound')}
+          title={t('notFound')}
+          description={t('notFound')}
         />
       </DashboardLayout>
     );

@@ -33,3 +33,13 @@ export interface EventReview {
   user_name?: string;
   user_avatar?: string;
 }
+
+export interface EventFilter {
+  eventType?: string;
+  location?: string;
+  fromDate?: string;
+  toDate?: string;
+  onlyAvailable?: boolean;
+  eventFormat?: string;
+  badge?: string;
+}

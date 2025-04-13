@@ -5,7 +5,7 @@ import { PropertyFilters } from '@/components/PropertyFilters';
 import { PropertyDetailModal } from '@/components/PropertyDetailModal';
 import { PropertyPagination } from '@/components/PropertyPagination';
 import { Property, PropertyFilter } from '@/types/property';
-import { fetchProperties, fetchLocations, fetchPropertyTypes, fetchAmenities } from '@/services/propertyService';
+import { fetchProperties } from '@/services/propertyService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -16,6 +16,29 @@ import { useAdminRole } from '@/hooks/use-admin-role';
 
 // Define properties per page
 const PROPERTIES_PER_PAGE = 9;
+
+// Mock data for demo
+const mockLocations = [
+  { city: "Dubai", country: "UAE", zone: "Downtown" },
+  { city: "Dubai", country: "UAE", zone: "Marina" },
+  { city: "Abu Dhabi", country: "UAE", zone: "Corniche" },
+  { city: "Milan", country: "Italy", zone: "Centro" },
+  { city: "Rome", country: "Italy", zone: "Historic" },
+];
+
+const mockPropertyTypes = [
+  { id: "1", name: "Apartment" },
+  { id: "2", name: "Villa" },
+  { id: "3", name: "Penthouse" },
+  { id: "4", name: "Office" },
+];
+
+const mockAmenities = [
+  { id: "1", name: "Pool" },
+  { id: "2", name: "Gym" },
+  { id: "3", name: "Parking" },
+  { id: "4", name: "Beach Access" },
+];
 
 export default function Properties() {
   const t = useTranslation();
@@ -30,46 +53,6 @@ export default function Properties() {
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
     queryKey: ['properties', filters],
     queryFn: () => fetchProperties(filters),
-  });
-  
-  // Fetch locations for filters
-  const { data: locations = [] } = useQuery({
-    queryKey: ['locations'],
-    queryFn: () => {
-      return fetchLocations().then(locs => 
-        locs.map((loc: any) => ({
-          city: loc.city as string,
-          country: loc.country as string,
-          zone: loc.zone as string
-        }))
-      );
-    },
-  });
-  
-  // Fetch property types for filters
-  const { data: propertyTypes = [] } = useQuery({
-    queryKey: ['propertyTypes'],
-    queryFn: () => {
-      return fetchPropertyTypes().then(types => 
-        types.map((type: any) => ({
-          id: type.id as string,
-          name: type.name as string
-        }))
-      );
-    },
-  });
-  
-  // Fetch amenities for filters
-  const { data: amenities = [] } = useQuery({
-    queryKey: ['amenities'],
-    queryFn: () => {
-      return fetchAmenities().then(ams => 
-        ams.map((am: any) => ({
-          id: am.id as string,
-          name: am.name as string
-        }))
-      );
-    },
   });
   
   // Reset page when filters change
@@ -110,9 +93,9 @@ export default function Properties() {
         {/* Filters section */}
         <PropertyFilters 
           onFilterChange={handleFilterChange}
-          locations={locations}
-          propertyTypes={propertyTypes}
-          amenities={amenities}
+          locations={mockLocations}
+          propertyTypes={mockPropertyTypes}
+          amenities={mockAmenities}
           investorLevels={investorLevels}
         />
 

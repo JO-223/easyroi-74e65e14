@@ -83,12 +83,12 @@ export default function DocumentUploadDialog({
     try {
       await uploadPropertyDocument({
         property_id: propertyId,
-        userId: user.id,
-        fileName: values.document_name,
-        documentType: values.document_type,
+        uploaded_by: user.id,
+        document_name: values.document_name,
+        document_type: values.document_type,
         file: values.file,
         description: values.description || "",
-        isConfidential: values.is_confidential,
+        is_confidential: values.is_confidential,
       });
 
       toast({

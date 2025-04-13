@@ -103,7 +103,7 @@ export function EventFilters({ onApplyFilters }: EventFiltersProps) {
           <Checkbox 
             id="available" 
             checked={!!filters.onlyAvailable}
-            onCheckedChange={(checked) => handleCheckboxChange('onlyAvailable', !!checked)}
+            onCheckedChange={(checked) => handleCheckboxChange('onlyAvailable', checked === true)}
           />
           <Label htmlFor="available" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
             {t('showOnlyAvailableEvents')}

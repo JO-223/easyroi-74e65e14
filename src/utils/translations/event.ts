@@ -14,6 +14,11 @@ export const eventKeys = [
   'fromLastMonth',
   'noEventsFound',
   'tryDifferentFilters',
+  'unitsAvailable',
+  'expectedRoi',
+  'constructionProgress',
+  'minInvestment',
+  'viewDetails'
 ] as const;
 
 export type EventKey = typeof eventKeys[number];

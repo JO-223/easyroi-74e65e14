@@ -13,7 +13,9 @@ import { Trash2, Bell, Clock, MapPin, DollarSign } from "lucide-react";
 import { formatCurrency } from "@/utils/formatters";
 import { SavedPropertySearch } from "@/types/search";
 
-export function SavedSearchesList() {
+interface SavedSearchesListProps {}
+
+export function SavedSearchesList({}: SavedSearchesListProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ export function SavedSearchesList() {
       onError: (err: any) => {
         toast({
           title: "Error",
-          description: t('errorFetchingSavedSearches'),
+          description: t('error'),
           variant: "destructive"
         });
       },
@@ -34,7 +36,7 @@ export function SavedSearchesList() {
   });
   
   const handleDeleteSearch = async (searchId: string) => {
-    const confirmed = window.confirm(t("confirmDeleteSearch"));
+    const confirmed = window.confirm(t("confirm"));
     if (!confirmed) return;
     
     try {
@@ -43,12 +45,12 @@ export function SavedSearchesList() {
       
       toast({
         title: "Success",
-        description: t('searchDeletedSuccessfully')
+        description: t('success')
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: t('errorDeletingSearch'),
+        description: t('error'),
         variant: "destructive"
       });
     }
@@ -136,7 +138,7 @@ export function SavedSearchesList() {
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="flex items-center gap-1 text-amber-600 bg-amber-50">
                   <Bell className="h-3 w-3" />
-                  {t("alertActive")}
+                  {t("alerts")}
                 </Badge>
                 <span className="text-xs text-gray-500">
                   <Clock className="inline h-3 w-3 mr-1" />
@@ -153,7 +155,7 @@ export function SavedSearchesList() {
               className="w-full mt-4"
               onClick={() => handleApplySearch(search)}
             >
-              {t("applySearch")}
+              {t("search")}
             </Button>
           </CardContent>
         </Card>

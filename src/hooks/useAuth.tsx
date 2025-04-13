@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthError, User } from "@supabase/supabase-js";
+import { PostgrestError } from "@supabase/supabase-js";
 
 export interface UserDetails {
   id: string;
@@ -17,18 +18,21 @@ export interface AuthContextType {
   userDetails: UserDetails | null;
   isLoading: boolean;
   authError: AuthError | null;
+  isAdmin: boolean;
+  isOwner: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
 }
 
-// Create the context with default values
 const AuthContext = createContext<AuthContextType>({
   user: null,
   userDetails: null,
   isLoading: true,
   authError: null,
+  isAdmin: false,
+  isOwner: false,
   signIn: async () => {},
   signOut: async () => {},
   signUp: async () => {},
@@ -75,21 +79,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error("Error fetching user details:", error);
-        setAuthError(error);
+        setAuthError({
+          name: error.code,
+          message: error.message,
+          status: 400,
+          __isAuthError: true
+        } as AuthError);
       } else {
         setUserDetails({
-          id: data.id,
-          email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          level: data.level,
-          role: data.role,
-          avatar: data.avatar,
+          id: String(data.id),
+          email: String(data.email),
+          firstName: data.firstName ? String(data.firstName) : undefined,
+          lastName: data.lastName ? String(data.lastName) : undefined,
+          level: data.level ? String(data.level) : undefined,
+          role: data.role ? String(data.role) : undefined,
+          avatar: data.avatar ? String(data.avatar) : undefined,
         });
       }
     } catch (error: any) {
       console.error("Unexpected error fetching user details:", error);
-      setAuthError(error);
+      setAuthError({
+        name: 'Unknown error',
+        message: error.message || 'Unknown error occurred',
+        status: 500,
+        __isAuthError: true
+      } as AuthError);
     }
   };
 
@@ -177,11 +191,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const isAdmin = userDetails?.role === 'admin';
+  const isOwner = userDetails?.role === 'owner';
+
   const value: AuthContextType = {
     user,
     userDetails,
     isLoading,
     authError,
+    isAdmin,
+    isOwner,
     signIn,
     signUp,
     signOut,
@@ -195,5 +214,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook to use the auth context
 export const useAuth = () => useContext(AuthContext);

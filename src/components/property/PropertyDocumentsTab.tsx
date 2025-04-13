@@ -17,10 +17,12 @@ export default function PropertyDocumentsTab({
   ownerId 
 }: PropertyDocumentsTabProps) {
   const { t } = useLanguage();
-  const { user, isAdmin, isOwner } = useAuth();
+  const { user, userDetails } = useAuth();
   
   // Determine if user can modify documents
   const isPropertyOwner = user?.id === ownerId;
+  const isAdmin = userDetails?.role === 'admin';
+  const isOwner = userDetails?.role === 'owner';
   const canModifyDocuments = isPropertyOwner || isAdmin || isOwner;
   
   // Determine if user can view documents
