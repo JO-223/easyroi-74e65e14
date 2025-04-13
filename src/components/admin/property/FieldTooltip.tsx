@@ -2,7 +2,6 @@
 import { HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { TooltipKey } from "@/utils/translations/tooltip";
 
 interface FieldTooltipProps {
   label: string;
@@ -13,8 +12,8 @@ interface FieldTooltipProps {
 export function FieldTooltip({ label, tooltip, tooltipKey }: FieldTooltipProps) {
   const { t } = useLanguage();
   
-  // Use the tooltip text directly
-  const tooltipText = tooltip;
+  // If tooltipKey is provided, use it to get a nested translation
+  const tooltipText = tooltipKey ? t('tooltip', tooltipKey) : tooltip;
 
   return (
     <div className="flex items-center gap-1">

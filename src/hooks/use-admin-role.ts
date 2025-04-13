@@ -1,73 +1,83 @@
-
 import { useState, useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { UserRole } from "@/types/property";
 
-export interface UserRole {
-  id: string;
-  name: "admin" | "investor" | "agent";
+// Create a helper function to check if a role is an admin role
+export function isAdminRole(role: string | null): boolean {
+  return ['administrator', 'owner'].includes(role as string);
 }
 
-export interface AdminRoleResult {
+// Cache the user role to prevent refetching
+let cachedUserRole: {
+  role: UserRole | null;
+  userId: string | null;
   isAdmin: boolean;
-  isLoading: boolean;
-  error: Error | null;
-}
+} | null = null;
 
-export function useAdminRole(): AdminRoleResult {
+export function useAdminRole() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-  const { user } = useAuth();
-
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  
   useEffect(() => {
-    async function checkAdminRole() {
-      if (!user?.id) {
-        setIsAdmin(false);
-        setIsLoading(false);
-        return;
-      }
-
+    async function checkUserRole() {
       try {
-        // Check if the user has the admin role
-        const { data, error } = await supabase
-          .from("user_roles")
-          .select("*")
-          .eq("user_id", user.id)
-          .eq("role_name", "admin")
-          .single();
-
-        if (error && error.code !== "PGRST116") {
-          // PGRST116 is "row not found", which is expected if they're not an admin
-          console.error("Error checking admin role:", error);
-          setError(new Error(error.message));
-        }
-
-        const hasAdminRole = !!data;
-        setIsAdmin(hasAdminRole);
+        const { data: { user } } = await supabase.auth.getUser();
         
-        // Store the admin status in localStorage for quick checks
-        if (hasAdminRole) {
-          localStorage.setItem("easyroi_admin", "true");
-        } else {
-          localStorage.removeItem("easyroi_admin");
+        if (!user) {
+          setIsLoading(false);
+          return;
         }
-      } catch (err) {
-        console.error("Error in useAdminRole:", err);
-        setError(err as Error);
-      } finally {
+        
+        // If we have a cached role for this user, use it
+        if (cachedUserRole && cachedUserRole.userId === user.id) {
+          setIsAdmin(cachedUserRole.isAdmin);
+          setUserRole(cachedUserRole.role);
+          setUserId(cachedUserRole.userId);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Otherwise, fetch the user's profile
+        setUserId(user.id);
+        
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('level')
+          .eq('id', user.id)
+          .single();
+        
+        if (error) {
+          console.error("Error fetching user role:", error);
+          setIsLoading(false);
+          return;
+        }
+        
+        if (data && data.level) {
+          const level = data.level as UserRole;
+          const adminStatus = isAdminRole(level);
+          
+          // Cache the result
+          cachedUserRole = {
+            role: level,
+            userId: user.id,
+            isAdmin: adminStatus
+          };
+          
+          setUserRole(level);
+          setIsAdmin(adminStatus);
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error checking user role:", error);
         setIsLoading(false);
       }
     }
-
-    checkAdminRole();
-  }, [user?.id]);
-
-  // Also check localStorage for quick admin status verification
-  useEffect(() => {
-    const adminStatus = localStorage.getItem("easyroi_admin") === "true";
-    if (adminStatus) setIsAdmin(true);
+    
+    checkUserRole();
   }, []);
-
-  return { isAdmin, isLoading, error };
+  
+  return { isAdmin, userRole, isLoading, userId };
 }

@@ -28,7 +28,8 @@ export function InvestorField({ control, investors }: InvestorFieldProps) {
           <FormLabel>
             <FieldTooltip 
               label={t("investor")} 
-              tooltip={t("investorTooltip")} 
+              tooltip={t("tooltip", "investor")} 
+              tooltipKey="investor"
             />
           </FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>

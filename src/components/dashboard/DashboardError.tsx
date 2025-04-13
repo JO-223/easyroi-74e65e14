@@ -1,18 +1,14 @@
 
-import React from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { EmptyState } from '@/components/ui/empty-state';
-import { AlertCircle } from 'lucide-react';
+import React from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-export function DashboardError() {
+export const DashboardError = () => {
   const { t } = useLanguage();
   
   return (
-    <EmptyState
-      variant="card"
-      icon={<AlertCircle size={40} />}
-      title={"No Data Available"}
-      description={"Please refresh the page or contact support if the issue persists"}
-    />
+    <div className="text-center py-10">
+      <h2 className="text-2xl font-bold mb-2">{t('noData')}</h2>
+      <p>{t('refreshOrContactSupport')}</p>
+    </div>
   );
-}
+};

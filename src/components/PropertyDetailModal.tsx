@@ -53,7 +53,7 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
               {property.status}
             </Badge>
             <Badge variant="outline" className="bg-blue-500/20 text-blue-300 border-blue-500/50">
-              {typeof property.type === 'string' ? property.type : property.type.name}
+              {property.type.name}
             </Badge>
           </div>
           <DialogTitle className="text-2xl font-bold">{property.name}</DialogTitle>
@@ -115,7 +115,7 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {property.amenities.map((amenity) => (
                   <div 
-                    key={amenity.name} 
+                    key={amenity.id} 
                     className="flex items-center p-2 bg-white/5 rounded-md"
                   >
                     <ChevronRight className="h-4 w-4 text-easyroi-gold mr-2" />

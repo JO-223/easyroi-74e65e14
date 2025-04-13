@@ -1,80 +1,76 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { PortfolioAllocation } from '@/types/portfolio';
-
-interface ChartDataItem {
-  name: string;
-  value: number;
-}
+import React from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer
+} from "recharts";
+import { PortfolioAllocation } from "@/services/dashboard/dashboardService";
 
 interface PortfolioAllocationChartProps {
-  data: ChartDataItem[];
-  isLoading?: boolean;
+  data: PortfolioAllocation[];
 }
 
-export function PortfolioAllocationChart({ data, isLoading = false }: PortfolioAllocationChartProps) {
+export const PortfolioAllocationChart = ({ data }: PortfolioAllocationChartProps) => {
   const { t } = useLanguage();
   
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
-  
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-5 w-40" />
-          <Skeleton className="h-4 w-32" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-40 w-full" />
-        </CardContent>
-      </Card>
-    );
-  }
-  
+  // Define chart colors
+  const COLORS = ["#0C2340", "#D4AF37", "#4CAF50", "#E57373"];
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("portfolioAllocation")}</CardTitle>
-        <CardDescription>{t("investmentByCountry")}</CardDescription>
+        <CardTitle>{t('portfolioAllocation')}</CardTitle>
       </CardHeader>
       <CardContent>
-        {data.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-40">
-            <p className="text-lg font-semibold">{t("noDataAvailable")}</p>
-            <p className="text-sm text-muted-foreground">{t("dataWillAppearSoon")}</p>
-          </div>
-        ) : data.length === 1 ? (
-          <div className="flex flex-col items-center justify-center h-40">
-            <p className="text-lg font-semibold">{t("singleLocationAllocation")}</p>
-            <p>{data[0].name}: 100%</p>
-          </div>
-        ) : (
-          <ResponsiveContainer width="100%" height={160}>
+        <div className="h-64 flex items-center justify-center">
+          <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                outerRadius={60}
-                fill="#8884d8"
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
                 dataKey="value"
-                nameKey="name"
-                labelLine={false}
+                // Improved label styling for better readability
+                label={({ name, percent }) => {
+                  return `${name}: ${(percent * 100).toFixed(0)}%`;
+                }}
+                labelLine={{ stroke: "#666", strokeWidth: 1 }}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={COLORS[index % COLORS.length]} 
+                    stroke="#fff"
+                    strokeWidth={1}
+                  />
                 ))}
               </Pie>
-              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              <Tooltip formatter={(value) => `${value}%`} />
+              <Tooltip 
+                formatter={(value: number) => [`${value.toFixed(2)}%`, t('allocation')]}
+                contentStyle={{
+                  backgroundColor: "white",
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  boxShadow: "0px 0px 10px rgba(0,0,0,0.1)"
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  marginBottom: "5px"
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
-        )}
+        </div>
       </CardContent>
     </Card>
   );
-}
+};

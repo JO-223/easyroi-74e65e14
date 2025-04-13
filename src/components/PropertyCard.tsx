@@ -1,22 +1,19 @@
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Property } from "@/types/property";
-import { Badge } from "@/components/ui/badge";
-import { BadgeLevel } from "@/components/ui/badge-level";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Home, MapPin, BedDouble, Bath, ArrowRight, Eye, Droplet, Wifi, Car, Globe } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { formatCurrency } from "@/utils/formatters";
+import { Button } from "@/components/ui/button";
+import { BadgeLevel } from "@/components/ui/badge-level";
+import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
+import { formatCurrency } from "@/lib/utils";
 
-export interface PropertyCardProps {
+interface PropertyCardProps {
   property: Property;
-  onViewDetails?: (property: Property) => void;
+  onViewDetails: (property: Property) => void;
 }
 
 export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
-  const { t } = useLanguage();
+  const t = useTranslation();
   
   // Get primary image or placeholder
   const primaryImage = property.images.find(img => img.is_primary)?.url || 
@@ -46,9 +43,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       </CardHeader>
       
       <CardContent className="pb-2">
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-          {typeof property.type === 'string' ? property.type : property.type.name}
-        </p>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{property.type.name}</p>
         
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -79,7 +74,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
               {amenity.icon === 'droplet' && <Droplet className="h-3 w-3 mr-1" />}
               {amenity.icon === 'wifi' && <Wifi className="h-3 w-3 mr-1" />}
               {amenity.icon === 'car' && <Car className="h-3 w-3 mr-1" />}
-              {amenity.icon === 'bed' && <BedDouble className="h-3 w-3 mr-1" />}
+              {amenity.icon === 'bed' && <Bed className="h-3 w-3 mr-1" />}
               {amenity.icon === 'bath' && <Bath className="h-3 w-3 mr-1" />}
               {(!amenity.icon) && <Globe className="h-3 w-3 mr-1" />}
               {amenity.name}
@@ -91,7 +86,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       <CardFooter className="pt-0 mt-auto">
         <Button 
           className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy"
-          onClick={() => onViewDetails && onViewDetails(property)}
+          onClick={() => onViewDetails(property)}
         >
           {t('viewDetails')}
         </Button>

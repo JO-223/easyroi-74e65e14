@@ -28,7 +28,7 @@ export function FinancialFields({ control, watchCountry }: FinancialFieldsProps)
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("roiPercentage")} tooltip={t("roiPercentageTooltip")} />
+              <FieldTooltip label={t("roiPercentage")} tooltip={t("tooltip.roiPercentage")} />
             </FormLabel>
             <FormControl>
               <Input
@@ -53,7 +53,7 @@ export function FinancialFields({ control, watchCountry }: FinancialFieldsProps)
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                <FieldTooltip label={t("serviceCharges")} tooltip={t("serviceChargesTooltip")} />
+                <FieldTooltip label={t("serviceCharges")} tooltip={t("tooltip.serviceCharges")} />
               </FormLabel>
               <FormControl>
                 <Input

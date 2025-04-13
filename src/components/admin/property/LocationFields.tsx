@@ -23,7 +23,7 @@ export function LocationFields({ control, availableCountries }: LocationFieldsPr
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("address")} tooltip={t("addressTooltip")} />
+              <FieldTooltip label={t("address")} tooltip={t("tooltip.address")} />
             </FormLabel>
             <FormControl>
               <Input placeholder={t("enterAddress")} {...field} />
@@ -39,7 +39,7 @@ export function LocationFields({ control, availableCountries }: LocationFieldsPr
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("city")} tooltip={t("cityTooltip")} />
+              <FieldTooltip label={t("city")} tooltip={t("tooltip.city")} />
             </FormLabel>
             <FormControl>
               <Input placeholder={t("enterCity")} {...field} />
@@ -55,7 +55,7 @@ export function LocationFields({ control, availableCountries }: LocationFieldsPr
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("country")} tooltip={t("countryTooltip")} />
+              <FieldTooltip label={t("country")} tooltip={t("tooltip.country")} />
             </FormLabel>
             <Select 
               onValueChange={field.onChange} 
@@ -85,7 +85,7 @@ export function LocationFields({ control, availableCountries }: LocationFieldsPr
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("zone")} tooltip={t("zoneTooltip")} />
+              <FieldTooltip label={t("zone")} tooltip={t("tooltip.zone")} />
             </FormLabel>
             <FormControl>
               <Input placeholder={t("enterZone")} {...field} />

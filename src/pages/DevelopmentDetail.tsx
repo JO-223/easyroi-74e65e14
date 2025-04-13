@@ -13,14 +13,14 @@ import { format } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function DevelopmentDetail() {
-  const { projectId } = useParams<{ projectId: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
   
   const { data: project, isLoading, error } = useQuery({
-    queryKey: ['developmentProject', projectId],
-    queryFn: () => fetchDevelopmentProject(projectId!),
-    enabled: !!projectId,
+    queryKey: ['developmentProject', id],
+    queryFn: () => fetchDevelopmentProject(id!),
+    enabled: !!id,
   });
   
   const handleGoBack = () => navigate(-1);
@@ -56,7 +56,8 @@ export default function DevelopmentDetail() {
   }
   
   // Get the primary image or first image
-  const imageUrl = project.image_url || '/placeholder.svg';
+  const primaryImage = project.images.find(img => img.is_primary) || project.images[0];
+  const imageUrl = primaryImage ? primaryImage.url : '/placeholder.svg';
   
   // Format expected completion date
   const formattedDate = project.expected_completion ? 
@@ -114,6 +115,23 @@ export default function DevelopmentDetail() {
               </div>
               <Progress value={project.progress_percentage} className="h-3" />
             </div>
+            
+            {project.images.length > 1 && (
+              <div>
+                <h2 className="text-xl font-medium mb-3">{t('projectGallery')}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {project.images.map((image) => (
+                    <div key={image.id} className="overflow-hidden rounded-md h-36">
+                      <img 
+                        src={image.url} 
+                        alt={project.name} 
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="lg:col-span-1">
@@ -134,7 +152,7 @@ export default function DevelopmentDetail() {
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t('expectedRoi')}</span>
+                    <span className="text-muted-foreground">{t('expectedROI')}</span>
                     <span className="font-semibold text-easyroi-gold">
                       {project.expected_roi ? `${project.expected_roi}%` : t('tbd')}
                     </span>

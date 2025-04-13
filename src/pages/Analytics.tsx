@@ -1,60 +1,60 @@
 
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchAnalyticsData } from '@/services/analyticsService';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { AnalyticsData } from '@/types/analytics';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AlertTriangle } from 'lucide-react';
-import { AnalyticsContent } from '@/components/analytics/AnalyticsContent';
-
-const AnalyticsLoading = () => {
-  return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <Card key={i}>
-          <CardHeader>
-            <Skeleton className="h-5 w-40" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-8 w-32" />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-};
-
-const AnalyticsError = () => {
-  return (
-    <div className="flex items-center justify-center h-48">
-      <AlertTriangle className="h-10 w-10 text-red-500 mr-2" />
-      <p className="text-red-500">Failed to load analytics data.</p>
-    </div>
-  );
-};
+import { useQuery } from "@tanstack/react-query";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { fetchAnalyticsData } from "@/services/analytics/analyticsService";
+import { AnalyticsContent } from "@/components/analytics/AnalyticsContent";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Analytics = () => {
   const { t } = useLanguage();
-
-  const { data, isLoading, error } = useQuery({
+  
+  // Fetch analytics data with React Query
+  const { data: analyticsData, isLoading, error } = useQuery({
     queryKey: ['analyticsData'],
     queryFn: fetchAnalyticsData,
-    retry: false,
   });
 
+  // Show loading state with skeleton loaders
+  if (isLoading) {
+    return (
+      <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
+        <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-card rounded-lg shadow p-6">
+                <Skeleton className="h-4 w-24 mb-4" />
+                <Skeleton className="h-8 w-32 mb-4" />
+                <Skeleton className="h-3 w-40" />
+              </div>
+            ))}
+          </div>
+          <div className="bg-card rounded-lg shadow p-6 h-96">
+            <Skeleton className="h-5 w-40 mb-6" />
+            <Skeleton className="h-full w-full" />
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Show a more user-friendly error state
+  if (error) {
+    return (
+      <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
+        <div className="flex flex-col items-center justify-center h-96 text-center">
+          <h3 className="text-xl font-semibold text-easyroi-danger mb-2">{t('unableToLoadData')}</h3>
+          <p className="text-muted-foreground">{t('pleaseTryRefreshingThePage')}</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Even with null data, render the content with appropriate empty states
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-4">{t('analytics')}</h1>
-      {isLoading ? (
-        <AnalyticsLoading />
-      ) : error ? (
-        <AnalyticsError />
-      ) : (
-        <AnalyticsContent analyticsData={data as AnalyticsData} />
-      )}
-    </div>
+    <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
+      <AnalyticsContent analyticsData={analyticsData} />
+    </DashboardLayout>
   );
 };
 

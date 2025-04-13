@@ -1,14 +1,14 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchEvents } from "@/services/eventService";
+import { fetchEvents, filterEvents } from "@/services/eventService";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { EventList } from "@/components/events/EventList";
 import { EventFilters } from "@/components/events/EventFilters";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-import { EventFilter } from "@/types/event";
+import { EventFilter } from "@/types/property";
 
 export default function Events() {
   const { t } = useLanguage();
@@ -21,12 +21,12 @@ export default function Events() {
   
   const { data: events = [], isLoading, error } = useQuery({
     queryKey: ['events'],
-    queryFn: () => fetchEvents(),
+    queryFn: fetchEvents,
     meta: {
       onError: () => {
         toast({
-          title: t('error'),
-          description: t('error'),
+          title: t('errorFetchingEvents'),
+          description: t('pleaseTryAgainLater'),
           variant: "destructive",
         });
       },
@@ -34,73 +34,19 @@ export default function Events() {
   });
   
   // Apply filters to events
-  const filteredEvents = applyFilters(events, activeFilters);
+  const filteredEvents = filterEvents(events, activeFilters);
   
   const handleApplyFilters = (filters: EventFilter) => {
     setActiveFilters(filters);
   };
-
-  // Local filter function
-  function applyFilters(events: any[], filters: EventFilter) {
-    return events.filter(event => {
-      // Filter by event type
-      if (filters.eventType && event.event_type !== filters.eventType) {
-        return false;
-      }
-      
-      // Filter by location
-      if (filters.location && 
-          !event.location.toLowerCase().includes(filters.location.toLowerCase())) {
-        return false;
-      }
-      
-      // Filter by date range
-      if (filters.fromDate) {
-        const fromDate = new Date(filters.fromDate);
-        const eventDate = new Date(event.date);
-        if (eventDate < fromDate) return false;
-      }
-      
-      if (filters.toDate) {
-        const toDate = new Date(filters.toDate);
-        const eventDate = new Date(event.date);
-        if (eventDate > toDate) return false;
-      }
-      
-      // Filter by availability
-      if (filters.onlyAvailable && 
-          event.max_attendees && 
-          event.current_attendees >= event.max_attendees) {
-        return false;
-      }
-      
-      // Filter by event format
-      if (filters.eventFormat === 'online' && !event.is_online) {
-        return false;
-      }
-      
-      if (filters.eventFormat === 'in-person' && event.is_online) {
-        return false;
-      }
-      
-      // Filter by badge level
-      if (filters.badge && 
-          event.required_badges && 
-          !event.required_badges.includes(filters.badge)) {
-        return false;
-      }
-      
-      return true;
-    });
-  }
   
   return (
-    <DashboardLayout title={t('upcomingEvents')} subtitle={t('events')}>
+    <DashboardLayout title={t('upcomingEvents')} subtitle={t('discoverEventsAndNetworkingOpportunities')}>
       <div className="container mx-auto py-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Upcoming Events</h1>
-            <p className="text-muted-foreground">Discover events and networking opportunities</p>
+            <h1 className="text-2xl font-semibold tracking-tight">{t('upcomingEvents')}</h1>
+            <p className="text-muted-foreground">{t('discoverEventsAndNetworkingOpportunities')}</p>
           </div>
         </div>
         

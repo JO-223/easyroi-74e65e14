@@ -1,48 +1,10 @@
 
+// Chiavi di traduzione che non rientrano in altre categorie
 export const miscKeys = [
-  // Search related
-  'savedSearches',
-  'savedSearchesDescription',
-  'newSavedSearch',
-  'confirmDeleteSavedSearch',
-  'savedSearchDeleted',
-  'savedSearchDeletedSuccessfully',
-  'errorDeletingSavedSearch',
-  'daily',
-  'weekly',
-  'monthly',
-  'noSavedSearches',
-  'noSavedSearchesDescription',
-  'createFirstSavedSearch',
-  'locations',
-  'propertyTypes',
-  'bedrooms',
-  'bathrooms',
-  'minROI',
-  'priceRange',
-  'created',
-  // Saved search form
-  'editSavedSearch',
-  'createSavedSearch',
-  'searchName',
-  'enterSearchName',
-  'minBedrooms',
-  'maxBedrooms',
-  'minBathrooms',
-  'maxBathrooms',
-  'minPrice',
-  'maxPrice',
-  'receiveAlerts',
-  'receiveAlertsDescription',
-  'alertFrequency',
-  'selectAlertFrequency',
-  'updating',
-  'update',
-  'errorSavingSearch',
-  'savedSearchUpdated',
-  'savedSearchUpdatedSuccessfully',
-  'savedSearchCreated',
-  'savedSearchCreatedSuccessfully',
+  "home",
+  "aboutUs",
+  "login",
+  "contact"
 ] as const;
 
 export type MiscKey = typeof miscKeys[number];

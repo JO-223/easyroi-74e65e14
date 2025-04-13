@@ -22,7 +22,7 @@ export function PropertyTypeField({ control, propertyTypes }: PropertyTypeFieldP
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            <FieldTooltip label={t("propertyType")} tooltip={t("propertyTypeTooltip")} />
+            <FieldTooltip label={t("propertyType")} tooltip={t("tooltip.propertyType")} />
           </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>

@@ -1,4 +1,3 @@
-
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -26,9 +25,9 @@ Per ogni punto completato:
 ✅ Funzione Supabase: add_new_investor() - Implementata funzione RPC che completa il profilo e inizializza dati investitore partendo da un utente già presente in auth.users
 ✅ Funzione Supabase: add_property_for_user() - Implementata funzione RPC che aggiorna proprietà, investimenti e allocazione portafoglio
 ✅ Edge Function: create-owner-user() - Creata funzione edge che crea utente in auth.users e imposta livello owner in profiles
-✅ Funzione Supabase: add_property_for_sale() - Implementata funzione RPC che gestisce la pubblicazione delle proprietà in vendita
-✅ Funzione Supabase: add_new_development_project() - Implementata funzione RPC che aggiunge progetti di sviluppo
-✅ Funzione Supabase: add_new_event() - Implementata funzione RPC che aggiunge nuovi eventi
+- [ ] Funzione Supabase: add_property_for_sale()
+- [ ] Funzione Supabase: add_new_development_project()
+- [ ] Funzione Supabase: add_new_event()
 ✅ Protezione route admin lato client (useAdminRole) - Implementato sistema di protezione con AdminRoute.tsx con toast di notifica
 
 ✅ Redirect automatico per utenti non autorizzati - Aggiunto redirect in AdminRoute.tsx con toast di notifica
@@ -86,86 +85,14 @@ Per ogni punto completato:
 
 ## 🧠 Priorità 6 - Tabelle Supabase mappate
 
-✅ **Revisione completa dello schema database** - Analisi e mappatura di tutte le tabelle nel database
-✅ **Mappatura per categorie**:
-  
-**User-Related Tables:**
-- ✅ profiles - Dati dell'utente e informazioni di profilo
-- ✅ security_settings - Impostazioni di sicurezza dell'account
-- ✅ display_settings - Preferenze di visualizzazione
-- ✅ notification_settings - Configurazione delle notifiche
-- ✅ privacy_settings - Impostazioni privacy
-- ✅ user_activities - Registro delle attività degli utenti
+_(Solo revisione)_
 
-**Property-Related Tables:**
-- ✅ properties - Dati principali delle proprietà
-- ✅ property_locations - Dettagli sulla posizione
-- ✅ property_types - Categorizzazione delle proprietà
-- ✅ property_images - Foto delle proprietà
-- ✅ property_amenities - Collegamenti proprietà-servizi
-- ✅ property_pros_cons - Vantaggi/svantaggi delle proprietà
-- ✅ property_documents - **NUOVO**: Documenti legali con controllo accessi
-
-**Investment & Financial Tables:**
-- ✅ user_investments - Totali investimenti utente
-- ✅ user_investment_growth - Crescita investimenti nel tempo
-- ✅ user_portfolio_allocation - Distribuzione portafoglio
-- ✅ user_roi - Dati ROI
-- ✅ user_properties - Conteggio proprietà e variazioni
-- ✅ saved_property_searches - **NUOVO**: Ricerche salvate e alert
-
-**Project & Development Tables:**
-- ✅ development_projects - Progetti di sviluppo immobiliare
-- ✅ project_images - Immagini dei progetti
-
-**Event-Related Tables:**
-- ✅ events - Informazioni eventi
-- ✅ event_attendees - Tracciamento partecipazioni
-- ✅ user_events - Statistiche eventi utente
-- ✅ event_reviews - **NUOVO**: Recensioni e valutazioni eventi
-
-**Social & Network Tables:**
-- ✅ connections - Connessioni tra utenti
-- ✅ messages - Comunicazioni tra utenti
-- ✅ notifications - Notifiche di sistema
-- ✅ interests - Interessi utente
-- ✅ profile_interests - Collegamenti profili-interessi
-
-**Support Tables:**
-- ✅ amenities - Elenco servizi proprietà
-- ✅ data_imports - Tracciamento importazioni
-
-✅ **Sicurezza database**: Implementate policy RLS (Row Level Security) su tutte le tabelle per garantire che gli utenti possano accedere solo ai dati a cui sono autorizzati.
-
----
-
-## 🔄 Priorità 7 - Implementazione funzionalità nuove tabelle
-
-✅ **Gestione documenti delle proprietà**:
-- ✅ Componente DocumentsList per visualizzare documenti - Implementato src/components/documents/DocumentsList.tsx
-- ✅ Form di caricamento documenti con interfaccia user-friendly - Creato src/components/documents/DocumentUploadDialog.tsx
-- ✅ Security policy che limita accesso ai proprietari e admin - Implementato controllo in PropertyDocumentsTab.tsx
-- ✅ Servizio clientside per gestione documenti - Creato src/services/propertyDocumentService.ts
-- ✅ Integrazione con le pagine di dettaglio proprietà - Aggiunto PropertyDocumentsTab.tsx
-
-✅ **Sistema di ricerche salvate e alert**:
-- ✅ Interfaccia per salvare/gestire le ricerche - Creato src/components/search/SavedSearchesList.tsx
-- ✅ Form di creazione/modifica ricerca - Implementato src/components/search/SavedSearchDialog.tsx
-- ✅ Configurazione alert con frequenza (giornaliera, settimanale, mensile) - Implementato nelle form
-- ✅ Pagina dedicata per gestire le ricerche salvate - Creato src/pages/SavedSearches.tsx
-- ✅ Servizio per ricerche/alert lato client - Implementato src/services/savedSearchService.ts
-- ✅ Componente per selezione multipla con filtri - Creato src/components/search/MultiSelectField.tsx
-
-✅ **Sistema di recensioni eventi**:
-- ✅ Componente lista recensioni con statistiche - Implementato src/components/events/EventReviewsList.tsx
-- ✅ Form di aggiunta recensione con interfaccia a stelle - Creato src/components/events/EventReviewDialog.tsx
-- ✅ Statistica media recensioni e distribuzione - Implementato in EventReviewsList.tsx
-- ✅ Badge recensione verificata per partecipanti - Aggiunto controllo di verifica partecipanti
-- ✅ Opzione di recensione anonima - Implementato nell'interfaccia di recensione
-- ✅ Sistema di voti "utile" - Implementato con contatore e funzione voteReviewHelpful
-- ✅ Update automatico della media nella tabella eventi - Configurato trigger database
-- ✅ Servizio clientside per gestione review - Implementato src/services/eventReviewService.ts
-- ✅ Integrazione con pagina dettaglio evento - Aggiornato src/pages/EventDetail.tsx
+- Utenti: `profiles`, `security_settings`, `display_settings`, `notification_settings`
+- Proprietà: `properties`, `property_locations`, `property_types`, etc.
+- Progetti: `development_projects`, `project_images`
+- Eventi: `events`, `event_attendees`
+- Dati utente: `user_properties`, `user_roi`, `user_investment_growth`, etc.
+- Social: `connections`, `messages`, `notifications`
 
 ---
 

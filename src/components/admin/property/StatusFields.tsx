@@ -29,7 +29,7 @@ export function StatusFields({
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("occupationStatus")} tooltip={t("occupationStatusTooltip")} />
+              <FieldTooltip label={t("occupationStatus")} tooltip={t("tooltip.occupationStatus")} />
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
@@ -56,7 +56,7 @@ export function StatusFields({
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("status")} tooltip={t("statusTooltip")} />
+              <FieldTooltip label={t("status")} tooltip={t("tooltip.status")} />
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
@@ -83,7 +83,7 @@ export function StatusFields({
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <FieldTooltip label={t("listingStatus")} tooltip={t("listingStatusTooltip")} />
+              <FieldTooltip label={t("listingStatus")} tooltip={t("tooltip.listingStatus")} />
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>

@@ -1,108 +1,204 @@
 
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { fetchEvent, registerForEvent, fetchSimilarEvents } from '@/services/eventService';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
-import { format } from 'date-fns';
-import { SideCardItem } from '@/components/ui/side-card-item';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Clock, MapPin, Users, AlertTriangle, Globe, Building, Construction } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { BadgeLevel } from '@/components/ui/badge-level';
-import { EventList } from '@/components/events/EventList';
-import { EventReviewsList } from '@/components/events/EventReviewsList';
-import { EmptyState } from '@/components/ui/empty-state';
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { fetchEvent, registerForEvent, cancelEventRegistration } from "@/services/eventService";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, MapPin, Users, ArrowLeft } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function EventDetail() {
-  const { eventId } = useParams<{ eventId: string }>();
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { t } = useLanguage();
-  const { user, userDetails } = useAuth();
   const { toast } = useToast();
-  const [registeringInProgress, setRegisteringInProgress] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   
-  // Fetch event details
   const { data: event, isLoading, error } = useQuery({
-    queryKey: ['event', eventId],
-    queryFn: () => fetchEvent(eventId!),
-    enabled: !!eventId
+    queryKey: ['event', id],
+    queryFn: () => fetchEvent(id!),
+    meta: {
+      onError: () => {
+        toast({
+          title: t('errorFetchingEvent'),
+          description: t('pleaseTryAgainLater'),
+          variant: "destructive",
+        });
+      },
+    },
   });
-  
-  // Fetch similar events
-  const { data: similarEvents = [] } = useQuery({
-    queryKey: ['similarEvents', eventId],
-    queryFn: () => fetchSimilarEvents(eventId!),
-    enabled: !!eventId && !!event
-  });
-  
-  // Handle error states
-  if (error) {
-    return (
-      <DashboardLayout title={t('events')} subtitle={""}>
-        <EmptyState 
-          variant="card"
-          icon={<AlertTriangle size={40} />}
-          title={t('error')}
-          description={t('errorLoadingEventDescription')}
-        />
-      </DashboardLayout>
-    );
-  }
   
   if (isLoading) {
     return (
-      <DashboardLayout title={t('events')} subtitle={""}>
-        <div className="w-full text-center p-10">
-          <div className="animate-spin w-10 h-10 border-4 border-easyroi-gold border-t-transparent rounded-full mx-auto"></div>
-          <p className="mt-4 text-gray-500">Loading event details...</p>
+      <DashboardLayout title={t('eventDetails')} subtitle={t('loading')}>
+        <div className="container mx-auto py-6">
+          <Button variant="ghost" className="mb-4" onClick={() => navigate(-1)}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t('back')}
+          </Button>
+          
+          <div className="space-y-6">
+            <Skeleton className="h-10 w-2/3" />
+            <Skeleton className="h-6 w-1/2" />
+            
+            <div className="relative aspect-video rounded-lg overflow-hidden">
+              <Skeleton className="h-full w-full" />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-2">
+                <div className="space-y-4">
+                  <Skeleton className="h-6 w-full" />
+                  <Skeleton className="h-6 w-full" />
+                  <Skeleton className="h-6 w-full" />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <Skeleton className="h-24 w-full" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </div>
+          </div>
         </div>
       </DashboardLayout>
     );
   }
   
-  if (!event) {
+  if (error || !event) {
     return (
-      <DashboardLayout title={t('events')} subtitle={""}>
-        <EmptyState 
-          variant="card"
-          icon={<AlertTriangle size={40} />}
-          title={t('eventNotFound')}
-          description={t('eventNotFoundDescription')}
-        />
+      <DashboardLayout title={t('eventNotFound')} subtitle={t('errorLoadingEvent')}>
+        <div className="container mx-auto py-6">
+          <Button variant="ghost" className="mb-4" onClick={() => navigate(-1)}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t('back')}
+          </Button>
+          
+          <div className="text-center py-12">
+            <h3 className="text-lg font-medium text-gray-900">{t('eventNotFound')}</h3>
+            <p className="mt-2 text-sm text-gray-500">{t('eventMayHaveBeenRemoved')}</p>
+            <Button className="mt-4" onClick={() => navigate('/dashboard/events')}>
+              {t('viewAllEvents')}
+            </Button>
+          </div>
+        </div>
       </DashboardLayout>
     );
   }
   
-  const eventDate = new Date(event.date);
-  const formattedDate = format(eventDate, 'EEEE, MMMM d, yyyy');
+  const eventDate = event.date ? new Date(event.date) : new Date();
+  const formattedDate = format(eventDate, 'MMMM d, yyyy');
   
-  // Check if user is already registered
-  const isRegistered = false; // This would come from a backend check
-  
-  // Check if event is in the past
-  const isPastEvent = new Date(event.date) < new Date();
-  
-  // Check if event is at capacity
   const isAtCapacity = event.max_attendees !== null && event.current_attendees >= event.max_attendees;
   
-  // Format rating if available
-  const formattedRating = event.average_rating 
-    ? `${event.average_rating.toFixed(1)}/5.0`
-    : "No ratings yet";
-    
+  const handleRegister = async () => {
+    setIsRegistering(true);
+    try {
+      // In a real app, get the user ID from auth context
+      const userId = "current-user-id";
+      const result = await registerForEvent(event.id, userId);
+      
+      if (result.success) {
+        setIsRegistered(true);
+        toast({
+          title: t('registrationSuccessful'),
+          description: t('youAreNowRegisteredForThisEvent'),
+        });
+      } else {
+        toast({
+          title: t('registrationFailed'),
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast({
+        title: t('registrationFailed'),
+        description: t('pleaseTryAgainLater'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+  
+  const handleCancelRegistration = async () => {
+    setIsRegistering(true);
+    try {
+      // In a real app, get the user ID from auth context
+      const userId = "current-user-id";
+      const result = await cancelEventRegistration(event.id, userId);
+      
+      if (result.success) {
+        setIsRegistered(false);
+        toast({
+          title: t('registrationCanceled'),
+          description: t('youAreNoLongerRegisteredForThisEvent'),
+        });
+      } else {
+        toast({
+          title: t('cancellationFailed'),
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Cancellation error:", error);
+      toast({
+        title: t('cancellationFailed'),
+        description: t('pleaseTryAgainLater'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+  
   return (
-    <DashboardLayout 
-      title={event.title} 
-      subtitle={formattedDate}
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Event image */}
-          <div className="relative rounded-lg overflow-hidden h-72 bg-gray-100">
+    <DashboardLayout title={event.title} subtitle={event.event_type}>
+      <div className="container mx-auto py-6">
+        <Button variant="ghost" className="mb-4" onClick={() => navigate(-1)}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t('back')}
+        </Button>
+        
+        <div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight">{event.title}</h1>
+              <div className="flex items-center mt-1">
+                <Badge className="mr-2 bg-easyroi-gold text-easyroi-navy">
+                  {event.event_type}
+                </Badge>
+                {isAtCapacity && (
+                  <Badge variant="destructive">
+                    {t('atCapacity')}
+                  </Badge>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-200 mb-6">
             {event.image_url ? (
               <img 
                 src={event.image_url} 
@@ -110,148 +206,136 @@ export default function EventDetail() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="flex items-center justify-center h-full bg-gray-200">
-                <Calendar className="h-24 w-24 text-gray-400" />
+              <div className="w-full h-full flex items-center justify-center">
+                <Calendar className="h-16 w-16 text-gray-400" />
               </div>
             )}
           </div>
           
-          {/* Related property or project links */}
-          {event.property_id && (
-            <div className="bg-slate-50 p-4 rounded-lg border">
-              <h3 className="text-lg font-medium mb-2">{t('relatedProperty')}</h3>
-              <Link to={`/properties/${event.property_id}`} className="text-easyroi-gold hover:underline flex items-center">
-                <Building className="mr-2 h-4 w-4" />
-                View related property
-              </Link>
-            </div>
-          )}
-          
-          {event.project_id && (
-            <div className="bg-slate-50 p-4 rounded-lg border">
-              <h3 className="text-lg font-medium mb-2">{t('relatedProject')}</h3>
-              <Link to={`/development/${event.project_id}`} className="text-easyroi-gold hover:underline flex items-center">
-                <Construction className="mr-2 h-4 w-4" />
-                View related development project
-              </Link>
-            </div>
-          )}
-          
-          {/* Event description */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Event Description</h2>
-            <p className="text-gray-700 whitespace-pre-line">{event.description}</p>
-          </div>
-          
-          {/* Event tabs */}
-          <Tabs defaultValue="details" className="w-full">
-            <TabsList>
-              <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            </TabsList>
-            <TabsContent value="details" className="space-y-4 mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-5 rounded-lg border">
-                  <h3 className="font-medium text-lg mb-3">Event Information</h3>
-                  <div className="space-y-3">
-                    {/* Required level */}
-                    {event.required_badges && event.required_badges.length > 0 && (
-                      <div className="flex items-start space-x-3">
-                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                        <div>
-                          <p className="text-sm text-gray-500">{t('requiredInvestorLevels')}</p>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {event.required_badges.map(badge => (
-                              <BadgeLevel key={badge} level={badge as any} className="scale-75" />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Format: online or in-person */}
-                    <div className="flex items-start space-x-3">
-                      {event.is_online ? <Globe className="h-5 w-5 text-blue-500 mt-0.5" /> : <MapPin className="h-5 w-5 text-blue-500 mt-0.5" />}
-                      <div>
-                        <p className="text-sm text-gray-500">{t('eventFormat')}</p>
-                        <p className="font-medium">
-                          {event.is_online ? t('online') : t('inPersonEvents')}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Capacity */}
-                    <div className="flex items-start space-x-3">
-                      <Users className="h-5 w-5 text-blue-500 mt-0.5" />
-                      <div>
-                        <p className="text-sm text-gray-500">{t('maxAttendees')}</p>
-                        <p className="font-medium">
-                          {event.max_attendees 
-                            ? `${event.current_attendees}/${event.max_attendees} ${t('attendees')}`
-                            : `${event.current_attendees} ${t('attendees')} (unlimited capacity)`
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <h2 className="text-xl font-medium mb-4">{t('aboutThisEvent')}</h2>
+              <p className="text-gray-700 whitespace-pre-line mb-6">{event.description}</p>
+              
+              <Separator className="my-4" />
+              
+              <h2 className="text-xl font-medium mb-4">{t('eventDetails')}</h2>
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <Calendar className="h-5 w-5 text-gray-500 mr-3" />
+                  <span>{formattedDate}</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-5 w-5 text-gray-500 mr-3" />
+                  <span>{event.time}</span>
+                </div>
+                <div className="flex items-center">
+                  <MapPin className="h-5 w-5 text-gray-500 mr-3" />
+                  <span>{event.location}</span>
+                </div>
+                <div className="flex items-center">
+                  <Users className="h-5 w-5 text-gray-500 mr-3" />
+                  <span>
+                    {event.max_attendees 
+                      ? `${event.current_attendees}/${event.max_attendees} ${t('attendees')}`
+                      : `${event.current_attendees} ${t('attendees')}`
+                    }
+                  </span>
                 </div>
               </div>
-            </TabsContent>
-            <TabsContent value="reviews">
-              <EventReviewsList eventId={event.id} />
-            </TabsContent>
-          </Tabs>
-        </div>
-        
-        {/* Sidebar */}
-        <div className="space-y-4">
-          {/* Registration card */}
-          <div className="bg-white p-5 rounded-lg border shadow-sm">
-            {/* Registration action button */}
-            <Button 
-              className="w-full bg-easyroi-gold hover:bg-easyroi-gold/90 mb-4"
-              disabled={isRegistered || isPastEvent || isAtCapacity || registeringInProgress}
-            >
-              {isRegistered 
-                ? "You're registered" 
-                : isPastEvent 
-                  ? "Event has ended" 
-                  : isAtCapacity 
-                    ? "Event at capacity" 
-                    : "Register for event"
-              }
-            </Button>
+              
+              {(event.property_id || event.project_id) && (
+                <>
+                  <Separator className="my-4" />
+                  
+                  <h2 className="text-xl font-medium mb-4">{t('relatedProperty')}</h2>
+                  <p className="text-gray-700">
+                    {event.property_id 
+                      ? t('thisEventIsRelatedToAProperty') 
+                      : t('thisEventIsRelatedToADevelopmentProject')
+                    }
+                  </p>
+                  <Button 
+                    className="mt-3" 
+                    variant="outline"
+                    onClick={() => {
+                      if (event.property_id) {
+                        // Navigate to property detail
+                        // This would need to be implemented
+                      } else if (event.project_id) {
+                        navigate(`/dashboard/development/${event.project_id}`);
+                      }
+                    }}
+                  >
+                    {t('viewDetails')}
+                  </Button>
+                </>
+              )}
+            </div>
             
-            {/* Event info summary */}
-            <div className="space-y-4 pt-4 border-t">
-              <SideCardItem 
-                icon={<Calendar className="h-5 w-5 text-gray-400" />}
-                label="Date"
-                value={formattedDate}
-              />
-              <SideCardItem 
-                icon={<Clock className="h-5 w-5 text-gray-400" />}
-                label="Time"
-                value={event.time}
-              />
-              <SideCardItem 
-                icon={event.is_online ? <Globe className="h-5 w-5 text-gray-400" /> : <MapPin className="h-5 w-5 text-gray-400" />}
-                label="Location"
-                value={event.location}
-              />
+            <div>
+              <div className="bg-gray-50 border rounded-lg p-4">
+                <h3 className="text-lg font-medium mb-3">{t('joinThisEvent')}</h3>
+                
+                {isRegistered ? (
+                  <>
+                    <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-4">
+                      <p className="text-sm text-green-800">
+                        {t('youAreRegisteredForThisEvent')}
+                      </p>
+                    </div>
+                    
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          className="w-full"
+                          disabled={isRegistering}
+                        >
+                          {t('cancelRegistration')}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t('cancelYourRegistration')}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t('areYouSureYouWantToCancelYourRegistration')}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t('goBack')}</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleCancelRegistration}>
+                            {t('confirm')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-gray-600 mb-4">
+                      {isAtCapacity 
+                        ? t('thisEventHasReachedCapacity') 
+                        : t('joinUsForThisExcitingEvent')
+                      }
+                    </p>
+                    
+                    <Button 
+                      className="w-full" 
+                      disabled={isAtCapacity || isRegistering}
+                      onClick={handleRegister}
+                    >
+                      {isAtCapacity 
+                        ? t('eventFull') 
+                        : t('registerForEvent')
+                      }
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Similar events section */}
-      <div className="mt-10">
-        <h2 className="text-2xl font-bold mb-6">{t('similarEvents')}</h2>
-        {similarEvents.length > 0 ? (
-          <EventList events={similarEvents} userBadge={userDetails?.level} />
-        ) : (
-          <p className="text-gray-500 text-center py-8">{t('noSimilarEvents')}</p>
-        )}
       </div>
     </DashboardLayout>
   );

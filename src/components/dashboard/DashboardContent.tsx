@@ -30,12 +30,7 @@ export const DashboardContent = ({ dashboardData }: DashboardContentProps) => {
         </div>
         <div className="space-y-4 md:space-y-8">
           <UserLevelCard />
-          <PortfolioAllocationChart 
-            data={portfolioAllocation.map(item => ({
-              name: item.name,
-              value: item.value
-            }))} 
-          />
+          <PortfolioAllocationChart data={portfolioAllocation} />
         </div>
       </div>
       
