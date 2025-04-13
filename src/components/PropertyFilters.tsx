@@ -15,6 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Define fixed countries array
+const FIXED_COUNTRIES = ["Italy", "UAE", "UK"];
+
 interface PropertyFiltersProps {
   onFilterChange: (filters: PropertyFilter) => void;
   locations: {city: string, country: string, zone: string}[];
@@ -25,25 +28,17 @@ interface PropertyFiltersProps {
 
 export function PropertyFilters({ 
   onFilterChange, 
-  locations, 
   propertyTypes, 
-  amenities,
-  investorLevels
+  amenities
 }: PropertyFiltersProps) {
   const t = useTranslation();
-  const [filtersOpen, setFiltersOpen] = useState(true);
+  const [filtersOpen, setFiltersOpen] = useState(false); // Changed to false by default
   const [filters, setFilters] = useState<PropertyFilter>({});
   
-  // Get unique cities and countries
-  const cities = Array.from(new Set(locations.map(loc => loc.city)));
-  const countries = Array.from(new Set(locations.map(loc => loc.country)));
-  const zones = Array.from(new Set(locations.map(loc => loc.zone)));
-  
+  // Use only fixed countries for location options
   const locationOptions = [
     { label: t('allLocations'), value: 'all' },
-    ...cities.map(city => ({ label: city, value: city })),
-    ...countries.map(country => ({ label: country, value: country })),
-    ...zones.map(zone => ({ label: zone, value: zone }))
+    ...FIXED_COUNTRIES.map(country => ({ label: country, value: country }))
   ];
 
   const handleFilterChange = (key: keyof PropertyFilter, value: any) => {
@@ -81,7 +76,7 @@ export function PropertyFilters({
 
   return (
     <div className="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Location filter */}
         <div>
           <h3 className="font-medium mb-2 text-gray-700">{t('location')}</h3>
@@ -147,30 +142,9 @@ export function PropertyFilters({
             </SelectContent>
           </Select>
         </div>
-
-        {/* Investor level filter */}
-        <div>
-          <h3 className="font-medium mb-2 text-gray-700">{t('investorLevel')}</h3>
-          <Select 
-            value={filters.investorLevel || 'all'} 
-            onValueChange={(value) => handleFilterChange('investorLevel', value)}
-          >
-            <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
-              <SelectValue placeholder={t('allLevels')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t('allLevels')}</SelectItem>
-              {investorLevels.map((level) => (
-                <SelectItem key={level} value={level}>
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
       </div>
 
-      {/* Amenities filter */}
+      {/* Amenities filter - closed by default now */}
       <div className="mt-4">
         <Collapsible
           open={filtersOpen}
@@ -227,3 +201,4 @@ export function PropertyFilters({
     </div>
   );
 }
+

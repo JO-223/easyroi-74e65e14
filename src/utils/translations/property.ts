@@ -65,7 +65,20 @@ export const propertyKeys = [
   "totalInvestment",
   "roi",
   "notAvailable",
-  "enterLocation"
+  "enterLocation",
+  "backToProperties",
+  "contactAboutProperty",
+  "investmentDetails",
+  "propertyNotFound",
+  "propertyMayHaveBeenRemovedOrUnavailable",
+  "min",
+  "max",
+  "resetFilters",
+  "applyFilters",
+  "hideAmenities",
+  "showAmenities",
+  "pros",
+  "cons"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];

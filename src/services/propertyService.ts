@@ -77,6 +77,49 @@ export const fetchProperties = async (filters?: PropertyFilter) => {
   });
 };
 
+export const fetchPropertyById = async (id: string): Promise<Property> => {
+  const { data, error } = await supabase
+    .from('properties')
+    .select(`
+      *,
+      location:location_id(*),
+      type:type_id(*),
+      amenities:property_amenities(amenity:amenity_id(*)),
+      images:property_images(*),
+      pros_cons:property_pros_cons(*)
+    `)
+    .eq('id', id)
+    .single();
+  
+  if (error) {
+    console.error(`Error fetching property with id ${id}:`, error);
+    throw error;
+  }
+  
+  // Transform the data to match our Property type
+  return {
+    id: data.id,
+    name: data.name,
+    price: data.price,
+    size_sqm: data.size_sqm,
+    occupation_status: data.occupation_status,
+    bedrooms: data.bedrooms,
+    bathrooms: data.bathrooms,
+    status: data.status,
+    service_charges: data.service_charges,
+    roi_percentage: data.roi_percentage,
+    min_investment: data.min_investment,
+    investor_level: data.investor_level,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    location: data.location,
+    type: data.type,
+    amenities: data.amenities.map((a: any) => a.amenity),
+    images: data.images,
+    pros_cons: data.pros_cons
+  };
+};
+
 export const fetchLocations = async () => {
   const { data, error } = await supabase
     .from('property_locations')

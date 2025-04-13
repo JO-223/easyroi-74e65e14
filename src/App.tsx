@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -127,6 +126,8 @@ const App = () => {
                 <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="/property/:id" element={<PropertyDetail />} />
+                
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AuthProvider>

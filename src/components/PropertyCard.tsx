@@ -2,17 +2,17 @@
 import { Property } from "@/types/property";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BadgeLevel } from "@/components/ui/badge-level";
 import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { formatCurrency } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 interface PropertyCardProps {
   property: Property;
   onViewDetails: (property: Property) => void;
 }
 
-export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
+export function PropertyCard({ property }: PropertyCardProps) {
   const t = useTranslation();
   
   // Get primary image or placeholder
@@ -30,10 +30,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       </div>
       
       <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-xl font-bold text-gray-800">{property.name}</CardTitle>
-          <BadgeLevel level={property.investor_level as any} />
-        </div>
+        <CardTitle className="text-xl font-bold text-gray-800">{property.name}</CardTitle>
         <div className="flex items-center text-sm text-gray-500 mt-1">
           <MapPin className="h-3.5 w-3.5 mr-1" />
           <CardDescription className="text-gray-500">
@@ -84,13 +81,18 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       </CardContent>
       
       <CardFooter className="pt-0 mt-auto">
-        <Button 
-          className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy"
-          onClick={() => onViewDetails(property)}
+        <Link 
+          to={`/property/${property.id}`} 
+          className="w-full"
         >
-          {t('viewDetails')}
-        </Button>
+          <Button 
+            className="w-full bg-gradient-to-r from-easyroi-gold/90 to-easyroi-gold hover:from-easyroi-gold hover:to-easyroi-gold/90 text-easyroi-navy"
+          >
+            {t('viewDetails')}
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
 }
+

@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { PropertyCard } from '@/components/PropertyCard';
 import { PropertyFilters } from '@/components/PropertyFilters';
-import { PropertyDetailModal } from '@/components/PropertyDetailModal';
 import { PropertyPagination } from '@/components/PropertyPagination';
 import { Property, PropertyFilter } from '@/types/property';
 import { fetchProperties, fetchLocations, fetchPropertyTypes, fetchAmenities } from '@/services/propertyService';
@@ -13,6 +12,7 @@ import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { useAdminRole } from '@/hooks/use-admin-role';
+import { useNavigate } from 'react-router-dom';
 
 // Define properties per page
 const PROPERTIES_PER_PAGE = 9;
@@ -22,9 +22,8 @@ export default function Properties() {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<PropertyFilter>({});
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const { isAdmin } = useAdminRole();
+  const navigate = useNavigate();
   
   // Fetch properties
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
@@ -89,16 +88,8 @@ export default function Properties() {
   
   // Handle property card click
   const handleViewPropertyDetails = (property: Property) => {
-    setSelectedProperty(property);
-    setIsDetailModalOpen(true);
+    navigate(`/property/${property.id}`);
   };
-  
-  const handleCloseDetailModal = () => {
-    setIsDetailModalOpen(false);
-  };
-
-  // Investor levels for filtering
-  const investorLevels = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
 
   return (
     <DashboardLayout title={t('properties')} subtitle={""}>
@@ -113,7 +104,7 @@ export default function Properties() {
           locations={locations}
           propertyTypes={propertyTypes}
           amenities={amenities}
-          investorLevels={investorLevels}
+          investorLevels={[]}
         />
 
         {/* Properties grid */}
@@ -167,14 +158,8 @@ export default function Properties() {
             </Button>
           </div>
         )}
-        
-        {/* Property detail modal */}
-        <PropertyDetailModal 
-          property={selectedProperty}
-          isOpen={isDetailModalOpen}
-          onClose={handleCloseDetailModal}
-        />
       </div>
     </DashboardLayout>
   );
 }
+
