@@ -25,6 +25,10 @@ import DevelopmentDetail from "./pages/DevelopmentDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminRoute from "./components/admin/AdminRoute";
 import InvestorLevels from "./pages/InvestorLevels";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Sitemap from "./pages/Sitemap";
+import CookiePolicy from "./pages/CookiePolicy";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -128,6 +132,10 @@ const App = () => {
                 {/* Public Routes */}
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/sitemap" element={<Sitemap />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
 
                 {/* Redirect /properties to /dashboard/properties for backward compatibility */}
                 <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />

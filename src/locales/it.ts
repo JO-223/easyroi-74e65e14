@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuti",
@@ -614,6 +613,80 @@ const it = {
     serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)",
     investor: "L'investitore proprietario di questa proprietà"
   },
+  
+  // Footer and legal pages
+  termsOfService: "Termini di Servizio",
+  privacyPolicy: "Politica sulla Privacy",
+  sitemap: "Mappa del Sito",
+  cookiePolicy: "Politica dei Cookie",
+  
+  // Terms of Service page
+  termsIntroduction: "Introduzione",
+  termsIntroductionText: "Benvenuti nei Termini di Servizio di EasyROI. Questi termini regolano l'utilizzo della piattaforma EasyROI e dei servizi offerti.",
+  termsUsage: "Utilizzo del Servizio",
+  termsUsageText: "Accedendo a EasyROI, accetti di utilizzare il servizio solo per scopi legittimi e in accordo con questi termini.",
+  termsAccount: "Account",
+  termsAccountText: "Sei responsabile del mantenimento della sicurezza del tuo account e della password. EasyROI non può e non sarà responsabile per eventuali perdite o danni derivanti dalla tua mancata osservanza di questa misura di sicurezza.",
+  termsIntellectualProperty: "Proprietà Intellettuale",
+  termsIntellectualPropertyText: "Il servizio e i suoi contenuti originali, caratteristiche e funzionalità sono e rimarranno di esclusiva proprietà di EasyROI e dei suoi licenzianti.",
+  termsLimitations: "Limitazioni",
+  termsLimitationsText: "In nessun caso EasyROI sarà responsabile per danni di qualsiasi tipo, inclusi, senza limitazione, danni diretti, indiretti, incidentali, punitivi e consequenziali.",
+  termsTermination: "Cessazione",
+  termsTerminationText: "Possiamo terminare o sospendere il tuo account e l'accesso al servizio immediatamente, senza preavviso o responsabilità, per qualsiasi motivo.",
+  termsGoverning: "Legge Applicabile",
+  termsGoverningText: "Questi Termini saranno regolati e interpretati secondo le leggi italiane, senza tener conto delle disposizioni sul conflitto di leggi.",
+  termsChanges: "Modifiche ai Termini",
+  termsChangesText: "Ci riserviamo il diritto, a nostra esclusiva discrezione, di modificare o sostituire questi Termini in qualsiasi momento. Se una revisione è materiale, forniremo un preavviso di almeno 30 giorni prima che i nuovi termini entrino in vigore.",
+  termsContact: "Contattaci",
+  termsContactText: "Se hai domande su questi Termini, ti preghiamo di contattarci all'indirizzo info@easyroi.com.",
+  
+  // Privacy Policy page
+  privacyIntroduction: "Introduzione",
+  privacyIntroductionText: "La tua privacy è importante per noi. È politica di EasyROI rispettare la tua privacy riguardo a qualsiasi informazione che potremmo raccogliere.",
+  privacyCollection: "Raccolta delle Informazioni",
+  privacyCollectionText: "Raccogliamo informazioni personali quando ti registri sul nostro sito, accedi al tuo account, effettui un acquisto, partecipi a un sondaggio o ci fornisci feedback.",
+  privacyUse: "Utilizzo delle Informazioni",
+  privacyUseText: "Utilizziamo le informazioni che raccogliamo in vari modi, tra cui per fornire, gestire, migliorare e personalizzare i nostri servizi.",
+  privacyDisclosure: "Divulgazione delle Informazioni",
+  privacyDisclosureText: "Non vendiamo, scambiamo o trasferiamo in altro modo a terze parti le tue informazioni personali identificabili, tranne che per fornire i prodotti o servizi richiesti.",
+  privacySecurity: "Sicurezza",
+  privacySecurityText: "Implementiamo una varietà di misure di sicurezza per mantenere la sicurezza delle tue informazioni personali quando inserisci, invii o accedi alle tue informazioni personali.",
+  privacyCookies: "Cookie",
+  privacyCookiesText: "Utilizziamo i cookie per aiutarci a ricordare e elaborare gli elementi nel tuo carrello della spesa, comprendere e salvare le tue preferenze per visite future e compilare dati aggregati sul traffico del sito e l'interazione del sito.",
+  privacyRights: "I Tuoi Diritti",
+  privacyRightsText: "Hai il diritto di accedere, correggere o cancellare le tue informazioni personali che conserviamo e di opporti a determinati trattamenti.",
+  privacyChanges: "Modifiche alla Politica sulla Privacy",
+  privacyChangesText: "Se decidiamo di cambiare la nostra politica sulla privacy, pubblicheremo tali modifiche su questa pagina.",
+  privacyContact: "Contattaci",
+  privacyContactText: "Se hai domande sulla nostra Politica sulla Privacy, ti preghiamo di contattarci all'indirizzo info@easyroi.com.",
+  
+  // Cookie Policy page
+  cookieIntroduction: "Introduzione",
+  cookieIntroductionText: "Questa Cookie Policy spiega cosa sono i cookie, come EasyROI li utilizza e quali opzioni hai riguardo ai cookie.",
+  whatAreCookies: "Cosa sono i Cookie",
+  whatAreCookiesText: "I cookie sono piccoli file di testo che i siti Web inseriscono sul tuo dispositivo durante la navigazione. Sono ampiamente utilizzati per far funzionare i siti Web o per funzionare in modo più efficiente, nonché per fornire informazioni ai proprietari del sito.",
+  cookieTypes: "Tipi di Cookie che Utilizziamo",
+  cookieTypesText: "Utilizziamo diversi tipi di cookie per vari scopi:",
+  cookieTypeEssential: "Cookie Essenziali",
+  cookieTypeEssentialDesc: "Necessari per il funzionamento del sito web. Non possono essere disattivati.",
+  cookieTypePreference: "Cookie di Preferenza",
+  cookieTypePreferenceDesc: "Permettono al sito web di ricordare le tue preferenze e scelte.",
+  cookieTypeStatistics: "Cookie Statistici",
+  cookieTypeStatisticsDesc: "Ci aiutano a capire come gli utenti interagiscono con il nostro sito.",
+  cookieTypeMarketing: "Cookie di Marketing",
+  cookieTypeMarketingDesc: "Utilizzati per tracciare i visitatori sui siti web per visualizzare annunci pertinenti.",
+  cookieControl: "Come Controllare i Cookie",
+  cookieControlText: "Puoi impostare il tuo browser per rifiutare tutti o alcuni cookie, o per avvisarti quando i siti web impostano o accedono ai cookie. Se disabiliti o rifiuti i cookie, tieni presente che alcune parti di questo sito web potrebbero diventare inaccessibili o non funzionare correttamente.",
+  thirdPartyCookies: "Cookie di Terze Parti",
+  thirdPartyCookiesText: "Alcune funzionalità del nostro sito potrebbero utilizzare servizi di terze parti, come video incorporati o social media. Questi servizi potrebbero utilizzare i propri cookie e avere le proprie politiche sulla privacy.",
+  cookieChanges: "Modifiche alla Cookie Policy",
+  cookieChangesText: "Qualsiasi modifica alla nostra Cookie Policy verrà pubblicata su questa pagina.",
+  cookieContact: "Contattaci",
+  cookieContactText: "Se hai domande sulla nostra Cookie Policy, ti preghiamo di contattarci all'indirizzo info@easyroi.com.",
+  
+  // Sitemap page
+  mainPages: "Pagine Principali",
+  legalPages: "Pagine Legali",
 };
 
 export default it;

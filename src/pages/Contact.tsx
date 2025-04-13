@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -7,15 +8,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Mail, Phone, Clock, Building, FileText } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
+
 const Contact = () => {
-  const {
-    t
-  } = useLanguage();
+  const { t } = useLanguage();
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Form handling would go here
   };
-  return <div className="flex flex-col min-h-screen">
+  
+  return (
+    <div className="flex flex-col min-h-screen">
       <Navbar />
       
       <main className="flex-grow mt-20">
@@ -25,15 +28,15 @@ const Contact = () => {
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">{t('contactDescription')}</p>
           </div>
           
-          {/* Company Information Section */}
+          {/* Company Information Section - Improved Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             {/* Italy Office */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow transform hover:-translate-y-1 duration-300">
               <div className="flex items-center mb-4">
                 <Building className="h-6 w-6 text-easyroi-gold mr-3" />
                 <h2 className="text-2xl font-semibold text-easyroi-purple-900">EROI S.R.L.</h2>
               </div>
-              <Separator className="mb-6" />
+              <Separator className="mb-6 bg-easyroi-gold/20" />
               
               <ul className="space-y-4">
                 <li className="flex">
@@ -75,15 +78,36 @@ const Contact = () => {
             </div>
             
             {/* Dubai Office */}
-            
+            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow transform hover:-translate-y-1 duration-300">
+              <div className="flex items-center mb-4">
+                <Building className="h-6 w-6 text-easyroi-gold mr-3" />
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900">EROI REAL ESTATE LLC</h2>
+              </div>
+              <Separator className="mb-6 bg-easyroi-gold/20" />
+              
+              <ul className="space-y-4">
+                <li className="flex">
+                  <MapPin className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">{t('address')}:</h3>
+                    <p className="text-gray-600">Office 205-395, Albahar, Al Khabeesi,</p>
+                    <p className="text-gray-600">DUBAI, UNITED ARAB EMIRATES</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <FileText className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Business license:</h3>
+                    <p className="text-gray-600">1442515</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* Contact Information */}
-            
-            
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md order-2 lg:order-1">
               <h2 className="text-2xl font-semibold text-easyroi-purple-900 mb-6">{t('sendMessage')}</h2>
               
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -122,11 +146,52 @@ const Contact = () => {
                 </Button>
               </form>
             </div>
+            
+            {/* Map or Contact Info */}
+            <div className="bg-gradient-to-br from-easyroi-navy to-easyroi-purple-900 text-white p-8 rounded-lg shadow-md order-1 lg:order-2">
+              <h2 className="text-2xl font-semibold mb-6">{t('contactInfo')}</h2>
+              <ul className="space-y-6">
+                <li className="flex items-start">
+                  <MapPin className="h-6 w-6 mr-4 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg text-easyroi-gold mb-1">{t('visitUs')}</h3>
+                    <p>Viale Certosa 218</p>
+                    <p>20156 Milano (MI), Italia</p>
+                  </div>
+                </li>
+                
+                <li className="flex items-start">
+                  <Mail className="h-6 w-6 mr-4 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg text-easyroi-gold mb-1">{t('emailUs')}</h3>
+                    <p>info@easyroi.com</p>
+                  </div>
+                </li>
+                
+                <li className="flex items-start">
+                  <Phone className="h-6 w-6 mr-4 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg text-easyroi-gold mb-1">{t('callUs')}</h3>
+                    <p>+39 3792381805</p>
+                  </div>
+                </li>
+                
+                <li className="flex items-start">
+                  <Clock className="h-6 w-6 mr-4 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-lg text-easyroi-gold mb-1">{t('businessHours')}</h3>
+                    <p>{t('mondayToFriday')}: 9:00 - 18:00</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </main>
       
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default Contact;

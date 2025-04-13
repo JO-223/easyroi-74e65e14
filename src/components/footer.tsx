@@ -11,7 +11,13 @@ export function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="text-easyroi-gold font-bold text-2xl mb-4">Easy<span className="text-white">ROI</span></div>
+            <div className="mb-6">
+              <img 
+                src="/lovable-uploads/f030c164-2df3-4c76-bc3d-6c506d59a005.png" 
+                alt="EasyROI" 
+                className="h-12 w-auto" 
+              />
+            </div>
             <p className="text-gray-300 mb-4">
               {t('footerDescription')}
             </p>
@@ -59,7 +65,28 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 border-t border-gray-700 pt-6 text-center">
+        
+        {/* Legal Links Section */}
+        <div className="mt-10 pt-6 border-t border-gray-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+              <Link to="/terms-of-service" className="hover:text-easyroi-gold transition-colors">
+                {t('termsOfService')}
+              </Link>
+              <Link to="/privacy-policy" className="hover:text-easyroi-gold transition-colors">
+                {t('privacyPolicy')}
+              </Link>
+              <Link to="/sitemap" className="hover:text-easyroi-gold transition-colors">
+                {t('sitemap')}
+              </Link>
+              <Link to="/cookie-policy" className="hover:text-easyroi-gold transition-colors">
+                {t('cookiePolicy')}
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-6 text-center">
           <p className="text-gray-300">&copy; {new Date().getFullYear()} EasyROI. All rights reserved.</p>
         </div>
       </div>
