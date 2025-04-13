@@ -53,7 +53,21 @@ export const dashboardKeys = [
   'profile',
   'settings',
   'logout',
-  'nextLevel'
+  'nextLevel',
+  'lastUpdated',
+  'investmentByCountry',
+  'singleLocationAllocation',
+  'allocation',
+  'value',
+  'yourInvestmentOverview',
+  'fromLastMonth',
+  'portfolioPerformance',
+  'monthlyReturns',
+  'yearlyGrowth',
+  'noAlerts',
+  'allSystemsNormal',
+  'alerts',
+  'eventsInLastYear'
 ] as const;
 
 export type DashboardKey = typeof dashboardKeys[number];

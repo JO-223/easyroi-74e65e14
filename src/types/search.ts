@@ -3,7 +3,7 @@ export interface SavedPropertySearch {
   id: string;
   user_id: string;
   search_name: string;
-  search_criteria: any;
+  search_criteria: SearchCriteria;
   created_at?: string;
   is_alert: boolean;
   alert_frequency?: string;

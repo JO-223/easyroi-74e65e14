@@ -1,41 +1,45 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { DevelopmentProject } from "@/types/property";
 
-export const fetchDevelopmentProjects = async () => {
-  // Using a raw fetch instead of the typed client for now, since the types need updating
-  const { data, error } = await supabase
-    .from('development_projects')
-    .select(`
-      *,
-      location:location_id(*),
-      images:project_images(*)
-    `)
-    .order('expected_completion', { ascending: true });
-  
-  if (error) {
-    console.error('Error fetching development projects:', error);
+export const fetchDevelopmentProjects = async (): Promise<DevelopmentProject[]> => {
+  try {
+    const { data, error } = await supabase
+      .from("development_projects")
+      .select(`
+        *,
+        location:location_id(*)
+      `)
+      .order("created_at", { ascending: false });
+    
+    if (error) {
+      console.error("Error fetching development projects:", error);
+      throw new Error(error.message);
+    }
+    
+    const formattedProjects: DevelopmentProject[] = data.map(project => ({
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      location: project.location,
+      location_id: project.location_id, // Include location_id to fix the type error
+      expected_completion: project.expected_completion,
+      construction_stage: project.construction_stage,
+      progress_percentage: project.progress_percentage,
+      total_units: project.total_units,
+      available_units: project.available_units,
+      min_investment: project.min_investment,
+      expected_roi: project.expected_roi,
+      investor_level: project.investor_level,
+      image_url: project.image_url,
+      created_at: project.created_at,
+      updated_at: project.updated_at
+    }));
+    
+    return formattedProjects;
+  } catch (error) {
+    console.error("Error in fetchDevelopmentProjects:", error);
     throw error;
   }
-  
-  // Transform the data to match our DevelopmentProject type with proper type assertions
-  return data.map((item: any): DevelopmentProject => {
-    return {
-      id: item.id as string,
-      name: item.name as string,
-      description: item.description as string,
-      location: item.location as any, // Using any here as we need to restructure the data
-      expected_completion: item.expected_completion as string,
-      construction_stage: item.construction_stage as string,
-      progress_percentage: item.progress_percentage as number,
-      total_units: item.total_units as number,
-      available_units: item.available_units as number,
-      min_investment: item.min_investment as number,
-      expected_roi: item.expected_roi as number,
-      investor_level: item.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond",
-      images: Array.isArray(item.images) ? item.images : []
-    };
-  });
 };
 
 export const fetchDevelopmentProject = async (id: string) => {

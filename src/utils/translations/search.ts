@@ -1,0 +1,35 @@
+
+export const searchKeys = [
+  'search',
+  'searchProperties',
+  'searchResults',
+  'noResults',
+  'saveSearch',
+  'savedSearches',
+  'savedSearchesDescription',
+  'searchName',
+  'saveSearchDescription',
+  'createAlert',
+  'receiveNotificationsForNewMatches',
+  'alertFrequency',
+  'selectFrequency',
+  'daily',
+  'weekly',
+  'monthly',
+  'saveSearchAndAlert',
+  'searchSaved',
+  'searchSavedSuccessfully',
+  'errorSavingSearch',
+  'errorDeletingSearch',
+  'searchDeletedSuccessfully',
+  'applySearch',
+  'noSavedSearches',
+  'noSavedSearchesDescription',
+  'savedSearch',
+  'alertActive',
+  'lastRun',
+  'deleteSearch',
+  'confirmDeleteSearch'
+] as const;
+
+export type SearchKey = typeof searchKeys[number];

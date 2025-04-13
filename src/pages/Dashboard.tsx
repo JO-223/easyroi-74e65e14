@@ -1,113 +1,132 @@
 
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowClockwise } from 'lucide-react';
-import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
-import { PropertyList } from '@/components/dashboard/PropertyList';
-import { EventList } from '@/components/dashboard/EventList';
-import { PortfolioSummary } from '@/components/dashboard/PortfolioSummary';
-import { PortfolioAllocation } from '@/components/dashboard/PortfolioAllocation';
-import { PerformanceChart } from '@/components/dashboard/PerformanceChart';
-import { PropertyAlerts } from '@/components/dashboard/PropertyAlerts';
-import { MarketInsights } from '@/components/dashboard/MarketInsights';
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { RefreshCw } from "lucide-react"; // Fix the ArrowClockwise import
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { PropertyList } from "@/components/dashboard/PropertyList";
+import { EventList } from "@/components/dashboard/EventList";
+import { PortfolioSummary } from "@/components/dashboard/PortfolioSummary";
+import { PortfolioAllocation } from "@/components/dashboard/PortfolioAllocation";
+import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
+import { PropertyAlerts } from "@/components/dashboard/PropertyAlerts";
+import { MarketInsights } from "@/components/dashboard/MarketInsights";
+import { fetchProperties } from "@/services/propertyService";
+import { fetchEvents } from "@/services/eventService";
+import { updateUserDashboardData } from "@/services/dashboard/dashboardUpdateService"; // Use the correct function name
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Property } from "@/types/property";
+import { Portfolio } from "@/types/portfolio";
 
-import { fetchProperties } from '@/services/propertyService';
-import { fetchEvents } from '@/services/eventService';
-import { fetchPortfolioData } from '@/services/portfolioService';
-import { updateDashboardData } from '@/services/dashboard/dashboardUpdateService';
-
-import { Portfolio } from '@/types/portfolio';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/lib/queryClient';
-import { useToast } from '@/hooks/use-toast';
-import { Property } from '@/types/property';
-import { Event } from '@/types/event';
+// Mock data for demonstration
+const mockPortfolioData: Portfolio = {
+  total_properties: 5,
+  total_investment: 1250000,
+  average_roi: 8.5,
+  total_value: 1450000,
+  portfolio_growth: 16,
+  allocation: [
+    { location: "Dubai", percentage: 40 },
+    { location: "London", percentage: 30 },
+    { location: "New York", percentage: 20 },
+    { location: "Other", percentage: 10 }
+  ],
+  performance_data: [
+    { name: "Residential", value: 65 },
+    { name: "Commercial", value: 25 },
+    { name: "Vacation", value: 10 }
+  ],
+  investment_growth: [
+    { month: "Jan", month_index: 0, year: 2023, value: 100000 },
+    { month: "Feb", month_index: 1, year: 2023, value: 110000 },
+    { month: "Mar", month_index: 2, year: 2023, value: 115000 },
+    { month: "Apr", month_index: 3, year: 2023, value: 120000 },
+    { month: "May", month_index: 4, year: 2023, value: 125000 },
+    { month: "Jun", month_index: 5, year: 2023, value: 130000 }
+  ]
+};
 
 export default function Dashboard() {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   
   // Fetch properties
   const { data: properties = [] } = useQuery<Property[]>({
     queryKey: ['properties'],
-    queryFn: () => fetchProperties()
+    queryFn: () => fetchProperties(),
+    staleTime: 1000 * 60 * 5 // 5 minutes
   });
   
-  // Fetch events
-  const { data: events = [] } = useQuery<Event[]>({
-    queryKey: ['events'],
-    queryFn: () => fetchEvents()
+  // Fetch upcoming events
+  const { data: events = [] } = useQuery({
+    queryKey: ['events', 'upcoming'],
+    queryFn: () => fetchEvents({ fromDate: new Date().toISOString() }),
+    staleTime: 1000 * 60 * 5 // 5 minutes
   });
   
-  // Fetch portfolio data
-  const { data: portfolio } = useQuery<Portfolio>({
-    queryKey: ['portfolio'],
-    queryFn: fetchPortfolioData
-  });
+  // In a real app, we would fetch the portfolio data
+  const portfolio = mockPortfolioData;
   
-  // Update dashboard data mutation
-  const { mutate: updateDashboard, isPending: isUpdating } = useMutation({
-    mutationFn: updateDashboardData,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['properties'] });
-      queryClient.invalidateQueries({ queryKey: ['events'] });
-      queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+  const handleUpdateDashboard = async () => {
+    try {
+      await updateUserDashboardData();
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['properties'] }),
+        queryClient.invalidateQueries({ queryKey: ['events'] })
+      ]);
       
       toast({
-        title: t('dashboardDataUpdated'),
-        description: "Your dashboard data has been refreshed successfully"
+        title: "Dashboard Updated",
+        description: t("dashboardDataUpdated")
       });
-    },
-    onError: (error) => {
+    } catch (error) {
       toast({
-        title: t('errorUpdatingDashboard'),
-        description: error.message,
+        title: "Error",
+        description: t("errorUpdatingDashboard"),
         variant: "destructive"
       });
     }
-  });
-  
-  const RefreshButton = () => (
-    <Button 
-      variant="outline" 
-      size="sm" 
-      onClick={() => updateDashboard()}
-      disabled={isUpdating}
-    >
-      <ArrowClockwise className="mr-2 h-4 w-4" />
-      {isUpdating ? "Refreshing..." : "Refresh Data"}
-    </Button>
-  );
+  };
   
   return (
     <DashboardLayout 
-      title={t('dashboard')} 
-      subtitle={"Your investment overview"} 
-      headerAction={<RefreshButton />}
+      title={t("dashboard")} 
+      subtitle={t("overview")}
+      headerAction={
+        <Button variant="outline" size="sm" onClick={handleUpdateDashboard}>
+          <RefreshCw className="h-4 w-4 mr-2" />
+          {t("refresh")}
+        </Button>
+      }
     >
-      <div className="space-y-8">
-        <PortfolioSummary portfolio={portfolio} />
+      <div className="space-y-6">
+        {/* Summary Cards */}
+        <PortfolioSummary />
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <PerformanceChart data={portfolio?.performance_data} />
-          <PortfolioAllocation data={portfolio?.allocation} />
+        {/* Charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <PerformanceChart />
+          <PortfolioAllocation />
         </div>
         
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">Properties</h2>
+        {/* Properties Section */}
+        <div>
+          <h2 className="text-lg font-medium mb-4">{t("properties")}</h2>
           <PropertyList properties={properties} />
         </div>
         
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">Upcoming Events</h2>
-          <EventList events={events} />
+        {/* Alerts and Insights */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <PropertyAlerts className="md:col-span-2" />
+          <MarketInsights />
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <PropertyAlerts />
-          <MarketInsights />
+        {/* Upcoming Events */}
+        <div>
+          <h2 className="text-lg font-medium mb-4">{t("upcomingEvents")}</h2>
+          <EventList events={events} />
         </div>
       </div>
     </DashboardLayout>

@@ -26,3 +26,9 @@ export interface InvestmentGrowth {
   year: number;
   value: number;
 }
+
+export interface PortfolioSummaryData {
+  total_properties: number;
+  total_investment: number;
+  average_roi: number;
+}

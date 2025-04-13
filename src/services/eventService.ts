@@ -50,7 +50,7 @@ export const fetchEvents = async (filter?: EventFilter): Promise<Event[]> => {
     }
     
     // Add proper type casting
-    return data as Event[];
+    return (data as unknown) as Event[];
   } catch (error) {
     console.error("Error in fetchEvents:", error);
     throw error;
@@ -71,7 +71,7 @@ export const fetchEvent = async (eventId: string): Promise<Event> => {
     }
     
     // Add proper type casting
-    return data as Event;
+    return (data as unknown) as Event;
   } catch (error) {
     console.error("Error in fetchEvent:", error);
     throw error;
@@ -127,7 +127,7 @@ export const registerForEvent = async (eventId: string, userId: string): Promise
     }
     
     // Add proper type casting
-    return data as Event;
+    return (data as unknown) as Event;
   } catch (error) {
     console.error("Error in registerForEvent:", error);
     throw error;
@@ -165,9 +165,57 @@ export const fetchSimilarEvents = async (eventId: string, limit = 3): Promise<Ev
     }
     
     // Add proper type casting
-    return data as Event[];
+    return (data as unknown) as Event[];
   } catch (error) {
     console.error("Error in fetchSimilarEvents:", error);
     throw error;
   }
+};
+
+// Add the filterEvents function
+export const filterEvents = (events: Event[], filter: EventFilter = {}): Event[] => {
+  if (!events || events.length === 0) return [];
+  
+  return events.filter(event => {
+    // Filter by event type
+    if (filter.eventType && event.event_type !== filter.eventType) {
+      return false;
+    }
+    
+    // Filter by location
+    if (filter.location && !event.location.toLowerCase().includes(filter.location.toLowerCase())) {
+      return false;
+    }
+    
+    // Filter by from date
+    if (filter.fromDate && new Date(event.date) < new Date(filter.fromDate)) {
+      return false;
+    }
+    
+    // Filter by to date
+    if (filter.toDate && new Date(event.date) > new Date(filter.toDate)) {
+      return false;
+    }
+    
+    // Filter by online/in-person
+    if (filter.eventFormat === 'online' && !event.is_online) {
+      return false;
+    }
+    
+    if (filter.eventFormat === 'in-person' && event.is_online) {
+      return false;
+    }
+    
+    // Filter by availability
+    if (filter.onlyAvailable && event.max_attendees !== null && event.current_attendees >= event.max_attendees) {
+      return false;
+    }
+    
+    // Filter by badge
+    if (filter.badge && (!event.required_badges || !event.required_badges.includes(filter.badge))) {
+      return false;
+    }
+    
+    return true;
+  });
 };

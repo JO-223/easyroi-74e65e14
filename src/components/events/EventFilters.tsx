@@ -1,18 +1,15 @@
-
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar } from "@/components/ui/calendar";
-import { Switch } from "@/components/ui/switch";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { EventFilter } from "@/types/property";
+// Update only the fromDate and toDate types in the handleApplyFilters function
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { CalendarIcon, MapPinIcon } from 'lucide-react';
+import { EventFilter } from '@/types/property';
 
 interface EventFiltersProps {
   onApplyFilters: (filters: EventFilter) => void;
@@ -20,165 +17,107 @@ interface EventFiltersProps {
 
 export function EventFilters({ onApplyFilters }: EventFiltersProps) {
   const { t } = useLanguage();
-  const [eventType, setEventType] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
-  const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
-  const [hasAvailability, setHasAvailability] = useState<boolean>(false);
-  const [isOnline, setIsOnline] = useState<boolean | undefined>(undefined);
+  const [filters, setFilters] = useState<EventFilter>({});
+  
+  const handleInputChange = (field: keyof EventFilter, value: string) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
+  };
+  
+  const handleCheckboxChange = (field: keyof EventFilter, checked: boolean) => {
+    setFilters(prev => ({ ...prev, [field]: checked }));
+  };
   
   const handleApplyFilters = () => {
-    onApplyFilters({
-      eventType: eventType || undefined,
-      location: location || undefined,
-      dateFrom,
-      dateTo,
-      hasAvailability: hasAvailability || undefined,
-      isOnline,
-    });
+    // Convert Date objects to strings if they exist
+    const formattedFilters = {
+      ...filters,
+      fromDate: filters.fromDate ? filters.fromDate.toString() : undefined,
+      toDate: filters.toDate ? filters.toDate.toString() : undefined
+    };
+    onApplyFilters(formattedFilters);
   };
   
-  const handleClearFilters = () => {
-    setEventType("");
-    setLocation("");
-    setDateFrom(undefined);
-    setDateTo(undefined);
-    setHasAvailability(false);
-    setIsOnline(undefined);
+  const clearFilters = () => {
+    setFilters({});
     onApplyFilters({});
   };
-  
+
   return (
-    <Card className="sticky top-6">
-      <CardHeader className="pb-3">
+    <Card>
+      <CardHeader>
         <CardTitle>{t('filters')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label>{t('eventType')}</Label>
-          <RadioGroup value={eventType} onValueChange={setEventType}>
-            <div className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value="networking" id="networking" />
-              <Label htmlFor="networking">{t('networking')}</Label>
-            </div>
-            <div className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value="property_viewing" id="property_viewing" />
-              <Label htmlFor="property_viewing">Property Viewing</Label>
-            </div>
-            <div className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value="investment_seminar" id="investment_seminar" />
-              <Label htmlFor="investment_seminar">Investment Seminar</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="project_launch" id="project_launch" />
-              <Label htmlFor="project_launch">Project Launch</Label>
-            </div>
-          </RadioGroup>
-        </div>
-        
-        <div className="space-y-2">
+        <div>
           <Label>{t('eventFormat')}</Label>
-          <RadioGroup 
-            value={isOnline === undefined ? "" : isOnline ? "online" : "inperson"} 
-            onValueChange={(val) => {
-              if (val === "") {
-                setIsOnline(undefined);
-              } else {
-                setIsOnline(val === "online");
-              }
-            }}
-          >
-            <div className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value="" id="all_formats" />
-              <Label htmlFor="all_formats">{t('allFormats')}</Label>
-            </div>
-            <div className="flex items-center space-x-2 mb-2">
-              <RadioGroupItem value="online" id="online" />
-              <Label htmlFor="online">{t('onlineEvents')}</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="inperson" id="inperson" />
-              <Label htmlFor="inperson">{t('inPersonEvents')}</Label>
-            </div>
-          </RadioGroup>
+          <Select onValueChange={(value) => handleInputChange('eventFormat', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder={t('allFormats')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t('allFormats')}</SelectItem>
+              <SelectItem value="online">{t('onlineEvents')}</SelectItem>
+              <SelectItem value="in-person">{t('inPersonEvents')}</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         
-        <div className="space-y-2">
-          <Label htmlFor="location">{t('location')}</Label>
-          <Input
-            id="location"
-            placeholder={t('enterLocation')}
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label>{t('dateRange')}</Label>
-          <div className="grid grid-cols-2 gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "justify-start text-left font-normal",
-                    !dateFrom && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateFrom ? format(dateFrom, "PP") : t('fromDate')}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={dateFrom}
-                  onSelect={setDateFrom}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "justify-start text-left font-normal",
-                    !dateTo && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateTo ? format(dateTo, "PP") : t('toDate')}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={dateTo}
-                  onSelect={setDateTo}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="availability"
-              checked={hasAvailability}
-              onCheckedChange={setHasAvailability}
+        <div>
+          <Label>{t('location')}</Label>
+          <div className="relative">
+            <Input 
+              type="text" 
+              placeholder={t('enterLocation')}
+              value={filters.location || ''}
+              onChange={(e) => handleInputChange('location', e.target.value)}
             />
-            <Label htmlFor="availability">{t('showOnlyAvailableEvents')}</Label>
+            <MapPinIcon className="absolute top-2.5 right-3 h-5 w-5 text-gray-500" />
           </div>
         </div>
         
-        <div className="flex flex-col space-y-2 pt-2">
-          <Button onClick={handleApplyFilters}>{t('applyFilters')}</Button>
-          <Button variant="outline" onClick={handleClearFilters}>{t('clearFilters')}</Button>
+        <div>
+          <Label>{t('dateRange')}</Label>
+          <div className="flex items-center space-x-2">
+            <div className="relative w-1/2">
+              <Input 
+                type="date" 
+                placeholder={t('fromDate')}
+                value={filters.fromDate || ''}
+                onChange={(e) => handleInputChange('fromDate', e.target.value)}
+              />
+              <CalendarIcon className="absolute top-2.5 right-3 h-5 w-5 text-gray-500" />
+            </div>
+            <div className="relative w-1/2">
+              <Input 
+                type="date" 
+                placeholder={t('toDate')}
+                value={filters.toDate || ''}
+                onChange={(e) => handleInputChange('toDate', e.target.value)}
+              />
+              <CalendarIcon className="absolute top-2.5 right-3 h-5 w-5 text-gray-500" />
+            </div>
+          </div>
         </div>
+        
+        <div className="flex items-center space-x-2">
+          <Checkbox 
+            id="available" 
+            checked={filters.onlyAvailable || false}
+            onCheckedChange={(checked) => handleCheckboxChange('onlyAvailable', checked || false)}
+          />
+          <Label htmlFor="available" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
+            {t('showOnlyAvailableEvents')}
+          </Label>
+        </div>
+        
+        <Separator />
+        
+        <Button variant="outline" className="w-full" onClick={handleApplyFilters}>
+          {t('applyFilters')}
+        </Button>
+        <Button variant="ghost" className="w-full" onClick={clearFilters}>
+          {t('clearFilters')}
+        </Button>
       </CardContent>
     </Card>
   );

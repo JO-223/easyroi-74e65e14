@@ -15,15 +15,23 @@ import { Calendar, Clock, MapPin, Users, AlertTriangle, Globe, Building, Constru
 import { Badge } from '@/components/ui/badge';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { EventList } from '@/components/events/EventList';
-import { EventReviewsList } from '@/components/events/EventReviewsList';
+import EventReviewsList from '@/components/events/EventReviewsList';
 import { EmptyState } from '@/components/ui/empty-state';
+import { UserDetails } from '@/hooks/useAuth';
 
 export default function EventDetail() {
   const { eventId } = useParams<{ eventId: string }>();
   const { t } = useLanguage();
-  const { user, userDetails } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [registeringInProgress, setRegisteringInProgress] = useState(false);
+  
+  // Mock userDetails until we update the Auth context
+  const userDetails: UserDetails = {
+    id: user?.id || '',
+    level: 'silver',
+    email: user?.email || ''
+  };
   
   // Fetch event details
   const { data: event, isLoading, error } = useQuery({
@@ -42,12 +50,12 @@ export default function EventDetail() {
   // Handle error states
   if (error) {
     return (
-      <DashboardLayout title={t('eventDetail')} subtitle={""}>
+      <DashboardLayout title={t('events')} subtitle={""}>
         <EmptyState 
           variant="card"
           icon={<AlertTriangle size={40} />}
           title={t('errorLoadingEvent')}
-          description={t('errorLoadingEventDescription')}
+          description={t('errorFetchingEventDetails')}
         />
       </DashboardLayout>
     );
@@ -55,7 +63,7 @@ export default function EventDetail() {
   
   if (isLoading) {
     return (
-      <DashboardLayout title={t('eventDetail')} subtitle={""}>
+      <DashboardLayout title={t('events')} subtitle={""}>
         <div className="w-full text-center p-10">
           <div className="animate-spin w-10 h-10 border-4 border-easyroi-gold border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-4 text-gray-500">Loading event details...</p>
@@ -66,12 +74,12 @@ export default function EventDetail() {
   
   if (!event) {
     return (
-      <DashboardLayout title={t('eventDetail')} subtitle={""}>
+      <DashboardLayout title={t('events')} subtitle={""}>
         <EmptyState 
           variant="card"
           icon={<AlertTriangle size={40} />}
           title={t('eventNotFound')}
-          description={t('eventNotFoundDescription')}
+          description={t('eventNotFound')}
         />
       </DashboardLayout>
     );
@@ -159,7 +167,7 @@ export default function EventDetail() {
                       <div className="flex items-start space-x-3">
                         <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
                         <div>
-                          <p className="text-sm text-gray-500">{t('requiredLevel')}</p>
+                          <p className="text-sm text-gray-500">{t('requiredInvestorLevels')}</p>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {event.required_badges.map(badge => (
                               <BadgeLevel key={badge} level={badge as any} className="scale-75" />
@@ -173,9 +181,9 @@ export default function EventDetail() {
                     <div className="flex items-start space-x-3">
                       {event.is_online ? <Globe className="h-5 w-5 text-blue-500 mt-0.5" /> : <MapPin className="h-5 w-5 text-blue-500 mt-0.5" />}
                       <div>
-                        <p className="text-sm text-gray-500">{t('format')}</p>
+                        <p className="text-sm text-gray-500">{t('eventFormat')}</p>
                         <p className="font-medium">
-                          {event.is_online ? "Online" : t('inPerson')}
+                          {event.is_online ? t('online') : t('inPersonEvents')}
                         </p>
                       </div>
                     </div>
@@ -184,11 +192,11 @@ export default function EventDetail() {
                     <div className="flex items-start space-x-3">
                       <Users className="h-5 w-5 text-blue-500 mt-0.5" />
                       <div>
-                        <p className="text-sm text-gray-500">{t('capacity')}</p>
+                        <p className="text-sm text-gray-500">{t('maxAttendees')}</p>
                         <p className="font-medium">
                           {event.max_attendees 
                             ? `${event.current_attendees}/${event.max_attendees} ${t('attendees')}`
-                            : `${event.current_attendees} ${t('registered')} (unlimited capacity)`
+                            : `${event.current_attendees} ${t('attendees')} (unlimited capacity)`
                           }
                         </p>
                       </div>

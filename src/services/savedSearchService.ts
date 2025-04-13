@@ -1,12 +1,21 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { SavedPropertySearch, SearchCriteria } from "@/types/search";
+import { PropertyFilter } from "@/types/property";
 
-export const fetchSavedSearches = async (): Promise<SavedPropertySearch[]> => {
+export const fetchSavedSearches = async (userId?: string): Promise<SavedPropertySearch[]> => {
   try {
+    // Get current user if userId is not provided
+    if (!userId) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No authenticated user found");
+      userId = user.id;
+    }
+
     const { data, error } = await supabase
       .from("saved_property_searches")
       .select("*")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -14,8 +23,7 @@ export const fetchSavedSearches = async (): Promise<SavedPropertySearch[]> => {
       throw new Error(error.message);
     }
 
-    // Add proper type casting
-    return data as SavedPropertySearch[];
+    return (data as unknown) as SavedPropertySearch[];
   } catch (error) {
     console.error("Error in fetchSavedSearches:", error);
     throw error;
@@ -29,19 +37,21 @@ export const savePropertySearch = async (
   alertFrequency?: string
 ): Promise<SavedPropertySearch> => {
   try {
-    const user = supabase.auth.getUser();
-    if (!user) {
-      throw new Error("User not authenticated");
-    }
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("No authenticated user found");
+
+    const newSearch = {
+      user_id: user.id,
+      search_name: searchName,
+      search_criteria: searchCriteria,
+      is_alert: isAlert,
+      alert_frequency: isAlert ? alertFrequency : null
+    };
 
     const { data, error } = await supabase
       .from("saved_property_searches")
-      .insert({
-        search_name: searchName,
-        search_criteria: searchCriteria,
-        is_alert: isAlert,
-        alert_frequency: alertFrequency,
-      })
+      .insert(newSearch)
       .select()
       .single();
 
@@ -50,8 +60,7 @@ export const savePropertySearch = async (
       throw new Error(error.message);
     }
 
-    // Add proper type casting
-    return data as SavedPropertySearch;
+    return (data as unknown) as SavedPropertySearch;
   } catch (error) {
     console.error("Error in savePropertySearch:", error);
     throw error;
@@ -66,7 +75,7 @@ export const deleteSavedSearch = async (searchId: string): Promise<void> => {
       .eq("id", searchId);
 
     if (error) {
-      console.error("Error deleting search:", error);
+      console.error("Error deleting saved search:", error);
       throw new Error(error.message);
     }
   } catch (error) {
@@ -75,58 +84,24 @@ export const deleteSavedSearch = async (searchId: string): Promise<void> => {
   }
 };
 
-export const buildSearchQueryFromSaved = (savedSearch: SavedPropertySearch): URLSearchParams => {
-  const params = new URLSearchParams();
-  const criteria = savedSearch.search_criteria;
-
-  if (!criteria) return params;
-
-  // Location
-  if (criteria.location) {
-    if (Array.isArray(criteria.location)) {
-      params.append("location", criteria.location.join(','));
-    } else {
-      params.append("location", criteria.location);
-    }
-  }
-
-  // Price range
-  if (criteria.priceRange) {
-    if (criteria.priceRange[0]) params.append("priceMin", criteria.priceRange[0].toString());
-    if (criteria.priceRange[1]) params.append("priceMax", criteria.priceRange[1].toString());
-  }
-
-  // Property types
-  if (criteria.propertyTypes && criteria.propertyTypes.length) {
-    params.append("type", criteria.propertyTypes.join(','));
-  }
-
-  // Bedrooms
-  if (criteria.bedroomsRange) {
-    if (criteria.bedroomsRange[0]) params.append("bedroomsMin", criteria.bedroomsRange[0].toString());
-    if (criteria.bedroomsRange[1]) params.append("bedroomsMax", criteria.bedroomsRange[1].toString());
-  }
-
-  // Bathrooms
-  if (criteria.bathroomsRange) {
-    if (criteria.bathroomsRange[0]) params.append("bathroomsMin", criteria.bathroomsRange[0].toString());
-    if (criteria.bathroomsRange[1]) params.append("bathroomsMax", criteria.bathroomsRange[1].toString());
-  }
-
-  // Min ROI
-  if (criteria.minRoi) {
-    params.append("minRoi", criteria.minRoi.toString());
-  }
-
-  // Amenities
-  if (criteria.amenities && criteria.amenities.length) {
-    params.append("amenities", criteria.amenities.join(','));
-  }
-
-  // Investor level
-  if (criteria.investorLevel) {
-    params.append("investorLevel", criteria.investorLevel);
-  }
-
-  return params;
+export const buildSearchQueryFromSaved = (savedSearch: SavedPropertySearch): PropertyFilter => {
+  // Convert the saved search criteria to a property filter
+  const searchCriteria = savedSearch.search_criteria as SearchCriteria;
+  
+  // Map the search criteria to a property filter
+  const filter: PropertyFilter = {
+    locations: searchCriteria.location as string[],
+    priceMin: searchCriteria.priceRange ? searchCriteria.priceRange[0] : undefined,
+    priceMax: searchCriteria.priceRange ? searchCriteria.priceRange[1] : undefined,
+    propertyTypes: searchCriteria.propertyTypes,
+    bedroomsMin: searchCriteria.bedroomsRange ? searchCriteria.bedroomsRange[0] : undefined,
+    bedroomsMax: searchCriteria.bedroomsRange ? searchCriteria.bedroomsRange[1] : undefined,
+    bathroomsMin: searchCriteria.bathroomsRange ? searchCriteria.bathroomsRange[0] : undefined,
+    bathroomsMax: searchCriteria.bathroomsRange ? searchCriteria.bathroomsRange[1] : undefined,
+    roiMin: searchCriteria.minRoi,
+    amenities: searchCriteria.amenities,
+    investorLevel: searchCriteria.investorLevel,
+  };
+  
+  return filter;
 };

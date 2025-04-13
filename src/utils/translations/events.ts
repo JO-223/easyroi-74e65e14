@@ -112,14 +112,18 @@ export const eventsKeys = [
   'eventReviews',
   'reviewsCount',
   'noReviewsYet',
-  'noReviewsFound',
   'noReviewsFoundDescription',
   'beTheFirstToReview',
   'basedOnReviews',
   'stars',
   'verifiedAttendee',
   'helpful',
-  'reviewSubmitted'
+  'reviewSubmitted',
+  'tryDifferentFilters',
+  'date',
+  'time',
+  'eventDetail',
+  'errorLoadingEventDescription'
 ] as const;
 
 export type EventsKey = typeof eventsKeys[number];

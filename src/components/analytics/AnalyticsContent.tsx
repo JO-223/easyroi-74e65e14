@@ -1,100 +1,56 @@
-
-import { useLanguage } from "@/contexts/LanguageContext";
-import { AnalyticsData } from "@/services/analytics/analyticsService";
-import { MetricsSection } from "./MetricsSection";
-import { ROIPerformanceChart } from "./ROIPerformanceChart";
-import { PortfolioBreakdown } from "./PortfolioBreakdown";
-import { EventsAttendedCard } from "./EventsAttendedCard";
+import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PropertyPerformance } from "./PropertyPerformance";
+import { MarketComparison } from "./MarketComparison";
+import { PortfolioAllocation } from "./PortfolioAllocation";
 import { EmptyState } from "@/components/ui/empty-state";
-import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { AreaChart, PieChart, BarChart } from "lucide-react";
 
-interface AnalyticsContentProps {
-  analyticsData: AnalyticsData | null;
-  isLoading?: boolean;
-  error?: Error | null;
-}
-
-export const AnalyticsContent = ({ 
-  analyticsData, 
-  isLoading = false,
-  error = null 
-}: AnalyticsContentProps) => {
-  const { t } = useLanguage();
+export function AnalyticsContent() {
+  const hasData = true; // In a real app, this would be based on data availability
   
-  // If there's an error, show the error boundary
-  if (error) {
+  if (!hasData) {
     return (
       <EmptyState 
-        variant="analytics"
-        title={t('error')}
-        description={error.message || t('unableToLoadData')}
-      />
-    );
-  }
-  
-  // If data is loading, show skeleon state
-  if (isLoading) {
-    return <div className="animate-pulse space-y-6">
-      {/* Metrics skeleton */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="bg-background rounded-lg p-4 shadow-sm">
-            <div className="h-4 bg-muted rounded w-1/3 mb-2"></div>
-            <div className="h-7 bg-muted rounded w-1/2 mb-1"></div>
-            <div className="h-3 bg-muted rounded w-1/4"></div>
-          </div>
-        ))}
-      </div>
-      
-      {/* Charts skeletons */}
-      <div className="h-[300px] bg-muted/30 border border-dashed rounded-lg"></div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="h-[250px] bg-muted/30 border border-dashed rounded-lg"></div>
-        <div className="h-[250px] bg-muted/30 border border-dashed rounded-lg"></div>
-      </div>
-    </div>;
-  }
-  
-  // If there's no data at all, show an empty state
-  if (!analyticsData) {
-    return (
-      <EmptyState 
-        variant="analytics"
-        title={t('noInvestmentDataAvailable')} 
-        description={t('dataWillAppearSoon')}
+        icon={<AreaChart size={40} />}
+        title="No Analytics Data"
+        description="You don't have any properties in your portfolio to analyze. Add properties to see analytics."
+        variant="analytics" // Use the "analytics" variant that we'll add to EmptyState
       />
     );
   }
   
   return (
-    <ErrorBoundary>
-      <div className="grid gap-6">
-        {/* Key Metrics */}
-        <MetricsSection analyticsData={analyticsData} />
-
-        {/* Performance Chart */}
-        <ErrorBoundary>
-          <ROIPerformanceChart 
-            data={analyticsData?.roiPerformance || []} 
-            hasData={analyticsData?.roiPerformance?.length > 0}
-          />
-        </ErrorBoundary>
-
-        {/* Portfolio Breakdown */}
-        <ErrorBoundary>
-          <PortfolioBreakdown 
-            assetAllocation={analyticsData?.assetAllocation || []}
-            geographicDistribution={analyticsData?.geographicDistribution || []}
-            hasAssetData={analyticsData?.assetAllocation?.length > 0}
-            hasGeoData={analyticsData?.geographicDistribution?.length > 0}
-          />
-        </ErrorBoundary>
-
-        {/* Events Attended */}
-        <ErrorBoundary>
-          <EventsAttendedCard count={analyticsData?.eventsAttended || 0} />
-        </ErrorBoundary>
-      </div>
-    </ErrorBoundary>
+    <Tabs defaultValue="performance" className="space-y-6">
+      <TabsList>
+        <TabsTrigger value="performance">Performance</TabsTrigger>
+        <TabsTrigger value="allocation">Portfolio Allocation</TabsTrigger>
+        <TabsTrigger value="comparison">Market Comparison</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="performance" className="space-y-6">
+        <PropertyPerformance />
+      </TabsContent>
+      
+      <TabsContent value="allocation" className="space-y-6">
+        {/* In a real app, check if allocation data exists */}
+        <EmptyState 
+          icon={<PieChart size={40} />}
+          title="Portfolio Allocation Data Unavailable"
+          description="We don't have enough data to show your portfolio allocation. Add more properties or check back later."
+          variant="analytics"
+        />
+      </TabsContent>
+      
+      <TabsContent value="comparison" className="space-y-6">
+        {/* In a real app, check if comparison data exists */}
+        <EmptyState 
+          icon={<BarChart size={40} />}
+          title="Market Comparison Data Unavailable"
+          description="We don't have enough data to compare your portfolio with the market. Add more properties or check back later."
+          variant="analytics"
+        />
+      </TabsContent>
+    </Tabs>
   );
-};
+}

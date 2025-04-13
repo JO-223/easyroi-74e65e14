@@ -42,7 +42,7 @@ export function MarketInsights() {
             <div key={index} className="border rounded-md p-3">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-medium">{insight.title}</h3>
-                <Badge variant={insight.trend === "up" ? "success" : "destructive"} className="flex items-center">
+                <Badge variant={insight.trend === "up" ? "default" : "destructive"} className="flex items-center">
                   {insight.trend === "up" ? (
                     <ArrowUp className="h-3 w-3 mr-1" />
                   ) : (

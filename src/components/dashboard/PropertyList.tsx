@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Property } from '@/types/property';
-import PropertyCard from '@/components/PropertyCard';
+import { PropertyCard } from '@/components/PropertyCard'; // Fix the import
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
@@ -33,7 +33,11 @@ export function PropertyList({ properties, compact = false }: PropertyListProps)
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {properties.slice(0, 3).map(property => (
-          <PropertyCard key={property.id} property={property} />
+          <PropertyCard 
+            key={property.id} 
+            property={property} 
+            onViewDetails={() => navigate(`/properties/${property.id}`)}
+          />
         ))}
       </div>
       
