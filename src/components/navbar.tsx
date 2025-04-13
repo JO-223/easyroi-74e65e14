@@ -17,9 +17,23 @@ export function Navbar() {
 
   const navigation = [
     { name: t('home'), href: '/' },
+    // Dashboard link will be conditionally added for logged-in users
     { name: t('contact'), href: '/contact' },
     { name: t('aboutUs'), href: '/about' },
   ];
+
+  // Get navigation links based on authentication status
+  const getNavLinks = () => {
+    if (user) {
+      return [
+        { name: t('home'), href: '/' },
+        { name: t('dashboard'), href: '/dashboard' },
+        { name: t('contact'), href: '/contact' },
+        { name: t('aboutUs'), href: '/about' },
+      ];
+    }
+    return navigation;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,6 +70,9 @@ export function Navbar() {
     navigate('/');
   };
 
+  // Get the current navigation links
+  const currentNavLinks = getNavLinks();
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
@@ -69,7 +86,7 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          {navigation.map((item) => (
+          {currentNavLinks.map((item) => (
             <Link
               key={item.name}
               to={item.href}
@@ -125,7 +142,7 @@ export function Navbar() {
                 </div>
                 <div className="flex flex-col justify-between h-full">
                   <div className="p-6 space-y-6">
-                    {navigation.map((item) => (
+                    {currentNavLinks.map((item) => (
                       <Link
                         key={item.name}
                         to={item.href}

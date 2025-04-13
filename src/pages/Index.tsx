@@ -33,15 +33,15 @@ const Index = () => {
       <section className="relative h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="/dubai-skyline.png" 
+            src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
             alt="Luxury Dubai Skyline" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover"
             style={{
               filter: 'brightness(0.85)',
-              transform: `scale(1.05) translateY(${scrollPosition * 0.05}px)`,
-              objectPosition: 'center 30%' // Adjusted to show more of the image content
+              transform: `scale(1.02) translateY(${scrollPosition * 0.02}px)`,
+              objectPosition: 'center 40%' // Better positioning to see more of the image
             }}
-            loading="eager" // Force eager loading for critical hero image
+            loading="eager" // Keep eager loading for critical hero image
           />
           <div className="absolute inset-0 bg-gradient-to-r from-easyroi-purple-950/70 via-easyroi-purple-900/60 to-transparent z-10"></div>
         </div>
@@ -127,17 +127,30 @@ const Index = () => {
           </AnimatedSection>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
-            {['Milan, Italy', 'Rome, Italy', 'Dubai, UAE'].map((location, index) => (
-              <AnimatedSection key={location} delay={index * 100} className="relative h-96 group overflow-hidden">
+            {[
+              { 
+                name: 'Milan, Italy', 
+                img: 'https://images.unsplash.com/photo-1610016302534-6f67f1c968d8?q=80&w=1000&auto=format&fit=crop'
+              },
+              { 
+                name: 'Rome, Italy', 
+                img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1000&auto=format&fit=crop' 
+              },
+              { 
+                name: 'Dubai, UAE', 
+                img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1000&auto=format&fit=crop'
+              }
+            ].map((location, index) => (
+              <AnimatedSection key={location.name} delay={index * 100} className="relative h-96 group overflow-hidden">
                 <img 
-                  src="/placeholder.svg" 
-                  alt={location} 
+                  src={location.img}
+                  alt={location.name} 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 flex flex-col justify-end p-8">
                   <div className="flex items-center text-white mb-4">
                     <MapPin className="h-4 w-4 mr-2 text-easyroi-gold" />
-                    <span className="text-sm tracking-wide">{location}</span>
+                    <span className="text-sm tracking-wide">{location.name}</span>
                   </div>
                 </div>
               </AnimatedSection>
