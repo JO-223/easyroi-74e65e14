@@ -1,5 +1,6 @@
 
 
+
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -30,9 +31,7 @@ Per ogni punto completato:
 - [ ] Funzione Supabase: add_property_for_sale()
 - [ ] Funzione Supabase: add_new_development_project()
 - [ ] Funzione Supabase: add_new_event()
-✅ Protezione route admin lato client (useAdminRole) - Implementato sistema di protezione con AdminRoute
-
- Controlli autorizzazione nelle funzioni RPC
+✅ Protezione route admin lato client (useAdminRole) - Implementato sistema di protezione con AdminRoute.tsx con toast di notifica
 
 ✅ Redirect automatico per utenti non autorizzati - Aggiunto redirect in AdminRoute.tsx con toast di notifica
 
@@ -40,13 +39,13 @@ Per ogni punto completato:
 
 ## 🎖️ Priorità 2 – Sistema badge utente
 
-- [ ] Verifica collegamento trigger `update_user_level` a `user_investments`
-- [ ] Test aggiornamento badge al cambio proprietà
-- [ ] Visualizzazione badge in Dashboard
-- [ ] Visualizzazione badge nella Sidebar
-- [ ] Visualizzazione badge nel Profilo
-- [ ] Uso del componente `BadgeLevel`
-- [ ] Implementazione logica soglie badge (starter → diamond)
+✅ Verifica collegamento trigger `update_user_level` a `user_investments` - Creato servizio userLevelService.ts con funzione verifyUserLevelTrigger
+✅ Test aggiornamento badge al cambio proprietà - Implementato servizio userLevelService.ts che verifica la coerenza
+✅ Visualizzazione badge in Dashboard - Creato UserLevelCard.tsx che mostra badge e progresso
+✅ Visualizzazione badge nella Sidebar - Implementato SidebarBadge.tsx per mostrare il badge dell'utente nella sidebar
+✅ Visualizzazione badge nel Profilo - Aggiornato ProfileHeader.tsx per visualizzare il badge dell'utente
+✅ Uso del componente `BadgeLevel` - Creato componente UserBadge.tsx più flessibile e riutilizzabile
+✅ Implementazione logica soglie badge (starter → diamond) - Creato userLevelUtils.ts con funzioni per calcolare livello, progresso e soglie
 
 ---
 
