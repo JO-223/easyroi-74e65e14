@@ -1,3 +1,4 @@
+
 const en = {
   // General
   welcome: "Welcome",
@@ -457,6 +458,8 @@ const en = {
   foundation: "Foundation",
   structural: "Structural",
   finishing: "Finishing",
+  framing: "Framing",
+  interior: "Interior",
   completed: "Completed",
   progressRange: "Progress Range",
   projectFilter: "Project Filter",
@@ -482,8 +485,6 @@ const en = {
   projectNotFound: "Project not found",
   errorLoadingProject: "Error loading project",
   projectMayHaveBeenRemoved: "This project may have been removed",
-  framing: "Framing",
-  interior: "Interior",
   
   // Admin specific
   addNewInvestor: "Add New Investor",

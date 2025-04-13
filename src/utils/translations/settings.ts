@@ -41,7 +41,12 @@ export const settingsKeys = [
   "notificationSettingsSaved",
   "privacySettingsUpdated",
   "privacySettingsSaved",
-  "manageSettings"
+  "manageSettings",
+  "updateAccount",
+  "updateDisplay",
+  "updateNotifications",
+  "updatePrivacy",
+  "saving"
 ] as const;
 
 export type SettingsKey = typeof settingsKeys[number];

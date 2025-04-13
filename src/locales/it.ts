@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuto",
@@ -10,6 +11,9 @@ const it = {
   profile: "Profilo",
   settings: "Impostazioni",
   logout: "Esci",
+  loading: "Caricamento",
+  error: "Errore",
+  success: "Successo",
   
   // Analytics
   totalInvestment: "Investimento Totale",
@@ -80,6 +84,7 @@ const it = {
   relatedProperty: "Proprietà Correlata",
   thisEventIsRelatedToAProperty: "Questo evento è correlato a una proprietà",
   thisEventIsRelatedToADevelopmentProject: "Questo evento è correlato a un progetto di sviluppo",
+  online: "Online",
   
   // Network
   investorNetwork: "Rete di Investitori",
@@ -107,6 +112,33 @@ const it = {
   connectionPending: "Connessione in Attesa",
   connected: "Connesso",
   disconnect: "Disconnetti",
+  authRequired: "Autenticazione Richiesta",
+  pleaseLoginToConnect: "Effettua l'accesso per connetterti con altri investitori",
+  connectionSent: "Richiesta di Connessione Inviata",
+  connectionSentMsg: "La tua richiesta di connessione è stata inviata",
+  connectionRequestError: "Impossibile inviare la richiesta di connessione",
+  pleaseLoginToDisconnect: "Effettua l'accesso per disconnetterti da questo investitore",
+  connectionRemoved: "Connessione Rimossa", 
+  connectionRemovedMsg: "Non sei più connesso con questo investitore",
+  connectionRemoveError: "Impossibile rimuovere la connessione",
+  pleaseLoginToMessage: "Effettua l'accesso per mandare un messaggio a questo investitore",
+  privateProfileNetworkRestricted: "Funzionalità di Rete Limitate per Profilo Privato",
+  privateProfileNetworkMessage: "Il tuo profilo è impostato come privato, questo limita le funzionalità di rete. Per abilitare tutte le funzionalità, aggiorna le tue impostazioni sulla privacy.",
+  goToPrivacySettings: "Vai alle Impostazioni sulla Privacy",
+  investor: "Investitore",
+  noBioAvailable: "Nessuna biografia disponibile",
+  failedToLoadMessages: "Impossibile caricare la cronologia messaggi",
+  failedToSendMessage: "Impossibile inviare il messaggio",
+  messagingWith: "Conversazione con",
+  messageExchangeDesc: "Scambia messaggi con la tua connessione",
+  investorsFound: "Investitori trovati",
+  typeMessage: "Scrivi un messaggio...",
+  networkDataError: "Errore nel caricamento dei dati di rete",
+  notificationsMarkedAsRead: "Notifiche Lette",
+  allNotificationsMarkedAsRead: "Tutte le notifiche sono state contrassegnate come lette",
+  errorMarkingNotificationsAsRead: "Errore nel contrassegnare le notifiche come lette",
+  markAllAsRead: "Segna tutte come lette",
+  noNotifications: "Nessuna notifica",
   
   // Settings
   privacySettings: "Impostazioni sulla Privacy",
@@ -228,7 +260,6 @@ const it = {
   developmentProjectImportComingSoon: "La funzionalità di importazione dei progetti di sviluppo sarà implementata presto.",
   
   // Status
-  loading: "Caricamento",
   errorLoadingData: "Errore nel caricamento dei dati",
   noHistoricalData: "Dati storici non disponibili",
   marketVolatility: "Compensazione della volatilità di mercato rilevata",
@@ -270,10 +301,14 @@ const it = {
   securePlatformDesc: "I tuoi investimenti e dati sono protetti con sicurezza di livello aziendale",
   featuredLocations: "Luoghi in Evidenza",
   readyToMaximize: "Pronto a massimizzare i rendimenti del tuo portafoglio immobiliare?",
+  footerDescription: "EasyROI offre accesso esclusivo a opportunità di investimento immobiliare premium con rendimenti eccezionali.",
+  quickLinks: "Link Rapidi",
   
   // General UI
   back: "Indietro",
   resetFilters: "Reimposta Filtri",
+  cancel: "Annulla",
+  save: "Salva",
 
   // Properties Page
   yourProperties: "Le Tue Proprietà",
@@ -311,6 +346,8 @@ const it = {
   foundation: "Fondamenta",
   structural: "Strutturale",
   finishing: "Finiture",
+  framing: "Incorniciatura",  
+  interior: "Interni",
   completed: "Completato",
   progressRange: "Range di Avanzamento",
   projectFilter: "Filtro Progetti",
@@ -400,13 +437,8 @@ const it = {
   noProsListed: "Nessun pro elencato",
   noConsListed: "Nessun contro elencato",
   
-  // Error states
-  error: "Errore",
-  success: "Successo",
-  
   // Event components
   noEventsFound: "Nessun evento trovato",
-  online: "Online",
   upgradeRequiredToJoin: "Aggiornamento necessario per partecipare",
   
   // Event filters
@@ -426,51 +458,7 @@ const it = {
   showOnlyAvailableEvents: "Mostra solo eventi con disponibilità",
   clearFilters: "Cancella Filtri",
 
-  // Footer
-  footerDescription: "EasyROI offre accesso esclusivo a opportunità di investimento immobiliare premium con rendimenti eccezionali.",
-  quickLinks: "Link Rapidi",
-  home: "Home",
-  contact: "Contatti",
-  login: "Accedi",
-  
   // Network components
-  authRequired: "Autenticazione Richiesta",
-  pleaseLoginToConnect: "Effettua l'accesso per connetterti con altri investitori",
-  connectionSent: "Richiesta di Connessione Inviata",
-  connectionSentMsg: "La tua richiesta di connessione è stata inviata",
-  connectionRequestError: "Impossibile inviare la richiesta di connessione",
-  pleaseLoginToDisconnect: "Effettua l'accesso per disconnetterti da questo investitore",
-  connectionRemoved: "Connessione Rimossa", 
-  connectionRemovedMsg: "Non sei più connesso con questo investitore",
-  connectionRemoveError: "Impossibile rimuovere la connessione",
-  pleaseLoginToMessage: "Effettua l'accesso per mandare un messaggio a questo investitore",
-  privateProfileNetworkRestricted: "Funzionalità di Rete Limitate per Profilo Privato",
-  privateProfileNetworkMessage: "Il tuo profilo è impostato come privato, questo limita le funzionalità di rete. Per abilitare tutte le funzionalità, aggiorna le tue impostazioni sulla privacy.",
-  goToPrivacySettings: "Vai alle Impostazioni sulla Privacy",
-  investor: "Investitore",
-  noBioAvailable: "Nessuna biografia disponibile",
-  failedToLoadMessages: "Impossibile caricare la cronologia messaggi",
-  failedToSendMessage: "Impossibile inviare il messaggio",
-  messagingWith: "Conversazione con",
-  messageExchangeDesc: "Scambia messaggi con la tua connessione",
-  investorsFound: "Investitori trovati",
-  typeMessage: "Scrivi un messaggio...",
-  
-  // Notifications
-  notificationsMarkedAsRead: "Notifiche Lette",
-  allNotificationsMarkedAsRead: "Tutte le notifiche sono state contrassegnate come lette",
-  errorMarkingNotificationsAsRead: "Errore nel contrassegnare le notifiche come lette",
-  markAllAsRead: "Segna tutte come lette",
-  noNotifications: "Nessuna notifica",
-  
-  // Network data
-  networkDataError: "Errore nel caricamento dei dati di rete",
-  
-  // Event details
-  errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
-  
-  // Missing keys from scan
-  noInvestmentDataAvailable: "Nessun dato di investimento disponibile",
   
   // Admin Panel
   adminPanel: "Pannello Amministrazione",
@@ -497,8 +485,6 @@ const it = {
   investorAddedSuccessfully: "Investitore aggiunto con successo",
   errorAddingInvestor: "Errore nell'aggiunta dell'investitore",
   validation_error: "Errore di Validazione",
-  cancel: "Annulla",
-  save: "Salva",
   
   // Admin Property Form
   addPropertyForUser: "Aggiungi Proprietà per Utente",
@@ -525,10 +511,6 @@ const it = {
   propertyAddedSuccessfully: "Proprietà aggiunta con successo",
   errorAddingProperty: "Errore nell'aggiunta della proprietà",
   
-  // Access Control
-  accessDenied: "Accesso Negato",
-  importPropertiesAdminOnly: "Solo gli amministratori possono importare proprietà",
-  
   // Admin Sale Property Form
   addPropertyForSale: "Aggiungi Proprietà in Vendita",
   propertyForSaleAddedSuccessfully: "Proprietà in vendita aggiunta con successo",
@@ -541,6 +523,66 @@ const it = {
   // Dashboard data updated
   dashboardDataUpdated: "Dati dashboard aggiornati con successo",
   errorUpdatingDashboard: "Errore nell'aggiornamento dei dati della dashboard",
+  
+  // Event form fields
+  eventTitle: "Titolo Evento",
+  enterEventTitle: "Inserisci il titolo dell'evento",
+  enterEventDescription: "Inserisci la descrizione dell'evento",
+  date: "Data",
+  time: "Ora",
+  presentation: "Presentazione",
+  workshop: "Workshop",
+  propertyTour: "Visita Proprietà",
+  webinar: "Webinar",
+  investmentConference: "Conferenza d'Investimento",
+  maxAttendees: "Max Partecipanti",
+  leaveBlankForUnlimited: "Lascia vuoto per illimitati",
+  addEvent: "Aggiungi Evento",
+  isOnlineEvent: "È un Evento Online?",
+  onlineEventDescription: "Questo evento si terrà online",
+  relatedProject: "Progetto Correlato",
+  selectProject: "Seleziona Progetto",
+  requiredInvestorLevels: "Livelli Investitore Richiesti",
+  selectInvestorLevelsEvent: "Seleziona i livelli investitore richiesti",
+  eventAddedSuccessfully: "Evento aggiunto con successo",
+  errorAddingEvent: "Errore nell'aggiunta dell'evento",
+  errorFetchingRelatedData: "Errore nel recupero dei dati correlati",
+  selectOccupationStatus: "Seleziona lo stato di occupazione",
+  selectStatus: "Seleziona lo stato",
+  selectProperty: "Seleziona proprietà",
+  expectedRoi: "ROI Previsto",
+  eventsInLastYear: "Eventi nell'ultimo anno",
+  home: "Home",
+  contact: "Contatti",
+  login: "Accedi",
+  starterInvestor: "Investitore Principiante",
+  bronzeInvestor: "Investitore Bronzo",
+  silverInvestor: "Investitore Argento",
+  goldInvestor: "Investitore Oro",
+  rubyInvestor: "Investitore Rubino",
+  emeraldInvestor: "Investitore Smeraldo",
+  platinumInvestor: "Investitore Platino",
+  diamondInvestor: "Investitore Diamante",
+  errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
+  errorFetchingFormData: "Errore nel recupero dei dati del modulo",
+  errorFetchingPropertyTypes: "Errore nel recupero dei tipi di proprietà",
+  addDevelopmentProject: "Aggiungi Progetto di Sviluppo",
+  projectName: "Nome Progetto",
+  enterProjectName: "Inserisci il nome del progetto",
+  description: "Descrizione",
+  enterProjectDescription: "Inserisci la descrizione del progetto",
+  progressPercentage: "Percentuale di Avanzamento",
+  imageUrl: "URL Immagine",
+  optionalField: "Campo opzionale",
+  minimumLevelRequired: "Livello minimo richiesto",
+  developmentProjectAddedSuccessfully: "Progetto di sviluppo aggiunto con successo",
+  errorAddingDevelopmentProject: "Errore nell'aggiunta del progetto di sviluppo",
+  singleLocationAllocation: "{location}: {percentage}%",
+  enterCountry: "Inserisci paese",
+  
+  // Analytics
+  unableToLoadData: "Impossibile caricare i dati",
+  pleaseTryRefreshingThePage: "Per favore prova ad aggiornare la pagina",
   
   // Tooltip section
   tooltip: {
