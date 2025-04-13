@@ -71,6 +71,8 @@ export type GetPortfolioAllocationByCountryResponse = {
   properties_count: number;
 }[];
 
+export type UpdateUserDashboardDataResponse = boolean;
+
 // Response types for our RPC functions
 export interface RPCResponses {
   get_user_notifications: GetUserNotificationsResponse;
@@ -98,6 +100,7 @@ export interface RPCResponses {
   add_new_development_project: AddNewDevelopmentProjectResponse;
   add_new_event: AddNewEventResponse;
   get_portfolio_allocation_by_country: GetPortfolioAllocationByCountryResponse;
+  update_user_dashboard_data: UpdateUserDashboardDataResponse;
 }
 
 // Type for RPC function parameters 
@@ -191,6 +194,7 @@ export interface RPCParams {
     p_required_badges?: string[];
   };
   get_portfolio_allocation_by_country: { user_id: string };
+  update_user_dashboard_data: { p_user_id: string };
 }
 
 // Helper type to ensure type safety when calling RPC functions

@@ -1203,6 +1203,10 @@ export type Database = {
         Args: { p_user_id: string; p_visibility: string }
         Returns: undefined
       }
+      update_user_dashboard_data: {
+        Args: { p_user_id: string }
+        Returns: boolean
+      }
       update_user_investment: {
         Args: { p_user_id: string; p_investment_amount: number }
         Returns: boolean
