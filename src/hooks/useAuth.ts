@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       // For demonstration, we're assuming admin role based on profile data
       // In practice, you would implement your own role-checking logic
-      setIsAdmin(profileData?.level === 'admin');
+      setIsAdmin(profileData?.level === 'admin' || profileData?.level === 'administrator');
       setIsOwner(profileData?.level === 'owner');
     } catch (error) {
       console.error('Error checking user roles:', error);
