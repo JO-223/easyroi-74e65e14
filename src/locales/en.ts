@@ -1,4 +1,3 @@
-
 const en = {
   // General
   welcome: "Welcome",
@@ -582,7 +581,8 @@ const en = {
     listingStatus: "Whether the property is listed for sale or not",
     roiPercentage: "The expected return on investment as a percentage",
     serviceCharges: "Annual fees for property maintenance and services"
-  }
+  },
+  refresh: "Refresh",
 };
 
 export default en;

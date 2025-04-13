@@ -4,7 +4,8 @@ export const uiKeys = [
   "loading",
   "errorLoadingData",
   "success",
-  "error"
+  "error",
+  "refresh"
 ] as const;
 
 export type UiKey = typeof uiKeys[number];
