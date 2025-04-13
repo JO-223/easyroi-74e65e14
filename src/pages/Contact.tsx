@@ -6,7 +6,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Mail, Phone, Clock } from 'lucide-react';
+import { MapPin, Mail, Phone, Clock, Building, FileText } from 'lucide-react';
+import { Separator } from "@/components/ui/separator";
 
 const Contact = () => {
   const { t } = useLanguage();
@@ -25,6 +26,83 @@ const Contact = () => {
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-easyroi-purple-900 mb-4">{t('contactUs')}</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">{t('contactDescription')}</p>
+          </div>
+          
+          {/* Company Information Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            {/* Italy Office */}
+            <div className="bg-white p-8 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <Building className="h-6 w-6 text-easyroi-gold mr-3" />
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900">EROI S.R.L.</h2>
+              </div>
+              <Separator className="mb-6" />
+              
+              <ul className="space-y-4">
+                <li className="flex">
+                  <FileText className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Codice Fiscale e Partita IVA:</h3>
+                    <p className="text-gray-600">13888170969</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <FileText className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">SDI:</h3>
+                    <p className="text-gray-600">KRRH6B9</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <MapPin className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Sede legale:</h3>
+                    <p className="text-gray-600">Viale Certosa 218, 20156 Milano (MI)</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <Mail className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Domicilio digitale (PEC):</h3>
+                    <p className="text-gray-600">eroi.srl@pec.it</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <Mail className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Email:</h3>
+                    <p className="text-gray-600">info@easyroi.com</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            {/* Dubai Office */}
+            <div className="bg-white p-8 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <Building className="h-6 w-6 text-easyroi-gold mr-3" />
+                <h2 className="text-2xl font-semibold text-easyroi-purple-900">EROI REAL ESTATE LLC</h2>
+              </div>
+              <Separator className="mb-6" />
+              
+              <ul className="space-y-4">
+                <li className="flex">
+                  <MapPin className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Indirizzo:</h3>
+                    <p className="text-gray-600">Office 205-395, Albahar, Al Khabeesi,</p>
+                    <p className="text-gray-600">DUBAI, UNITED ARAB EMIRATES</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <FileText className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium text-easyroi-navy">Business license:</h3>
+                    <p className="text-gray-600">1442515</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

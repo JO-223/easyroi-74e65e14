@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export function Footer() {
@@ -45,7 +45,7 @@ export function Footer() {
                 <span>+39 3792381805</span>
               </li>
               <li className="flex">
-                <PartitaIva className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
+                <CreditCard className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
                 <span>P. IVA: 13888170969</span>
               </li>
               <li className="flex">

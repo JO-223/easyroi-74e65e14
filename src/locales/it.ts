@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuti",
@@ -603,7 +602,34 @@ const it = {
     roiPercentage: "La percentuale annuale di ritorno sull'investimento prevista",
     serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)",
     investor: "L'investitore proprietario di questa proprietà"
-  }
+  },
+  home: "Home",
+  contact: "Contatti",
+  login: "Accedi",
+  starterInvestor: "Investitore Principiante",
+  bronzeInvestor: "Investitore Bronzo",
+  silverInvestor: "Investitore Argento",
+  goldInvestor: "Investitore Oro",
+  rubyInvestor: "Investitore Rubino",
+  emeraldInvestor: "Investitore Smeraldo",
+  platinumInvestor: "Investitore Platino",
+  diamondInvestor: "Investitore Diamante",
+  errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
+  errorFetchingFormData: "Errore nel recupero dei dati del modulo",
+  errorFetchingPropertyTypes: "Errore nel recupero dei tipi di proprietà",
+  addDevelopmentProject: "Aggiungi Progetto di Sviluppo",
+  projectName: "Nome Progetto",
+  enterProjectName: "Inserisci il nome del progetto",
+  description: "Descrizione",
+  enterProjectDescription: "Inserisci la descrizione del progetto",
+  progressPercentage: "Percentuale di Avanzamento",
+  imageUrl: "URL Immagine",
+  optionalField: "Campo opzionale",
+  minimumLevelRequired: "Livello minimo richiesto",
+  developmentProjectAddedSuccessfully: "Progetto di sviluppo aggiunto con successo",
+  errorAddingDevelopmentProject: "Errore nell'aggiunta del progetto di sviluppo",
+  singleLocationAllocation: "{location}: {percentage}%",
+  enterCountry: "Inserisci paese",
 };
 
 export default it;
