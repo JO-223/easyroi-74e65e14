@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuto",
@@ -522,27 +521,6 @@ const it = {
   propertyAddedSuccessfully: "Proprietà aggiunta con successo",
   errorAddingProperty: "Errore nell'aggiunta della proprietà",
   
-  // Property form tooltips
-  tooltip: {
-    investor: "L'investitore proprietario di questa proprietà",
-    propertyName: "Il nome o titolo della proprietà",
-    address: "L'indirizzo completo della proprietà",
-    city: "La città dove si trova la proprietà",
-    country: "Il paese dove si trova la proprietà",
-    zone: "Il quartiere o area all'interno della città",
-    propertyType: "Il tipo di proprietà",
-    price: "Il prezzo di acquisto della proprietà",
-    currency: "La valuta del prezzo della proprietà",
-    sizeSqm: "La dimensione della proprietà in metri quadrati",
-    bedrooms: "Il numero di camere da letto",
-    bathrooms: "Il numero di bagni",
-    occupationStatus: "Lo stato attuale di occupazione della proprietà",
-    status: "Lo stato complessivo della proprietà",
-    listingStatus: "Lo stato di inserzione per questa proprietà",
-    roiPercentage: "La percentuale annuale di ritorno sull'investimento prevista",
-    serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)"
-  },
-  
   // Occupation status
   vacant: "Libero",
   occupied: "Occupato",
@@ -569,7 +547,28 @@ const it = {
   singleLocationAllocation: "{location}: {percentage}%",
   eventsInLastYear: "Eventi nell'ultimo anno",
   monthly: "Mensile",
-  annual: "Annuale"
+  annual: "Annuale",
+  
+  // Tooltip section
+  tooltip: {
+    investor: "L'investitore proprietario di questa proprietà",
+    propertyName: "Il nome o titolo della proprietà",
+    address: "L'indirizzo completo della proprietà",
+    city: "La città dove si trova la proprietà",
+    country: "Il paese dove si trova la proprietà",
+    zone: "Il quartiere o area all'interno della città",
+    propertyType: "Il tipo di proprietà",
+    price: "Il prezzo di acquisto della proprietà",
+    currency: "La valuta del prezzo della proprietà",
+    sizeSqm: "La dimensione della proprietà in metri quadrati",
+    bedrooms: "Il numero di camere da letto",
+    bathrooms: "Il numero di bagni",
+    occupationStatus: "Lo stato attuale di occupazione della proprietà",
+    status: "Lo stato complessivo della proprietà",
+    listingStatus: "Lo stato di inserzione per questa proprietà",
+    roiPercentage: "La percentuale annuale di ritorno sull'investimento prevista",
+    serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)"
+  }
 };
 
 export default it;

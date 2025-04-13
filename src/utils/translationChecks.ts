@@ -60,6 +60,14 @@ export const checkMissingTranslationKeys = () => {
 };
 
 /**
+ * Helper function to check if a translation value is a simple string or an object
+ * Used for type checking during development
+ */
+const isTranslationObject = (value: unknown): value is Record<string, string> => {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
+
+/**
  * This function can be called during development to check for duplicate keys
  * in the translation files.
  */

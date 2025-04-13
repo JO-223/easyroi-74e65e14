@@ -10,8 +10,8 @@ export type Language = 'en' | 'it' | 'es' | 'de';
 export type Currency = 'usd' | 'eur' | 'gbp';
 export type Timezone = 'europe_rome' | 'europe_london' | 'america_newyork' | 'europe_zurich';
 
-// Update translation type to support string values only (no nested objects)
-export type TranslationValue = string;
+// Update translation type to support both simple strings and nested objects
+export type TranslationValue = string | Record<string, string>;
 type Translations = Record<Language, Record<string, TranslationValue>>;
 
 export interface DisplaySettings {
@@ -23,7 +23,7 @@ export interface DisplaySettings {
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: TranslationKey, params?: Record<string, string | number>) => string;
+  t: (key: TranslationKey, params?: string | Record<string, string | number>) => string;
   supportedLanguages: { code: Language; name: string }[];
   displaySettings: DisplaySettings;
   updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
@@ -91,23 +91,37 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Enhanced translation function with string interpolation support
-  const t = (key: TranslationKey, params?: Record<string, string | number>): string => {
-    let value = translations[language]?.[key] || translations.en[key];
+  // Enhanced translation function that supports both string interpolation and nested objects
+  const t = (key: TranslationKey, params?: string | Record<string, string | number>): string => {
+    // First, get the translation value
+    const translationValue = translations[language]?.[key] || translations.en[key];
     
-    if (value === undefined) {
+    if (translationValue === undefined) {
       console.warn(`Missing translation key: ${key}`);
       return key;
     }
     
-    // If we have params, replace placeholders in the string
-    if (params) {
-      Object.entries(params).forEach(([paramKey, paramValue]) => {
-        value = value.replace(new RegExp(`{${paramKey}}`, 'g'), String(paramValue));
-      });
+    // Handle nested translation case (e.g., tooltip.investor)
+    if (typeof params === 'string' && typeof translationValue === 'object') {
+      return translationValue[params] || params;
     }
     
-    return value;
+    // Handle string with interpolation case
+    if (typeof translationValue === 'string' && typeof params === 'object') {
+      let result = translationValue;
+      Object.entries(params).forEach(([paramKey, paramValue]) => {
+        result = result.replace(new RegExp(`{${paramKey}}`, 'g'), String(paramValue));
+      });
+      return result;
+    }
+    
+    // Handle simple string translation
+    if (typeof translationValue === 'string') {
+      return translationValue;
+    }
+    
+    // Fallback for unhandled cases
+    return key;
   };
 
   const value = {
