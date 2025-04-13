@@ -1,3 +1,4 @@
+
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -85,14 +86,56 @@ Per ogni punto completato:
 
 ## 🧠 Priorità 6 - Tabelle Supabase mappate
 
-_(Solo revisione)_
+✅ **Revisione completa dello schema database** - Analisi e mappatura di tutte le tabelle nel database
+✅ **Mappatura per categorie**:
+  
+**User-Related Tables:**
+- ✅ profiles - Dati dell'utente e informazioni di profilo
+- ✅ security_settings - Impostazioni di sicurezza dell'account
+- ✅ display_settings - Preferenze di visualizzazione
+- ✅ notification_settings - Configurazione delle notifiche
+- ✅ privacy_settings - Impostazioni privacy
+- ✅ user_activities - Registro delle attività degli utenti
 
-- Utenti: `profiles`, `security_settings`, `display_settings`, `notification_settings`
-- Proprietà: `properties`, `property_locations`, `property_types`, etc.
-- Progetti: `development_projects`, `project_images`
-- Eventi: `events`, `event_attendees`
-- Dati utente: `user_properties`, `user_roi`, `user_investment_growth`, etc.
-- Social: `connections`, `messages`, `notifications`
+**Property-Related Tables:**
+- ✅ properties - Dati principali delle proprietà
+- ✅ property_locations - Dettagli sulla posizione
+- ✅ property_types - Categorizzazione delle proprietà
+- ✅ property_images - Foto delle proprietà
+- ✅ property_amenities - Collegamenti proprietà-servizi
+- ✅ property_pros_cons - Vantaggi/svantaggi delle proprietà
+- ✅ property_documents - **NUOVO**: Documenti legali con controllo accessi
+
+**Investment & Financial Tables:**
+- ✅ user_investments - Totali investimenti utente
+- ✅ user_investment_growth - Crescita investimenti nel tempo
+- ✅ user_portfolio_allocation - Distribuzione portafoglio
+- ✅ user_roi - Dati ROI
+- ✅ user_properties - Conteggio proprietà e variazioni
+- ✅ saved_property_searches - **NUOVO**: Ricerche salvate e alert
+
+**Project & Development Tables:**
+- ✅ development_projects - Progetti di sviluppo immobiliare
+- ✅ project_images - Immagini dei progetti
+
+**Event-Related Tables:**
+- ✅ events - Informazioni eventi
+- ✅ event_attendees - Tracciamento partecipazioni
+- ✅ user_events - Statistiche eventi utente
+- ✅ event_reviews - **NUOVO**: Recensioni e valutazioni eventi
+
+**Social & Network Tables:**
+- ✅ connections - Connessioni tra utenti
+- ✅ messages - Comunicazioni tra utenti
+- ✅ notifications - Notifiche di sistema
+- ✅ interests - Interessi utente
+- ✅ profile_interests - Collegamenti profili-interessi
+
+**Support Tables:**
+- ✅ amenities - Elenco servizi proprietà
+- ✅ data_imports - Tracciamento importazioni
+
+✅ **Sicurezza database**: Implementate policy RLS (Row Level Security) su tutte le tabelle per garantire che gli utenti possano accedere solo ai dati a cui sono autorizzati.
 
 ---
 
