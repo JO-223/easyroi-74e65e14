@@ -14,11 +14,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <div className="mb-6">
-              <img 
-                src="/lovable-uploads/f030c164-2df3-4c76-bc3d-6c506d59a005.png" 
-                alt="EasyROI" 
-                className="h-12 w-auto" 
-              />
+              <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-12" />
             </div>
             <p className="text-gray-300 mb-4">
               {t('footerDescription')}
