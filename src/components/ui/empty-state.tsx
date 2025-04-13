@@ -8,6 +8,7 @@ interface EmptyStateProps {
   description?: string;
   actionLabel?: string;
   action?: () => void;
+  variant?: string; // Add variant prop to support the component props in AnalyticsContent
 }
 
 export function EmptyState({
@@ -15,10 +16,11 @@ export function EmptyState({
   title,
   description,
   actionLabel,
-  action
+  action,
+  variant = 'default'
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+    <div className={`flex flex-col items-center justify-center py-12 px-4 text-center ${variant === 'card' ? 'bg-white rounded-lg shadow p-6' : ''}`}>
       {icon && (
         <div className="text-muted-foreground mb-2">
           {icon}

@@ -1,5 +1,4 @@
 
-// If this file doesn't exist yet, create it
 export const generalKeys = [
   'cancel',
   'save',
@@ -27,6 +26,18 @@ export const generalKeys = [
   'required',
   'optionalField',
   'pleaseTryAgainLater',
+  // Add more general keys
+  'name',
+  'email',
+  'password',
+  'home',
+  'contact',
+  'contactUs',
+  'aboutUs',
+  'login',
+  'applyFilters',
+  'accessDenied',
+  'importPropertiesAdminOnly',
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];
