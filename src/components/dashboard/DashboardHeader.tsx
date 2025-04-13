@@ -6,9 +6,10 @@ import { useUserLevel } from "@/hooks/useUserLevel";
 interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
+  userData?: any; // Added userData prop
 }
 
-export function DashboardHeader({ title, subtitle }: DashboardHeaderProps) {
+export function DashboardHeader({ title, subtitle, userData }: DashboardHeaderProps) {
   const { userLevel } = useUserLevel();
   
   return (

@@ -1,122 +1,120 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { UserLevel } from "@/components/ui/user-badge";
-import { determineUserLevel } from "@/utils/userLevelUtils";
+import { supabase } from '@/integrations/supabase/client';
+import { UserLevel } from '@/types/user';
+import { calculateUserLevel } from '@/utils/levelCalculations';
 
 /**
- * Recupera il livello dell'utente dal profilo
+ * Verifies that the user level is correctly set based on their total investment
+ * This is typically called after each transaction or portfolio update
  */
-export async function getUserLevel(userId?: string): Promise<UserLevel | null> {
+export async function verifyUserLevel(userId?: string): Promise<boolean> {
   try {
+    // Get user ID if not provided
     if (!userId) {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
+      if (!user) return false;
       userId = user.id;
     }
-    
-    const { data, error } = await supabase
+
+    // Get current user info
+    const { data: userData, error: userError } = await supabase
       .from('profiles')
-      .select('level')
+      .select('id, level, total_investment')
       .eq('id', userId)
       .single();
       
-    if (error) {
-      console.error('Error fetching user level:', error);
-      return null;
+    if (userError || !userData) {
+      console.error('Error fetching user data:', userError);
+      return false;
     }
     
-    return data?.level as UserLevel || null;
+    // Get all user investments
+    const { data: investments, error: investmentsError } = await supabase
+      .from('user_investments')
+      .select('amount')
+      .eq('user_id', userId);
+      
+    if (investmentsError) {
+      console.error('Error fetching user investments:', investmentsError);
+      return false;
+    }
+    
+    // Calculate total investment
+    const calculatedTotal = investments.reduce((sum, investment) => {
+      return sum + (investment.amount || 0);
+    }, 0);
+    
+    // Calculate appropriate level
+    const calculatedLevel = calculateUserLevel(calculatedTotal);
+    
+    // If stored level doesn't match calculated level, update it
+    if (userData.level !== calculatedLevel || userData.total_investment !== calculatedTotal) {
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ 
+          level: calculatedLevel,
+          total_investment: calculatedTotal as number  // Type assertion since we know it's a number
+        })
+        .eq('id', userId);
+        
+      if (updateError) {
+        console.error('Error updating user level:', updateError);
+        return false;
+      }
+    }
+    
+    return true;
   } catch (error) {
-    console.error('Error in getUserLevel:', error);
-    return null;
+    console.error('Exception in verifyUserLevel:', error);
+    return false;
   }
 }
 
 /**
- * Recupera il totale degli investimenti dell'utente
+ * Updates a user's total investment and recalculates their level
+ * Called when a new investment is added or an existing one is modified
  */
-export async function getUserInvestment(userId?: string): Promise<number> {
+export async function updateUserInvestmentTotal(
+  userId: string, 
+  newAmount: number
+): Promise<boolean> {
   try {
-    if (!userId) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return 0;
-      userId = user.id;
-    }
-    
-    const { data, error } = await supabase
-      .from('user_investments')
+    // Get current user info
+    const { data: userData, error: userError } = await supabase
+      .from('profiles')
       .select('total_investment')
-      .eq('user_id', userId)
+      .eq('id', userId)
       .single();
       
-    if (error) {
-      console.error('Error fetching user investment:', error);
-      return 0;
+    if (userError) {
+      console.error('Error fetching user data:', userError);
+      return false;
     }
     
-    return data?.total_investment || 0;
-  } catch (error) {
-    console.error('Error in getUserInvestment:', error);
-    return 0;
-  }
-}
-
-/**
- * Recupera sia il livello che l'investimento totale dell'utente
- */
-export async function getUserLevelData(userId?: string) {
-  try {
-    if (!userId) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return { level: null, totalInvestment: 0 };
-      userId = user.id;
+    // Calculate new total
+    const currentTotal = userData.total_investment as number || 0;
+    const newTotal = currentTotal + newAmount;
+    
+    // Calculate appropriate level
+    const newLevel = calculateUserLevel(newTotal);
+    
+    // Update the profile
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ 
+        level: newLevel,
+        total_investment: newTotal
+      })
+      .eq('id', userId);
+      
+    if (updateError) {
+      console.error('Error updating user investment total:', updateError);
+      return false;
     }
     
-    const [levelResult, investmentResult] = await Promise.all([
-      supabase
-        .from('profiles')
-        .select('level')
-        .eq('id', userId)
-        .single(),
-      supabase
-        .from('user_investments')
-        .select('total_investment')
-        .eq('user_id', userId)
-        .single()
-    ]);
-    
-    const level = levelResult.data?.level as UserLevel || null;
-    const totalInvestment = investmentResult.data?.total_investment || 0;
-    
-    // Verificare che il livello sia coerente con l'investimento totale
-    const calculatedLevel = determineUserLevel(totalInvestment);
-    
-    return {
-      level,
-      calculatedLevel, 
-      totalInvestment,
-      isLevelCorrect: level === calculatedLevel
-    };
+    return true;
   } catch (error) {
-    console.error('Error in getUserLevelData:', error);
-    return { level: null, totalInvestment: 0, calculatedLevel: null, isLevelCorrect: false };
-  }
-}
-
-/**
- * Verifica che il trigger update_user_level funzioni correttamente
- */
-export async function verifyUserLevelTrigger(): Promise<boolean> {
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return false;
-    
-    const { level, totalInvestment, calculatedLevel, isLevelCorrect } = 
-      await getUserLevelData(user.id);
-    
-    return isLevelCorrect;
-  } catch (error) {
-    console.error('Error verifying user level trigger:', error);
+    console.error('Exception in updateUserInvestmentTotal:', error);
     return false;
   }
 }
