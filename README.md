@@ -66,7 +66,6 @@ Per ogni punto completato:
 - [ ] Inserimento dati ROI e crescita mensile dal 2024
 - [ ] Portafoglio con almeno 2 paesi diversi
 - [ ] ROI realistico e variegato
-- [ ] Funzione: `createDemoPlatinumUser()`
 - [ ] Accesso UI a funzione demo (admin-only)
 
 ---
