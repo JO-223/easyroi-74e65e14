@@ -38,8 +38,9 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     // Process ROI performance data - await the result since it's now an async function
     const roiPerformanceData = await processRoiPerformanceData(
       user.id, 
-      monthlyRoiData as MonthlyROIResult, 
-      roiData?.average_roi
+      monthlyRoiData, 
+      // Fix: Convert potentially unknown value to number or undefined
+      typeof roiData?.average_roi === 'number' ? roiData.average_roi : undefined
     );
 
     // Calculate market comparison
@@ -191,7 +192,7 @@ async function processRoiPerformanceData(
   if (growthData && Array.isArray(growthData)) {
     return growthData.map(item => {
       // Use the actual ROI percentage from roiData, or a simulated value
-      const roiValue = averageRoi ? Number(averageRoi) : 4.5; // Default to 4.5% if we don't have real data
+      const roiValue = typeof averageRoi === 'number' ? averageRoi : 4.5; // Default to 4.5% if we don't have real data
       
       // Add small random variation to make chart more realistic
       const variation = (Math.random() * 2 - 1) * 0.5; // variation between -0.5 and +0.5
