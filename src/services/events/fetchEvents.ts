@@ -56,3 +56,4 @@ const getFallbackImageForEventType = (eventType: string): string => {
   
   return fallbackImages[eventType] || 'https://images.unsplash.com/photo-1618044733300-9472054094ee?q=80&w=2071&auto=format&fit=crop';
 };
+
