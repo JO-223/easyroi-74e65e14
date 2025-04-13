@@ -1,6 +1,4 @@
 
-
-
 # ✅ EasyROI – Checklist di Implementazione (a cura di Lovable)
 
 Lovable, aggiorna questa checklist ogni volta che completi una delle voci.
@@ -62,11 +60,11 @@ Per ogni punto completato:
 
 ## 💎 Priorità 4 – Demo Account Platinum
 
-- [ ] Creazione utente demo con 3 proprietà in diverse location
-- [ ] Inserimento dati ROI e crescita mensile dal 2024
-- [ ] Portafoglio con almeno 2 paesi diversi
-- [ ] ROI realistico e variegato
-- [ ] Accesso UI a funzione demo (admin-only)
+✅ Creazione utente demo con 3 proprietà in diverse location - Implementato script SQL che crea 3 proprietà di lusso in Dubai, Milano e Londra
+✅ Inserimento dati ROI e crescita mensile dal 2024 - Lo script SQL crea dati di crescita per i primi 6 mesi del 2024 con valori realistici
+✅ Portafoglio con almeno 2 paesi diversi - Creato portafoglio con proprietà in 3 paesi (UAE, Italia, UK)
+✅ ROI realistico e variegato - Ogni proprietà ha un ROI diverso e realistico per il tipo di immobile
+✅ Accesso UI a funzione demo (admin-only) - Creato DemoAccountResetCard.tsx con interfaccia per resettare i dati demo dall'area admin
 
 ---
 
@@ -104,4 +102,3 @@ _(Solo revisione, nessun check-off richiesto)_
 ```md
 ✅ Form per inserimento nuovi investitori – creato `AdminAddInvestor.tsx`, integrato form con funzione `addNewInvestor()`
 ```
-

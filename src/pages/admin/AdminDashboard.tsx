@@ -8,6 +8,7 @@ import { AdminPropertyForm } from "@/components/admin/AdminPropertyForm";
 import { AdminForSalePropertyForm } from "@/components/admin/AdminForSalePropertyForm";
 import { AdminDevelopmentProjectForm } from "@/components/admin/AdminDevelopmentProjectForm";
 import { AdminEventForm } from "@/components/admin/AdminEventForm";
+import { DemoAccountResetCard } from "@/components/admin/DemoAccountResetCard";
 import { ShieldAlert } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -31,12 +32,13 @@ const AdminDashboard = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="mb-6 w-full grid grid-cols-5">
+            <TabsList className="mb-6 w-full grid grid-cols-6">
               <TabsTrigger value="investors">{t('investors')}</TabsTrigger>
               <TabsTrigger value="properties">{t('properties')}</TabsTrigger>
               <TabsTrigger value="forSale">{t('forSaleProperties')}</TabsTrigger>
               <TabsTrigger value="projects">{t('developmentProjects')}</TabsTrigger>
               <TabsTrigger value="events">{t('events')}</TabsTrigger>
+              <TabsTrigger value="demo">{t('demoAccount')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="investors" className="pt-4">
@@ -57,6 +59,10 @@ const AdminDashboard = () => {
             
             <TabsContent value="events" className="pt-4">
               <AdminEventForm />
+            </TabsContent>
+            
+            <TabsContent value="demo" className="pt-4">
+              <DemoAccountResetCard />
             </TabsContent>
           </Tabs>
         </div>
