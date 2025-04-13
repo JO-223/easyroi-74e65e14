@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuto",
@@ -205,6 +206,7 @@ const it = {
   recentActivity: "Attività Recenti",
   noRecentActivity: "Nessuna attività recente",
   viewAll: "Visualizza Tutto",
+  memberSince: "Membro dal",
   
   // Help and Support
   helpCenter: "Centro Assistenza",
@@ -238,6 +240,9 @@ const it = {
   noDataAvailable: 'Nessun dato disponibile',
   dataWillAppearSoon: 'I dati appariranno qui non appena saranno disponibili',
   noInvestments: 'Nessun investimento registrato',
+  noData: "Nessun Dato",
+  refreshOrContactSupport: "Aggiorna la pagina o contatta il supporto",
+  noInvestmentDataAvailable: "Nessun dato di investimento disponibile",
   
   // Auth
   loginSuccessTitle: "Accesso Riuscito",
@@ -397,8 +402,8 @@ const it = {
   noConsListed: "Nessun contro elencato",
   
   // Error states
-  noData: "Nessun Dato",
-  refreshOrContactSupport: "Aggiorna la pagina o contatta il supporto",
+  error: "Errore",
+  success: "Successo",
   
   // Event components
   noEventsFound: "Nessun evento trovato",
@@ -434,7 +439,6 @@ const it = {
   pleaseLoginToConnect: "Effettua l'accesso per connetterti con altri investitori",
   connectionSent: "Richiesta di Connessione Inviata",
   connectionSentMsg: "La tua richiesta di connessione è stata inviata",
-  error: "Errore",
   connectionRequestError: "Impossibile inviare la richiesta di connessione",
   pleaseLoginToDisconnect: "Effettua l'accesso per disconnetterti da questo investitore",
   connectionRemoved: "Connessione Rimossa", 
@@ -494,7 +498,8 @@ const it = {
   investorAddedSuccessfully: "Investitore aggiunto con successo",
   errorAddingInvestor: "Errore nell'aggiunta dell'investitore",
   validation_error: "Errore di Validazione",
-  success: "Successo",
+  cancel: "Annulla",
+  save: "Salva",
   
   // Admin Property Form
   addPropertyForUser: "Aggiungi Proprietà per Utente",
@@ -540,7 +545,6 @@ const it = {
   
   // Tooltip section
   tooltip: {
-    investor: "L'investitore proprietario di questa proprietà",
     propertyName: "Il nome o titolo della proprietà",
     address: "L'indirizzo completo della proprietà",
     city: "La città dove si trova la proprietà",
@@ -556,7 +560,8 @@ const it = {
     status: "Lo stato complessivo della proprietà",
     listingStatus: "Lo stato di inserzione per questa proprietà",
     roiPercentage: "La percentuale annuale di ritorno sull'investimento prevista",
-    serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)"
+    serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)",
+    investor: "L'investitore proprietario di questa proprietà"
   }
 };
 

@@ -4,24 +4,24 @@ import es from "@/locales/es";
 import de from "@/locales/de";
 import { TranslationValue, TranslationRecord } from "@/contexts/LanguageContext";
 import { 
-  generalKeys, 
+  generalKeys,
   propertyKeys, 
-  developmentKeys, 
   adminKeys, 
-  eventsKeys, 
-  networkKeys, 
-  settingsKeys, 
-  uiKeys, 
-  miscKeys, 
-  analyticsKeys, 
-  landingKeys, 
-  authKeys, 
-  aboutKeys, 
-  contactKeys, 
+  dashboardKeys, 
+  settingsKeys,
+  developmentKeys,
+  analyticsKeys,
+  eventsKeys,
+  networkKeys,
   profileKeys,
-  dashboardKeys,
+  landingKeys,
+  aboutKeys,
+  contactKeys,
+  authKeys,
+  uiKeys,
+  miscKeys,
   tooltipKeys
-} from '@/utils/translationUtils';
+} from '@/utils/translations/index';
 
 /**
  * Utility to check for missing translation keys between locales

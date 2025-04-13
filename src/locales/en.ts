@@ -83,6 +83,7 @@ const en = {
   tbd: "To be determined",
   message: "Message",
   addProperty: "Add Property",
+  nextLevel: "Next Level",
   
   // Analytics
   totalInvestment: "Total Investment",
@@ -442,6 +443,10 @@ const en = {
   zone: "Zone",
   enterZone: "Enter zone",
   selectPropertyType: "Select property type",
+  selectProperty: "Select property",
+  selectOccupationStatus: "Select occupation status",
+  selectStatus: "Select status",
+  enterCountry: "Enter country",
   
   // Development
   developmentProjects: "Development Projects",
@@ -561,24 +566,25 @@ const en = {
   pleaseTryRefreshingThePage: "Please try refreshing the page",
   
   // Tooltips
-  "tooltip.propertyName": "The name or title of the property",
-  "tooltip.address": "The street address of the property",
-  "tooltip.city": "The city where the property is located",
-  "tooltip.zone": "The district or neighborhood within the city",
-  "tooltip.country": "The country where the property is located",
-  "tooltip.price": "The purchase price of the property in the selected currency",
-  "tooltip.currency": "The currency used for this property's financial values",
-  "tooltip.propertyType": "The category of the property (apartment, villa, etc.)",
-  "tooltip.sizeSqm": "The total area of the property in square meters",
-  "tooltip.bedrooms": "The number of bedrooms in the property",
-  "tooltip.bathrooms": "The number of bathrooms in the property",
-  "tooltip.occupationStatus": "Whether the property is currently occupied, vacant, etc.",
-  "tooltip.status": "The current state of the property listing",
-  "tooltip.listingStatus": "Whether the property is listed for sale or not",
-  "tooltip.roiPercentage": "The expected return on investment as a percentage",
-  "tooltip.serviceCharges": "Annual fees for property maintenance and services",
-  "tooltip.investor": "The investor who owns this property",
-  "tooltip": "More information"
+  tooltip: {
+    investor: "L'investitore proprietario di questa proprietà",
+    propertyName: "The name or title of the property",
+    address: "The street address of the property",
+    city: "The city where the property is located",
+    zone: "The district or neighborhood within the city",
+    country: "The country where the property is located",
+    price: "The purchase price of the property in the selected currency",
+    currency: "The currency used for this property's financial values",
+    propertyType: "The category of the property (apartment, villa, etc.)",
+    sizeSqm: "The total area of the property in square meters",
+    bedrooms: "The number of bedrooms in the property",
+    bathrooms: "The number of bathrooms in the property",
+    occupationStatus: "Whether the property is currently occupied, vacant, etc.",
+    status: "The current state of the property listing",
+    listingStatus: "Whether the property is listed for sale or not",
+    roiPercentage: "The expected return on investment as a percentage",
+    serviceCharges: "Annual fees for property maintenance and services"
+  }
 };
 
 export default en;

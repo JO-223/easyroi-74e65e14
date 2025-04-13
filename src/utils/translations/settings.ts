@@ -30,7 +30,18 @@ export const settingsKeys = [
   "profileSemiPublic",
   "profileSemiPublicDesc",
   "profilePrivate",
-  "profilePrivateDesc"
+  "profilePrivateDesc",
+  "accountSettingsUpdated",
+  "accountSettingsSaved",
+  "errorOccurred",
+  "errorUpdatingSettings",
+  "displaySettingsUpdated",
+  "displaySettingsSaved",
+  "notificationSettingsUpdated",
+  "notificationSettingsSaved",
+  "privacySettingsUpdated",
+  "privacySettingsSaved",
+  "manageSettings"
 ] as const;
 
 export type SettingsKey = typeof settingsKeys[number];
