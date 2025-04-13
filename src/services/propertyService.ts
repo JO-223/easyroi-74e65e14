@@ -167,20 +167,20 @@ export const fetchPropertyById = async (id: string): Promise<Property> => {
   // Ensure location exists and has required properties
   const location = data.location && typeof data.location === 'object' 
     ? { 
-        id: String(data.location.id || ''),
-        address: String(data.location.address || ''),
-        zone: String(data.location.zone || ''),
-        city: String(data.location.city || ''),
-        country: String(data.location.country || '')
+        id: String((data.location as any)?.id || ''),
+        address: String((data.location as any)?.address || ''),
+        zone: String((data.location as any)?.zone || ''),
+        city: String((data.location as any)?.city || ''),
+        country: String((data.location as any)?.country || '')
       } 
     : defaultLocation;
   
   // Ensure type exists and has required properties
   const type = data.type && typeof data.type === 'object'
     ? {
-        id: String(data.type.id || ''),
-        name: String(data.type.name || ''),
-        description: data.type.description !== undefined ? String(data.type.description) : null
+        id: String((data.type as any)?.id || ''),
+        name: String((data.type as any)?.name || ''),
+        description: (data.type as any)?.description !== undefined ? String((data.type as any)?.description) : null
       }
     : defaultType;
   
