@@ -1,29 +1,10 @@
 
-// Chiavi di traduzione miscellanee e di errore
+// Chiavi di traduzione che non rientrano in altre categorie
 export const miscKeys = [
-  "error",
-  "errorLoadingData",
-  "errorFetchingFormData",
-  "errorFetchingPropertyTypes",
-  "errorFetchingRelatedData",
-  "errorAddingEvent",
-  "eventAddedSuccessfully",
-  "optionalField",
-  "minimumLevelRequired",
-  "starterInvestor",
-  "bronzeInvestor",
-  "silverInvestor",
-  "goldInvestor",
-  "rubyInvestor",
-  "emeraldInvestor",
-  "platinumInvestor",
-  "diamondInvestor",
-  "validation_error",
-  "success",
-  "processing",
-  "noData",
-  "refreshOrContactSupport",
-  "edit"
+  "home",
+  "aboutUs",
+  "login",
+  "contact"
 ] as const;
 
 export type MiscKey = typeof miscKeys[number];

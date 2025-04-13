@@ -14,7 +14,8 @@ export const aboutKeys = [
   "exclusivityValue",
   "exclusivityText",
   "joinOurCommunity",
-  "joinOurCommunityText"
+  "joinOurCommunityText",
+  "loginCta"
 ] as const;
 
 export type AboutKey = typeof aboutKeys[number];

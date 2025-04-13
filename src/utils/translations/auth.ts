@@ -10,7 +10,7 @@ export const authKeys = [
   "signingIn",
   "signIn",
   "needAssistance",
-  "loginCta"
+  "login"
 ] as const;
 
 export type AuthKey = typeof authKeys[number];

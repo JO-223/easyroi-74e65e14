@@ -1,7 +1,9 @@
 
-// Chiavi di traduzione relative alle pagine di landing
+// Chiavi di traduzione relative alla landing page
 export const landingKeys = [
-  "scheduleMeeting",
+  "premiumRealEstate",
+  "exceptionalReturns",
+  "exclusiveAccess",
   "scroll",
   "curated",
   "curatedDesc",
@@ -13,9 +15,9 @@ export const landingKeys = [
   "securePlatformDesc",
   "featuredLocations",
   "readyToMaximize",
-  "premiumRealEstate",
-  "exceptionalReturns",
-  "exclusiveAccess"
+  "scheduleMeeting",
+  "footerDescription",
+  "quickLinks"
 ] as const;
 
 export type LandingKey = typeof landingKeys[number];

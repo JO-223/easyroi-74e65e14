@@ -1,4 +1,3 @@
-
 import en from "@/locales/en";
 import it from "@/locales/it";
 import es from "@/locales/es";
@@ -8,20 +7,21 @@ import {
   generalKeys, 
   propertyKeys, 
   developmentKeys, 
-  investorKeys, 
+  adminKeys, 
   eventsKeys, 
   networkKeys, 
   settingsKeys, 
-  adminKeys, 
   uiKeys, 
-  miscKeys,
-  analyticsKeys,
-  landingKeys,
-  authKeys,
-  aboutKeys,
-  contactKeys,
-  profileKeys
-} from "@/utils/translationUtils";
+  miscKeys, 
+  analyticsKeys, 
+  landingKeys, 
+  authKeys, 
+  aboutKeys, 
+  contactKeys, 
+  profileKeys,
+  dashboardKeys,
+  tooltipKeys
+} from '@/utils/translationUtils';
 
 /**
  * Utility to check for missing translation keys between locales
@@ -109,11 +109,10 @@ export const checkDuplicateTranslationKeys = () => {
     ...generalKeys,
     ...propertyKeys,
     ...developmentKeys,
-    ...investorKeys,
+    ...adminKeys,
     ...eventsKeys,
     ...networkKeys,
     ...settingsKeys,
-    ...adminKeys,
     ...uiKeys,
     ...miscKeys,
     ...analyticsKeys,
@@ -121,7 +120,9 @@ export const checkDuplicateTranslationKeys = () => {
     ...authKeys,
     ...aboutKeys,
     ...contactKeys,
-    ...profileKeys
+    ...profileKeys,
+    ...dashboardKeys,
+    ...tooltipKeys
   ];
   
   // Verifica duplicati nel set completo di chiavi
@@ -193,11 +194,10 @@ export const checkTranslationKeyExistence = () => {
     ...generalKeys,
     ...propertyKeys,
     ...developmentKeys,
-    ...investorKeys,
+    ...adminKeys,
     ...eventsKeys,
     ...networkKeys,
     ...settingsKeys,
-    ...adminKeys,
     ...uiKeys,
     ...miscKeys,
     ...analyticsKeys,
@@ -205,7 +205,9 @@ export const checkTranslationKeyExistence = () => {
     ...authKeys,
     ...aboutKeys,
     ...contactKeys,
-    ...profileKeys
+    ...profileKeys,
+    ...dashboardKeys,
+    ...tooltipKeys
   ];
   
   const missingInEnglish = allDefinedKeys.filter(key => !(key in en));
@@ -223,4 +225,29 @@ export const checkTranslationKeyExistence = () => {
     missingInSpanish,
     missingInGerman
   };
+};
+
+// Example function to count total translation keys
+export const getTotalTranslationKeyCount = () => {
+  const allKeys = [
+    ...generalKeys,
+    ...propertyKeys,
+    ...developmentKeys,
+    ...adminKeys,
+    ...eventsKeys,
+    ...networkKeys,
+    ...settingsKeys,
+    ...uiKeys,
+    ...miscKeys,
+    ...analyticsKeys,
+    ...landingKeys,
+    ...authKeys,
+    ...aboutKeys,
+    ...contactKeys,
+    ...profileKeys,
+    ...dashboardKeys,
+    ...tooltipKeys
+  ];
+  
+  return allKeys.length;
 };

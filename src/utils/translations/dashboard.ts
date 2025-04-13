@@ -22,7 +22,13 @@ export const dashboardKeys = [
   "progress",
   "expectedCompletion",
   "totalUnits",
-  "availableUnits"
+  "availableUnits",
+  "dashboardDataUpdated",
+  "errorUpdatingDashboard",
+  "noData",
+  "refreshOrContactSupport",
+  "nextLevel",
+  "eventsInLastYear"
 ] as const;
 
 export type DashboardKey = typeof dashboardKeys[number];

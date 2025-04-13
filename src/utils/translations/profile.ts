@@ -1,17 +1,40 @@
 
-// Chiavi di traduzione relative al profilo
+// Chiavi di traduzione relative al profilo utente
 export const profileKeys = [
   "myProfile",
   "viewEditProfile",
-  "profileDetails",
-  "accountInfo",
-  "investorLevel",
-  "investorSince",
-  "portfolioOverview",
-  "badges",
-  "statistics",
-  "notifications",
-  "settings"
+  "joinedOn",
+  "bronze",
+  "silver",
+  "gold",
+  "platinum",
+  "diamond",
+  "basicInfo",
+  "bio",
+  "interests",
+  "addInterest",
+  "selectInterest",
+  "firstLastName",
+  "contactInfo",
+  "phone",
+  "saveChanges",
+  "editProfile",
+  "cancelEditing",
+  "securityPrivacy",
+  "changePassword",
+  "twoFactorAuth",
+  "enable",
+  "disable",
+  "dataPrivacy",
+  "downloadData",
+  "deleteAccount",
+  "investmentSummary",
+  "totalPortfolioValue",
+  "averageROI",
+  "recentActivity",
+  "noRecentActivity",
+  "viewAll",
+  "memberSince"
 ] as const;
 
 export type ProfileKey = typeof profileKeys[number];

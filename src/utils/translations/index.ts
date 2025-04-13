@@ -2,80 +2,84 @@
 import { generalKeys, GeneralKey } from './general';
 import { propertyKeys, PropertyKey } from './property';
 import { developmentKeys, DevelopmentKey } from './development';
-import { investorKeys, InvestorKey } from './investor';
+import { adminKeys, AdminKey } from './admin';
+import { dashboardKeys, DashboardKey } from './dashboard';
+import { settingsKeys, SettingsKey } from './settings';
+import { analyticsKeys, AnalyticsKey } from './analytics';
 import { eventsKeys, EventsKey } from './events';
 import { networkKeys, NetworkKey } from './network';
-import { settingsKeys, SettingsKey } from './settings';
-import { adminKeys, AdminKey } from './admin';
-import { uiKeys, UiKey } from './ui';
-import { miscKeys, MiscKey } from './misc';
-import { analyticsKeys, AnalyticsKey } from './analytics';
+import { profileKeys, ProfileKey } from './profile';
 import { landingKeys, LandingKey } from './landing';
-import { authKeys, AuthKey } from './auth';
 import { aboutKeys, AboutKey } from './about';
 import { contactKeys, ContactKey } from './contact';
-import { profileKeys, ProfileKey } from './profile';
+import { authKeys, AuthKey } from './auth';
+import { uiKeys, UiKey } from './ui';
+import { miscKeys, MiscKey } from './misc';
+import { tooltipKeys, TooltipKey } from './tooltip';
 
-// Unione di tutte le chiavi di traduzione
+// Union of all translation keys
 export type TranslationKey =
   | GeneralKey
   | PropertyKey
   | DevelopmentKey
-  | InvestorKey
+  | AdminKey
+  | DashboardKey
+  | SettingsKey
+  | AnalyticsKey
   | EventsKey
   | NetworkKey
-  | SettingsKey
-  | AdminKey
-  | UiKey
-  | MiscKey
-  | AnalyticsKey
+  | ProfileKey
   | LandingKey
-  | AuthKey
   | AboutKey
   | ContactKey
-  | ProfileKey;
+  | AuthKey
+  | UiKey
+  | MiscKey
+  | TooltipKey;
 
-// Array di tutte le chiavi, utile per la validazione
+// Array of all translation keys, useful for validation
 const allTranslationKeys = [
   ...generalKeys,
   ...propertyKeys,
   ...developmentKeys,
-  ...investorKeys,
+  ...adminKeys,
+  ...dashboardKeys,
+  ...settingsKeys,
+  ...analyticsKeys,
   ...eventsKeys,
   ...networkKeys,
-  ...settingsKeys,
-  ...adminKeys,
-  ...uiKeys,
-  ...miscKeys,
-  ...analyticsKeys,
+  ...profileKeys,
   ...landingKeys,
-  ...authKeys,
   ...aboutKeys,
   ...contactKeys,
-  ...profileKeys
+  ...authKeys,
+  ...uiKeys,
+  ...miscKeys,
+  ...tooltipKeys
 ] as const;
 
-// Funzione per verificare se una stringa è una chiave di traduzione valida
+// Function to check if a string is a valid translation key
 export const isValidTranslationKey = (key: string): key is TranslationKey => {
   return (allTranslationKeys as readonly string[]).includes(key);
 };
 
-// Esportazione di tutte le categorie di chiavi per facilitare l'organizzazione
+// Export all key categories for organization
 export {
   generalKeys,
   propertyKeys,
   developmentKeys,
-  investorKeys,
+  adminKeys,
+  dashboardKeys,
+  settingsKeys,
+  analyticsKeys,
   eventsKeys,
   networkKeys,
-  settingsKeys,
-  adminKeys,
-  uiKeys,
-  miscKeys,
-  analyticsKeys,
+  profileKeys,
   landingKeys,
-  authKeys,
   aboutKeys,
   contactKeys,
-  profileKeys
+  authKeys,
+  uiKeys,
+  miscKeys,
+  tooltipKeys
 };
