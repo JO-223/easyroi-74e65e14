@@ -35,7 +35,6 @@ export const adminKeys = [
   "resetting",
   "processing",
   "note",
-  // Aggiungiamo le chiavi mancanti
   "investors",
   "forSaleProperties",
   "propertyForSaleAddedSuccessfully",
@@ -44,7 +43,24 @@ export const adminKeys = [
   "propertyAddedSuccessfully",
   "errorAddingProperty",
   "operationSuccessful",
-  "operationFailed"
+  "operationFailed",
+  "addPropertyForUser",
+  "firstName",
+  "lastName",
+  "firstNameTooltip",
+  "lastNameTooltip",
+  "emailTooltip",
+  "passwordTooltip",
+  "enterFirstName",
+  "enterLastName",
+  "enterPassword",
+  "minInvestment",
+  "expectedRoi",
+  "investorLevel",
+  "optionalField",
+  "minimumLevelRequired",
+  "selectInvestorLevel",
+  "selectProperty"
 ] as const;
 
 export type AdminKey = typeof adminKeys[number];

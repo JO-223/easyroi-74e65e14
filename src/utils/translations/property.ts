@@ -45,9 +45,27 @@ export const propertyKeys = [
   "mainImage",
   "additionalImages",
   "currency",
-  // Aggiungiamo le chiavi mancanti
   "accessDenied",
-  "importPropertiesAdminOnly"
+  "importPropertiesAdminOnly",
+  "expectedROI",
+  "minInvestment",
+  "enterPropertyName",
+  "selectPropertyType",
+  "enterAddress",
+  "enterZone",
+  "enterCity",
+  "enterCountry",
+  "selectCountry",
+  "sizeInSquareMeters",
+  "selectOccupationStatus",
+  "selectStatus",
+  "listingStatus",
+  "selectListingStatus",
+  "addProperty",
+  "totalInvestment",
+  "roi",
+  "notAvailable",
+  "enterLocation"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];
