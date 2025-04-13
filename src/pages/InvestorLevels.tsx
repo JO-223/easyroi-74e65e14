@@ -162,7 +162,7 @@ const InvestorLevels = () => {
     }
   };
   return <DashboardLayout title={tInvestor('investorLevels')} subtitle={tInvestor('investorLevelsSubtitle') || "Discover the benefits of each investment tier"}>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto py-0 px-0">
         <Card className="border-0 shadow-xl bg-gradient-to-r from-gray-50 to-white">
           <CardHeader className="text-center pb-0">
             <CardTitle className="text-3xl font-bold tracking-tight mb-2">{tInvestor('investorLevelsTitle') || "Investor Levels Program"}</CardTitle>
