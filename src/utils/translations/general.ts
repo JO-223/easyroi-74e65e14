@@ -41,7 +41,8 @@ export const generalKeys = [
   "subject",
   "subjectPlaceholder",
   "messagePlaceholder",
-  "home"
+  "home",
+  "aboutUs"
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];

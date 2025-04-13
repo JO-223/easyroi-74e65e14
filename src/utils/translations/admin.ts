@@ -16,7 +16,8 @@ export const adminKeys = [
   "propertyAddedSuccessfully",
   "errorAddingProperty",
   "dashboardDataUpdated",
-  "errorUpdatingDashboard"
+  "errorUpdatingDashboard",
+  "developmentProjects"
 ] as const;
 
 export type AdminKey = typeof adminKeys[number];

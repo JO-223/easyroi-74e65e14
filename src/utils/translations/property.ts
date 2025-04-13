@@ -51,7 +51,11 @@ export const propertyKeys = [
   "selectCountry",
   "selectCurrency",
   "selectProperty",
-  "noPropertiesFound"
+  "noPropertiesFound",
+  "enterAddress",
+  "enterCity",
+  "enterCountry",
+  "selectPropertyType"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];
