@@ -32,6 +32,48 @@ export interface AnalyticsData {
 const MARKET_AVERAGE_ROI = 3.2; // Fixed benchmark value
 
 /**
+ * Fetches analytics data for property type allocation
+ */
+export async function getPropertyTypeAllocation(userId: string) {
+  const { data, error } = await supabase
+    .from('properties')
+    .select(`
+      price,
+      type:property_types!type_id(name)
+    `)
+    .eq('user_id', userId);
+    
+  if (error) {
+    console.error("Error fetching property type allocation:", error);
+    return [];
+  }
+  
+  // Calculate totals by property type
+  const typeMap = new Map();
+  let totalInvestment = 0;
+  
+  data.forEach(property => {
+    const typeName = property.type?.name || 'Unknown';
+    const price = Number(property.price || 0);
+    totalInvestment += price;
+    
+    if (typeMap.has(typeName)) {
+      typeMap.set(typeName, typeMap.get(typeName) + price);
+    } else {
+      typeMap.set(typeName, price);
+    }
+  });
+  
+  // Convert to percentage
+  const typeAllocation = Array.from(typeMap.entries()).map(([name, value]) => ({
+    name,
+    value: totalInvestment > 0 ? Number(((value as number) / totalInvestment * 100).toFixed(2)) : 0
+  }));
+  
+  return typeAllocation;
+}
+
+/**
  * Fetches all analytics data for the current user
  */
 export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
@@ -110,44 +152,19 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
     const { data: propertyTypeData, error: propertyTypeError } = await supabase
       .rpc('get_allocation_by_property_type', { user_id: user.id });
       
+    let typeAllocationData = [];
     if (propertyTypeError) {
       console.error("Error fetching property type allocation:", propertyTypeError);
       console.log("Falling back to manual calculation for property type allocation");
       
-      // Fallback: manually calculate property type allocation
-      const { data: userProperties, error: propertiesError } = await supabase
-        .from('properties')
-        .select(`
-          price,
-          type:type_id(name)
-        `)
-        .eq('user_id', user.id);
-        
-      if (propertiesError) console.error("Error fetching user properties:", propertiesError);
-      
-      // Calculate totals by property type
-      const typeMap = new Map();
-      let totalInvestment = 0;
-      
-      userProperties?.forEach(property => {
-        const typeName = property.type?.name || 'Unknown';
-        const price = Number(property.price || 0);
-        totalInvestment += price;
-        
-        if (typeMap.has(typeName)) {
-          typeMap.set(typeName, typeMap.get(typeName) + price);
-        } else {
-          typeMap.set(typeName, price);
-        }
-      });
-      
-      // Convert to percentage
-      const typeAllocation = Array.from(typeMap.entries()).map(([name, value]) => ({
-        name,
-        value: totalInvestment > 0 ? Number((value / totalInvestment * 100).toFixed(2)) : 0
+      // Get property type allocation using the helper function
+      typeAllocationData = await getPropertyTypeAllocation(user.id);
+    } else {
+      // Format the data from the RPC call
+      typeAllocationData = propertyTypeData.map(item => ({
+        name: String(item.name || ''),
+        value: Number(parseFloat(String(item.value || 0)).toFixed(2))
       }));
-      
-      propertyTypeData = typeAllocation;
     }
 
     // 5. Geographic Distribution (keep as is)
@@ -166,12 +183,6 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
       .maybeSingle();
       
     if (eventsError) console.error("Error fetching events data:", eventsError);
-
-    // Format Asset Allocation with proper type casting - handle nulls
-    const assetAllocation = propertyTypeData?.map(item => ({
-      name: String(item.name || ''),
-      value: Number(parseFloat(String(item.value || 0)).toFixed(2))
-    })) || [];
 
     // Format Geographic Distribution with proper type casting - handle nulls
     const geographicDistribution = geoDistribution?.map(item => ({
@@ -200,7 +211,7 @@ export async function fetchAnalyticsData(): Promise<AnalyticsData | null> {
         status: marketDifference >= 0 ? 'above' : 'below'
       },
       roiPerformance: roiPerformanceData,
-      assetAllocation,
+      assetAllocation: typeAllocationData,
       geographicDistribution,
       eventsAttended: Number(eventsData?.count || 0)
     };
