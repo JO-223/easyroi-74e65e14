@@ -38,13 +38,21 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex">
                 <MapPin className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
-                <span>Via Roma 123, Milan, Italy</span>
+                <span>Viale Certosa 218, 20156 Milano (MI)</span>
               </li>
               <li className="flex">
                 <Phone className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
-                <span>+39 02 1234 5678</span>
+                <span>+39 3792381805</span>
               </li>
               <li className="flex">
+                <PartitaIva className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
+                <span>P. IVA: 13888170969</span>
+              </li>
+              <li className="flex">
+                <Mail className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
+                <span>eroi.srl@pec.it</span>
+              </li>
+               <li className="flex">
                 <Mail className="h-5 w-5 mr-2 text-easyroi-gold flex-shrink-0" />
                 <span>info@easyroi.com</span>
               </li>
