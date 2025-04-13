@@ -5,6 +5,8 @@ import { MetricsSection } from "./MetricsSection";
 import { ROIPerformanceChart } from "./ROIPerformanceChart";
 import { PortfolioBreakdown } from "./PortfolioBreakdown";
 import { EventsAttendedCard } from "./EventsAttendedCard";
+import { EmptyState } from "@/components/ui/empty-state";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 interface AnalyticsContentProps {
   analyticsData: AnalyticsData | null;
@@ -13,27 +15,41 @@ interface AnalyticsContentProps {
 export const AnalyticsContent = ({ analyticsData }: AnalyticsContentProps) => {
   const { t } = useLanguage();
   
-  // Even with null/empty data, we still render the UI structure
-  return (
-    <div className="grid gap-6">
-      {/* Key Metrics */}
-      <MetricsSection analyticsData={analyticsData || {
-        portfolioROI: { value: 0, change: null },
-        annualGrowth: { value: 0, change: null },
-        marketComparison: { value: 0, status: 'below' },
-      } as AnalyticsData} />
-
-      {/* Performance Chart */}
-      <ROIPerformanceChart data={analyticsData?.roiPerformance || []} />
-
-      {/* Portfolio Breakdown */}
-      <PortfolioBreakdown 
-        assetAllocation={analyticsData?.assetAllocation || []}
-        geographicDistribution={analyticsData?.geographicDistribution || []}
+  // If there's no data at all, show an empty state
+  if (!analyticsData) {
+    return (
+      <EmptyState 
+        variant="analytics"
+        title={t('noInvestmentDataAvailable')} 
+        description={t('dataWillAppearSoon')}
       />
+    );
+  }
+  
+  return (
+    <ErrorBoundary>
+      <div className="grid gap-6">
+        {/* Key Metrics */}
+        <MetricsSection analyticsData={analyticsData} />
 
-      {/* Events Attended */}
-      <EventsAttendedCard count={analyticsData?.eventsAttended || 0} />
-    </div>
+        {/* Performance Chart */}
+        <ErrorBoundary>
+          <ROIPerformanceChart data={analyticsData?.roiPerformance || []} />
+        </ErrorBoundary>
+
+        {/* Portfolio Breakdown */}
+        <ErrorBoundary>
+          <PortfolioBreakdown 
+            assetAllocation={analyticsData?.assetAllocation || []}
+            geographicDistribution={analyticsData?.geographicDistribution || []}
+          />
+        </ErrorBoundary>
+
+        {/* Events Attended */}
+        <ErrorBoundary>
+          <EventsAttendedCard count={analyticsData?.eventsAttended || 0} />
+        </ErrorBoundary>
+      </div>
+    </ErrorBoundary>
   );
 };
