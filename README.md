@@ -82,9 +82,9 @@ Per ogni punto completato:
 
 ---
 
-## 🧠 Tabelle Supabase mappate
+## 🧠 Priorità 6 - Tabelle Supabase mappate
 
-_(Solo revisione, nessun check-off richiesto)_
+_(Solo revisione)_
 
 - Utenti: `profiles`, `security_settings`, `display_settings`, `notification_settings`
 - Proprietà: `properties`, `property_locations`, `property_types`, etc.
