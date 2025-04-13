@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { AnalyticsData } from '@/types/analytics';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PropertyPerformance } from "./PropertyPerformance";
 import { MarketComparison } from "./MarketComparison";
@@ -6,7 +7,11 @@ import { PortfolioAllocation } from "./PortfolioAllocation";
 import { EmptyState } from "@/components/ui/empty-state";
 import { AreaChart, PieChart, BarChart } from "lucide-react";
 
-export function AnalyticsContent() {
+interface AnalyticsContentProps {
+  analyticsData: AnalyticsData;
+}
+
+export const AnalyticsContent: React.FC<AnalyticsContentProps> = ({ analyticsData }) => {
   const hasData = true; // In a real app, this would be based on data availability
   
   if (!hasData) {
@@ -53,4 +58,4 @@ export function AnalyticsContent() {
       </TabsContent>
     </Tabs>
   );
-}
+};

@@ -31,4 +31,17 @@ export interface PortfolioSummaryData {
   total_properties: number;
   total_investment: number;
   average_roi: number;
+  portfolio_value: number;
+  monthly_income: number;
+  yearly_income: number;
+  total_cities: number;
+  total_countries: number;
+  growth_percentage: number;
+  yield_percentage: number;
+}
+
+export interface PerformanceMetrics {
+  average_roi: number;
+  capital_growth: number;
+  rental_yield: number;
 }

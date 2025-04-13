@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { PortfolioSummaryData, PerformanceMetrics, PortfolioAllocation, InvestmentGrowth } from "@/types/portfolio";
+import { PortfolioSummaryData, PortfolioAllocation, PerformanceMetrics, InvestmentGrowth } from "@/types/portfolio";
 
 export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSummaryData> {
   try {
@@ -49,7 +49,11 @@ export async function fetchPortfolioAllocation(userId: string): Promise<Portfoli
       
     if (error) throw error;
     
-    return (data || []).map(item => ({
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    
+    return data.map(item => ({
       location: String(item.location || ''),
       percentage: Number(item.percentage || 0)
     }));
@@ -66,7 +70,11 @@ export async function fetchInvestmentGrowth(userId: string): Promise<InvestmentG
       
     if (error) throw error;
     
-    return (data || []).map(item => ({
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
+    
+    return data.map(item => ({
       month: String(item.month || ''),
       month_index: Number(item.month_index || 0),
       year: Number(item.year || new Date().getFullYear()),
@@ -116,11 +124,11 @@ export async function fetchDashboardData(userId: string) {
     ]);
     
     return {
-      total_properties: summary && typeof summary.total_properties === 'number' ? summary.total_properties : 0,
-      total_investment: summary && typeof summary.total_investment === 'number' ? summary.total_investment : 0,
-      average_roi: summary && typeof summary.average_roi === 'number' ? summary.average_roi : 0,
-      total_value: summary && typeof summary.portfolio_value === 'number' ? summary.portfolio_value : 0,
-      portfolio_growth: summary && typeof summary.growth_percentage === 'number' ? summary.growth_percentage : 0,
+      total_properties: summary.total_properties,
+      total_investment: summary.total_investment,
+      average_roi: summary.average_roi,
+      total_value: summary.portfolio_value,
+      portfolio_growth: summary.growth_percentage,
       allocation,
       growth
     };

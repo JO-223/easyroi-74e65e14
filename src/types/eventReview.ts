@@ -11,6 +11,8 @@ export interface EventReview {
   helpful_votes: number;
   created_at: string;
   updated_at?: string;
+  user_name?: string;
+  user_avatar?: string;
 }
 
 export interface EventReviewFormData {

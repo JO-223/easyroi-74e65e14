@@ -1,4 +1,6 @@
 
+// Fix imports and component to use the correct EventReview type
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchReviews } from "@/services/eventReviewService";
@@ -8,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { Star, Flag, ThumbsUp, AlertOctagon } from "lucide-react";
-import { EventReview } from "@/types/eventReview";
+import { EventReview } from "@/types/eventReview"; // Import from the correct file
 import EventReviewDialog from "./EventReviewDialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useTranslation } from "@/hooks/useTranslation";

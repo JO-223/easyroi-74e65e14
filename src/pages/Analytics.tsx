@@ -1,60 +1,95 @@
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAnalyticsData } from '@/services/analyticsService';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { AnalyticsData } from '@/types/analytics';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AlertTriangle } from 'lucide-react';
 
-import { useQuery } from "@tanstack/react-query";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { fetchAnalyticsData } from "@/services/analytics/analyticsService";
-import { AnalyticsContent } from "@/components/analytics/AnalyticsContent";
-import { Skeleton } from "@/components/ui/skeleton";
+interface AnalyticsContentProps {
+  analyticsData: AnalyticsData;
+}
+
+export const AnalyticsContent: React.FC<AnalyticsContentProps> = ({ analyticsData }) => {
+  return (
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <Card>
+        <CardHeader>
+          <CardTitle>Total Users</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{analyticsData.totalUsers}</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Total Properties</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{analyticsData.totalProperties}</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Average Investment per User</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">${analyticsData.averageInvestmentPerUser.toFixed(2)}</div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+const AnalyticsLoading = () => {
+  return (
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <Card key={i}>
+          <CardHeader>
+            <Skeleton className="h-5 w-40" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-8 w-32" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+};
+
+const AnalyticsError = () => {
+  return (
+    <div className="flex items-center justify-center h-48">
+      <AlertTriangle className="h-10 w-10 text-red-500 mr-2" />
+      <p className="text-red-500">Failed to load analytics data.</p>
+    </div>
+  );
+};
 
 const Analytics = () => {
   const { t } = useLanguage();
-  
-  // Fetch analytics data with React Query
-  const { data: analyticsData, isLoading, error } = useQuery({
+
+  const { data, isLoading, error } = useQuery({
     queryKey: ['analyticsData'],
     queryFn: fetchAnalyticsData,
+    retry: false,
   });
 
-  // Show loading state with skeleton loaders
-  if (isLoading) {
-    return (
-      <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
-        <div className="grid gap-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-card rounded-lg shadow p-6">
-                <Skeleton className="h-4 w-24 mb-4" />
-                <Skeleton className="h-8 w-32 mb-4" />
-                <Skeleton className="h-3 w-40" />
-              </div>
-            ))}
-          </div>
-          <div className="bg-card rounded-lg shadow p-6 h-96">
-            <Skeleton className="h-5 w-40 mb-6" />
-            <Skeleton className="h-full w-full" />
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
-  // Show a more user-friendly error state
-  if (error) {
-    return (
-      <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
-        <div className="flex flex-col items-center justify-center h-96 text-center">
-          <h3 className="text-xl font-semibold text-easyroi-danger mb-2">{t('unableToLoadData')}</h3>
-          <p className="text-muted-foreground">{t('pleaseTryRefreshingThePage')}</p>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
-  // Even with null data, render the content with appropriate empty states
   return (
-    <DashboardLayout title={t('analytics')} subtitle={t('comprehensiveAnalysis')}>
-      <AnalyticsContent analyticsData={analyticsData} />
-    </DashboardLayout>
+    <div>
+      <h1 className="text-2xl font-semibold mb-4">{t('analytics')}</h1>
+      {isLoading ? (
+        <AnalyticsLoading />
+      ) : error ? (
+        <AnalyticsError />
+      ) : (
+        <AnalyticsContent analyticsData={data} />
+      )}
+    </div>
   );
 };
 
