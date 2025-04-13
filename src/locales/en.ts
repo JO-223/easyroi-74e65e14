@@ -141,6 +141,71 @@ const en = {
   updateNotifications: "Update Notifications",
   manageSettings: "Manage your account settings",
   
+  // Settings descriptions
+  emailNotificationsDesc: "Receive important updates and avails via email",
+  pushNotificationsDesc: "Receive real-time notifications in your browser",
+  publicProfileDesc: "Control whether your profile is visible to other investors",
+  dataSharingDesc: "Manage how your investment data is shared with our partners",
+  profilePublic: "Public Profile",
+  profilePublicDesc: "Your profile is visible to all investors",
+  profileSemiPublic: "Semi-Public Profile",
+  profileSemiPublicDesc: "Your profile is visible only to connected investors",
+  profilePrivate: "Private Profile",
+  profilePrivateDesc: "Your profile is not visible to anyone",
+  
+  // Account settings
+  accountSettingsUpdated: "Account Settings Updated",
+  accountSettingsSaved: "Your account settings have been saved",
+  errorOccurred: "An Error Occurred",
+  errorUpdatingSettings: "Error updating your account settings",
+  
+  // Display settings
+  displaySettingsUpdated: "Display Settings Updated", 
+  displaySettingsSaved: "Your display preferences have been saved",
+  
+  // Notification settings
+  notificationSettingsUpdated: "Notification Settings Updated",
+  notificationSettingsSaved: "Your notification preferences have been saved",
+  
+  // Privacy settings
+  privacySettingsUpdated: "Privacy Settings Updated",
+  privacySettingsSaved: "Your privacy preferences have been saved",
+  
+  // Profile Page
+  myProfile: "My Profile",
+  viewEditProfile: "View and edit your profile information",
+  joinedOn: "Joined on",
+  bronze: "Bronze",
+  silver: "Silver",
+  gold: "Gold",
+  platinum: "Platinum",
+  diamond: "Diamond",
+  basicInfo: "Basic Information",
+  bio: "Bio",
+  interests: "Interests",
+  addInterest: "Add Interest",
+  selectInterest: "Select Interest",
+  firstLastName: "First & Last Name",
+  contactInfo: "Contact Information",
+  phone: "Phone",
+  saveChanges: "Save Changes",
+  editProfile: "Edit Profile",
+  cancelEditing: "Cancel",
+  securityPrivacy: "Security & Privacy",
+  changePassword: "Change Password",
+  twoFactorAuth: "Two-Factor Authentication",
+  enable: "Enable",
+  disable: "Disable",
+  dataPrivacy: "Data Privacy",
+  downloadData: "Download My Data",
+  deleteAccount: "Delete Account",
+  investmentSummary: "Investment Summary",
+  totalPortfolioValue: "Total Portfolio Value",
+  averageROI: "Average ROI",
+  recentActivity: "Recent Activity",
+  noRecentActivity: "No recent activity",
+  viewAll: "View All",
+  
   // Help and Support
   helpCenter: "Help Center",
   aboutUs: "About Us",
@@ -488,47 +553,22 @@ const en = {
   propertyAddedSuccessfully: "Property added successfully",
   errorAddingProperty: "Error adding property",
   
-  // Property form tooltips
-  tooltip: {
-    investor: "The investor who owns this property",
-    propertyName: "The name or title of the property",
-    address: "The full address of the property",
-    city: "The city where the property is located",
-    country: "The country where the property is located",
-    zone: "The neighborhood or area within the city",
-    propertyType: "The type of property",
-    price: "The purchase price of the property",
-    currency: "The currency of the property price",
-    sizeSqm: "The size of the property in square meters",
-    bedrooms: "The number of bedrooms",
-    bathrooms: "The number of bathrooms",
-    occupationStatus: "The current occupation status of the property",
-    status: "The overall status of the property",
-    listingStatus: "The listing status for this property",
-    roiPercentage: "The expected annual return on investment percentage",
-    serviceCharges: "Annual maintenance and service fees (UAE only)"
-  },
+  // Access Control
+  accessDenied: "Access Denied",
+  importPropertiesAdminOnly: "Only administrators can import properties",
   
-  // Occupation status
-  vacant: "Vacant",
-  occupied: "Occupied",
-  underRenovation: "Under Renovation",
+  // Admin Sale Property Form
+  addPropertyForSale: "Add Property for Sale",
+  propertyForSaleAddedSuccessfully: "Property for sale added successfully",
+  errorAddingPropertyForSale: "Error adding property for sale",
   
-  // Property status
-  active: "Active",
-  sold: "Sold",
+  // Operation messages
+  operationSuccessful: "Operation completed successfully",
+  operationFailed: "Operation failed",
   
-  // Listing status
-  not_listed: "Not Listed",
-  for_sale: "For Sale",
-  for_rent: "For Rent",
-  
-  // Button status
-  saved: "Saved",
-  addProperty: "Add Property",
-  
-  // Error messages
-  errorFetchingFormData: "Error fetching form data",
+  // Dashboard data updated
+  dashboardDataUpdated: "Dashboard data updated successfully",
+  errorUpdatingDashboard: "Error updating dashboard data",
   
   // Added missing translation for singleLocationAllocation
   singleLocationAllocation: "{location}: {percentage}%",

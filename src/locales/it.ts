@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuto",
@@ -522,33 +521,22 @@ const it = {
   propertyAddedSuccessfully: "Proprietà aggiunta con successo",
   errorAddingProperty: "Errore nell'aggiunta della proprietà",
   
-  // Occupation status
-  vacant: "Libero",
-  occupied: "Occupato",
-  underRenovation: "In Ristrutturazione",
+  // Access Control
+  accessDenied: "Accesso Negato",
+  importPropertiesAdminOnly: "Solo gli amministratori possono importare proprietà",
   
-  // Property status
-  active: "Attivo",
-  sold: "Venduto",
+  // Admin Sale Property Form
+  addPropertyForSale: "Aggiungi Proprietà in Vendita",
+  propertyForSaleAddedSuccessfully: "Proprietà in vendita aggiunta con successo",
+  errorAddingPropertyForSale: "Errore nell'aggiunta della proprietà in vendita",
   
-  // Listing status
-  not_listed: "Non in Elenco",
-  for_sale: "In Vendita",
-  for_rent: "In Affitto",
+  // Operation messages
+  operationSuccessful: "Operazione completata con successo",
+  operationFailed: "Operazione fallita",
   
-  // Button status
-  saved: "Salvato",
-  addProperty: "Aggiungi Proprietà",
-  
-  // Error messages
-  errorFetchingFormData: "Errore nel recupero dei dati del modulo",
-  
-  // Added missing translations
-  singleLocationAllocation: "{location}: {percentage}%",
-  eventsInLastYear: "Eventi nell'ultimo anno",
-  monthly: "Mensile",
-  annual: "Annuale",
-  investmentAmount: "Quantità di investimento", // Added this to fix a duplicate error
+  // Dashboard data updated
+  dashboardDataUpdated: "Dati dashboard aggiornati con successo",
+  errorUpdatingDashboard: "Errore nell'aggiornamento dei dati della dashboard",
   
   // Tooltip section
   tooltip: {

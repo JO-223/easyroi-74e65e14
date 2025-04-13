@@ -80,7 +80,7 @@ const getDemoPlatinumUserId = async (): Promise<string | null> => {
     return null;
   }
 
-  return data.id;
+  return data.id as string;
 };
 
 /**
