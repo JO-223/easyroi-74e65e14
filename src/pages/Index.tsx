@@ -33,15 +33,16 @@ const Index = () => {
       <section className="relative h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" 
+            src="/lovable-uploads/8f62e7e7-e2ac-4ee6-bfee-3019052700d0.png" 
             alt="Luxury Dubai Skyline" 
             className="w-full h-full object-cover"
             style={{
-              filter: 'brightness(0.85)',
-              transform: `scale(1.02) translateY(${scrollPosition * 0.02}px)`,
-              objectPosition: 'center 40%' // Better positioning to see more of the image
+              filter: 'brightness(0.9)',
+              transform: `scale(1.01) translateY(${scrollPosition * 0.01}px)`,
+              objectPosition: 'center 75%' // Modificato per mostrare più della parte inferiore
             }}
-            loading="eager" // Keep eager loading for critical hero image
+            loading="eager"
+            fetchPriority="high" // Priorità alta per caricare subito questa immagine
           />
           <div className="absolute inset-0 bg-gradient-to-r from-easyroi-purple-950/70 via-easyroi-purple-900/60 to-transparent z-10"></div>
         </div>
