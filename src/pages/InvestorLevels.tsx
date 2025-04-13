@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Badge } from "@/components/ui/badge";
@@ -13,112 +12,104 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Separator } from "@/components/ui/separator";
 import { InvestorKey } from "@/utils/translations/investor";
 import { useInvestorTranslation } from "@/hooks/useInvestorTranslation";
-
 const InvestorLevels = () => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const tInvestor = useInvestorTranslation();
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
-  
+
   // Definizione dei livelli con icone associate
-  const levels = [
-    { 
-      id: 'starter', 
-      name: tInvestor('starter'),
-      icon: Medal,
-      color: "bg-gradient-to-r from-[#D3D3D3] to-[#A9A9A9]",
-      textColor: "text-black",
-      threshold: USER_LEVEL_THRESHOLDS.starter,
-      events: 1,
-      earlyAccess: "Base",
-      support: "Standard",
-      description: tInvestor('starterLevelDesc') || "Begin your investment journey with access to our basic platform features."
-    },
-    { 
-      id: 'bronze', 
-      name: tInvestor('bronze'),
-      icon: Medal,
-      color: "bg-gradient-to-r from-[#CD7F32] to-[#B87333]",
-      textColor: "text-white",
-      threshold: USER_LEVEL_THRESHOLDS.bronze,
-      events: 2,
-      earlyAccess: "Limited",
-      support: "Priority",
-      description: tInvestor('bronzeLevelDesc') || "Unlock your first tier of premium features with access to more exclusive events."
-    },
-    { 
-      id: 'silver', 
-      name: tInvestor('silver'),
-      icon: Award,
-      color: "bg-gradient-to-r from-[#C0C0C0] to-[#A8A9AD]",
-      textColor: "text-white",
-      threshold: USER_LEVEL_THRESHOLDS.silver,
-      events: 4,
-      earlyAccess: "Early",
-      support: "Priority",
-      description: tInvestor('silverLevelDesc') || "Gain enhanced visibility and access to more premium investment opportunities."
-    },
-    { 
-      id: 'gold', 
-      name: tInvestor('gold'),
-      icon: Crown,
-      color: "bg-gradient-to-r from-[#FFD700] to-[#FFC300]",
-      textColor: "text-black",
-      threshold: USER_LEVEL_THRESHOLDS.gold,
-      events: 8,
-      earlyAccess: "Advanced",
-      support: "Priority Plus",
-      description: tInvestor('goldLevelDesc') || "Join our gold tier for premium benefits and early access to high-yield investments."
-    },
-    { 
-      id: 'ruby', 
-      name: tInvestor('ruby'),
-      icon: Gem,
-      color: "bg-gradient-to-r from-[#9B111E] to-[#C41E3A]",
-      textColor: "text-white",
-      threshold: USER_LEVEL_THRESHOLDS.ruby,
-      events: 12,
-      earlyAccess: "Premium",
-      support: "Dedicated Line",
-      description: tInvestor('rubyLevelDesc') || "Experience exclusive investment opportunities with personalized guidance."
-    },
-    { 
-      id: 'emerald', 
-      name: tInvestor('emerald'),
-      icon: Gem,
-      color: "bg-gradient-to-r from-[#50C878] to-[#2E8B57]",
-      textColor: "text-white",
-      threshold: USER_LEVEL_THRESHOLDS.emerald,
-      events: 16,
-      earlyAccess: "VIP",
-      support: "Direct Consultant",
-      description: tInvestor('emeraldLevelDesc') || "Enjoy significant privileges with our emerald tier including direct consultant support."
-    },
-    { 
-      id: 'platinum', 
-      name: tInvestor('platinum'),
-      icon: Star,
-      color: "bg-gradient-to-r from-[#E5E4E2] to-[#BCC6CC]",
-      textColor: "text-black",
-      threshold: USER_LEVEL_THRESHOLDS.platinum,
-      events: "Unlimited",
-      earlyAccess: "Exclusive",
-      support: "Personal Manager",
-      description: tInvestor('platinumLevelDesc') || "Access our platinum benefits including a personal investment manager."
-    },
-    { 
-      id: 'diamond', 
-      name: tInvestor('diamond'),
-      icon: Diamond,
-      color: "bg-gradient-to-r from-[#B9F2FF] to-[#E0FFFF]",
-      textColor: "text-black",
-      threshold: USER_LEVEL_THRESHOLDS.diamond,
-      events: "All Access",
-      earlyAccess: "First Look",
-      support: "Director Access",
-      description: tInvestor('diamondLevelDesc') || "Enjoy our pinnacle tier with unparalleled access and investment opportunities."
-    }
-  ];
-  
+  const levels = [{
+    id: 'starter',
+    name: tInvestor('starter'),
+    icon: Medal,
+    color: "bg-gradient-to-r from-[#D3D3D3] to-[#A9A9A9]",
+    textColor: "text-black",
+    threshold: USER_LEVEL_THRESHOLDS.starter,
+    events: 1,
+    earlyAccess: "Base",
+    support: "Standard",
+    description: tInvestor('starterLevelDesc') || "Begin your investment journey with access to our basic platform features."
+  }, {
+    id: 'bronze',
+    name: tInvestor('bronze'),
+    icon: Medal,
+    color: "bg-gradient-to-r from-[#CD7F32] to-[#B87333]",
+    textColor: "text-white",
+    threshold: USER_LEVEL_THRESHOLDS.bronze,
+    events: 2,
+    earlyAccess: "Limited",
+    support: "Priority",
+    description: tInvestor('bronzeLevelDesc') || "Unlock your first tier of premium features with access to more exclusive events."
+  }, {
+    id: 'silver',
+    name: tInvestor('silver'),
+    icon: Award,
+    color: "bg-gradient-to-r from-[#C0C0C0] to-[#A8A9AD]",
+    textColor: "text-white",
+    threshold: USER_LEVEL_THRESHOLDS.silver,
+    events: 4,
+    earlyAccess: "Early",
+    support: "Priority",
+    description: tInvestor('silverLevelDesc') || "Gain enhanced visibility and access to more premium investment opportunities."
+  }, {
+    id: 'gold',
+    name: tInvestor('gold'),
+    icon: Crown,
+    color: "bg-gradient-to-r from-[#FFD700] to-[#FFC300]",
+    textColor: "text-black",
+    threshold: USER_LEVEL_THRESHOLDS.gold,
+    events: 8,
+    earlyAccess: "Advanced",
+    support: "Priority Plus",
+    description: tInvestor('goldLevelDesc') || "Join our gold tier for premium benefits and early access to high-yield investments."
+  }, {
+    id: 'ruby',
+    name: tInvestor('ruby'),
+    icon: Gem,
+    color: "bg-gradient-to-r from-[#9B111E] to-[#C41E3A]",
+    textColor: "text-white",
+    threshold: USER_LEVEL_THRESHOLDS.ruby,
+    events: 12,
+    earlyAccess: "Premium",
+    support: "Dedicated Line",
+    description: tInvestor('rubyLevelDesc') || "Experience exclusive investment opportunities with personalized guidance."
+  }, {
+    id: 'emerald',
+    name: tInvestor('emerald'),
+    icon: Gem,
+    color: "bg-gradient-to-r from-[#50C878] to-[#2E8B57]",
+    textColor: "text-white",
+    threshold: USER_LEVEL_THRESHOLDS.emerald,
+    events: 16,
+    earlyAccess: "VIP",
+    support: "Direct Consultant",
+    description: tInvestor('emeraldLevelDesc') || "Enjoy significant privileges with our emerald tier including direct consultant support."
+  }, {
+    id: 'platinum',
+    name: tInvestor('platinum'),
+    icon: Star,
+    color: "bg-gradient-to-r from-[#E5E4E2] to-[#BCC6CC]",
+    textColor: "text-black",
+    threshold: USER_LEVEL_THRESHOLDS.platinum,
+    events: "Unlimited",
+    earlyAccess: "Exclusive",
+    support: "Personal Manager",
+    description: tInvestor('platinumLevelDesc') || "Access our platinum benefits including a personal investment manager."
+  }, {
+    id: 'diamond',
+    name: tInvestor('diamond'),
+    icon: Diamond,
+    color: "bg-gradient-to-r from-[#B9F2FF] to-[#E0FFFF]",
+    textColor: "text-black",
+    threshold: USER_LEVEL_THRESHOLDS.diamond,
+    events: "All Access",
+    earlyAccess: "First Look",
+    support: "Director Access",
+    description: tInvestor('diamondLevelDesc') || "Enjoy our pinnacle tier with unparalleled access and investment opportunities."
+  }];
+
   // Funzione per formattare la soglia di investimento
   const formatThreshold = (amount: number) => {
     if (amount >= 1000000) {
@@ -129,39 +120,48 @@ const InvestorLevels = () => {
       return `€${amount}`;
     }
   };
-  
+
   // Varianti per le animazioni
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: {
+      opacity: 0
+    },
     visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         staggerChildren: 0.1,
         delayChildren: 0.3
       }
     }
   };
-  
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: {
+      y: 20,
+      opacity: 0
+    },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100 }
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
     }
   };
-  
   const benefitVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
+    hidden: {
+      scale: 0.8,
+      opacity: 0
+    },
     visible: {
       scale: 1,
       opacity: 1,
-      transition: { duration: 0.5 }
+      transition: {
+        duration: 0.5
+      }
     }
   };
-
-  return (
-    <DashboardLayout title={tInvestor('investorLevels')} subtitle={tInvestor('investorLevelsSubtitle') || "Discover the benefits of each investment tier"}>
+  return <DashboardLayout title={tInvestor('investorLevels')} subtitle={tInvestor('investorLevelsSubtitle') || "Discover the benefits of each investment tier"}>
       <div className="container mx-auto px-4 py-8">
         <Card className="border-0 shadow-xl bg-gradient-to-r from-gray-50 to-white">
           <CardHeader className="text-center pb-0">
@@ -172,39 +172,23 @@ const InvestorLevels = () => {
           </CardHeader>
           <CardContent className="pt-6">
             {/* Level Tabs */}
-            <Tabs 
-              defaultValue="overview" 
-              className="w-full"
-              onValueChange={(value) => setSelectedLevel(value !== "overview" ? value : null)}
-            >
+            <Tabs defaultValue="overview" className="w-full" onValueChange={value => setSelectedLevel(value !== "overview" ? value : null)}>
               <div className="flex justify-center mb-8">
                 <TabsList className="bg-gray-100 p-1">
                   <TabsTrigger value="overview" className="px-4 py-2">
                     {tInvestor('overview')}
                   </TabsTrigger>
-                  {levels.map((level) => (
-                    <TabsTrigger key={level.id} value={level.id} className="px-4 py-2">
+                  {levels.map(level => <TabsTrigger key={level.id} value={level.id} className="px-4 py-2">
                       {level.name}
-                    </TabsTrigger>
-                  ))}
+                    </TabsTrigger>)}
                 </TabsList>
               </div>
               
               {/* Overview Tab */}
               <TabsContent value="overview">
-                <motion.div 
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {levels.map((level) => (
-                    <motion.div key={level.id} variants={itemVariants}>
-                      <Card 
-                        className={`group h-full border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden ${
-                          level.id === "diamond" ? "border-blue-300 ring-2 ring-blue-200" : ""
-                        }`}
-                      >
+                <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12" variants={containerVariants} initial="hidden" animate="visible">
+                  {levels.map(level => <motion.div key={level.id} variants={itemVariants}>
+                      <Card className={`group h-full border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden ${level.id === "diamond" ? "border-blue-300 ring-2 ring-blue-200" : ""}`}>
                         <CardHeader className={`${level.color} ${level.textColor} pb-4`}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
@@ -215,10 +199,10 @@ const InvestorLevels = () => {
                               {formatThreshold(level.threshold)}+
                             </Badge>
                           </div>
-                          <p className="mt-2 text-sm opacity-90">{level.description}</p>
+                          
                         </CardHeader>
                         <CardContent>
-                          <ul className="space-y-3 text-sm">
+                          <ul className="space-y-3 text-sm py-0 my-[10px]">
                             <li className="flex gap-2 items-center">
                               <Calendar size={16} className="text-easyroi-gold" />
                               <span>
@@ -240,18 +224,13 @@ const InvestorLevels = () => {
                           </ul>
                           
                           <div className="mt-4 pt-4 border-t border-gray-200 flex justify-center">
-                            <Button 
-                              variant="ghost" 
-                              className={`w-full ${level.color} ${level.textColor} hover:opacity-90`}
-                              onClick={() => setSelectedLevel(level.id)}
-                            >
+                            <Button variant="ghost" className={`w-full ${level.color} ${level.textColor} hover:opacity-90`} onClick={() => setSelectedLevel(level.id)}>
                               {tInvestor('seeDetails')}
                             </Button>
                           </div>
                         </CardContent>
                       </Card>
-                    </motion.div>
-                  ))}
+                    </motion.div>)}
                 </motion.div>
                 
                 <div className="bg-gray-50 rounded-xl p-8 mb-8">
@@ -278,8 +257,7 @@ const InvestorLevels = () => {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {levels.map((level, idx) => (
-                          <tr key={level.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        {levels.map((level, idx) => <tr key={level.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <BadgeLevel level={level.id as any} />
@@ -297,8 +275,7 @@ const InvestorLevels = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               {level.support}
                             </td>
-                          </tr>
-                        ))}
+                          </tr>)}
                       </tbody>
                     </table>
                   </div>
@@ -316,14 +293,14 @@ const InvestorLevels = () => {
               </TabsContent>
               
               {/* Individual Level Tabs */}
-              {levels.map((level) => (
-                <TabsContent key={level.id} value={level.id}>
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="max-w-5xl mx-auto"
-                  >
+              {levels.map(level => <TabsContent key={level.id} value={level.id}>
+                  <motion.div initial={{
+                opacity: 0
+              }} animate={{
+                opacity: 1
+              }} transition={{
+                duration: 0.5
+              }} className="max-w-5xl mx-auto">
                     <div className="flex flex-col md:flex-row gap-8 items-start">
                       {/* Level Info Card */}
                       <div className="w-full md:w-1/3">
@@ -425,8 +402,7 @@ const InvestorLevels = () => {
                     </div>
                     
                     {/* Testimonials for higher levels */}
-                    {['gold', 'ruby', 'emerald', 'platinum', 'diamond'].includes(level.id) && (
-                      <div className="mt-16">
+                    {['gold', 'ruby', 'emerald', 'platinum', 'diamond'].includes(level.id) && <div className="mt-16">
                         <Separator className="mb-8" />
                         <h3 className="text-2xl font-bold text-center mb-8">
                           {tInvestor('whatInvestorsSay') || "What our investors say"}
@@ -465,17 +441,13 @@ const InvestorLevels = () => {
                             </CardContent>
                           </Card>
                         </div>
-                      </div>
-                    )}
+                      </div>}
                   </motion.div>
-                </TabsContent>
-              ))}
+                </TabsContent>)}
             </Tabs>
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
-  );
+    </DashboardLayout>;
 };
-
 export default InvestorLevels;
