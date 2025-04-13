@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuti",
@@ -551,9 +552,8 @@ const it = {
   selectProperty: "Seleziona proprietà",
   expectedRoi: "ROI Previsto",
   eventsInLastYear: "Eventi nell'ultimo anno",
-  home: "Home",
-  contact: "Contatti",
-  login: "Accedi",
+  
+  // User badge and investment levels
   starterInvestor: "Investitore Principiante",
   bronzeInvestor: "Investitore Bronzo",
   silverInvestor: "Investitore Argento",
@@ -562,9 +562,13 @@ const it = {
   emeraldInvestor: "Investitore Smeraldo",
   platinumInvestor: "Investitore Platino",
   diamondInvestor: "Investitore Diamante",
+  
+  // Error messages
   errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
   errorFetchingFormData: "Errore nel recupero dei dati del modulo",
   errorFetchingPropertyTypes: "Errore nel recupero dei tipi di proprietà",
+  
+  // Development project management
   addDevelopmentProject: "Aggiungi Progetto di Sviluppo",
   projectName: "Nome Progetto",
   enterProjectName: "Inserisci il nome del progetto",
@@ -576,12 +580,19 @@ const it = {
   minimumLevelRequired: "Livello minimo richiesto",
   developmentProjectAddedSuccessfully: "Progetto di sviluppo aggiunto con successo",
   errorAddingDevelopmentProject: "Errore nell'aggiunta del progetto di sviluppo",
+  
+  // Location allocation
   singleLocationAllocation: "{location}: {percentage}%",
   enterCountry: "Inserisci paese",
   
   // Analytics
   unableToLoadData: "Impossibile caricare i dati",
   pleaseTryRefreshingThePage: "Per favore prova ad aggiornare la pagina",
+  
+  // Home and Navigation
+  home: "Home",
+  contact: "Contatti",
+  login: "Accedi",
   
   // Tooltip section
   tooltip: {
@@ -603,33 +614,6 @@ const it = {
     serviceCharges: "Spese annuali di manutenzione e servizio (solo UAE)",
     investor: "L'investitore proprietario di questa proprietà"
   },
-  home: "Home",
-  contact: "Contatti",
-  login: "Accedi",
-  starterInvestor: "Investitore Principiante",
-  bronzeInvestor: "Investitore Bronzo",
-  silverInvestor: "Investitore Argento",
-  goldInvestor: "Investitore Oro",
-  rubyInvestor: "Investitore Rubino",
-  emeraldInvestor: "Investitore Smeraldo",
-  platinumInvestor: "Investitore Platino",
-  diamondInvestor: "Investitore Diamante",
-  errorFetchingEvent: "Errore nel recupero dei dettagli dell'evento",
-  errorFetchingFormData: "Errore nel recupero dei dati del modulo",
-  errorFetchingPropertyTypes: "Errore nel recupero dei tipi di proprietà",
-  addDevelopmentProject: "Aggiungi Progetto di Sviluppo",
-  projectName: "Nome Progetto",
-  enterProjectName: "Inserisci il nome del progetto",
-  description: "Descrizione",
-  enterProjectDescription: "Inserisci la descrizione del progetto",
-  progressPercentage: "Percentuale di Avanzamento",
-  imageUrl: "URL Immagine",
-  optionalField: "Campo opzionale",
-  minimumLevelRequired: "Livello minimo richiesto",
-  developmentProjectAddedSuccessfully: "Progetto di sviluppo aggiunto con successo",
-  errorAddingDevelopmentProject: "Errore nell'aggiunta del progetto di sviluppo",
-  singleLocationAllocation: "{location}: {percentage}%",
-  enterCountry: "Inserisci paese",
 };
 
 export default it;
