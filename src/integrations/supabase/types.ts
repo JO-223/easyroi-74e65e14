@@ -1093,6 +1093,15 @@ export type Database = {
           push_notifications: boolean
         }[]
       }
+      get_portfolio_allocation_by_country: {
+        Args: { user_id: string }
+        Returns: {
+          country: string
+          value: number
+          percentage: number
+          properties_count: number
+        }[]
+      }
       get_privacy_settings: {
         Args: { p_user_id: string }
         Returns: {

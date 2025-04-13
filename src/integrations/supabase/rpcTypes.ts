@@ -64,6 +64,13 @@ export type AddNewEventResponse = {
   message: string;
 }[];
 
+export type GetPortfolioAllocationByCountryResponse = {
+  country: string;
+  value: number;
+  percentage: number;
+  properties_count: number;
+}[];
+
 // Response types for our RPC functions
 export interface RPCResponses {
   get_user_notifications: GetUserNotificationsResponse;
@@ -90,6 +97,7 @@ export interface RPCResponses {
   add_property_for_sale: AddPropertyForSaleResponse;
   add_new_development_project: AddNewDevelopmentProjectResponse;
   add_new_event: AddNewEventResponse;
+  get_portfolio_allocation_by_country: GetPortfolioAllocationByCountryResponse;
 }
 
 // Type for RPC function parameters 
@@ -182,6 +190,7 @@ export interface RPCParams {
     p_is_online: boolean;
     p_required_badges?: string[];
   };
+  get_portfolio_allocation_by_country: { user_id: string };
 }
 
 // Helper type to ensure type safety when calling RPC functions

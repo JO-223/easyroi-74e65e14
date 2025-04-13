@@ -26,7 +26,7 @@ export async function fetchPortfolioByCountry(userId?: string): Promise<CountryA
       throw new Error("User ID not available");
     }
 
-    // Query che aggrega i dati delle proprietà per paese
+    // Query che aggrega i dati delle proprietà per paese utilizzando la funzione RPC
     const { data, error } = await supabase
       .rpc('get_portfolio_allocation_by_country', { user_id: userId });
 
@@ -35,10 +35,11 @@ export async function fetchPortfolioByCountry(userId?: string): Promise<CountryA
       throw error;
     }
 
+    // Assicuriamoci di restituire sempre un array, anche se vuoto
     return data || [];
   } catch (error) {
     console.error("Error in fetchPortfolioByCountry:", error);
-    // Return an empty array instead of an empty object to match the CountryAllocation[] return type
+    // Restituisci un array vuoto per corrispondere al tipo di ritorno CountryAllocation[]
     return [];
   }
 }
