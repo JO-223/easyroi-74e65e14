@@ -26,6 +26,7 @@ export function SidebarBadge() {
         level={userLevel} 
         size="md"
         className="w-full justify-center py-1"
+        // Remove any animation classes
       />
     </div>
   );

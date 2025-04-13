@@ -14,10 +14,10 @@ const userBadgeVariants = cva("inline-flex items-center rounded-full", {
       bronze: "bg-gradient-to-b from-amber-400 to-amber-600 text-white border-amber-300 shadow-sm",
       silver: "bg-gradient-to-b from-gray-300 to-gray-400 text-gray-800 border-gray-300 shadow-sm",
       gold: "bg-gradient-to-b from-yellow-300 to-yellow-500 text-yellow-900 border-yellow-300 shadow-md",
-      ruby: "bg-gradient-to-b from-red-400 to-red-600 text-white border-red-300 shadow-md animate-ruby-shimmer",
-      emerald: "bg-gradient-to-b from-emerald-400 to-emerald-600 text-white border-emerald-300 shadow-md animate-emerald-glint",
-      platinum: "bg-gradient-to-b from-slate-200 to-slate-300 text-slate-700 border-slate-300 shadow-md animate-platinum-glow",
-      diamond: "bg-gradient-to-b from-blue-300 to-blue-400 text-blue-800 border-blue-300 shadow-md animate-diamond-sparkle",
+      ruby: "bg-gradient-to-b from-red-400 to-red-600 text-white border-red-300 shadow-md", // Removed animation
+      emerald: "bg-gradient-to-b from-emerald-400 to-emerald-600 text-white border-emerald-300 shadow-md", // Removed animation
+      platinum: "bg-gradient-to-b from-slate-200 to-slate-300 text-slate-700 border-slate-300 shadow-md", // Removed animation
+      diamond: "bg-gradient-to-b from-blue-300 to-blue-400 text-blue-800 border-blue-300 shadow-md", // Removed animation
     },
     size: {
       sm: "px-2 py-0.5 text-xs",
