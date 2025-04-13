@@ -1,4 +1,3 @@
-
 const en = {
   // General
   welcome: "Welcome",
