@@ -19,9 +19,9 @@ const About = () => {
         <section className="relative bg-easyroi-navy py-24 md:py-32 overflow-hidden">
           {/* Immagine di sfondo con overlay */}
           <div 
-            className="absolute inset-0 z-0 opacity-20" 
+            className="absolute inset-0 z-0 opacity-30" 
             style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81')",
+              backgroundImage: "url('https://images.unsplash.com/photo-1483058712412-4245e9b90334')",
               backgroundSize: "cover",
               backgroundPosition: "center"
             }}
@@ -56,7 +56,7 @@ const About = () => {
                 <div>
                   <Card className="overflow-hidden border-0 shadow-lg">
                     <img 
-                      src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" 
+                      src="https://images.unsplash.com/photo-1493397212122-2b85dda8106b" 
                       alt="Team EasyROI" 
                       className="w-full h-auto object-cover aspect-[4/3]" 
                     />
