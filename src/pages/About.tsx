@@ -1,4 +1,3 @@
-
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -6,29 +5,25 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Shield, TrendingUp, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
 const About = () => {
-  const { t } = useLanguage();
-
-  return (
-    <div className="flex flex-col min-h-screen">
+  const {
+    t
+  } = useLanguage();
+  return <div className="flex flex-col min-h-screen">
       <Navbar />
       
       <main className="flex-grow mt-20">
         {/* Hero Section con sfondo immagine */}
         <section className="relative bg-easyroi-navy py-24 md:py-32 overflow-hidden">
           {/* Immagine di sfondo con overlay */}
-          <div 
-            className="absolute inset-0 z-0 opacity-30" 
-            style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1483058712412-4245e9b90334')",
-              backgroundSize: "cover",
-              backgroundPosition: "center"
-            }}
-          />
+          <div className="absolute inset-0 z-0 opacity-30" style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1483058712412-4245e9b90334')",
+          backgroundSize: "cover",
+          backgroundPosition: "center"
+        }} />
           
           {/* Overlay gradiente */}
-          <div className="absolute inset-0 bg-gradient-to-r from-easyroi-navy via-easyroi-navy/90 to-easyroi-navy/80 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-easyroi-navy/30 via-easyroi-navy/20 to-easyroi-navy/10 z-10"></div>
           
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <div className="max-w-3xl">
@@ -55,11 +50,7 @@ const About = () => {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
                   <Card className="overflow-hidden border-0 shadow-lg">
-                    <img 
-                      src="https://images.unsplash.com/photo-1493397212122-2b85dda8106b" 
-                      alt="Team EasyROI" 
-                      className="w-full h-auto object-cover aspect-[4/3]" 
-                    />
+                    <img src="https://images.unsplash.com/photo-1493397212122-2b85dda8106b" alt="Team EasyROI" className="w-full h-auto object-cover aspect-[4/3]" />
                   </Card>
                 </div>
                 <div>
@@ -140,8 +131,6 @@ const About = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
