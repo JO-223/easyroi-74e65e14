@@ -20,7 +20,10 @@ export const miscKeys = [
   "diamondInvestor",
   "validation_error",
   "success",
-  "processing"
+  "processing",
+  "noData",
+  "refreshOrContactSupport",
+  "edit"
 ] as const;
 
 export type MiscKey = typeof miscKeys[number];

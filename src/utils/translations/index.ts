@@ -7,8 +7,14 @@ import { eventsKeys, EventsKey } from './events';
 import { networkKeys, NetworkKey } from './network';
 import { settingsKeys, SettingsKey } from './settings';
 import { adminKeys, AdminKey } from './admin';
-import { uiKeys, UiKey } from './ui';
+import { uiKeys, UiKey } from './misc';
 import { miscKeys, MiscKey } from './misc';
+import { analyticsKeys, AnalyticsKey } from './analytics';
+import { landingKeys, LandingKey } from './landing';
+import { authKeys, AuthKey } from './auth';
+import { aboutKeys, AboutKey } from './about';
+import { contactKeys, ContactKey } from './contact';
+import { profileKeys, ProfileKey } from './profile';
 
 // Unione di tutte le chiavi di traduzione
 export type TranslationKey =
@@ -21,7 +27,13 @@ export type TranslationKey =
   | SettingsKey
   | AdminKey
   | UiKey
-  | MiscKey;
+  | MiscKey
+  | AnalyticsKey
+  | LandingKey
+  | AuthKey
+  | AboutKey
+  | ContactKey
+  | ProfileKey;
 
 // Array di tutte le chiavi, utile per la validazione
 const allTranslationKeys = [
@@ -34,7 +46,13 @@ const allTranslationKeys = [
   ...settingsKeys,
   ...adminKeys,
   ...uiKeys,
-  ...miscKeys
+  ...miscKeys,
+  ...analyticsKeys,
+  ...landingKeys,
+  ...authKeys,
+  ...aboutKeys,
+  ...contactKeys,
+  ...profileKeys
 ] as const;
 
 // Funzione per verificare se una stringa è una chiave di traduzione valida
@@ -53,5 +71,11 @@ export {
   settingsKeys,
   adminKeys,
   uiKeys,
-  miscKeys
+  miscKeys,
+  analyticsKeys,
+  landingKeys,
+  authKeys,
+  aboutKeys,
+  contactKeys,
+  profileKeys
 };

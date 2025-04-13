@@ -14,7 +14,13 @@ import {
   settingsKeys, 
   adminKeys, 
   uiKeys, 
-  miscKeys 
+  miscKeys,
+  analyticsKeys,
+  landingKeys,
+  authKeys,
+  aboutKeys,
+  contactKeys,
+  profileKeys
 } from "@/utils/translationUtils";
 
 /**
@@ -109,7 +115,13 @@ export const checkDuplicateTranslationKeys = () => {
     ...settingsKeys,
     ...adminKeys,
     ...uiKeys,
-    ...miscKeys
+    ...miscKeys,
+    ...analyticsKeys,
+    ...landingKeys,
+    ...authKeys,
+    ...aboutKeys,
+    ...contactKeys,
+    ...profileKeys
   ];
   
   // Verifica duplicati nel set completo di chiavi
@@ -187,7 +199,13 @@ export const checkTranslationKeyExistence = () => {
     ...settingsKeys,
     ...adminKeys,
     ...uiKeys,
-    ...miscKeys
+    ...miscKeys,
+    ...analyticsKeys,
+    ...landingKeys,
+    ...authKeys,
+    ...aboutKeys,
+    ...contactKeys,
+    ...profileKeys
   ];
   
   const missingInEnglish = allDefinedKeys.filter(key => !(key in en));
