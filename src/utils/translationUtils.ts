@@ -16,6 +16,7 @@ import { AuthKey } from './translations/auth';
 import { UiKey } from './translations/ui';
 import { MiscKey } from './translations/misc';
 import { TooltipKey } from './translations/tooltip';
+import { InvestorKey } from './translations/investor';
 
 // Define all possible translation keys
 export type TranslationKey =
@@ -35,7 +36,8 @@ export type TranslationKey =
   | AuthKey
   | UiKey
   | MiscKey
-  | TooltipKey;
+  | TooltipKey
+  | InvestorKey;
 
 // Type guard to check if a string is a valid translation key
 export function isValidTranslationKey(key: string): key is TranslationKey {
@@ -61,5 +63,6 @@ export {
   authKeys,
   uiKeys,
   miscKeys,
-  tooltipKeys
+  tooltipKeys,
+  investorKeys
 } from './translations';

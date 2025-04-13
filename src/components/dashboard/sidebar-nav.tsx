@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { NavItem } from '@/types';
 import { InvestorKey } from "@/utils/translations/investor";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface UserProfileData {
   firstName?: string;
@@ -26,7 +27,7 @@ interface SidebarNavProps {
 export function SidebarNav({ userData }: SidebarNavProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const t = useTranslation();
   const { isAdmin } = useAdminRole();
   
   const handleLogout = async () => {
