@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -9,12 +10,12 @@ import { PerformanceChart } from '@/components/dashboard/PerformanceChart';
 import { PropertyAlerts } from '@/components/dashboard/PropertyAlerts';
 import { MarketInsights } from '@/components/dashboard/MarketInsights';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserProperties } from '@/services/propertyService';
-import { fetchUpcomingEvents } from '@/services/eventService';
+import { fetchProperties } from '@/services/propertyService';
+import { fetchEvents } from '@/services/eventService';
 import { fetchPortfolioSummary } from '@/services/portfolioService';
 import { Property, Event } from '@/types/property';
 import { PortfolioSummaryData } from '@/types/portfolio';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
 
@@ -37,12 +38,12 @@ const Dashboard = () => {
       setIsLoadingPortfolio(true);
       
       // Fetch user properties
-      const userProperties = await fetchUserProperties();
+      const userProperties = await fetchProperties();
       setProperties(userProperties.slice(0, 3)); // Show only first 3
       setIsLoadingProperties(false);
       
       // Fetch upcoming events
-      const upcomingEvents = await fetchUpcomingEvents();
+      const upcomingEvents = await fetchEvents();
       setEvents(upcomingEvents.slice(0, 3)); // Show only first 3
       setIsLoadingEvents(false);
       
@@ -81,7 +82,7 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
   
-  // Fix for line 67 - we need to wrap the JSX element in a function
+  // Functions for viewAll actions
   const viewAllPropertiesAction = () => {
     navigate('/dashboard/properties');
   };
@@ -122,7 +123,7 @@ const Dashboard = () => {
           properties={properties}
           isLoading={isLoadingProperties}
           actionLabel={t('viewAllProperties')}
-          action={viewAllPropertiesAction} // This should be a function reference, not a JSX element
+          action={viewAllPropertiesAction}
         />
       </div>
       

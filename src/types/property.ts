@@ -38,6 +38,15 @@ export interface Property {
   roi_percentage: number | null;
   min_investment: number | null;
   investor_level: string | null;
+  created_at?: string; // Added this field as it's used in the code
+  property_id?: string; // For related properties
+  project_id?: string; // For related projects
+}
+
+export interface PropertyType {
+  id: string;
+  name: string;
+  description?: string;
 }
 
 export interface DevelopmentProject {
@@ -78,9 +87,9 @@ export interface Event {
   max_attendees: number | null;
   current_attendees: number;
   required_badges: string[];
-  average_rating?: number; // Add this missing property
-  related_property_id?: string;
-  related_project_id?: string;
+  average_rating?: number;
+  property_id?: string; // Adding this field that was missing
+  project_id?: string;  // Adding this field that was missing
 }
 
 export interface PropertyFilter {
@@ -88,12 +97,15 @@ export interface PropertyFilter {
   type?: string;
   priceMin?: number;
   priceMax?: number;
-  bedroomsMin?: number;
+  bedroomsMin?: number; 
   bedroomsMax?: number;
   bathroomsMin?: number;
   bathroomsMax?: number;
   amenities?: string[];
   investorLevel?: string;
+  // Adding these to fix errors
+  bedrooms?: { min?: number; max?: number }; 
+  bathrooms?: { min?: number; max?: number };
 }
 
 export interface EventFilter {
@@ -103,4 +115,7 @@ export interface EventFilter {
   dateTo?: Date;
   hasAvailability?: boolean;
   isOnline?: boolean;
+  badge?: string; // Adding this field that was missing
 }
+
+export type UserRole = 'user' | 'admin' | 'owner';

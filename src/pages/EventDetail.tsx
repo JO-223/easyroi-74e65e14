@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Clock, MapPin, Users, Building2, Construction, Star } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, Building2, Construction, Star, Home, Building } from "lucide-react";
 import { format } from "date-fns";
 import EventReviewsList from "@/components/events/EventReviewsList";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { Link, ExternalLink } from "react-router-dom";
+import { SideCardItem } from "@/components/ui/side-card-item";
 
 export default function EventDetail() {
   const { eventId } = useParams<{ eventId: string }>();
@@ -137,17 +139,33 @@ export default function EventDetail() {
                   </div>
                   
                   {event.property_id && (
-                    <div className="flex items-center">
-                      <Building2 className="h-5 w-5 text-muted-foreground mr-2" />
-                      <span>{t('relatedProperty')}</span>
-                    </div>
+                    <SideCardItem
+                      icon={<Home size={16} />}
+                      label={t('relatedProperty')}
+                      value={
+                        <Link
+                          to={`/properties/${event.property_id}`}
+                          className="text-blue-600 hover:underline flex items-center"
+                        >
+                          {t('viewDetails')} <ExternalLink className="ml-1 h-3 w-3" />
+                        </Link>
+                      }
+                    />
                   )}
                   
                   {event.project_id && (
-                    <div className="flex items-center">
-                      <Construction className="h-5 w-5 text-muted-foreground mr-2" />
-                      <span>{t('relatedProject')}</span>
-                    </div>
+                    <SideCardItem
+                      icon={<Building size={16} />}
+                      label={t('relatedProject')}
+                      value={
+                        <Link
+                          to={`/development/${event.project_id}`}
+                          className="text-blue-600 hover:underline flex items-center"
+                        >
+                          {t('viewDetails')} <ExternalLink className="ml-1 h-3 w-3" />
+                        </Link>
+                      }
+                    />
                   )}
                 </div>
                 

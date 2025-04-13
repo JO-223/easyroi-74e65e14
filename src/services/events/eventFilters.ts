@@ -1,65 +1,43 @@
 
-import { Event, EventFilter } from "@/types/property";
-import { format } from "date-fns";
+import { SupabaseClient } from '@supabase/supabase-js';
+import { EventFilter } from '@/types/property';
 
-export const filterEvents = (events: Event[], filters: EventFilter) => {
-  return events.filter(event => {
-    // Filter by event type
-    if (filters.eventType && event.event_type !== filters.eventType) {
-      return false;
-    }
-    
-    // Filter by date range
-    if (filters.dateFrom || filters.dateTo) {
-      const eventDate = new Date(event.date);
-      
-      if (filters.dateFrom && eventDate < filters.dateFrom) {
-        return false;
-      }
-      
-      if (filters.dateTo) {
-        const dateTo = new Date(filters.dateTo);
-        dateTo.setHours(23, 59, 59); // Set to end of day
-        if (eventDate > dateTo) {
-          return false;
-        }
-      }
-    }
-    
-    // Filter by location
-    if (filters.location && !event.location.toLowerCase().includes(filters.location.toLowerCase())) {
-      return false;
-    }
-    
-    // Filter by availability
-    if (filters.hasAvailability === true && 
-        event.max_attendees !== null && 
-        event.current_attendees >= event.max_attendees) {
-      return false;
-    }
-    
-    // Filter by online/offline events
-    if (filters.isOnline !== undefined && event.is_online !== filters.isOnline) {
-      return false;
-    }
-    
-    // Filter by badge requirement
-    if (filters.badge && 
-        event.required_badges && 
-        event.required_badges.length > 0 &&
-        !event.required_badges.includes(filters.badge)) {
-      return false;
-    }
-    
-    return true;
-  });
-};
-
-// Function to verify if a user has the required badge for an event
-export const checkUserEligibility = (event: Event, userBadge: string = 'bronze'): boolean => {
-  if (!event.required_badges || event.required_badges.length === 0) {
-    return true;
+export const applyEventFilters = (query: any, filter: EventFilter): any => {
+  // If event type is specified, filter by it
+  if (filter.eventType) {
+    query = query.eq('event_type', filter.eventType);
   }
   
-  return event.required_badges.includes(userBadge.toLowerCase());
+  // If location is specified, filter by it (using ilike for partial matches)
+  if (filter.location) {
+    query = query.ilike('location', `%${filter.location}%`);
+  }
+  
+  // If date range is specified, filter by it
+  if (filter.dateFrom) {
+    const dateFromStr = filter.dateFrom.toISOString().split('T')[0];
+    query = query.gte('date', dateFromStr);
+  }
+  
+  if (filter.dateTo) {
+    const dateToStr = filter.dateTo.toISOString().split('T')[0];
+    query = query.lte('date', dateToStr);
+  }
+  
+  // If online/in-person preference is specified
+  if (filter.isOnline !== undefined) {
+    query = query.eq('is_online', filter.isOnline);
+  }
+  
+  // If only available events are requested
+  if (filter.hasAvailability === true) {
+    query = query.or('max_attendees.is.null,current_attendees.lt.max_attendees');
+  }
+  
+  // If badge filter is specified
+  if (filter.badge) {
+    query = query.contains('required_badges', [filter.badge]);
+  }
+  
+  return query;
 };

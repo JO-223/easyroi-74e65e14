@@ -8,7 +8,7 @@ interface EmptyStateProps {
   description?: string;
   actionLabel?: string;
   action?: () => void;
-  variant?: string; // Add variant prop to support the component props in AnalyticsContent
+  variant?: 'default' | 'card'; // Add variant prop
 }
 
 export function EmptyState({

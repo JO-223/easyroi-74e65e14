@@ -1,108 +1,109 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { Property, PropertyFilter } from "@/types/property";
+import { supabase } from '@/integrations/supabase/client';
+import { Property, PropertyFilter } from '@/types/property';
 
-export const fetchProperties = async (filters?: PropertyFilter) => {
-  let query = supabase
-    .from('properties')
-    .select(`
-      *,
-      location:location_id(*),
-      type:type_id(*),
-      amenities:property_amenities(amenity:amenity_id(*)),
-      images:property_images(*),
-      pros_cons:property_pros_cons(*)
-    `);
-
-  // Apply filters if provided
-  if (filters) {
-    if (filters.location) {
-      query = query.or(`location.city.ilike.%${filters.location}%,location.country.ilike.%${filters.location}%,location.zone.ilike.%${filters.location}%`);
+export const fetchProperties = async (filter?: PropertyFilter): Promise<Property[]> => {
+  try {
+    let query = supabase
+      .from('properties')
+      .select(`
+        *,
+        type:type_id(id, name),
+        location:location_id(address, city, country, zone),
+        images(*),
+        amenities:property_amenities(amenity_id(*)),
+        pros_cons:property_pros_cons(*)
+      `);
+    
+    // Apply filters if provided
+    if (filter) {
+      // Location filter
+      if (filter.location) {
+        query = query.like('location.city', `%${filter.location}%`);
+      }
+      
+      // Type filter
+      if (filter.type) {
+        query = query.eq('type_id', filter.type);
+      }
+      
+      // Price range filter
+      if (filter.priceMin) {
+        query = query.gte('price', filter.priceMin);
+      }
+      if (filter.priceMax) {
+        query = query.lte('price', filter.priceMax);
+      }
+      
+      // Bedrooms filter - use bedroomsMin/Max instead of bedrooms
+      if (filter.bedroomsMin) {
+        query = query.gte('bedrooms', filter.bedroomsMin);
+      }
+      if (filter.bedroomsMax) {
+        query = query.lte('bedrooms', filter.bedroomsMax);
+      }
+      
+      // Bathrooms filter - use bathroomsMin/Max instead of bathrooms
+      if (filter.bathroomsMin) {
+        query = query.gte('bathrooms', filter.bathroomsMin);
+      }
+      if (filter.bathroomsMax) {
+        query = query.lte('bathrooms', filter.bathroomsMax);
+      }
+      
+      // Investor level filter
+      if (filter.investorLevel) {
+        query = query.lte('investor_level', filter.investorLevel);
+      }
+      
+      // Amenities filter
+      // This would typically be handled in the post-processing step after fetching
     }
-    if (filters.priceMin) {
-      query = query.gte('price', filters.priceMin);
+    
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('Error fetching properties:', error);
+      throw new Error('Failed to fetch properties');
     }
-    if (filters.priceMax) {
-      query = query.lte('price', filters.priceMax);
-    }
-    if (filters.investorLevel) {
-      query = query.eq('investor_level', filters.investorLevel);
-    }
-    if (filters.type) {
-      query = query.eq('type.name', filters.type);
-    }
-    if (filters.bedrooms) {
-      query = query.gte('bedrooms', filters.bedrooms);
-    }
-    if (filters.bathrooms) {
-      query = query.gte('bathrooms', filters.bathrooms);
-    }
-    // Amenities filtering requires special handling
-    if (filters.amenities && filters.amenities.length > 0) {
-      // This requires a more complex query approach
-      // Will need to join with property_amenities and filter based on that
-    }
-  }
-
-  const { data, error } = await query;
-  
-  if (error) {
-    console.error('Error fetching properties:', error);
+    
+    return data.map(item => ({
+      ...item,
+      // The created_at property is expected by some components,
+      // although it's not explicitly defined in the Property interface
+    }));
+  } catch (error) {
+    console.error('Error in fetchProperties:', error);
     throw error;
   }
-  
-  // Transform the data to match our Property type
-  return data.map((item: any): Property => {
-    return {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      size_sqm: item.size_sqm,
-      occupation_status: item.occupation_status,
-      bedrooms: item.bedrooms,
-      bathrooms: item.bathrooms,
-      status: item.status,
-      service_charges: item.service_charges,
-      roi_percentage: item.roi_percentage,
-      min_investment: item.min_investment,
-      investor_level: item.investor_level,
-      created_at: item.created_at,
-      updated_at: item.updated_at,
-      location: item.location,
-      type: item.type,
-      amenities: item.amenities.map((a: any) => a.amenity),
-      images: item.images,
-      pros_cons: item.pros_cons
-    };
-  });
 };
 
-export const fetchLocations = async () => {
-  const { data, error } = await supabase
-    .from('property_locations')
-    .select('city, country, zone')
-    .order('country', { ascending: true });
+export const fetchPropertyById = async (id: string): Promise<Property | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('properties')
+      .select(`
+        *,
+        type:type_id(id, name),
+        location:location_id(address, city, country, zone),
+        images(*),
+        amenities:property_amenities(amenity_id(*)),
+        pros_cons:property_pros_cons(*)
+      `)
+      .eq('id', id)
+      .single();
     
-  if (error) throw error;
-  return data;
-};
-
-export const fetchPropertyTypes = async () => {
-  const { data, error } = await supabase
-    .from('property_types')
-    .select('*')
-    .order('name', { ascending: true });
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return null; // No property found
+      }
+      console.error('Error fetching property:', error);
+      throw new Error('Failed to fetch property');
+    }
     
-  if (error) throw error;
-  return data;
-};
-
-export const fetchAmenities = async () => {
-  const { data, error } = await supabase
-    .from('amenities')
-    .select('*')
-    .order('name', { ascending: true });
-    
-  if (error) throw error;
-  return data;
+    return data;
+  } catch (error) {
+    console.error('Error in fetchPropertyById:', error);
+    throw error;
+  }
 };

@@ -32,6 +32,12 @@ export const dashboardKeys = [
   'settings',
   'logout',
   'development',
+  'noData',
+  'refreshOrContactSupport',
+  'nextLevel',
+  'dashboardDataUpdated',
+  'errorUpdatingDashboard',
+  'expectedCompletion'
 ] as const;
 
 export type DashboardKey = typeof dashboardKeys[number];

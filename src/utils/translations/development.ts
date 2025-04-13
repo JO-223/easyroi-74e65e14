@@ -40,6 +40,8 @@ export const developmentKeys = [
   'expectedROI',
   'tbd',
   'location',
+  'expectedCompletion',
+  'completed'
 ] as const;
 
 export type DevelopmentKey = typeof developmentKeys[number];

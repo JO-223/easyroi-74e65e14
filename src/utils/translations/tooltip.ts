@@ -15,7 +15,26 @@ export const tooltipKeys = [
   'statusTooltip',
   'listingStatusTooltip',
   'roiPercentageTooltip',
-  'serviceChargesTooltip'
+  'serviceChargesTooltip',
+  // Add tooltip keys
+  'tooltip',
+  'propertyName',
+  'address',
+  'city',
+  'zone',
+  'country',
+  'price',
+  'currency',
+  'propertyType',
+  'sizeSqm',
+  'bedrooms',
+  'bathrooms',
+  'occupationStatus',
+  'status',
+  'listingStatus',
+  'roiPercentage',
+  'serviceCharges',
+  'investor'
 ] as const;
 
 export type TooltipKey = typeof tooltipKeys[number];

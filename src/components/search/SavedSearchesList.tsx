@@ -1,221 +1,180 @@
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
-import { fetchUserSavedSearches, deleteSavedSearch, buildSearchQueryFromSaved } from "@/services/savedSearchService";
-import { SavedPropertySearch } from "@/types/savedSearch";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Search, Bell, Calendar, Trash2, Edit, PlayCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchSavedSearches, deleteSavedSearch, buildSearchQueryFromSaved } from "@/services/savedSearchService";
+import { SavedPropertySearch } from "@/types/search";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AlertTriangle, Bell, BellOff, Search, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
-import SavedSearchDialog from "./SavedSearchDialog";
-import { formatDistanceToNow } from "date-fns";
 
-export default function SavedSearchesList() {
+export function SavedSearchesList() {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const { user } = useAuth();
   const navigate = useNavigate();
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [editSearch, setEditSearch] = useState<SavedPropertySearch | null>(null);
   
-  const { 
-    data: savedSearches = [], 
-    isLoading, 
-    refetch 
-  } = useQuery({
-    queryKey: ['savedSearches', user?.id],
-    queryFn: () => fetchUserSavedSearches(user?.id as string),
-    enabled: !!user?.id
-  });
+  const [savedSearches, setSavedSearches] = useState<SavedPropertySearch[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
   
-  const handleDelete = async (id: string) => {
-    if (!confirm(t('confirmDeleteSavedSearch'))) return;
-    
+  useEffect(() => {
+    loadSavedSearches();
+  }, []);
+  
+  const loadSavedSearches = async () => {
+    setIsLoading(true);
     try {
-      await deleteSavedSearch(id);
-      toast({
-        title: t('savedSearchDeleted'),
-        description: t('savedSearchDeletedSuccessfully'),
-      });
-      refetch();
+      const searches = await fetchSavedSearches();
+      setSavedSearches(searches);
     } catch (error) {
-      console.error('Error deleting saved search:', error);
+      console.error("Error fetching saved searches:", error);
       toast({
-        title: t('errorDeletingSavedSearch'),
-        description: t('pleaseTryAgainLater'),
+        title: t("error"),
+        description: t("errorFetchingSavedSearches"),
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   
-  const handleRunSearch = (savedSearch: SavedPropertySearch) => {
-    // Convert saved search to query parameters
-    const queryParams = buildSearchQueryFromSaved(savedSearch);
-    
-    // Convert query object to URLSearchParams
-    const params = new URLSearchParams();
-    Object.entries(queryParams).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach(v => params.append(`${key}[]`, v.toString()));
-      } else {
-        params.append(key, value.toString());
-      }
-    });
-    
-    // Navigate to properties page with query parameters
-    navigate(`/properties?${params.toString()}`);
-  };
-  
-  const getFrequencyLabel = (frequency: string) => {
-    switch (frequency) {
-      case 'daily': return t('daily');
-      case 'weekly': return t('weekly');
-      case 'monthly': return t('monthly');
-      default: return frequency;
+  const handleDeleteSearch = async (searchId: string) => {
+    setIsDeleting(searchId);
+    try {
+      await deleteSavedSearch(searchId);
+      setSavedSearches(searches => searches.filter(s => s.id !== searchId));
+      toast({
+        title: t("success"),
+        description: t("searchDeletedSuccessfully"),
+      });
+    } catch (error) {
+      console.error("Error deleting saved search:", error);
+      toast({
+        title: t("error"),
+        description: t("errorDeletingSearch"),
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(null);
     }
   };
+  
+  const handleApplySearch = (search: SavedPropertySearch) => {
+    const filter = buildSearchQueryFromSaved(search);
+    const queryParams = new URLSearchParams();
+    
+    // Build query parameters based on the filter
+    if (filter.location) queryParams.append("location", filter.location);
+    if (filter.type) queryParams.append("type", filter.type);
+    if (filter.priceMin) queryParams.append("priceMin", filter.priceMin.toString());
+    if (filter.priceMax) queryParams.append("priceMax", filter.priceMax.toString());
+    if (filter.bedroomsMin) queryParams.append("bedroomsMin", filter.bedroomsMin.toString());
+    if (filter.bedroomsMax) queryParams.append("bedroomsMax", filter.bedroomsMax.toString());
+    if (filter.bathroomsMin) queryParams.append("bathroomsMin", filter.bathroomsMin.toString());
+    if (filter.bathroomsMax) queryParams.append("bathroomsMax", filter.bathroomsMax.toString());
+    
+    navigate(`/properties?${queryParams.toString()}`);
+  };
+  
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3].map(i => (
+          <Card key={i}>
+            <CardHeader>
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-4 w-24" />
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-16" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+  
+  if (savedSearches.length === 0) {
+    return (
+      <EmptyState
+        icon={<Search size={40} />}
+        title={t("noSavedSearches")}
+        description={t("noSavedSearchesDescription")}
+      />
+    );
+  }
   
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <div>
-            <CardTitle>{t('savedSearches')}</CardTitle>
-            <CardDescription>{t('savedSearchesDescription')}</CardDescription>
-          </div>
-          <Button onClick={() => setIsCreateDialogOpen(true)}>
-            {t('newSavedSearch')}
-          </Button>
-        </div>
-      </CardHeader>
-      
-      <CardContent>
-        {isLoading ? (
-          <div className="space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-24 bg-muted animate-pulse rounded-md" />
-            ))}
-          </div>
-        ) : savedSearches.length === 0 ? (
-          <EmptyState
-            icon={<Search className="w-10 h-10 mb-2" />}
-            title={t('noSavedSearches')}
-            description={t('noSavedSearchesDescription')}
-            actionLabel={t('createFirstSavedSearch')}
-            action={() => setIsCreateDialogOpen(true)}
-          />
-        ) : (
-          <div className="space-y-3">
-            {savedSearches.map((search) => (
-              <div key={search.id} className="border rounded-md p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex items-center">
-                    <Search className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <h3 className="font-medium">{search.search_name}</h3>
-                    {search.is_alert && (
-                      <Badge variant="outline" className="ml-2 flex items-center gap-1">
-                        <Bell className="h-3 w-3" />
-                        {getFrequencyLabel(search.alert_frequency || '')}
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="flex gap-1">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => handleRunSearch(search)}
-                    >
-                      <PlayCircle className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setEditSearch(search)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => handleDelete(search.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm">
-                  {search.locations && search.locations.length > 0 && (
-                    <div>
-                      <span className="text-muted-foreground">{t('locations')}:</span>{' '}
-                      {search.locations.join(', ')}
-                    </div>
-                  )}
-                  
-                  {search.property_types && search.property_types.length > 0 && (
-                    <div>
-                      <span className="text-muted-foreground">{t('propertyTypes')}:</span>{' '}
-                      {search.property_types.join(', ')}
-                    </div>
-                  )}
-                  
-                  {(search.min_bedrooms !== null || search.max_bedrooms !== null) && (
-                    <div>
-                      <span className="text-muted-foreground">{t('bedrooms')}:</span>{' '}
-                      {search.min_bedrooms || 0} - {search.max_bedrooms || '∞'}
-                    </div>
-                  )}
-                  
-                  {(search.min_bathrooms !== null || search.max_bathrooms !== null) && (
-                    <div>
-                      <span className="text-muted-foreground">{t('bathrooms')}:</span>{' '}
-                      {search.min_bathrooms || 0} - {search.max_bathrooms || '∞'}
-                    </div>
-                  )}
-                  
-                  {search.min_roi !== null && (
-                    <div>
-                      <span className="text-muted-foreground">{t('minROI')}:</span>{' '}
-                      {search.min_roi}%
-                    </div>
-                  )}
-                  
-                  {search.price_range && (
-                    <div>
-                      <span className="text-muted-foreground">{t('priceRange')}:</span>{' '}
-                      {search.price_range}
-                    </div>
-                  )}
-                </div>
-                
-                <p className="text-xs text-muted-foreground mt-2">
-                  <Calendar className="inline h-3 w-3 mr-1" />
-                  {t('created')} {formatDistanceToNow(new Date(search.created_at), { addSuffix: true })}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-      
-      <SavedSearchDialog
-        isOpen={isCreateDialogOpen || !!editSearch}
-        onClose={() => {
-          setIsCreateDialogOpen(false);
-          setEditSearch(null);
-        }}
-        existingSearch={editSearch}
-        onSuccess={() => {
-          setIsCreateDialogOpen(false);
-          setEditSearch(null);
-          refetch();
-        }}
-      />
-    </Card>
+    <div className="space-y-4">
+      {savedSearches.map(search => (
+        <Card key={search.id}>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              {search.search_name}
+              {search.is_alert && (
+                <Badge variant="outline" className="ml-2 bg-blue-50 text-blue-700">
+                  <Bell className="h-3 w-3 mr-1" />
+                  {search.alert_frequency}
+                </Badge>
+              )}
+            </CardTitle>
+            <CardDescription>
+              {new Date(search.created_at).toLocaleDateString()}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {search.locations?.map(location => (
+                <Badge key={location} variant="secondary">{location}</Badge>
+              ))}
+              
+              {search.price_range && (
+                <Badge variant="secondary">
+                  {search.price_range[0]} - {search.price_range[1]} €
+                </Badge>
+              )}
+              
+              {search.property_types?.map(type => (
+                <Badge key={type} variant="secondary">{type}</Badge>
+              ))}
+              
+              {(search.min_bedrooms || search.max_bedrooms) && (
+                <Badge variant="secondary">
+                  {search.min_bedrooms || 0} - {search.max_bedrooms || '∞'} {t("bedrooms")}
+                </Badge>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleApplySearch(search)}
+            >
+              <Search className="h-4 w-4 mr-2" />
+              {t("applySearch")}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleDeleteSearch(search.id)}
+              disabled={isDeleting === search.id}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              {t("delete")}
+            </Button>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
   );
 }
