@@ -24,6 +24,7 @@ import Development from "./pages/Development";
 import DevelopmentDetail from "./pages/DevelopmentDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminRoute from "./components/admin/AdminRoute";
+import InvestorLevels from "./pages/InvestorLevels";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -109,6 +110,10 @@ const App = () => {
                   <RequireAuth>
                     <Settings />
                   </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/investor-levels" element={
+                  <InvestorLevels />
                 } />
                 
                 {/* Admin Routes */}
