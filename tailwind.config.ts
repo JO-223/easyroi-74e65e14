@@ -130,6 +130,14 @@ export default {
 						transform: 'translateX(100%)',
 					},
 				},
+				'bronze-pulse': {
+					'0%, 100%': {
+						opacity: '1',
+					},
+					'50%': {
+						opacity: '0.85',
+					},
+				},
 				'silver-shimmer': {
 					'0%': {
 						backgroundPosition: '-200% 0',
@@ -151,60 +159,44 @@ export default {
 						opacity: '0.95',
 					},
 				},
-				'ruby-reflection': {
-					'0%': {
-						backgroundPosition: '-100% 0',
-					},
-					'100%': {
-						backgroundPosition: '200% 0',
-					},
-				},
-				'emerald-glow': {
-					'0%': {
-						boxShadow: '0 0 3px rgba(80, 200, 120, 0.2)',
-						opacity: '0.9',
+				'ruby-pulse': {
+					'0%, 100%': {
+						transform: 'scale(1)',
 					},
 					'50%': {
-						boxShadow: '0 0 10px rgba(80, 200, 120, 0.6)',
-						opacity: '1',
-					},
-					'100%': {
-						boxShadow: '0 0 3px rgba(80, 200, 120, 0.2)',
-						opacity: '0.9',
+						transform: 'scale(1.03)',
 					},
 				},
-				'platinum-wave': {
+				'emerald-glint': {
 					'0%': {
-						backgroundPosition: '-100% -100%',
+						backgroundPosition: '0% 0%',
 					},
 					'100%': {
-						backgroundPosition: '200% 200%',
+						backgroundPosition: '100% 100%',
+					},
+				},
+				'platinum-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 5px rgba(255, 255, 255, 0.5)',
+					},
+					'50%': {
+						boxShadow: '0 0 15px rgba(255, 255, 255, 0.8)',
 					},
 				},
 				'diamond-sparkle': {
-					'0%': {
-						boxShadow: '0 0 5px rgba(185, 242, 255, 0.3)',
-						background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 25%)',
-						backgroundSize: '250% 250%',
+					'0%, 100%': {
 						backgroundPosition: '0% 0%',
+						boxShadow: '0 0 5px rgba(185, 242, 255, 0.5)',
 					},
 					'25%': {
-						boxShadow: '0 0 10px rgba(185, 242, 255, 0.5)',
+						boxShadow: '0 0 10px rgba(185, 242, 255, 0.7)',
 					},
 					'50%': {
-						boxShadow: '0 0 15px rgba(185, 242, 255, 0.7)',
-						background: 'radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 25%)',
-						backgroundSize: '250% 250%',
 						backgroundPosition: '100% 100%',
+						boxShadow: '0 0 15px rgba(185, 242, 255, 0.9)',
 					},
 					'75%': {
-						boxShadow: '0 0 10px rgba(185, 242, 255, 0.5)',
-					},
-					'100%': {
-						boxShadow: '0 0 5px rgba(185, 242, 255, 0.3)',
-						background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 25%)',
-						backgroundSize: '250% 250%',
-						backgroundPosition: '0% 0%',
+						boxShadow: '0 0 10px rgba(185, 242, 255, 0.7)',
 					},
 				},
 			},
@@ -212,20 +204,19 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				shimmer: 'shimmer 1.5s infinite',
+				'bronze-pulse': 'bronze-pulse 10s ease-in-out infinite',
 				'silver-shimmer': 'silver-shimmer 3s linear infinite',
 				'gold-shimmer': 'gold-shimmer 2s ease infinite',
-				'ruby-reflection': 'ruby-reflection 3s ease-in-out infinite',
-				'emerald-glow': 'emerald-glow 4s ease-in-out infinite',
-				'platinum-wave': 'platinum-wave 5s ease-in-out infinite',
-				'diamond-sparkle': 'diamond-sparkle 6s ease-in-out infinite',
+				'ruby-pulse': 'ruby-pulse 3s ease infinite',
+				'emerald-glint': 'emerald-glint 5s ease infinite',
+				'platinum-glow': 'platinum-glow 4s ease-in-out infinite',
+				'diamond-sparkle': 'diamond-sparkle 6s linear infinite',
 			},
 			backgroundImage: {
 				'gradient-luxury': 'linear-gradient(135deg, #271B4D 0%, #5A42A0 100%)',
 				'gradient-gold': 'linear-gradient(135deg, #D4AF37 0%, #F8E7AC 100%)',
 				'gradient-card': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03))',
 				'hero-pattern': 'url("/dubai-skyline.png")',
-				'ruby-shine': 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-				'platinum-diagonal': 'linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent)',
 			}
 		}
 	},
