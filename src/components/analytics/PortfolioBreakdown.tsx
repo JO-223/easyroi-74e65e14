@@ -27,9 +27,9 @@ export const PortfolioBreakdown = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <AllocationPieChart 
-        title={t('assetAllocation')}
+        title={t('propertyTypeAllocation')}
         data={assetAllocation}
-        emptyMessage={t('noAssetAllocationData')}
+        emptyMessage={t('noPropertyTypeData')}
         hasData={hasAssetData}
       />
       <AllocationPieChart 

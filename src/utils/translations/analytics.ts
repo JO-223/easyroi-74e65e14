@@ -43,7 +43,9 @@ export const analyticsKeys = [
   "marketVolatility",
   "unableToLoadData",
   "pleaseTryRefreshingThePage",
-  "singleLocationAllocation"
+  "singleLocationAllocation",
+  "propertyTypeAllocation", // New key
+  "noPropertyTypeData" // New key
 ] as const;
 
 export type AnalyticsKey = typeof analyticsKeys[number];
