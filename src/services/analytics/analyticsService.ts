@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 export interface AnalyticsData {
@@ -55,18 +54,14 @@ export async function getPropertyTypeAllocation(userId: string) {
   
   if (data && Array.isArray(data)) {
     data.forEach(property => {
-      // Add null checking before accessing property.type
-      if (!property.type) {
-        // Skip this property if type is null
+      // Add rigorous null and type checking
+      if (!property.type || typeof property.type !== 'object') {
         return;
       }
       
-      // Safely access the type name with proper type checking
-      const typeName = property.type && 
-                      typeof property.type === 'object' && 
-                      property.type !== null && 
-                      'name' in property.type ? 
-                      String(property.type.name) : 'Unknown';
+      const typeName = property.type && 'name' in property.type 
+        ? String(property.type.name || 'Unknown') 
+        : 'Unknown';
                       
       const price = Number(property.price || 0);
       totalInvestment += price;
