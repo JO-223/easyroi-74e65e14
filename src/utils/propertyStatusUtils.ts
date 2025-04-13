@@ -1,5 +1,6 @@
 
 import { useLanguage } from "@/contexts/LanguageContext";
+import { TranslationKey } from "@/utils/translationUtils";
 
 /**
  * Tipi di stato delle proprietà
@@ -23,13 +24,13 @@ export function usePropertyStatus() {
   const getLocalizedStatus = (status: PropertyStatus): string => {
     switch (status) {
       case 'development':
-        return t('development');
+        return t('development' as TranslationKey);
       case 'active':
-        return t('active');
+        return t('active' as TranslationKey);
       case 'sold':
-        return t('sold');
+        return t('sold' as TranslationKey);
       default:
-        return t('active');
+        return t('active' as TranslationKey);
     }
   };
   

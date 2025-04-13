@@ -38,6 +38,7 @@ export async function fetchPortfolioByCountry(userId?: string): Promise<CountryA
     return data || [];
   } catch (error) {
     console.error("Error in fetchPortfolioByCountry:", error);
+    // Fixed: Return empty array instead of empty object
     return [];
   }
 }
