@@ -32,7 +32,7 @@ export function PropertyFilters({
   amenities
 }: PropertyFiltersProps) {
   const t = useTranslation();
-  const [filtersOpen, setFiltersOpen] = useState(false); // Changed to false by default
+  const [filtersOpen, setFiltersOpen] = useState(false); // Start with amenities closed
   const [filters, setFilters] = useState<PropertyFilter>({});
   
   // Use only fixed countries for location options
@@ -201,4 +201,3 @@ export function PropertyFilters({
     </div>
   );
 }
-

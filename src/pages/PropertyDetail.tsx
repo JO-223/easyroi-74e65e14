@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Property } from "@/types/property";
@@ -12,7 +12,7 @@ import {
   CheckCircle, 
   XCircle, 
   Home, 
-  SquareFoot, 
+  SquareDot, 
   CreditCard,
   Percent
 } from "lucide-react";
@@ -20,7 +20,6 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { fetchPropertyById } from "@/services/propertyService";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export default function PropertyDetail() {
   const { id } = useParams<{ id: string }>();
@@ -129,7 +128,7 @@ export default function PropertyDetail() {
                 <span>{property.bathrooms} {t('bathrooms')}</span>
               </div>
               <div className="flex items-center">
-                <SquareFoot className="h-5 w-5 mr-1" />
+                <SquareDot className="h-5 w-5 mr-1" />
                 <span>{property.size_sqm} m²</span>
               </div>
             </div>
@@ -167,13 +166,6 @@ export default function PropertyDetail() {
                 <>
                   <dt className="text-gray-600">{t('serviceCharges')}</dt>
                   <dd className="font-medium">{formatCurrency(property.service_charges)}</dd>
-                </>
-              )}
-              
-              {property.listing_status && (
-                <>
-                  <dt className="text-gray-600">{t('listingStatus')}</dt>
-                  <dd className="font-medium capitalize">{property.listing_status}</dd>
                 </>
               )}
             </dl>
@@ -257,7 +249,7 @@ export default function PropertyDetail() {
         
         {/* Action buttons */}
         <div className="flex justify-between mt-8 pt-4 border-t">
-          <Link to="/properties">
+          <Link to="/dashboard/properties">
             <Button variant="outline" className="flex items-center">
               <Home className="mr-2 h-4 w-4" /> 
               {t('backToProperties')}

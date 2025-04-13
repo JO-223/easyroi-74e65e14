@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
 import Analytics from "./pages/Analytics";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
@@ -126,7 +128,11 @@ const App = () => {
                 <Route path="/properties" element={<Navigate to="/dashboard/properties" replace />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="/property/:id" element={<PropertyDetail />} />
+                <Route path="/property/:id" element={
+                  <RequireAuth>
+                    <PropertyDetail />
+                  </RequireAuth>
+                } />
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>

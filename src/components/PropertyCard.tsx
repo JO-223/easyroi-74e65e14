@@ -95,4 +95,3 @@ export function PropertyCard({ property }: PropertyCardProps) {
     </Card>
   );
 }
-

@@ -51,29 +51,35 @@ export const fetchProperties = async (filters?: PropertyFilter) => {
     throw error;
   }
   
-  // Transform the data to match our Property type
+  if (!data || !Array.isArray(data)) {
+    console.error('Invalid data format received from API');
+    return [];
+  }
+  
+  // Transform the data to match our Property type with proper type safety
   return data.map((item: any): Property => {
-    return {
+    const property: Property = {
       id: item.id,
       name: item.name,
-      price: item.price,
-      size_sqm: item.size_sqm,
-      occupation_status: item.occupation_status,
-      bedrooms: item.bedrooms,
-      bathrooms: item.bathrooms,
-      status: item.status,
-      service_charges: item.service_charges,
-      roi_percentage: item.roi_percentage,
-      min_investment: item.min_investment,
-      investor_level: item.investor_level,
-      created_at: item.created_at,
-      updated_at: item.updated_at,
+      price: Number(item.price),
+      size_sqm: Number(item.size_sqm),
+      occupation_status: String(item.occupation_status),
+      bedrooms: Number(item.bedrooms),
+      bathrooms: Number(item.bathrooms),
+      status: String(item.status),
+      service_charges: item.service_charges !== null ? Number(item.service_charges) : null,
+      roi_percentage: item.roi_percentage !== null ? Number(item.roi_percentage) : null,
+      min_investment: item.min_investment !== null ? Number(item.min_investment) : null,
+      investor_level: String(item.investor_level),
+      created_at: String(item.created_at),
+      updated_at: String(item.updated_at),
       location: item.location,
       type: item.type,
-      amenities: item.amenities.map((a: any) => a.amenity),
-      images: item.images,
-      pros_cons: item.pros_cons
+      amenities: Array.isArray(item.amenities) ? item.amenities.map((a: any) => a.amenity) : [],
+      images: Array.isArray(item.images) ? item.images : [],
+      pros_cons: Array.isArray(item.pros_cons) ? item.pros_cons : []
     };
+    return property;
   });
 };
 
@@ -96,28 +102,34 @@ export const fetchPropertyById = async (id: string): Promise<Property> => {
     throw error;
   }
   
-  // Transform the data to match our Property type
-  return {
+  if (!data) {
+    throw new Error('Property not found');
+  }
+  
+  // Transform the data to match our Property type with proper type handling
+  const property: Property = {
     id: data.id,
     name: data.name,
-    price: data.price,
-    size_sqm: data.size_sqm,
-    occupation_status: data.occupation_status,
-    bedrooms: data.bedrooms,
-    bathrooms: data.bathrooms,
-    status: data.status,
-    service_charges: data.service_charges,
-    roi_percentage: data.roi_percentage,
-    min_investment: data.min_investment,
-    investor_level: data.investor_level,
-    created_at: data.created_at,
-    updated_at: data.updated_at,
+    price: Number(data.price),
+    size_sqm: Number(data.size_sqm),
+    occupation_status: String(data.occupation_status),
+    bedrooms: Number(data.bedrooms),
+    bathrooms: Number(data.bathrooms),
+    status: String(data.status),
+    service_charges: data.service_charges !== null ? Number(data.service_charges) : null,
+    roi_percentage: data.roi_percentage !== null ? Number(data.roi_percentage) : null,
+    min_investment: data.min_investment !== null ? Number(data.min_investment) : null,
+    investor_level: String(data.investor_level),
+    created_at: String(data.created_at),
+    updated_at: String(data.updated_at),
     location: data.location,
     type: data.type,
-    amenities: data.amenities.map((a: any) => a.amenity),
-    images: data.images,
-    pros_cons: data.pros_cons
+    amenities: Array.isArray(data.amenities) ? data.amenities.map((a: any) => a.amenity) : [],
+    images: Array.isArray(data.images) ? data.images : [],
+    pros_cons: Array.isArray(data.pros_cons) ? data.pros_cons : []
   };
+  
+  return property;
 };
 
 export const fetchLocations = async () => {
