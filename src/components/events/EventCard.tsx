@@ -7,6 +7,7 @@ import { Event } from "@/types/property";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { BadgeLevel } from "@/components/ui/badge-level";
+import { useState } from "react";
 
 interface EventCardProps {
   event: Event;
@@ -16,6 +17,7 @@ interface EventCardProps {
 
 export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardProps) {
   const { t } = useLanguage();
+  const [imageError, setImageError] = useState(false);
   
   // Check if event is at capacity
   const isAtCapacity = event.max_attendees !== null && event.current_attendees >= event.max_attendees;
@@ -29,6 +31,11 @@ export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardPro
   const eventDate = new Date(event.date);
   const formattedDate = format(eventDate, 'MMM d, yyyy');
   
+  // Gestione degli errori di caricamento delle immagini
+  const handleImageError = () => {
+    setImageError(true);
+  };
+  
   return (
     <Card 
       className={cn(
@@ -39,11 +46,12 @@ export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardPro
       onClick={() => onClick(event)}
     >
       <div className="relative h-48 bg-gray-200">
-        {event.image_url ? (
+        {event.image_url && !imageError ? (
           <img 
             src={event.image_url} 
             alt={event.title} 
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={handleImageError}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200">
