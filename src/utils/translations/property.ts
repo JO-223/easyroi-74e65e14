@@ -92,6 +92,16 @@ export const propertyKeys = [
   'selectCountry',
   'exclusiveProperties',
   'noPropertiesFound',
+  'status',
+  'minInvestment',
+  'bedrooms',
+  'bathrooms',
+  'tbd',
+  'notAvailable', 
+  'expectedCompletion',
+  'fromLastMonth',
+  'alerts',
+  'value'
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];

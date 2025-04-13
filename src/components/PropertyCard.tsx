@@ -1,20 +1,22 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Property } from "@/types/property";
 import { Badge } from "@/components/ui/badge";
+import { BadgeLevel } from "@/components/ui/badge-level";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Home, MapPin, BedDouble, Bath, ArrowRight, Eye } from "lucide-react";
+import { Home, MapPin, BedDouble, Bath, ArrowRight, Eye, Droplet, Wifi, Car, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatCurrency } from "@/utils/formatters";
 
 export interface PropertyCardProps {
   property: Property;
-  onViewDetails?: (property: Property) => void; // Make onViewDetails optional
+  onViewDetails?: (property: Property) => void;
 }
 
 export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
-  const t = useLanguage();
+  const { t } = useLanguage();
   
   // Get primary image or placeholder
   const primaryImage = property.images.find(img => img.is_primary)?.url || 
@@ -33,7 +35,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-xl font-bold text-gray-800">{property.name}</CardTitle>
-          <Badge level={property.investor_level as any} />
+          <BadgeLevel level={property.investor_level as any} />
         </div>
         <div className="flex items-center text-sm text-gray-500 mt-1">
           <MapPin className="h-3.5 w-3.5 mr-1" />
@@ -44,7 +46,9 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       </CardHeader>
       
       <CardContent className="pb-2">
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{property.type.name}</p>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          {typeof property.type === 'string' ? property.type : property.type.name}
+        </p>
         
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -75,7 +79,7 @@ export function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
               {amenity.icon === 'droplet' && <Droplet className="h-3 w-3 mr-1" />}
               {amenity.icon === 'wifi' && <Wifi className="h-3 w-3 mr-1" />}
               {amenity.icon === 'car' && <Car className="h-3 w-3 mr-1" />}
-              {amenity.icon === 'bed' && <Bed className="h-3 w-3 mr-1" />}
+              {amenity.icon === 'bed' && <BedDouble className="h-3 w-3 mr-1" />}
               {amenity.icon === 'bath' && <Bath className="h-3 w-3 mr-1" />}
               {(!amenity.icon) && <Globe className="h-3 w-3 mr-1" />}
               {amenity.name}

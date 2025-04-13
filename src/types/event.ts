@@ -13,7 +13,9 @@ export interface Event {
   required_level: string | null;
   created_by: string;
   image_url?: string;
-  property_id?: string; // Added missing property
-  project_id?: string;  // Added missing property
-  average_rating?: number; // Added missing property
+  property_id?: string;
+  project_id?: string;
+  average_rating?: number;
+  // Add missing properties
+  required_badges?: string[];
 }

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
@@ -17,28 +16,30 @@ import {
 
 interface PropertyFiltersProps {
   onFilterChange: (filters: PropertyFilter) => void;
-  locations: {city: string, country: string, zone: string}[];
-  propertyTypes: {id: string, name: string}[];
-  amenities: {id: string, name: string}[];
+  locations: { city: string; country: string; zone: string }[];
+  propertyTypes: { id: string; name: string }[];
+  amenities: { id: string; name: string }[];
   investorLevels: string[];
+  className?: string;
 }
 
-export function PropertyFilters({ 
-  onFilterChange, 
-  locations, 
-  propertyTypes, 
+export function PropertyFilters({
+  onFilterChange,
+  locations,
+  propertyTypes,
   amenities,
-  investorLevels
+  investorLevels,
+  className
 }: PropertyFiltersProps) {
   const t = useTranslation();
   const [filtersOpen, setFiltersOpen] = useState(true);
   const [filters, setFilters] = useState<PropertyFilter>({});
-  
+
   // Get unique cities and countries
   const cities = Array.from(new Set(locations.map(loc => loc.city)));
   const countries = Array.from(new Set(locations.map(loc => loc.country)));
   const zones = Array.from(new Set(locations.map(loc => loc.zone)));
-  
+
   const locationOptions = [
     { label: t('allLocations'), value: 'all' },
     ...cities.map(city => ({ label: city, value: city })),
@@ -46,41 +47,40 @@ export function PropertyFilters({
     ...zones.map(zone => ({ label: zone, value: zone }))
   ];
 
-  const handleFilterChange = (key: keyof PropertyFilter, value: any) => {
-    const newFilters = { ...filters, [key]: value };
-    
-    // If value is 'all' or undefined, remove the filter
-    if (value === 'all' || value === undefined) {
-      delete newFilters[key];
-    }
-    
-    setFilters(newFilters);
+  const handleFilterChange = (
+    field: keyof PropertyFilter,
+    value: string | number | string[] | null
+  ) => {
+    const updatedFilters = { ...filters, [field]: value };
+    setFilters(updatedFilters);
+    onFilterChange(updatedFilters);
   };
-  
-  const handleAmenityToggle = (amenityId: string, checked: boolean) => {
-    const currentAmenities = filters.amenities || [];
-    let newAmenities: string[];
-    
-    if (checked) {
-      newAmenities = [...currentAmenities, amenityId];
-    } else {
-      newAmenities = currentAmenities.filter(id => id !== amenityId);
-    }
-    
-    handleFilterChange('amenities', newAmenities.length > 0 ? newAmenities : undefined);
+
+  const handleAmenitiesChange = (amenityIds: string[]) => {
+    const updatedFilters = { ...filters };
+    updatedFilters.amenities = amenityIds.length > 0 ? amenityIds : undefined;
+    setFilters(updatedFilters);
+    onFilterChange(updatedFilters);
   };
-  
+
+  const handleInvestorLevelChange = (level: string) => {
+    const updatedFilters = { ...filters };
+    updatedFilters.investorLevel = level !== "all" ? level : undefined;
+    setFilters(updatedFilters);
+    onFilterChange(updatedFilters);
+  };
+
   const handleApplyFilters = () => {
     onFilterChange(filters);
   };
-  
+
   const handleResetFilters = () => {
     setFilters({});
     onFilterChange({});
   };
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200">
+    <div className={`bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200 ${className}`}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Location filter */}
         <div>
@@ -153,7 +153,7 @@ export function PropertyFilters({
           <h3 className="font-medium mb-2 text-gray-700">{t('investorLevel')}</h3>
           <Select 
             value={filters.investorLevel || 'all'} 
-            onValueChange={(value) => handleFilterChange('investorLevel', value)}
+            onValueChange={(value) => handleInvestorLevelChange(value)}
           >
             <SelectTrigger className="w-full bg-white border-gray-300 text-gray-800">
               <SelectValue placeholder={t('allLevels')} />
@@ -193,7 +193,7 @@ export function PropertyFilters({
                   <Checkbox 
                     id={`amenity-${amenity.id}`} 
                     checked={filters.amenities?.includes(amenity.id)}
-                    onCheckedChange={(checked) => handleAmenityToggle(amenity.id, checked as boolean)}
+                    onCheckedChange={(checked) => handleAmenitiesChange(checked ? [amenity.id] : [])}
                     className="border-gray-300 data-[state=checked]:bg-easyroi-gold data-[state=checked]:text-easyroi-navy"
                   />
                   <label 

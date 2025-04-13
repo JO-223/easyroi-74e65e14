@@ -2,119 +2,113 @@
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyDocument } from "@/types/document";
 
-export interface UploadDocumentParams {
-  property_id: string;
-  userId: string;
-  fileName: string;
-  documentType: string;
-  file: File;
-  description?: string;
-  isConfidential: boolean;
-}
+export const fetchPropertyDocuments = async (propertyId: string): Promise<PropertyDocument[]> => {
+  try {
+    const { data, error } = await supabase
+      .from("property_documents")
+      .select("*")
+      .eq("property_id", propertyId)
+      .order("upload_date", { ascending: false });
 
-export async function fetchPropertyDocuments(propertyId: string): Promise<PropertyDocument[]> {
-  const { data, error } = await supabase
-    .from("property_documents")
-    .select("*")
-    .eq("property_id", propertyId)
-    .order("upload_date", { ascending: false });
+    if (error) {
+      console.error("Error fetching documents:", error);
+      throw new Error(error.message);
+    }
 
-  if (error) {
-    console.error("Error fetching property documents:", error);
-    throw new Error(error.message);
+    // Add proper type casting
+    return data as PropertyDocument[];
+  } catch (error) {
+    console.error("Error in fetchPropertyDocuments:", error);
+    throw error;
   }
+};
 
-  return data as PropertyDocument[];
-}
+export const uploadPropertyDocument = async (
+  documentData: Omit<PropertyDocument, "id" | "created_at"> & { file: File }
+): Promise<PropertyDocument> => {
+  try {
+    const { file, ...docData } = documentData;
+    
+    // Upload file to storage
+    const filePath = `documents/${docData.property_id}/${Date.now()}_${file.name}`;
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("property-documents")
+      .upload(filePath, file);
 
-export async function uploadPropertyDocument(params: UploadDocumentParams): Promise<PropertyDocument> {
-  const { property_id, userId, fileName, documentType, file, description, isConfidential } = params;
-  
-  // Upload file to storage
-  const fileExt = file.name.split(".").pop();
-  const filePath = `properties/${property_id}/documents/${Date.now()}_${fileName.replace(/\s+/g, "_")}.${fileExt}`;
+    if (uploadError) {
+      console.error("Error uploading document file:", uploadError);
+      throw new Error(uploadError.message);
+    }
 
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from("documents")
-    .upload(filePath, file);
+    // Get public URL
+    const { data: publicUrlData } = await supabase.storage
+      .from("property-documents")
+      .getPublicUrl(filePath);
 
-  if (uploadError) {
-    console.error("Error uploading document file:", uploadError);
-    throw new Error(uploadError.message);
+    // Create document record
+    const { data, error } = await supabase
+      .from("property_documents")
+      .insert({
+        ...docData,
+        file_path: publicUrlData!.publicUrl,
+        upload_date: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error creating document record:", error);
+      throw new Error(error.message);
+    }
+
+    // Add proper type casting
+    return data as PropertyDocument;
+  } catch (error) {
+    console.error("Error in uploadPropertyDocument:", error);
+    throw error;
   }
+};
 
-  // Create document record
-  const { data: documentData, error: documentError } = await supabase
-    .from("property_documents")
-    .insert({
-      property_id,
-      document_name: fileName,
-      document_type: documentType,
-      file_path: filePath,
-      mime_type: file.type,
-      file_size: file.size,
-      is_confidential: isConfidential,
-      uploaded_by: userId,
-      upload_date: new Date().toISOString(),
-      description: description || null,
-    })
-    .select("*")
-    .single();
+export const deletePropertyDocument = async (documentId: string): Promise<void> => {
+  try {
+    // First get the document to find the file path
+    const { data: document, error: getError } = await supabase
+      .from("property_documents")
+      .select("file_path")
+      .eq("id", documentId)
+      .single();
 
-  if (documentError) {
-    console.error("Error creating document record:", documentError);
-    throw new Error(documentError.message);
-  }
+    if (getError) {
+      console.error("Error fetching document for deletion:", getError);
+      throw new Error(getError.message);
+    }
 
-  return documentData as PropertyDocument;
-}
-
-export async function getDocumentAccessUrl(documentId: string): Promise<string> {
-  const { data, error } = await supabase
-    .from("property_documents")
-    .select("file_path")
-    .eq("id", documentId)
-    .single();
-
-  if (error) {
-    console.error("Error fetching document path:", error);
-    throw new Error(error.message);
-  }
-
-  const { data: urlData, error: urlError } = await supabase.storage
-    .from("documents")
-    .createSignedUrl(data.file_path, 3600); // 1 hour expiry
-
-  if (urlError) {
-    console.error("Error creating signed URL:", urlError);
-    throw new Error(urlError.message);
-  }
-
-  return urlData.signedUrl;
-}
-
-export async function deletePropertyDocument(documentId: string): Promise<void> {
-  const { data, error } = await supabase
-    .from("property_documents")
-    .delete()
-    .eq("id", documentId)
-    .select("file_path")
-    .single();
-
-  if (error) {
-    console.error("Error deleting document record:", error);
-    throw new Error(error.message);
-  }
-
-  // Delete file from storage
-  if (data?.file_path) {
+    // Extract the storage path from the URL
+    const storagePath = document.file_path.split("/").slice(-3).join("/");
+    
+    // Delete the file from storage
     const { error: storageError } = await supabase.storage
-      .from("documents")
-      .remove([data.file_path]);
+      .from("property-documents")
+      .remove([storagePath]);
 
     if (storageError) {
-      console.error("Warning: Could not delete file from storage:", storageError);
-      // We don't throw here since the database record is already deleted
+      console.error("Error deleting document file:", storageError);
+      // Continue to delete the record even if file deletion fails
     }
+
+    // Delete the record from the database
+    const { error } = await supabase
+      .from("property_documents")
+      .delete()
+      .eq("id", documentId);
+
+    if (error) {
+      console.error("Error deleting document record:", error);
+      throw new Error(error.message);
+    }
+  } catch (error) {
+    console.error("Error in deletePropertyDocument:", error);
+    throw error;
   }
-}
+};

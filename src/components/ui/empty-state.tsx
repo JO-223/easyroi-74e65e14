@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "./button";
 import { Card, CardContent, CardDescription, CardTitle } from "./card";
+import { cn } from "@/lib/utils";
 
 export interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -9,7 +10,7 @@ export interface EmptyStateProps {
   description?: string;
   action?: () => void;
   actionLabel?: string;
-  variant?: "default" | "card";
+  variant?: "default" | "card" | "analytics";
 }
 
 export function EmptyState({
@@ -37,6 +38,14 @@ export function EmptyState({
 
   if (variant === "card") {
     return <Card className="w-full">{content}</Card>;
+  }
+  
+  if (variant === "analytics") {
+    return (
+      <Card className={cn("h-full w-full border border-dashed")}>
+        {content}
+      </Card>
+    );
   }
 
   return content;

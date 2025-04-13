@@ -13,4 +13,20 @@ export interface PropertyDocument {
   last_accessed?: string;
   description?: string;
   created_at?: string;
+  file?: File; // for upload operations only
+}
+
+export interface DocumentUploadDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  propertyId: string;
+  onSuccess?: () => void;
+}
+
+export type DocumentType = 'contract' | 'deed' | 'floorplan' | 'report' | 'financial' | 'other';
+
+export interface DocumentTypesOption {
+  value: DocumentType;
+  label: string;
+  icon?: React.ReactNode;
 }

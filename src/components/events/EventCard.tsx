@@ -1,19 +1,22 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { Calendar, Clock, MapPin, Users, ChevronRight, AlertTriangle } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, ChevronRight, AlertTriangle, Monitor, Globe } from "lucide-react";
 import { Event } from "@/types/event";
 import { Badge } from "@/components/ui/badge";
+import { BadgeLevel } from "@/components/ui/badge-level";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
 
 export interface EventCardProps {
   event: Event;
   onClick: (event: Event) => void;
   userBadge?: string;
-  compact?: boolean; // Added compact prop
+  compact?: boolean;
 }
 
 export function EventCard({ event, onClick, userBadge = "bronze", compact = false }: EventCardProps) {

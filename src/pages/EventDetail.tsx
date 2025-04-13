@@ -1,62 +1,64 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchEvent } from "@/services/eventService";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Calendar, Clock, MapPin, Users, Building2, Construction, Star, Home, Building } from "lucide-react";
-import { format } from "date-fns";
-import EventReviewsList from "@/components/events/EventReviewsList";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { Link, ExternalLink } from "react-router-dom";
-import { SideCardItem } from "@/components/ui/side-card-item";
+
+import { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { fetchEvent, registerForEvent, fetchSimilarEvents } from '@/services/eventService';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
+import { SideCardItem } from '@/components/ui/side-card-item';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Calendar, Clock, MapPin, Users, AlertTriangle, Globe, Building, Construction } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { BadgeLevel } from '@/components/ui/badge-level';
+import { EventList } from '@/components/events/EventList';
+import { EventReviewsList } from '@/components/events/EventReviewsList';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export default function EventDetail() {
   const { eventId } = useParams<{ eventId: string }>();
   const { t } = useLanguage();
+  const { user, userDetails } = useAuth();
+  const { toast } = useToast();
+  const [registeringInProgress, setRegisteringInProgress] = useState(false);
   
+  // Fetch event details
   const { data: event, isLoading, error } = useQuery({
-    queryKey: ["event", eventId],
-    queryFn: () => fetchEvent(eventId as string),
+    queryKey: ['event', eventId],
+    queryFn: () => fetchEvent(eventId!),
     enabled: !!eventId
   });
   
-  if (isLoading) {
+  // Fetch similar events
+  const { data: similarEvents = [] } = useQuery({
+    queryKey: ['similarEvents', eventId],
+    queryFn: () => fetchSimilarEvents(eventId!),
+    enabled: !!eventId && !!event
+  });
+  
+  // Handle error states
+  if (error) {
     return (
-      <DashboardLayout title={t('loading')} subtitle="">
-        <div className="container mx-auto py-6">
-          <Card className="animate-pulse">
-            <CardHeader>
-              <div className="h-8 w-3/4 bg-muted rounded mb-2"></div>
-              <div className="h-4 w-1/2 bg-muted rounded"></div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="h-20 bg-muted rounded"></div>
-                <div className="h-40 bg-muted rounded"></div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <DashboardLayout title={t('eventDetail')} subtitle={""}>
+        <EmptyState 
+          variant="card"
+          icon={<AlertTriangle size={40} />}
+          title={t('errorLoadingEvent')}
+          description={t('errorLoadingEventDescription')}
+        />
       </DashboardLayout>
     );
   }
   
-  if (error) {
+  if (isLoading) {
     return (
-      <DashboardLayout title={t('error')} subtitle="">
-        <div className="container mx-auto py-6">
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>{t('errorLoadingEvent')}</AlertTitle>
-            <AlertDescription>
-              {t('errorLoadingEventDescription')}
-            </AlertDescription>
-          </Alert>
+      <DashboardLayout title={t('eventDetail')} subtitle={""}>
+        <div className="w-full text-center p-10">
+          <div className="animate-spin w-10 h-10 border-4 border-easyroi-gold border-t-transparent rounded-full mx-auto"></div>
+          <p className="mt-4 text-gray-500">Loading event details...</p>
         </div>
       </DashboardLayout>
     );
@@ -64,184 +66,192 @@ export default function EventDetail() {
   
   if (!event) {
     return (
-      <DashboardLayout title={t('eventNotFound')} subtitle="">
-        <div className="container mx-auto py-6">
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>{t('eventNotFound')}</AlertTitle>
-            <AlertDescription>
-              {t('eventNotFoundDescription')}
-            </AlertDescription>
-          </Alert>
-        </div>
+      <DashboardLayout title={t('eventDetail')} subtitle={""}>
+        <EmptyState 
+          variant="card"
+          icon={<AlertTriangle size={40} />}
+          title={t('eventNotFound')}
+          description={t('eventNotFoundDescription')}
+        />
       </DashboardLayout>
     );
   }
   
+  const eventDate = new Date(event.date);
+  const formattedDate = format(eventDate, 'EEEE, MMMM d, yyyy');
+  
+  // Check if user is already registered
+  const isRegistered = false; // This would come from a backend check
+  
+  // Check if event is in the past
+  const isPastEvent = new Date(event.date) < new Date();
+  
+  // Check if event is at capacity
+  const isAtCapacity = event.max_attendees !== null && event.current_attendees >= event.max_attendees;
+  
+  // Format rating if available
+  const formattedRating = event.average_rating 
+    ? `${event.average_rating.toFixed(1)}/5.0`
+    : "No ratings yet";
+    
   return (
-    <DashboardLayout title={event.title} subtitle="">
-      <div className="container mx-auto py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <CardTitle className="text-2xl">{event.title}</CardTitle>
-                    <CardDescription className="flex items-center mt-1">
-                      <Badge variant="secondary" className="mr-2">
-                        {event.event_type}
-                      </Badge>
-                      {event.average_rating && (
-                        <div className="flex items-center">
-                          <Star className="h-4 w-4 text-amber-500 fill-amber-500 mr-1" />
-                          {event.average_rating.toFixed(1)}
-                        </div>
-                      )}
-                    </CardDescription>
-                  </div>
-                  <Button>
-                    {t('registerForEvent')}
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {event.image_url && (
-                  <div className="relative w-full h-64 mb-6">
-                    <img
-                      src={event.image_url}
-                      alt={event.title}
-                      className="w-full h-full object-cover rounded-md"
-                    />
-                  </div>
-                )}
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center">
-                    <Calendar className="h-5 w-5 text-muted-foreground mr-2" />
-                    <span>
-                      {format(new Date(event.date), 'MMMM d, yyyy')}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="h-5 w-5 text-muted-foreground mr-2" />
-                    <span>{event.time}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <MapPin className="h-5 w-5 text-muted-foreground mr-2" />
-                    <span>{event.location}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Users className="h-5 w-5 text-muted-foreground mr-2" />
-                    <span>
-                      {event.current_attendees} / {event.max_attendees || '∞'} {t('attendees')}
-                    </span>
-                  </div>
-                  
-                  {event.property_id && (
-                    <SideCardItem
-                      icon={<Home size={16} />}
-                      label={t('relatedProperty')}
-                      value={
-                        <Link
-                          to={`/properties/${event.property_id}`}
-                          className="text-blue-600 hover:underline flex items-center"
-                        >
-                          {t('viewDetails')} <ExternalLink className="ml-1 h-3 w-3" />
-                        </Link>
-                      }
-                    />
-                  )}
-                  
-                  {event.project_id && (
-                    <SideCardItem
-                      icon={<Building size={16} />}
-                      label={t('relatedProject')}
-                      value={
-                        <Link
-                          to={`/development/${event.project_id}`}
-                          className="text-blue-600 hover:underline flex items-center"
-                        >
-                          {t('viewDetails')} <ExternalLink className="ml-1 h-3 w-3" />
-                        </Link>
-                      }
-                    />
-                  )}
-                </div>
-                
-                <Separator className="my-6" />
-                
-                <div>
-                  <h3 className="text-lg font-medium mb-2">{t('description')}</h3>
-                  <p className="text-muted-foreground whitespace-pre-line">
-                    {event.description}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <EventReviewsList eventId={eventId as string} />
+    <DashboardLayout 
+      title={event.title} 
+      subtitle={formattedDate}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          {/* Event image */}
+          <div className="relative rounded-lg overflow-hidden h-72 bg-gray-100">
+            {event.image_url ? (
+              <img 
+                src={event.image_url} 
+                alt={event.title} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full bg-gray-200">
+                <Calendar className="h-24 w-24 text-gray-400" />
+              </div>
+            )}
           </div>
           
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('eventDetails')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium">{t('requiredLevel')}</h4>
-                    <div className="flex gap-1 mt-1">
-                      {event.required_badges?.map((badge) => (
-                        <Badge key={badge} variant="outline">
-                          {badge}
-                        </Badge>
-                      ))}
+          {/* Related property or project links */}
+          {event.property_id && (
+            <div className="bg-slate-50 p-4 rounded-lg border">
+              <h3 className="text-lg font-medium mb-2">{t('relatedProperty')}</h3>
+              <Link to={`/properties/${event.property_id}`} className="text-easyroi-gold hover:underline flex items-center">
+                <Building className="mr-2 h-4 w-4" />
+                View related property
+              </Link>
+            </div>
+          )}
+          
+          {event.project_id && (
+            <div className="bg-slate-50 p-4 rounded-lg border">
+              <h3 className="text-lg font-medium mb-2">{t('relatedProject')}</h3>
+              <Link to={`/development/${event.project_id}`} className="text-easyroi-gold hover:underline flex items-center">
+                <Construction className="mr-2 h-4 w-4" />
+                View related development project
+              </Link>
+            </div>
+          )}
+          
+          {/* Event description */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Event Description</h2>
+            <p className="text-gray-700 whitespace-pre-line">{event.description}</p>
+          </div>
+          
+          {/* Event tabs */}
+          <Tabs defaultValue="details" className="w-full">
+            <TabsList>
+              <TabsTrigger value="details">Details</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            </TabsList>
+            <TabsContent value="details" className="space-y-4 mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white p-5 rounded-lg border">
+                  <h3 className="font-medium text-lg mb-3">Event Information</h3>
+                  <div className="space-y-3">
+                    {/* Required level */}
+                    {event.required_badges && event.required_badges.length > 0 && (
+                      <div className="flex items-start space-x-3">
+                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-gray-500">{t('requiredLevel')}</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {event.required_badges.map(badge => (
+                              <BadgeLevel key={badge} level={badge as any} className="scale-75" />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Format: online or in-person */}
+                    <div className="flex items-start space-x-3">
+                      {event.is_online ? <Globe className="h-5 w-5 text-blue-500 mt-0.5" /> : <MapPin className="h-5 w-5 text-blue-500 mt-0.5" />}
+                      <div>
+                        <p className="text-sm text-gray-500">{t('format')}</p>
+                        <p className="font-medium">
+                          {event.is_online ? "Online" : t('inPerson')}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium">{t('eventType')}</h4>
-                    <p className="text-muted-foreground">{event.event_type}</p>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium">{t('format')}</h4>
-                    <p className="text-muted-foreground">
-                      {event.is_online ? t('online') : t('inPerson')}
-                    </p>
-                  </div>
-                  
-                  {event.max_attendees && (
-                    <div>
-                      <h4 className="font-medium">{t('capacity')}</h4>
-                      <p className="text-muted-foreground">
-                        {event.max_attendees} {t('attendees')}
-                      </p>
+                    
+                    {/* Capacity */}
+                    <div className="flex items-start space-x-3">
+                      <Users className="h-5 w-5 text-blue-500 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-gray-500">{t('capacity')}</p>
+                        <p className="font-medium">
+                          {event.max_attendees 
+                            ? `${event.current_attendees}/${event.max_attendees} ${t('attendees')}`
+                            : `${event.current_attendees} ${t('registered')} (unlimited capacity)`
+                          }
+                        </p>
+                      </div>
                     </div>
-                  )}
-                  
-                  <div>
-                    <h4 className="font-medium">{t('registered')}</h4>
-                    <p className="text-muted-foreground">
-                      {event.current_attendees} {t('attendees')}
-                    </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </TabsContent>
+            <TabsContent value="reviews">
+              <EventReviewsList eventId={event.id} />
+            </TabsContent>
+          </Tabs>
+        </div>
+        
+        {/* Sidebar */}
+        <div className="space-y-4">
+          {/* Registration card */}
+          <div className="bg-white p-5 rounded-lg border shadow-sm">
+            {/* Registration action button */}
+            <Button 
+              className="w-full bg-easyroi-gold hover:bg-easyroi-gold/90 mb-4"
+              disabled={isRegistered || isPastEvent || isAtCapacity || registeringInProgress}
+            >
+              {isRegistered 
+                ? "You're registered" 
+                : isPastEvent 
+                  ? "Event has ended" 
+                  : isAtCapacity 
+                    ? "Event at capacity" 
+                    : "Register for event"
+              }
+            </Button>
             
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('similarEvents')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{t('noSimilarEvents')}</p>
-              </CardContent>
-            </Card>
+            {/* Event info summary */}
+            <div className="space-y-4 pt-4 border-t">
+              <SideCardItem 
+                icon={<Calendar className="h-5 w-5 text-gray-400" />}
+                label="Date"
+                value={formattedDate}
+              />
+              <SideCardItem 
+                icon={<Clock className="h-5 w-5 text-gray-400" />}
+                label="Time"
+                value={event.time}
+              />
+              <SideCardItem 
+                icon={event.is_online ? <Globe className="h-5 w-5 text-gray-400" /> : <MapPin className="h-5 w-5 text-gray-400" />}
+                label="Location"
+                value={event.location}
+              />
+            </div>
           </div>
         </div>
+      </div>
+      
+      {/* Similar events section */}
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold mb-6">{t('similarEvents')}</h2>
+        {similarEvents.length > 0 ? (
+          <EventList events={similarEvents} userBadge={userDetails?.level} />
+        ) : (
+          <p className="text-gray-500 text-center py-8">{t('noSimilarEvents')}</p>
+        )}
       </div>
     </DashboardLayout>
   );

@@ -53,7 +53,7 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
               {property.status}
             </Badge>
             <Badge variant="outline" className="bg-blue-500/20 text-blue-300 border-blue-500/50">
-              {property.type.name}
+              {typeof property.type === 'string' ? property.type : property.type.name}
             </Badge>
           </div>
           <DialogTitle className="text-2xl font-bold">{property.name}</DialogTitle>
