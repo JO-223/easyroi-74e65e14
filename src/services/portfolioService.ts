@@ -20,21 +20,21 @@ export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSu
       throw new Error("No portfolio data found");
     }
     
-    // Create typed object with safe type checking and default values
-    const typedData: PortfolioSummaryData = {
-      total_properties: typeof data.total_properties === 'number' ? data.total_properties : 0,
-      total_investment: typeof data.total_investment === 'number' ? data.total_investment : 0,
-      average_roi: typeof data.average_roi === 'number' ? data.average_roi : 0,
-      portfolio_value: typeof data.portfolio_value === 'number' ? data.portfolio_value : 0,
-      monthly_income: typeof data.monthly_income === 'number' ? data.monthly_income : 0,
-      yearly_income: typeof data.yearly_income === 'number' ? data.yearly_income : 0,
-      total_cities: typeof data.total_cities === 'number' ? data.total_cities : 0,
-      total_countries: typeof data.total_countries === 'number' ? data.total_countries : 0,
-      growth_percentage: typeof data.growth_percentage === 'number' ? data.growth_percentage : 0,
-      yield_percentage: typeof data.yield_percentage === 'number' ? data.yield_percentage : 0
-    };
+    // Type-cast data to Record<string, any> to avoid 'unknown' type errors
+    const typedData = data as Record<string, any>;
     
-    return typedData;
+    return {
+      total_properties: typeof typedData.total_properties === 'number' ? typedData.total_properties : 0,
+      total_investment: typeof typedData.total_investment === 'number' ? typedData.total_investment : 0,
+      average_roi: typeof typedData.average_roi === 'number' ? typedData.average_roi : 0,
+      portfolio_value: typeof typedData.portfolio_value === 'number' ? typedData.portfolio_value : 0,
+      monthly_income: typeof typedData.monthly_income === 'number' ? typedData.monthly_income : 0,
+      yearly_income: typeof typedData.yearly_income === 'number' ? typedData.yearly_income : 0,
+      total_cities: typeof typedData.total_cities === 'number' ? typedData.total_cities : 0,
+      total_countries: typeof typedData.total_countries === 'number' ? typedData.total_countries : 0,
+      growth_percentage: typeof typedData.growth_percentage === 'number' ? typedData.growth_percentage : 0,
+      yield_percentage: typeof typedData.yield_percentage === 'number' ? typedData.yield_percentage : 0
+    };
   } catch (error) {
     console.error("Error fetching portfolio summary:", error);
     // Return default values on error
@@ -65,10 +65,14 @@ export async function fetchPortfolioAllocation(userId: string): Promise<Portfoli
     }
     
     // Safely map data with type checking
-    return data.map(item => ({
-      location: String(item?.location || ''),
-      percentage: Number(item?.percentage || 0)
-    }));
+    return data.map(item => {
+      // Type-cast item to Record<string, any> to avoid 'unknown' type errors
+      const typedItem = item as Record<string, any>;
+      return {
+        location: String(typedItem?.location || ''),
+        percentage: Number(typedItem?.percentage || 0)
+      };
+    });
   } catch (error) {
     console.error("Error fetching portfolio allocation:", error);
     return [];
@@ -87,12 +91,16 @@ export async function fetchInvestmentGrowth(userId: string): Promise<InvestmentG
     }
     
     // Safely map data with type checking
-    return data.map(item => ({
-      month: String(item?.month || ''),
-      month_index: Number(item?.month_index || 0),
-      year: Number(item?.year || new Date().getFullYear()),
-      value: Number(item?.value || 0)
-    }));
+    return data.map(item => {
+      // Type-cast item to Record<string, any> to avoid 'unknown' type errors
+      const typedItem = item as Record<string, any>;
+      return {
+        month: String(typedItem?.month || ''),
+        month_index: Number(typedItem?.month_index || 0),
+        year: Number(typedItem?.year || new Date().getFullYear()),
+        value: Number(typedItem?.value || 0)
+      };
+    });
   } catch (error) {
     console.error("Error fetching investment growth:", error);
     return [];
@@ -110,14 +118,14 @@ export async function fetchPerformanceMetrics(userId: string): Promise<Performan
       throw new Error("No metrics data found");
     }
     
-    // Create typed object with safe type checking
-    const typedData: PerformanceMetrics = {
-      average_roi: typeof data.average_roi === 'number' ? data.average_roi : 0,
-      capital_growth: typeof data.capital_growth === 'number' ? data.capital_growth : 0,
-      rental_yield: typeof data.rental_yield === 'number' ? data.rental_yield : 0
-    };
+    // Type-cast data to Record<string, any> to avoid 'unknown' type errors
+    const typedData = data as Record<string, any>;
     
-    return typedData;
+    return {
+      average_roi: typeof typedData.average_roi === 'number' ? typedData.average_roi : 0,
+      capital_growth: typeof typedData.capital_growth === 'number' ? typedData.capital_growth : 0,
+      rental_yield: typeof typedData.rental_yield === 'number' ? typedData.rental_yield : 0
+    };
   } catch (error) {
     console.error("Error fetching performance metrics:", error);
     return {

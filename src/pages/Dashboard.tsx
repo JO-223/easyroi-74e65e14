@@ -60,6 +60,12 @@ const Dashboard = () => {
     );
   }
 
+  // Transform data to match the expected ChartDataItem format
+  const allocationData = data?.allocation ? data.allocation.map(item => ({
+    name: item.location,
+    value: item.percentage
+  })) : [];
+
   return (
     <DashboardLayout title="Dashboard" subtitle={`Welcome back, ${userDetails?.firstName || 'User'}!`}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -71,7 +77,7 @@ const Dashboard = () => {
         />
         
         <PortfolioAllocationChart 
-          data={data?.allocation || []} 
+          data={allocationData} 
           isLoading={isLoading} 
         />
       </div>
