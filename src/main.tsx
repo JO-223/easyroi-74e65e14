@@ -4,10 +4,16 @@ import App from './App.tsx'
 import './index.css'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { Toaster } from './components/ui/toaster'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+// Create a client
+const queryClient = new QueryClient()
 
 createRoot(document.getElementById("root")!).render(
-  <LanguageProvider>
-    <App />
-    <Toaster />
-  </LanguageProvider>
+  <QueryClientProvider client={queryClient}>
+    <LanguageProvider>
+      <App />
+      <Toaster />
+    </LanguageProvider>
+  </QueryClientProvider>
 );

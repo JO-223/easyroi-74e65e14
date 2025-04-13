@@ -21,7 +21,7 @@ export async function fetchPortfolioSummary(userId: string): Promise<PortfolioSu
     }
     
     // Create typed object with safe type checking and default values
-    const typedData = {
+    const typedData: PortfolioSummaryData = {
       total_properties: typeof data.total_properties === 'number' ? data.total_properties : 0,
       total_investment: typeof data.total_investment === 'number' ? data.total_investment : 0,
       average_roi: typeof data.average_roi === 'number' ? data.average_roi : 0,
@@ -111,7 +111,7 @@ export async function fetchPerformanceMetrics(userId: string): Promise<Performan
     }
     
     // Create typed object with safe type checking
-    const typedData = {
+    const typedData: PerformanceMetrics = {
       average_roi: typeof data.average_roi === 'number' ? data.average_roi : 0,
       capital_growth: typeof data.capital_growth === 'number' ? data.capital_growth : 0,
       rental_yield: typeof data.rental_yield === 'number' ? data.rental_yield : 0

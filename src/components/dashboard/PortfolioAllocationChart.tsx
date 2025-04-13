@@ -6,9 +6,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { PortfolioAllocation } from '@/types/portfolio';
 
+interface ChartDataItem {
+  name: string;
+  value: number;
+}
+
 interface PortfolioAllocationChartProps {
-  // Change from 'allocationData' to 'data' for consistency
-  data: PortfolioAllocation[];
+  data: ChartDataItem[];
   isLoading?: boolean;
 }
 
@@ -16,12 +20,6 @@ export function PortfolioAllocationChart({ data, isLoading = false }: PortfolioA
   const { t } = useLanguage();
   
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
-  
-  // Transform data format for chart - convert from PortfolioAllocation to the format expected by the chart
-  const chartData = data.map(item => ({
-    name: item.location,
-    value: item.percentage
-  }));
   
   if (isLoading) {
     return (
@@ -44,21 +42,21 @@ export function PortfolioAllocationChart({ data, isLoading = false }: PortfolioA
         <CardDescription>{t("investmentByCountry")}</CardDescription>
       </CardHeader>
       <CardContent>
-        {chartData.length === 0 ? (
+        {data.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40">
             <p className="text-lg font-semibold">{t("noDataAvailable")}</p>
             <p className="text-sm text-muted-foreground">{t("dataWillAppearSoon")}</p>
           </div>
-        ) : chartData.length === 1 ? (
+        ) : data.length === 1 ? (
           <div className="flex flex-col items-center justify-center h-40">
             <p className="text-lg font-semibold">{t("singleLocationAllocation")}</p>
-            <p>{chartData[0].name}: 100%</p>
+            <p>{data[0].name}: 100%</p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={160}>
             <PieChart>
               <Pie
-                data={chartData}
+                data={data}
                 cx="50%"
                 cy="50%"
                 outerRadius={60}
@@ -67,7 +65,7 @@ export function PortfolioAllocationChart({ data, isLoading = false }: PortfolioA
                 nameKey="name"
                 labelLine={false}
               >
-                {chartData.map((entry, index) => (
+                {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
