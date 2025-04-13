@@ -173,65 +173,11 @@ const InvestorLevels = () => {
           <CardContent className="pt-6">
             {/* Level Tabs */}
             <Tabs defaultValue="overview" className="w-full" onValueChange={value => setSelectedLevel(value !== "overview" ? value : null)}>
-              <div className="flex justify-center mb-8">
-                <TabsList className="bg-gray-100 p-1">
-                  <TabsTrigger value="overview" className="px-4 py-2">
-                    {tInvestor('overview')}
-                  </TabsTrigger>
-                  {levels.map(level => <TabsTrigger key={level.id} value={level.id} className="px-4 py-2">
-                      {level.name}
-                    </TabsTrigger>)}
-                </TabsList>
-              </div>
+              
               
               {/* Overview Tab */}
               <TabsContent value="overview">
-                <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12" variants={containerVariants} initial="hidden" animate="visible">
-                  {levels.map(level => <motion.div key={level.id} variants={itemVariants}>
-                      <Card className={`group h-full border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden ${level.id === "diamond" ? "border-blue-300 ring-2 ring-blue-200" : ""}`}>
-                        <CardHeader className={`${level.color} ${level.textColor} pb-4`}>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <level.icon size={18} className="mr-1" />
-                              <h3 className="text-xl font-bold">{level.name}</h3>
-                            </div>
-                            <Badge variant="outline" className="bg-white/20 backdrop-blur-sm">
-                              {formatThreshold(level.threshold)}+
-                            </Badge>
-                          </div>
-                          
-                        </CardHeader>
-                        <CardContent>
-                          <ul className="space-y-3 text-sm py-0 my-[10px]">
-                            <li className="flex gap-2 items-center">
-                              <Calendar size={16} className="text-easyroi-gold" />
-                              <span>
-                                <strong>{tInvestor('events')}:</strong> {level.events}
-                              </span>
-                            </li>
-                            <li className="flex gap-2 items-center">
-                              <Rocket size={16} className="text-easyroi-gold" />
-                              <span>
-                                <strong>{tInvestor('earlyAccess')}:</strong> {level.earlyAccess}
-                              </span>
-                            </li>
-                            <li className="flex gap-2 items-center">
-                              <Headphones size={16} className="text-easyroi-gold" />
-                              <span>
-                                <strong>{tInvestor('support')}:</strong> {level.support}
-                              </span>
-                            </li>
-                          </ul>
-                          
-                          <div className="mt-4 pt-4 border-t border-gray-200 flex justify-center">
-                            <Button variant="ghost" className={`w-full ${level.color} ${level.textColor} hover:opacity-90`} onClick={() => setSelectedLevel(level.id)}>
-                              {tInvestor('seeDetails')}
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>)}
-                </motion.div>
+                
                 
                 <div className="bg-gray-50 rounded-xl p-8 mb-8">
                   <h2 className="text-2xl font-bold mb-6 text-center">{tInvestor('levelBenefitsComparison') || "Benefits Comparison"}</h2>
