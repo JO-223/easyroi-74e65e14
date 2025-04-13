@@ -1,3 +1,4 @@
+
 export type TranslationKey =
   | "dashboard"
   | "analytics"
@@ -453,8 +454,11 @@ export type TranslationKey =
   | "edit"
   | "listingStatus"
   | "zone"
-  | "enterZone";
+  | "enterZone"
+  | "dashboardDataUpdated"
+  | "errorUpdatingDashboard";
 
 export const isValidTranslationKey = (key: string): key is TranslationKey => {
   return true as any;
 };
+
