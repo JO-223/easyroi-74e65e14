@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchDashboardData } from '@/services/portfolioService';
@@ -14,7 +15,7 @@ const Dashboard = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['dashboardData'],
-    queryFn: () => fetchDashboardData(user.id), // Changed to pass user.id properly
+    queryFn: () => fetchDashboardData(user?.id || ''),
     enabled: !!user,
   });
   

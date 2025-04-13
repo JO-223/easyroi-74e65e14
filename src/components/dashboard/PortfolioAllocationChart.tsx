@@ -1,76 +1,81 @@
 
-import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/LanguageContext";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer
-} from "recharts";
-import { PortfolioAllocation } from "@/services/dashboard/dashboardService";
+import React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { PortfolioAllocation } from '@/types/portfolio';
 
 interface PortfolioAllocationChartProps {
-  data: PortfolioAllocation[];
+  allocationData: PortfolioAllocation[];
+  isLoading?: boolean;
 }
 
-export const PortfolioAllocationChart = ({ data }: PortfolioAllocationChartProps) => {
+export function PortfolioAllocationChart({ allocationData, isLoading = false }: PortfolioAllocationChartProps) {
   const { t } = useLanguage();
   
-  // Define chart colors
-  const COLORS = ["#0C2340", "#D4AF37", "#4CAF50", "#E57373"];
-
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+  
+  // Transform data format for chart - convert from PortfolioAllocation to the format expected by the chart
+  const chartData = allocationData.map(item => ({
+    name: item.location,
+    value: item.percentage
+  }));
+  
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-32" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-40 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
+  
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t('portfolioAllocation')}</CardTitle>
+        <CardTitle>{t("portfolioAllocation")}</CardTitle>
+        <CardDescription>{t("investmentByCountry")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-64 flex items-center justify-center">
-          <ResponsiveContainer width="100%" height="100%">
+        {chartData.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-40">
+            <p className="text-lg font-semibold">{t("noDataAvailable")}</p>
+            <p className="text-sm text-muted-foreground">{t("dataWillAppearSoon")}</p>
+          </div>
+        ) : chartData.length === 1 ? (
+          <div className="flex flex-col items-center justify-center h-40">
+            <p className="text-lg font-semibold">{t("singleLocationAllocation")}</p>
+            <p>{chartData[0].name}: 100%</p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={160}>
             <PieChart>
               <Pie
-                data={data}
+                data={chartData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
+                outerRadius={60}
+                fill="#8884d8"
                 dataKey="value"
-                // Improved label styling for better readability
-                label={({ name, percent }) => {
-                  return `${name}: ${(percent * 100).toFixed(0)}%`;
-                }}
-                labelLine={{ stroke: "#666", strokeWidth: 1 }}
+                nameKey="name"
+                labelLine={false}
               >
-                {data.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={COLORS[index % COLORS.length]} 
-                    stroke="#fff"
-                    strokeWidth={1}
-                  />
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip 
-                formatter={(value: number) => [`${value.toFixed(2)}%`, t('allocation')]}
-                contentStyle={{
-                  backgroundColor: "white",
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  boxShadow: "0px 0px 10px rgba(0,0,0,0.1)"
-                }}
-                labelStyle={{
-                  fontWeight: "bold",
-                  marginBottom: "5px"
-                }}
-              />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+              <Tooltip formatter={(value) => `${value}%`} />
             </PieChart>
           </ResponsiveContainer>
-        </div>
+        )}
       </CardContent>
     </Card>
   );
-};
+}

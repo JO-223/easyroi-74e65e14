@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAnalyticsData } from '@/services/analyticsService';
@@ -6,43 +7,7 @@ import { AnalyticsData } from '@/types/analytics';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertTriangle } from 'lucide-react';
-
-interface AnalyticsContentProps {
-  analyticsData: AnalyticsData;
-}
-
-export const AnalyticsContent: React.FC<AnalyticsContentProps> = ({ analyticsData }) => {
-  return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      <Card>
-        <CardHeader>
-          <CardTitle>Total Users</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analyticsData.totalUsers}</div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Total Properties</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analyticsData.totalProperties}</div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Average Investment per User</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">${analyticsData.averageInvestmentPerUser.toFixed(2)}</div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+import { AnalyticsContent } from '@/components/analytics/AnalyticsContent';
 
 const AnalyticsLoading = () => {
   return (
@@ -87,7 +52,7 @@ const Analytics = () => {
       ) : error ? (
         <AnalyticsError />
       ) : (
-        <AnalyticsContent analyticsData={data} />
+        <AnalyticsContent analyticsData={data as AnalyticsData} />
       )}
     </div>
   );

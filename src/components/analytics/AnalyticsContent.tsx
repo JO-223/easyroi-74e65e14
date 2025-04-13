@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AnalyticsData } from '@/types/analytics';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
