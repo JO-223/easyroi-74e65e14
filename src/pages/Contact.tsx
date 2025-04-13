@@ -75,31 +75,7 @@ const Contact = () => {
             </div>
             
             {/* Dubai Office */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <Building className="h-6 w-6 text-easyroi-gold mr-3" />
-                <h2 className="text-2xl font-semibold text-easyroi-purple-900">EROI REAL ESTATE LLC</h2>
-              </div>
-              <Separator className="mb-6" />
-              
-              <ul className="space-y-4">
-                <li className="flex">
-                  <MapPin className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-medium text-easyroi-navy">Indirizzo:</h3>
-                    <p className="text-gray-600">Office 205-395, Albahar, Al Khabeesi,</p>
-                    <p className="text-gray-600">DUBAI, UNITED ARAB EMIRATES</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <FileText className="h-5 w-5 mr-3 text-easyroi-gold flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-medium text-easyroi-navy">Business license:</h3>
-                    <p className="text-gray-600">1442515</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
