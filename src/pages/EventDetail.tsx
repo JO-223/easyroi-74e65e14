@@ -1,7 +1,6 @@
-
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchEventById } from "@/services/eventService";
+import { fetchEvent } from "@/services/eventService";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,7 @@ export default function EventDetail() {
   
   const { data: event, isLoading, error } = useQuery({
     queryKey: ["event", eventId],
-    queryFn: () => fetchEventById(eventId as string),
+    queryFn: () => fetchEvent(eventId as string),
     enabled: !!eventId
   });
   
@@ -82,7 +81,6 @@ export default function EventDetail() {
       <div className="container mx-auto py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            {/* Event Details Card */}
             <Card>
               <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -106,7 +104,6 @@ export default function EventDetail() {
                 </div>
               </CardHeader>
               <CardContent>
-                {/* Event image */}
                 {event.image_url && (
                   <div className="relative w-full h-64 mb-6">
                     <img
@@ -165,13 +162,10 @@ export default function EventDetail() {
               </CardContent>
             </Card>
             
-            {/* Event Reviews */}
             <EventReviewsList eventId={eventId as string} />
           </div>
           
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Info Card */}
             <Card>
               <CardHeader>
                 <CardTitle>{t('eventDetails')}</CardTitle>
@@ -220,7 +214,6 @@ export default function EventDetail() {
               </CardContent>
             </Card>
             
-            {/* Related Events Card */}
             <Card>
               <CardHeader>
                 <CardTitle>{t('similarEvents')}</CardTitle>

@@ -41,6 +41,8 @@ const formSchema = z.object({
   alert_frequency: z.string().optional()
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export default function SavedSearchDialog({
   isOpen,
   onClose,
@@ -82,14 +84,16 @@ export default function SavedSearchDialog({
   // Parse price range if it exists
   let initialPriceMin, initialPriceMax;
   if (existingSearch?.price_range) {
-    const range = existingSearch.price_range.replace(/[\[\]\(\)]/g, '').split(',');
-    if (range.length === 2) {
-      initialPriceMin = parseFloat(range[0]);
-      initialPriceMax = parseFloat(range[1]);
+    // Handle price_range as string properly
+    const priceRangeStr = String(existingSearch.price_range); 
+    const matches = priceRangeStr.match(/[\d.]+/g);
+    if (matches && matches.length >= 2) {
+      initialPriceMin = parseFloat(matches[0]);
+      initialPriceMax = parseFloat(matches[1]);
     }
   }
   
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       search_name: existingSearch?.search_name || "",
@@ -109,19 +113,35 @@ export default function SavedSearchDialog({
   
   const isAlertEnabled = form.watch('is_alert');
   
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     if (!user?.id) return;
+    
+    // Transform the form values to match SavedSearchFormData
+    const formData = {
+      search_name: values.search_name,
+      min_bedrooms: values.min_bedrooms,
+      max_bedrooms: values.max_bedrooms,
+      min_bathrooms: values.min_bathrooms,
+      max_bathrooms: values.max_bathrooms,
+      min_roi: values.min_roi,
+      price_min: values.price_min,
+      price_max: values.price_max,
+      property_types: values.property_types,
+      locations: values.locations,
+      is_alert: values.is_alert,
+      alert_frequency: values.alert_frequency
+    };
     
     setIsSaving(true);
     try {
       if (existingSearch) {
-        await updateSavedSearch(existingSearch.id, values);
+        await updateSavedSearch(existingSearch.id, formData);
         toast({
           title: t('savedSearchUpdated'),
           description: t('savedSearchUpdatedSuccessfully'),
         });
       } else {
-        await savePropertySearch(values, user.id);
+        await savePropertySearch(formData, user.id);
         toast({
           title: t('savedSearchCreated'),
           description: t('savedSearchCreatedSuccessfully'),

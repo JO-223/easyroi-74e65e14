@@ -1,149 +1,147 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { EventReview, EventReviewFormData } from "@/types/eventReview";
+import { supabase } from '@/integrations/supabase/client';
+import { EventReview, EventReviewFormData } from '@/types/eventReview';
 
-export async function fetchEventReviews(eventId: string) {
-  const { data, error } = await supabase
-    .from('event_reviews')
-    .select(`
-      *,
-      profiles:user_id (
-        first_name,
-        last_name,
-        avatar_url,
-        level
-      )
-    `)
-    .eq('event_id', eventId)
-    .order('created_at', { ascending: false });
+type EventReviewWithProfile = EventReview & {
+  profiles: {
+    first_name: string;
+    last_name: string;
+    avatar_url: string;
+    level: string;
+  };
+};
 
-  if (error) {
+/**
+ * Fetch reviews for a specific event
+ */
+export async function fetchEventReviews(eventId: string): Promise<EventReviewWithProfile[]> {
+  try {
+    const { data, error } = await supabase
+      .from('event_reviews')
+      .select(`
+        *,
+        profiles:user_id (
+          first_name,
+          last_name,
+          avatar_url,
+          level
+        )
+      `)
+      .eq('event_id', eventId)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    
+    // Type cast the data to the expected format
+    return (data || []) as unknown as EventReviewWithProfile[];
+  } catch (error) {
     console.error('Error fetching event reviews:', error);
-    throw error;
-  }
-
-  return data as (EventReview & { profiles: { first_name: string, last_name: string, avatar_url: string, level: string } })[];
-}
-
-export async function submitEventReview(formData: EventReviewFormData, userId: string) {
-  // Check if user has already reviewed this event
-  const { data: existingReview, error: checkError } = await supabase
-    .from('event_reviews')
-    .select('id')
-    .eq('event_id', formData.event_id)
-    .eq('user_id', userId)
-    .maybeSingle();
-
-  if (checkError) {
-    console.error('Error checking for existing review:', checkError);
-    throw checkError;
-  }
-
-  // Check if user attended the event to mark as verified
-  const { data: attendance, error: attendanceError } = await supabase
-    .from('event_attendees')
-    .select('id')
-    .eq('event_id', formData.event_id)
-    .eq('user_id', userId)
-    .maybeSingle();
-
-  if (attendanceError) {
-    console.error('Error checking attendance:', attendanceError);
-    throw attendanceError;
-  }
-
-  const isVerifiedAttendee = !!attendance;
-
-  // Update existing review or create new one
-  if (existingReview) {
-    const { data, error } = await supabase
-      .from('event_reviews')
-      .update({
-        review_title: formData.review_title,
-        review_content: formData.review_content,
-        rating: formData.rating,
-        is_anonymous: formData.is_anonymous,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', existingReview.id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error updating review:', error);
-      throw error;
-    }
-
-    return data as EventReview;
-  } else {
-    const { data, error } = await supabase
-      .from('event_reviews')
-      .insert({
-        event_id: formData.event_id,
-        user_id: userId,
-        review_title: formData.review_title,
-        review_content: formData.review_content,
-        rating: formData.rating,
-        is_anonymous: formData.is_anonymous,
-        is_verified_attendee: isVerifiedAttendee,
-        helpful_votes: 0
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error creating review:', error);
-      throw error;
-    }
-
-    return data as EventReview;
+    return [];
   }
 }
 
-export async function voteReviewHelpful(reviewId: string) {
-  const { data, error } = await supabase
-    .from('event_reviews')
-    .update({
-      helpful_votes: supabase.rpc('increment', { x: 1 })
-    })
-    .eq('id', reviewId)
-    .select()
-    .single();
+/**
+ * Submit a new review for an event
+ */
+export async function submitEventReview(
+  reviewData: EventReviewFormData,
+  userId: string
+): Promise<EventReview | null> {
+  try {
+    // Check if user already reviewed this event
+    const { data: existingReview } = await supabase
+      .from('event_reviews')
+      .select('id')
+      .eq('event_id', reviewData.event_id)
+      .eq('user_id', userId)
+      .maybeSingle();
+    
+    if (existingReview) {
+      // Update existing review instead of creating a new one
+      const { data, error } = await supabase
+        .from('event_reviews')
+        .update({
+          rating: reviewData.rating,
+          review_title: reviewData.review_title,
+          review_content: reviewData.review_content,
+          is_anonymous: reviewData.is_anonymous,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', existingReview.id)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data as unknown as EventReview;
+    } else {
+      // Check if user attended the event
+      const { data: attendee } = await supabase
+        .from('event_attendees')
+        .select('id')
+        .eq('event_id', reviewData.event_id)
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      // Create new review
+      const { data, error } = await supabase
+        .from('event_reviews')
+        .insert({
+          event_id: reviewData.event_id,
+          user_id: userId,
+          rating: reviewData.rating,
+          review_title: reviewData.review_title,
+          review_content: reviewData.review_content,
+          is_anonymous: reviewData.is_anonymous,
+          is_verified_attendee: !!attendee
+        })
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data as unknown as EventReview;
+    }
+  } catch (error) {
+    console.error('Error submitting event review:', error);
+    return null;
+  }
+}
 
-  if (error) {
+/**
+ * Vote a review as helpful
+ */
+export async function voteReviewHelpful(reviewId: string): Promise<boolean> {
+  try {
+    const { data, error } = await supabase
+      .from('event_reviews')
+      .update({ helpful_votes: supabase.rpc('increment', { x: 1 }) })
+      .eq('id', reviewId)
+      .select()
+      .single();
+      
+    if (error) throw error;
+    return !!data;
+  } catch (error) {
     console.error('Error voting review helpful:', error);
-    throw error;
+    return false;
   }
-
-  return data as EventReview;
 }
 
-export async function deleteEventReview(reviewId: string, userId: string) {
-  // First check if the review belongs to the user
-  const { data: review, error: fetchError } = await supabase
-    .from('event_reviews')
-    .select('user_id')
-    .eq('id', reviewId)
-    .single();
-
-  if (fetchError) {
-    console.error('Error fetching review:', fetchError);
-    throw fetchError;
+/**
+ * Delete an event review
+ */
+export async function deleteEventReview(reviewId: string, userId: string): Promise<boolean> {
+  try {
+    // Only allow users to delete their own reviews
+    const { error } = await supabase
+      .from('event_reviews')
+      .delete()
+      .eq('id', reviewId)
+      .eq('user_id', userId);
+      
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error deleting event review:', error);
+    return false;
   }
-
-  if (review.user_id !== userId) {
-    throw new Error('Unauthorized: Cannot delete another user\'s review');
-  }
-
-  const { error } = await supabase
-    .from('event_reviews')
-    .delete()
-    .eq('id', reviewId);
-
-  if (error) {
-    console.error('Error deleting review:', error);
-    throw error;
-  }
-
-  return true;
 }

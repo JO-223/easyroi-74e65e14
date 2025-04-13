@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,6 +12,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { getDocumentAccessUrl, deletePropertyDocument } from "@/services/propertyDocumentService";
 import { formatFileSize } from "@/utils/formatFileSize";
+import { downloadFile } from "@/utils/documentHelpers";
 import { EmptyState } from "@/components/ui/empty-state";
 import DocumentUploadDialog from "./DocumentUploadDialog";
 
@@ -45,13 +45,7 @@ export default function DocumentsList({
   const handleDownload = async (document: PropertyDocument) => {
     try {
       const url = await getDocumentAccessUrl(document.id);
-      // Create a temporary anchor and trigger download
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = document.document_name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      downloadFile(url, document.document_name);
     } catch (error) {
       console.error('Error downloading document:', error);
       toast({
