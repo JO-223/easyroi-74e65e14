@@ -31,7 +31,7 @@ export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardPro
   const eventDate = new Date(event.date);
   const formattedDate = format(eventDate, 'MMM d, yyyy');
   
-  // Gestione degli errori di caricamento delle immagini
+  // Handle image loading errors
   const handleImageError = () => {
     setImageError(true);
   };
@@ -39,13 +39,13 @@ export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardPro
   return (
     <Card 
       className={cn(
-        "group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer",
+        "group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer h-full",
         isAtCapacity ? "opacity-70" : "",
         !userHasRequiredBadge ? "opacity-50" : ""
       )}
       onClick={() => onClick(event)}
     >
-      <div className="relative h-48 bg-gray-200">
+      <div className="relative h-40 sm:h-48 bg-gray-200">
         {event.image_url && !imageError ? (
           <img 
             src={event.image_url} 
@@ -82,37 +82,37 @@ export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardPro
         
         {!userHasRequiredBadge && (
           <div className="absolute bottom-2 left-2 right-2">
-            <Badge variant="outline" className="w-full flex justify-center bg-black bg-opacity-70 text-white">
+            <Badge variant="outline" className="w-full flex justify-center bg-black bg-opacity-70 text-white text-xs">
               {t('upgradeRequiredToJoin')}
             </Badge>
           </div>
         )}
       </div>
       
-      <CardContent className="p-4">
-        <h3 className="text-lg font-semibold mb-2 line-clamp-2">{event.title}</h3>
+      <CardContent className="p-3 sm:p-4">
+        <h3 className="text-base sm:text-lg font-semibold mb-2 line-clamp-2">{event.title}</h3>
         
-        <div className="flex items-center text-sm text-gray-500 mb-1">
-          <Calendar className="w-4 h-4 mr-2" />
+        <div className="flex items-center text-xs sm:text-sm text-gray-500 mb-1">
+          <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
           <span>{formattedDate}</span>
         </div>
         
-        <div className="flex items-center text-sm text-gray-500 mb-1">
-          <Clock className="w-4 h-4 mr-2" />
+        <div className="flex items-center text-xs sm:text-sm text-gray-500 mb-1">
+          <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
           <span>{event.time}</span>
         </div>
         
-        <div className="flex items-center text-sm text-gray-500 mb-1">
+        <div className="flex items-center text-xs sm:text-sm text-gray-500 mb-1">
           {event.is_online ? (
-            <Globe className="w-4 h-4 mr-2" />
+            <Globe className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
           ) : (
-            <MapPin className="w-4 h-4 mr-2" />
+            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
           )}
           <span className="line-clamp-1">{event.location}</span>
         </div>
         
-        <div className="flex items-center text-sm text-gray-500">
-          <Users className="w-4 h-4 mr-2" />
+        <div className="flex items-center text-xs sm:text-sm text-gray-500">
+          <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
           <span>
             {event.max_attendees 
               ? `${event.current_attendees}/${event.max_attendees} ${t('attendees')}`
@@ -129,7 +129,7 @@ export function EventCard({ event, onClick, userBadge = "bronze" }: EventCardPro
           </div>
         )}
         
-        <p className="mt-2 text-sm text-gray-600 line-clamp-2">{event.description}</p>
+        <p className="mt-2 text-xs sm:text-sm text-gray-600 line-clamp-2">{event.description}</p>
       </CardContent>
     </Card>
   );

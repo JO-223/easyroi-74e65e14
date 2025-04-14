@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from "@/integrations/supabase/client";
+import { useResponsive } from "@/hooks/use-responsive";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ export function Navbar() {
   const [user, setUser] = useState<any>(null);
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
 
   const navigation = [
     { name: t('home'), href: '/' },
@@ -77,10 +79,10 @@ export function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
     }`}>
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-12" />
+            <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-8 md:h-12" />
           </Link>
         </div>
 
@@ -126,22 +128,22 @@ export function Navbar() {
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="text-easyroi-purple-800 hover:bg-easyroi-purple-50/30">
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-white/95 backdrop-blur-xl border-none shadow-xl p-0">
+            <SheetContent side="right" className="bg-white/95 backdrop-blur-xl border-none shadow-xl p-0 w-[85vw] max-w-[300px]">
               <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                <div className="flex items-center justify-between p-4 border-b border-gray-100">
                   <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-                    <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
+                    <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-8" />
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-easyroi-purple-800 hover:text-easyroi-gold hover:bg-easyroi-purple-50/20">
-                    <X className="h-6 w-6" />
+                    <X className="h-5 w-5" />
                   </Button>
                 </div>
                 <div className="flex flex-col justify-between h-full">
-                  <div className="p-6 space-y-6">
+                  <div className="p-4 space-y-4">
                     {currentNavLinks.map((item) => (
                       <Link
                         key={item.name}
@@ -157,7 +159,7 @@ export function Navbar() {
                       </Link>
                     ))}
                   </div>
-                  <div className="p-6 border-t border-gray-100">
+                  <div className="p-4 border-t border-gray-100">
                     {user ? (
                       <Button 
                         onClick={() => {
