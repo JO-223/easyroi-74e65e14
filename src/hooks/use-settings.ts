@@ -1,9 +1,14 @@
+
 import { useState } from "react";
 import { useAccountSettings, AccountSettings } from "./useAccountSettings";
 import { useDisplaySettings, DisplaySettings } from "./useDisplaySettings";
 import { useNotificationSettings, NotificationSettings } from "./useNotificationSettings";
 import { usePrivacySettings, PrivacySettings } from "./usePrivacySettings";
 import { ProfileVisibility } from "@/services/network/types";
+import { useToast } from "./use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useQueryClient } from "@tanstack/react-query";
+import { invalidateQueries } from "@/utils/queryInvalidation";
 
 export type SettingsType = 'account' | 'display' | 'notifications' | 'privacy';
 
@@ -16,6 +21,9 @@ export interface UserSettings {
 
 export function useSettings() {
   const [isSaving, setIsSaving] = useState(false);
+  const { toast } = useToast();
+  const { t } = useLanguage();
+  const queryClient = useQueryClient();
   
   const { 
     accountSettings,
@@ -76,7 +84,20 @@ export function useSettings() {
           success = false;
       }
       
+      if (success) {
+        // Invalidate relevant queries after successful update
+        invalidateQueries(queryClient, 'user');
+      }
+      
       return success;
+    } catch (error) {
+      console.error(`Error saving ${settingsType} settings:`, error);
+      toast({
+        title: t('errorOccurred'),
+        description: t('errorUpdatingSettings'),
+        variant: "destructive"
+      });
+      return false;
     } finally {
       setIsSaving(false);
     }

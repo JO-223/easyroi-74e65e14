@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { AccountSettings } from "@/components/settings/AccountSettings";
 import { DisplaySettings } from "@/components/settings/DisplaySettings";
@@ -6,9 +7,11 @@ import { NotificationSettings } from "@/components/settings/NotificationSettings
 import { PrivacySettings } from "@/components/settings/PrivacySettings";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSettings } from "@/hooks/use-settings";
+import { DashboardLoading } from "@/components/dashboard/DashboardLoading";
 
 const Settings = () => {
   const { t } = useLanguage();
+  const [isLoading, setIsLoading] = useState(true);
   const { 
     settingsData, 
     isSaving, 
@@ -17,6 +20,33 @@ const Settings = () => {
     updateNotificationSettingsField,
     updatePrivacySettingsField
   } = useSettings();
+
+  useEffect(() => {
+    // Simulate checking if all settings are loaded
+    const checkSettingsLoaded = () => {
+      const hasAccountData = settingsData.account.email !== "";
+      const hasDisplayData = settingsData.display.language !== "";
+      
+      if (hasAccountData && hasDisplayData) {
+        setIsLoading(false);
+      }
+    };
+    
+    checkSettingsLoaded();
+    
+    // Set a timeout to ensure loading state doesn't get stuck
+    const timeoutId = setTimeout(() => setIsLoading(false), 2000);
+    
+    return () => clearTimeout(timeoutId);
+  }, [settingsData]);
+
+  if (isLoading) {
+    return (
+      <DashboardLayout title={t('settings')} subtitle={t('manageSettings')}>
+        <DashboardLoading />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout title={t('settings')} subtitle={t('manageSettings')}>
