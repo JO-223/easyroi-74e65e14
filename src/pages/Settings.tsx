@@ -24,8 +24,11 @@ const Settings = () => {
   useEffect(() => {
     // Simulate checking if all settings are loaded
     const checkSettingsLoaded = () => {
+      // Check if we have account email data
       const hasAccountData = settingsData.account.email !== "";
-      const hasDisplayData = settingsData.display.language !== "";
+      
+      // Check if display settings are loaded (using a truthy check instead of comparing to empty string)
+      const hasDisplayData = Boolean(settingsData.display.language);
       
       if (hasAccountData && hasDisplayData) {
         setIsLoading(false);
