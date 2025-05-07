@@ -18,7 +18,16 @@ export const fetchHelpArticles = async (): Promise<HelpArticle[]> => {
       return [];
     }
 
-    return data as HelpArticle[];
+    return (data || []).map(item => ({
+      id: item.id as string,
+      title: item.title as string,
+      content: item.content as string,
+      category: item.category as string,
+      tags: item.tags as string[],
+      popularity: item.popularity as number,
+      lastUpdated: item.last_updated as string,
+      links: item.links as { text: string; url: string }[] | undefined
+    }));
   } catch (error) {
     console.error("Unexpected error fetching help articles:", error);
     return [];
@@ -43,11 +52,11 @@ export const fetchHelpCategories = async (): Promise<HelpCategory[]> => {
     // For each category, fetch its articles
     const categoriesWithArticles = await Promise.all(
       (data || []).map(async (category) => {
-        const articles = await fetchHelpArticlesByCategory(category.id);
+        const articles = await fetchHelpArticlesByCategory(category.id as string);
         return {
-          id: category.id,
-          title: category.title,
-          icon: category.icon,
+          id: category.id as string,
+          title: category.title as string,
+          icon: category.icon as string | undefined,
           articles
         } as HelpCategory;
       })
@@ -78,7 +87,16 @@ export const fetchHelpArticleById = async (id: string): Promise<HelpArticle | nu
       return null;
     }
 
-    return data as HelpArticle;
+    return {
+      id: data.id as string,
+      title: data.title as string,
+      content: data.content as string,
+      category: data.category as string,
+      tags: data.tags as string[],
+      popularity: data.popularity as number,
+      lastUpdated: data.last_updated as string,
+      links: data.links as { text: string; url: string }[] | undefined
+    };
   } catch (error) {
     console.error(`Unexpected error fetching help article with ID ${id}:`, error);
     return null;
@@ -103,7 +121,16 @@ export const searchHelpArticles = async (query: string): Promise<HelpArticle[]> 
       return [];
     }
 
-    return data as HelpArticle[];
+    return (data || []).map(item => ({
+      id: item.id as string,
+      title: item.title as string,
+      content: item.content as string,
+      category: item.category as string,
+      tags: item.tags as string[],
+      popularity: item.popularity as number,
+      lastUpdated: item.last_updated as string,
+      links: item.links as { text: string; url: string }[] | undefined
+    }));
   } catch (error) {
     console.error(`Unexpected error searching help articles with query ${query}:`, error);
     return [];
@@ -128,7 +155,16 @@ export const fetchHelpArticlesByCategory = async (category: string): Promise<Hel
       return [];
     }
 
-    return data as HelpArticle[];
+    return (data || []).map(item => ({
+      id: item.id as string,
+      title: item.title as string,
+      content: item.content as string,
+      category: item.category as string,
+      tags: item.tags as string[],
+      popularity: item.popularity as number,
+      lastUpdated: item.last_updated as string,
+      links: item.links as { text: string; url: string }[] | undefined
+    }));
   } catch (error) {
     console.error(`Unexpected error fetching help articles for category ${category}:`, error);
     return [];
