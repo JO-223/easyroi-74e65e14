@@ -44,8 +44,8 @@ export async function fetchCashflowData(filters: CashflowFilters): Promise<Cashf
         .eq('id', filters.propertyId)
         .single();
       
-      if (property) {
-        propertyName = property.name;
+      if (property && property.name) {
+        propertyName = property.name as string;
       }
     }
     

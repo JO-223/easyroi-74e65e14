@@ -23,7 +23,7 @@ export function CashflowTable({ data, isLoading }: CashflowTableProps) {
     const isPositive = difference > 0;
     
     return (
-      <Badge variant={isPositive ? "success" : "destructive"} className="ml-2">
+      <Badge variant={isPositive ? "secondary" : "destructive"} className="ml-2">
         {isPositive ? '+' : ''}{formattedDifference}%
       </Badge>
     );
@@ -89,7 +89,7 @@ export function CashflowTable({ data, isLoading }: CashflowTableProps) {
 
             return (
               <TableRow key={month}>
-                <TableCell className="font-medium bg-muted/50">{t(month.toLowerCase())}</TableCell>
+                <TableCell className="font-medium bg-muted/50">{t(month.toLowerCase() as any)}</TableCell>
                 <TableCell>{formatCurrency(bookingsTotal)}</TableCell>
                 <TableCell>{formatCurrency(portalFees)}</TableCell>
                 <TableCell>{formatCurrency(cleaningCosts)}</TableCell>

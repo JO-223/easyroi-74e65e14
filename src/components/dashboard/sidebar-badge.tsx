@@ -30,7 +30,7 @@ export function SidebarBadge({ level }: SidebarBadgeProps) {
         {t('investorLevel')}:
       </div>
       <UserBadge 
-        level={displayLevel} 
+        level={displayLevel as any} 
         size="md"
         className="w-full justify-center py-1"
         // Remove any animation classes
