@@ -537,7 +537,7 @@ const en = {
   aboutUsTitle: "About EasyROI",
   aboutUsSubtitle: "Exclusive Investment Opportunities for Discerning Investors",
   ourStory: "Our Story",
-  ourStoryText1: "Founded in 2020, EasyROI emerged from a vision to transform how high-net-worth individuals access premium real estate investments.",
+  ourStoryText1: "Founded in 2020, EasyROI emerged from a vision to transform how high-net-w Worth individuals access premium real estate investments.",
   ourStoryText2: "Our platform provides unparalleled transparency and access to exclusive properties with exceptional returns.",
   ourValues: "Our Values",
   excellenceValue: "Excellence",
@@ -583,6 +583,27 @@ const en = {
     serviceCharges: "Annual fees for property maintenance and services"
   },
   refresh: "Refresh",
+  
+  // Add new translations related to digital documentation and request sale
+  digitalDocumentation: "Digital Documentation",
+  contracts: "Contracts",
+  notarialDeeds: "Notarial Deeds",
+  financialReports: "Financial Reports",
+  taxDeclarations: "Tax Declarations",
+  otherDocuments: "Other Documents",
+  download: "Download",
+  noDocumentsFound: "No documents found in this category",
+  uploaded: "Uploaded",
+  
+  requestSale: "Request Sale",
+  requestSaleDescription: "Request to sell your property",
+  askingPrice: "Asking Price",
+  selectCurrency: "Select Currency",
+  cancel: "Cancel",
+  submitting: "Submitting...",
+  submitRequest: "Submit Request",
+  saleRequestSubmitted: "Sale request submitted successfully",
+  errorSubmittingSaleRequest: "Error submitting sale request",
 };
 
 export default en;

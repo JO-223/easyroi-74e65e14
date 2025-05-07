@@ -14,18 +14,22 @@ import {
   Home, 
   SquareDot, 
   CreditCard,
-  Percent
+  Percent,
+  Building
 } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { fetchPropertyById } from "@/services/propertyService";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { PropertyDocuments } from "@/components/property/PropertyDocuments";
+import { RequestSaleModal } from "@/components/property/RequestSaleModal";
 
 export default function PropertyDetail() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslation();
   const [property, setProperty] = useState<Property | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRequestSaleModalOpen, setIsRequestSaleModalOpen] = useState(false);
   
   useEffect(() => {
     const loadProperty = async () => {
@@ -201,9 +205,15 @@ export default function PropertyDetail() {
               <dd className="font-medium">
                 {property.price && property.size_sqm ? formatCurrency(property.price / property.size_sqm) : 'N/A'}
               </dd>
+              
+              <dt className="text-gray-600">{t('ownership')}</dt>
+              <dd className="font-medium">{property.ownership || 100}%</dd>
             </dl>
           </div>
         </div>
+        
+        {/* Digital Documentation Section */}
+        <PropertyDocuments property={property} />
         
         {/* Amenities */}
         <div className="mb-8">
@@ -256,11 +266,32 @@ export default function PropertyDetail() {
             </Button>
           </Link>
           
-          <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90">
-            {t('contactAboutProperty')}
-          </Button>
+          <div className="flex gap-2">
+            <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90">
+              {t('contactAboutProperty')}
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              className="flex items-center border-easyroi-gold text-easyroi-gold hover:bg-easyroi-gold/10"
+              onClick={() => setIsRequestSaleModalOpen(true)}
+            >
+              <Building className="mr-2 h-4 w-4" />
+              {t('requestSale')}
+            </Button>
+          </div>
         </div>
       </div>
+      
+      {/* Request Sale Modal */}
+      {property && (
+        <RequestSaleModal 
+          isOpen={isRequestSaleModalOpen}
+          onClose={() => setIsRequestSaleModalOpen(false)}
+          propertyId={property.id}
+          propertyName={property.name}
+        />
+      )}
     </DashboardLayout>
   );
 }

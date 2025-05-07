@@ -1,4 +1,3 @@
-
 const it = {
   // General
   welcome: "Benvenuti",
@@ -638,7 +637,6 @@ const it = {
   termsChangesText: "EasyROI si riserva il diritto di aggiornare, modificare o sostituire questi Termini in qualsiasi momento a propria discrezione. Qualora tali modifiche siano significative, riceverai un preavviso di almeno 3 giorni prima dell'entrata in vigore dei nuovi termini. Continuando ad utilizzare il servizio dopo tale data, accetti implicitamente le modifiche effettuate.",
   termsContact: "Contattaci",
   termsContactText: "Per qualsiasi domanda o chiarimento riguardo ai presenti Termini di Servizio, puoi contattarci scrivendo all’indirizzo email info@easyroi.com.",
-
   
   // Privacy Policy page
   privacyIntroduction: "Introduzione",
@@ -686,7 +684,28 @@ const it = {
   
   // Sitemap page
   mainPages: "Pagine Principali",
-  legalPages: "Pagine Legali"
+  legalPages: "Pagine Legali",
+  
+  // Digital Documentation and Request Sale
+  digitalDocumentation: "Documentazione Digitale",
+  contracts: "Contratti",
+  notarialDeeds: "Atti Notarili",
+  financialReports: "Report Finanziari",
+  taxDeclarations: "Dichiarazioni Fiscali",
+  otherDocuments: "Altri Documenti",
+  download: "Scarica",
+  noDocumentsFound: "Nessun documento trovato in questa categoria",
+  uploaded: "Caricato il",
+  
+  requestSale: "Richiedi Vendita",
+  requestSaleDescription: "Richiedi di vendere il tuo immobile",
+  askingPrice: "Prezzo Richiesto",
+  selectCurrency: "Seleziona Valuta",
+  cancel: "Annulla",
+  submitting: "Invio in corso...",
+  submitRequest: "Invia Richiesta",
+  saleRequestSubmitted: "Richiesta di vendita inviata con successo",
+  errorSubmittingSaleRequest: "Errore nell'invio della richiesta di vendita",
 };
 
 export default it;

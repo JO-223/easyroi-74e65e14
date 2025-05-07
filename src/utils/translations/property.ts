@@ -79,7 +79,26 @@ export const propertyKeys = [
   "showAmenities",
   "pros",
   "cons",
-  "ownership"
+  "ownership",
+  // New translation keys for digital documentation and request sale
+  "digitalDocumentation",
+  "contracts",
+  "notarialDeeds",
+  "financialReports",
+  "taxDeclarations",
+  "otherDocuments",
+  "download",
+  "noDocumentsFound",
+  "uploaded",
+  "requestSale",
+  "requestSaleDescription",
+  "askingPrice",
+  "selectCurrency",
+  "cancel",
+  "submitting",
+  "submitRequest",
+  "saleRequestSubmitted",
+  "errorSubmittingSaleRequest"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];
