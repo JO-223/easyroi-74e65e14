@@ -1,3 +1,4 @@
+
 const en = {
   // General
   welcome: "Welcome",
@@ -598,12 +599,10 @@ const en = {
   requestSale: "Request Sale",
   requestSaleDescription: "Request to sell your property",
   askingPrice: "Asking Price",
-  selectCurrency: "Select Currency",
-  cancel: "Cancel",
   submitting: "Submitting...",
   submitRequest: "Submit Request",
   saleRequestSubmitted: "Sale request submitted successfully",
-  errorSubmittingSaleRequest: "Error submitting sale request",
+  errorSubmittingSaleRequest: "Error submitting sale request"
 };
 
 export default en;

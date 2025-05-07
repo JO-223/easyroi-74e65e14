@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 interface DocumentTab {
   id: string;
   label: string;
-  icon: React.FC;
+  icon: React.ElementType;
   documents: {
     id: string;
     name: string;
@@ -129,10 +129,10 @@ export function PropertyDocuments({ property }: PropertyDocumentsProps) {
       <Tabs defaultValue="contracts" className="w-full">
         <TabsList className="mb-4">
           {documentTabs.map((tab) => {
-            const Icon = tab.icon;
+            const TabIcon = tab.icon;
             return (
               <TabsTrigger value={tab.id} key={tab.id} className="flex items-center gap-2">
-                <Icon className="h-4 w-4" />
+                <TabIcon size={16} />
                 <span>{tab.label}</span>
               </TabsTrigger>
             );

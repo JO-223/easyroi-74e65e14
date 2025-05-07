@@ -80,7 +80,7 @@ export const propertyKeys = [
   "pros",
   "cons",
   "ownership",
-  // New translation keys for digital documentation and request sale
+  // Digital documentation and request sale translation keys
   "digitalDocumentation",
   "contracts",
   "notarialDeeds",
