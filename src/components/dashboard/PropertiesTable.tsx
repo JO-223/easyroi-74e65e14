@@ -26,13 +26,14 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
               <TableHead>{t('propertyLocation')}</TableHead>
               <TableHead>{t('propertyROI')}</TableHead>
               <TableHead>{t('propertyValue')}</TableHead>
+              <TableHead>{t('ownership')}</TableHead>
               <TableHead>{t('propertyStatus')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {properties.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   {t('noData')}
                 </TableCell>
               </TableRow>
@@ -43,6 +44,9 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
                   <TableCell>{property.location}</TableCell>
                   <TableCell>{property.roi}</TableCell>
                   <TableCell>{property.value}</TableCell>
+                  <TableCell>
+                    {property.ownership ? `${property.ownership}%` : '100%'}
+                  </TableCell>
                   <TableCell>
                     <Badge
                       variant="outline"

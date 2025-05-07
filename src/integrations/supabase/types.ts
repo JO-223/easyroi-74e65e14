@@ -651,6 +651,7 @@ export type Database = {
           min_investment: number | null
           name: string
           occupation_status: string
+          ownership: number
           price: number
           price_currency: string | null
           roi_percentage: number | null
@@ -674,6 +675,7 @@ export type Database = {
           min_investment?: number | null
           name: string
           occupation_status: string
+          ownership?: number
           price: number
           price_currency?: string | null
           roi_percentage?: number | null
@@ -697,6 +699,7 @@ export type Database = {
           min_investment?: number | null
           name?: string
           occupation_status?: string
+          ownership?: number
           price?: number
           price_currency?: string | null
           roi_percentage?: number | null

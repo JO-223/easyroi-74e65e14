@@ -1,4 +1,3 @@
-
 export type Property = {
   id: string;
   name: string;
@@ -19,6 +18,7 @@ export type Property = {
   amenities: Amenity[];
   images: PropertyImage[];
   pros_cons: PropertyProCon[];
+  ownership: number; // Nuova proprietà con percentuale di ownership
 };
 
 export type PropertyLocation = {

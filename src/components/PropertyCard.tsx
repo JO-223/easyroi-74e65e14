@@ -2,7 +2,7 @@
 import { Property } from "@/types/property";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe } from "lucide-react";
+import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe, Percent } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { formatCurrency } from "@/lib/utils";
 import { Link } from "react-router-dom";
@@ -53,17 +53,25 @@ export function PropertyCard({ property }: PropertyCardProps) {
               <p className="font-bold text-easyroi-gold">{property.roi_percentage}%</p>
             </div>
           )}
-          {property.min_investment && (
-            <div>
-              <p className="text-sm text-gray-500">{t('minInvestment')}</p>
-              <p className="font-bold text-gray-800">{formatCurrency(property.min_investment)}</p>
-            </div>
-          )}
+          <div>
+            <p className="text-sm text-gray-500">{t('ownership')}</p>
+            <p className="font-bold flex items-center">
+              <Percent className="h-3.5 w-3.5 mr-1" />
+              {property.ownership || 100}%
+            </p>
+          </div>
           <div>
             <p className="text-sm text-gray-500">{t('status')}</p>
             <p className="font-bold text-green-500">{property.status}</p>
           </div>
         </div>
+
+        {property.min_investment && (
+          <div className="mt-2">
+            <p className="text-sm text-gray-500">{t('minInvestment')}</p>
+            <p className="font-bold text-gray-800">{formatCurrency(property.min_investment)}</p>
+          </div>
+        )}
 
         <div className="mt-4 flex flex-wrap gap-2">
           {property.amenities.slice(0, 4).map((amenity, index) => (

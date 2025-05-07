@@ -78,7 +78,8 @@ export const propertyKeys = [
   "hideAmenities",
   "showAmenities",
   "pros",
-  "cons"
+  "cons",
+  "ownership"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];

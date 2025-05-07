@@ -1,4 +1,3 @@
-
 import { 
   Dialog, 
   DialogContent, 
@@ -43,8 +42,15 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
             className="w-full h-full object-cover" 
           />
           <div className="absolute top-4 left-4">
-            <BadgeLevel level={property.investor_level as any} />
+            <BadgeLevel level={property.investor_level as any || "bronze"} />
           </div>
+          {property.ownership && property.ownership < 100 && (
+            <div className="absolute top-4 right-4">
+              <Badge variant="outline" className="bg-blue-500/20 text-blue-300 border-blue-500/50">
+                Club Deal ({property.ownership}%)
+              </Badge>
+            </div>
+          )}
         </div>
         
         <DialogHeader className="p-6 pb-2">
@@ -83,12 +89,12 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
                   <p className="text-xl font-bold">{property.size_sqm} m²</p>
                 </div>
                 <div className="bg-white/5 p-4 rounded-lg">
-                  <p className="text-white/70 text-sm">{t('bedrooms')}</p>
-                  <p className="text-xl font-bold">{property.bedrooms}</p>
+                  <p className="text-white/70 text-sm">{t('ownership')}</p>
+                  <p className="text-xl font-bold">{property.ownership || 100}%</p>
                 </div>
                 <div className="bg-white/5 p-4 rounded-lg">
-                  <p className="text-white/70 text-sm">{t('bathrooms')}</p>
-                  <p className="text-xl font-bold">{property.bathrooms}</p>
+                  <p className="text-white/70 text-sm">{t('bedrooms')}</p>
+                  <p className="text-xl font-bold">{property.bedrooms}</p>
                 </div>
               </div>
               

@@ -81,7 +81,15 @@ export const generalKeys = [
   "subjectPlaceholder",
   "messagePlaceholder",
   "tbd",
-  "contactUs"
+  "contactUs",
+  "notifications",
+  "noNotifications",
+  "viewAllNotifications",
+  "new",
+  "investmentAlerts",
+  "noAlerts",
+  "viewAllAlerts",
+  "ownership"
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];

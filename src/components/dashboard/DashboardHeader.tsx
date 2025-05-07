@@ -2,6 +2,9 @@
 import React from 'react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Bell, AlertTriangle } from 'lucide-react';
+import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
+import { AlertsDropdown } from '@/components/notifications/AlertsDropdown';
 
 interface DashboardHeaderProps {
   title: string;
@@ -39,7 +42,11 @@ export function DashboardHeader({
           </div>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
+          {/* Notifiche e Alert */}
+          <NotificationDropdown />
+          <AlertsDropdown />
+          
           {userData ? (
             <>
               <div className="hidden sm:flex items-center space-x-2">
