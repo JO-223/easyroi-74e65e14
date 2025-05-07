@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,11 +30,12 @@ import Sitemap from "./pages/Sitemap";
 import CookiePolicy from "./pages/CookiePolicy";
 import CashflowTracker from "./pages/CashflowTracker";
 import MyInvestments from "./pages/MyInvestments";
+import Consultations from "@/pages/Consultations";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
-const App = () => {
+function App() {
   // Initialize language settings from localStorage
   useEffect(() => {
     const savedSettings = localStorage.getItem('displaySettings');
@@ -94,11 +94,7 @@ const App = () => {
                   </RequireAuth>
                 } />
 
-                <Route path="/dashboard/investments" element={
-                  <RequireAuth>
-                    <MyInvestments />
-                  </RequireAuth>
-                } />
+                <Route path="/dashboard/investments" element={<MyInvestments />} />
                 
                 <Route path="/dashboard/events" element={
                   <RequireAuth>
@@ -160,6 +156,8 @@ const App = () => {
                     <PropertyDetail />
                   </RequireAuth>
                 } />
+                
+                <Route path="/dashboard/consultations" element={<Consultations />} />
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>

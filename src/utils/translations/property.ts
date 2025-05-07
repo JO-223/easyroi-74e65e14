@@ -113,7 +113,27 @@ export const propertyKeys = [
   "actualYield",
   "noInvestmentsFound",
   "sortAscending",
-  "sortDescending"
+  "sortDescending",
+  // Consultation related translations
+  "consultations",
+  "investmentExperts",
+  "legalAssistance",
+  "taxConsultation",
+  "bookConsultation",
+  "viewCalendar",
+  "noExpertsFound",
+  "investmentExpert",
+  "investmentExpertDesc",
+  "investmentAdvisor",
+  "investmentAdvisorDesc",
+  "legalAdvisor",
+  "legalAdvisorDesc",
+  "propertyLawyer",
+  "propertyLawyerDesc",
+  "taxConsultant",
+  "taxConsultantDesc",
+  "internationalTaxExpert",
+  "internationalTaxExpertDesc"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];
