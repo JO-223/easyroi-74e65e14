@@ -16,7 +16,12 @@ export const helpKeys = [
   "popularTopics",
   "relatedArticles",
   "needMoreHelp",
-  "contactSupport"
+  "contactSupport",
+  "help",
+  "faq",
+  "frequentQuestions",
+  "moreInfo",
+  "readMore"
 ] as const;
 
 export type HelpKey = typeof helpKeys[number];

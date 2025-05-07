@@ -93,7 +93,7 @@ export const useDemoAccountReset = () => {
   const resetDemoAccount = async () => {
     toast({
       title: t('processing'),
-      description: t('resettingDemoAccount'),
+      description: t('resetDemoAccount'),
     });
     
     const result = await resetDemoPlatinumAccount();
