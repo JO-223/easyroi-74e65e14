@@ -31,6 +31,7 @@ import Sitemap from "./pages/Sitemap";
 import CookiePolicy from "./pages/CookiePolicy";
 import CashflowTracker from "./pages/CashflowTracker";
 import MyInvestments from "./pages/MyInvestments";
+import Consultations from "./pages/Consultations";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -97,6 +98,12 @@ const App = () => {
                 <Route path="/dashboard/investments" element={
                   <RequireAuth>
                     <MyInvestments />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/consultations" element={
+                  <RequireAuth>
+                    <Consultations />
                   </RequireAuth>
                 } />
                 

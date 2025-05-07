@@ -1,7 +1,6 @@
-
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users, Award, FileSpreadsheet } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users, Award, FileSpreadsheet, DollarSign } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -62,6 +61,11 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       icon: FileSpreadsheet
     },
     {
+      title: t('myInvestments'),
+      href: '/dashboard/investments',
+      icon: DollarSign
+    },
+    {
       title: t('events'),
       href: '/dashboard/events',
       icon: Calendar
@@ -75,6 +79,11 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       title: t('investorLevels' as InvestorKey),
       href: '/dashboard/investor-levels',
       icon: Award
+    },
+    {
+      title: t('consultations'),
+      href: '/dashboard/consultations',
+      icon: UserCircle
     },
     {
       title: t('profile'),
