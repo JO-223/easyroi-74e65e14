@@ -1,94 +1,194 @@
 
-import React from "react";
-import { NavLink } from "react-router-dom";
-import {
-  BarChart3,
-  Building2,
-  Calendar,
-  ConstructionIcon,
-  Home,
-  Network,
-  Settings,
-  UserCircle,
-  Wallet
-} from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { SidebarBadge } from "./sidebar-badge";
-import { Button } from "../ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+import { Link, useLocation } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users, Award } from 'lucide-react';
+import { BadgeLevel } from '@/components/ui/badge-level';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAdminRole } from "@/hooks/use-admin-role";
+import { NavItem } from '@/types';
+import { InvestorKey } from "@/utils/translations/investor";
+import { useTranslation } from "@/hooks/useTranslation";
+
+interface UserProfileData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  level?: string | null;
+}
 
 interface SidebarNavProps {
-  userData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    level: string | null;
-    id: string;
-  };
+  userData?: UserProfileData;
 }
 
 export function SidebarNav({ userData }: SidebarNavProps) {
-  const { t } = useLanguage();
-  const { signOut } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const t = useTranslation();
+  const { isAdmin } = useAdminRole();
   
-  return (
-    <div className="h-full flex flex-col">
-      <div className="space-y-1 py-4 flex-grow">
-        <NavItem to="/dashboard" icon={Home} text={t('dashboard')} />
-        <NavItem to="/dashboard/properties" icon={Building2} text={t('properties')} />
-        <NavItem to="/dashboard/development" icon={ConstructionIcon} text={t('development')} />
-        <NavItem to="/dashboard/analytics" icon={BarChart3} text={t('analytics')} />
-        <NavItem to="/dashboard/cashflow" icon={Wallet} text={t('cashflowTracker')} />
-        <NavItem to="/dashboard/events" icon={Calendar} text={t('events')} />
-        <NavItem to="/dashboard/network" icon={Network} text={t('network')} />
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
+  };
 
+  const items: NavItem[] = [
+    {
+      title: t('dashboard'),
+      href: '/dashboard',
+      icon: Home
+    }, 
+    {
+      title: t('properties'),
+      href: '/dashboard/properties',
+      icon: Building2
+    }, 
+    {
+      title: t('development'),
+      href: '/dashboard/development',
+      icon: Construction
+    }, 
+    {
+      title: t('analytics'),
+      href: '/dashboard/analytics',
+      icon: BarChart3
+    }, 
+    {
+      title: t('events'),
+      href: '/dashboard/events',
+      icon: Calendar
+    }, 
+    {
+      title: t('network'),
+      href: '/dashboard/network',
+      icon: Users
+    },
+    {
+      title: t('investorLevels' as InvestorKey),
+      href: '/dashboard/investor-levels',
+      icon: Award
+    },
+    {
+      title: t('profile'),
+      href: '/dashboard/profile',
+      icon: UserCircle
+    }, 
+    {
+      title: t('settings'),
+      href: '/dashboard/settings',
+      icon: Settings
+    }
+  ];
+
+  // Add admin panel link if user is admin
+  if (isAdmin) {
+    items.push({
+      title: t('adminPanel'),
+      href: '/admin',
+      icon: Shield,
+      adminOnly: true
+    });
+  }
+  
+  // Show skeleton during loading
+  if (!userData || !userData.firstName) {
+    return (
+      <div className="flex flex-col h-full text-sidebar-foreground bg-easyroi-navy">
         <div className="px-3 py-2">
-          <div className="h-[2px] bg-gray-100"></div>
+          <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-4">
+            <div className="flex items-center space-x-2">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div>
+                <Skeleton className="h-4 w-24 mb-2" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            </div>
+            <div className="mt-3">
+              <Skeleton className="h-5 w-28" />
+            </div>
+          </div>
         </div>
-
-        <NavItem to="/dashboard/profile" icon={UserCircle} text={t('profile')}>
-          {userData.level && <SidebarBadge level={userData.level as any} />}
-        </NavItem>
-        <NavItem to="/dashboard/settings" icon={Settings} text={t('settings')} />
+        {/* Skeleton nav items */}
+        <nav className="space-y-1 px-3 flex-1">
+          {Array(8).fill(0).map((_, i) => (
+            <Skeleton key={i} className="h-9 w-full rounded-md my-1" />
+          ))}
+        </nav>
       </div>
+    );
+  }
+  
+  const initials = userData && userData.firstName && userData.lastName 
+    ? `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`
+    : "U";
+    
+  const displayName = userData && userData.firstName && userData.lastName
+    ? `${userData.firstName} ${userData.lastName}`
+    : "User";
+    
+  const email = userData?.email || "";
 
-      <div className="p-4 border-t border-gray-200">
-        <Button
-          variant="outline"
-          className="w-full bg-white hover:bg-gray-100"
-          onClick={() => signOut()}
+  return (
+    <div className="flex flex-col h-full text-sidebar-foreground bg-easyroi-navy">
+      <div className="px-3 py-2">
+        <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-4">
+          <div className="flex items-center space-x-2">
+            <div className="h-10 w-10 rounded-full bg-easyroi-gold flex items-center justify-center">
+              <span className="font-bold text-easyroi-navy">{initials}</span>
+            </div>
+            <div>
+              <p className="font-medium leading-none text-white">{displayName}</p>
+              <p className="text-xs leading-none text-gray-300 mt-1">{email}</p>
+            </div>
+          </div>
+          <div className="mt-3">
+            <BadgeLevel level={userData?.level as any || "bronze"} />
+          </div>
+        </div>
+      </div>
+      <nav className="space-y-1 px-3 flex-1">
+        {items.map(item => {
+          // Check if current path starts with item.href to highlight nested routes
+          const isActive = location.pathname === item.href || 
+            (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
+          
+          // Add a special style for admin links
+          const isAdminLink = item.adminOnly;
+          
+          return (
+            <Link 
+              key={item.href} 
+              to={item.href} 
+              className={cn(
+                "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors", 
+                isActive 
+                  ? "bg-sidebar-accent text-easyroi-gold" 
+                  : "text-sidebar-foreground hover:text-easyroi-gold hover:bg-sidebar-accent/50",
+                isAdminLink && "border border-easyroi-gold/40 bg-sidebar-accent/30"
+              )}
+            >
+              <item.icon className={cn("mr-3 h-5 w-5", isAdminLink && "text-easyroi-gold")} />
+              {item.title}
+            </Link>
+          );
+        })}
+      </nav>
+      <div className="p-4 space-y-2">
+        <div className="flex justify-between items-center px-3 py-2 text-sm font-medium rounded-md text-white">
+          <span>{t('language')}</span>
+          <LanguageSwitcher variant="minimal" className="text-white hover:bg-sidebar-accent/50" />
+        </div>
+        <button 
+          onClick={handleLogout}
+          className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-white hover:text-easyroi-gold hover:bg-sidebar-accent/50 transition-colors w-full"
         >
-          {t('logout')}
-        </Button>
+          <LogOut className="mr-3 h-5 w-5" />
+          <span>{t('logout')}</span>
+        </button>
       </div>
     </div>
-  );
-}
-
-interface NavItemProps {
-  to: string;
-  icon: React.ElementType;
-  text: string;
-  children?: React.ReactNode;
-}
-
-function NavItem({ to, icon: Icon, text, children }: NavItemProps) {
-  return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        `${
-          isActive
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-        } group flex items-center justify-between px-3 py-2 text-sm font-medium`
-      }
-    >
-      <div className="flex items-center">
-        <Icon className="mr-2 h-5 w-5" />
-        <span>{text}</span>
-      </div>
-      {children}
-    </NavLink>
   );
 }
