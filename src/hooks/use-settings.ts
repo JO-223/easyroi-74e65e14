@@ -85,8 +85,10 @@ export function useSettings() {
       }
       
       if (success) {
-        // Invalidate relevant queries after successful update
-        invalidateQueries(queryClient, 'user');
+        // Use setTimeout to prevent deadlock
+        setTimeout(() => {
+          invalidateQueries(queryClient, 'user');
+        }, 0);
       }
       
       return success;

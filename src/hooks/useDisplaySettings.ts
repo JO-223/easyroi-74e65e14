@@ -18,22 +18,27 @@ export function useDisplaySettings() {
   });
 
   useEffect(() => {
+    let isMounted = true;
+    
     const loadDisplaySettings = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         
-        if (user) {
+        if (user && isMounted) {
           // Get display settings
           const { data: displayData, error: displayError } = await supabase
             .from('display_settings')
             .select('language, currency, timezone')
             .eq('profile_id', user.id)
-            .single();
+            .maybeSingle();
           
           // Don't throw if no data is found - it's OK for settings to be missing initially
-          if (displayError && displayError.code !== 'PGRST116') throw displayError;
+          if (displayError && displayError.code !== 'PGRST116') {
+            console.error("Error loading display settings:", displayError);
+            return;
+          }
           
-          if (displayData) {
+          if (displayData && isMounted) {
             const updatedSettings = {
               language: displayData.language as Language || displaySettings.language,
               currency: displayData.currency as Currency || displaySettings.currency,
@@ -41,11 +46,17 @@ export function useDisplaySettings() {
             };
             
             setLocalDisplaySettings(updatedSettings);
-            updateDisplaySettings({
-              language: updatedSettings.language,
-              currency: updatedSettings.currency,
-              timezone: updatedSettings.timezone
-            });
+            
+            // Use setTimeout to avoid React state update deadlocks
+            setTimeout(() => {
+              if (isMounted) {
+                updateDisplaySettings({
+                  language: updatedSettings.language,
+                  currency: updatedSettings.currency,
+                  timezone: updatedSettings.timezone
+                });
+              }
+            }, 0);
           }
         }
       } catch (error) {
@@ -54,7 +65,11 @@ export function useDisplaySettings() {
     };
     
     loadDisplaySettings();
-  }, [displaySettings, updateDisplaySettings]);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const updateDisplaySettingsField = (field: keyof DisplaySettings, value: any) => {
     setLocalDisplaySettings(prev => ({
@@ -83,11 +98,14 @@ export function useDisplaySettings() {
       
       if (error) throw error;
       
-      updateDisplaySettings({
-        language: localDisplaySettings.language,
-        currency: localDisplaySettings.currency,
-        timezone: localDisplaySettings.timezone
-      });
+      // Use setTimeout to avoid React state update deadlocks
+      setTimeout(() => {
+        updateDisplaySettings({
+          language: localDisplaySettings.language,
+          currency: localDisplaySettings.currency,
+          timezone: localDisplaySettings.timezone
+        });
+      }, 0);
       
       toast({
         title: t('displaySettingsUpdated'),

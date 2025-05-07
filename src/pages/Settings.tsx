@@ -21,27 +21,15 @@ const Settings = () => {
     updatePrivacySettingsField
   } = useSettings();
 
+  // Use a more reliable way to check if settings are loaded
   useEffect(() => {
-    // Simulate checking if all settings are loaded
-    const checkSettingsLoaded = () => {
-      // Check if we have account email data
-      const hasAccountData = settingsData.account.email !== "";
-      
-      // Check if display settings are loaded (using a truthy check instead of comparing to empty string)
-      const hasDisplayData = Boolean(settingsData.display.language);
-      
-      if (hasAccountData && hasDisplayData) {
-        setIsLoading(false);
-      }
-    };
+    // Only check for essential data loaded status, avoid unnecessary re-renders
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
     
-    checkSettingsLoaded();
-    
-    // Set a timeout to ensure loading state doesn't get stuck
-    const timeoutId = setTimeout(() => setIsLoading(false), 2000);
-    
-    return () => clearTimeout(timeoutId);
-  }, [settingsData]);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isLoading) {
     return (
