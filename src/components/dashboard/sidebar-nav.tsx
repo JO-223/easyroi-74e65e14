@@ -21,57 +21,58 @@ import { Button } from "../ui/button";
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { Badge } from "../ui/badge";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { TranslationKey } from "@/utils/translationUtils";
 
 // Define sidebar navigation items
 export const sidebarNavItems = [
   {
-    title: "dashboard",
+    title: "dashboard" as TranslationKey,
     href: "/dashboard",
     icon: Home,
   },
   {
-    title: "properties",
+    title: "properties" as TranslationKey,
     href: "/dashboard/properties",
     icon: Building,
   },
   {
-    title: "investments",
+    title: "investments" as TranslationKey,
     href: "/dashboard/investments",
     icon: DollarSign,
   },
   {
-    title: "development",
+    title: "development" as TranslationKey,
     href: "/dashboard/development",
     icon: HardHat,
   },
   {
-    title: "analytics",
+    title: "analytics" as TranslationKey,
     href: "/dashboard/analytics",
     icon: BarChart4,
   },
   {
-    title: "cashflowTracker",
+    title: "cashflowTracker" as TranslationKey,
     href: "/dashboard/cashflow",
     icon: CreditCard,
   },
   {
-    title: "events",
+    title: "events" as TranslationKey,
     href: "/dashboard/events",
     icon: Calendar,
   },
   {
-    title: "network",
+    title: "network" as TranslationKey,
     href: "/dashboard/network",
     icon: Users,
     badge: true,
   },
   {
-    title: "consultations",
+    title: "consultations" as TranslationKey,
     href: "/dashboard/consultations",
     icon: Network,
   },
   {
-    title: "helpCenter",
+    title: "helpCenter" as TranslationKey,
     href: "/dashboard/help",
     icon: LifeBuoy,
   },
@@ -80,7 +81,7 @@ export const sidebarNavItems = [
 // Admin sidebar navigation items
 export const adminSidebarItems = [
   {
-    title: "Admin Dashboard",
+    title: "adminDashboard" as TranslationKey,
     href: "/admin",
     icon: Settings,
   },
@@ -147,7 +148,7 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
             >
               <NavLink to={item.href} className="flex items-center" onClick={handleNavClick}>
                 <item.icon className="mr-2 h-4 w-4" />
-                {item.title}
+                {t(item.title)}
               </NavLink>
             </Button>
           ))}

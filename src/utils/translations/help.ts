@@ -1,6 +1,9 @@
 
-// Keys for help center translations
+// Help center related translation keys
 export const helpKeys = [
+  "helpCenter",
+  "helpCenterDescription",
+  "searchHelp",
   "faqCategories",
   "payments",
   "contracts",

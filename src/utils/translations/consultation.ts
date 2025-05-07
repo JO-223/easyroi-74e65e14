@@ -1,5 +1,5 @@
 
-// Keys for consultation-related translations
+// Consultation related translation keys
 export const consultationKeys = [
   "consultations",
   "consultationsDescription",
