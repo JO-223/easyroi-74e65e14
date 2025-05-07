@@ -17,22 +17,25 @@ export function useDisplaySettings() {
     timezone: displaySettings.timezone,
   });
   
-  // Use a ref to track if initial settings were loaded to prevent refresh loops
+  // Use refs to track component state
   const settingsLoaded = useRef(false);
+  const isMounted = useRef(true);
+  const isSettingsUpdateScheduled = useRef(false);
 
   useEffect(() => {
+    // Set mounted flag
+    isMounted.current = true;
+    
     // Early return if settings are already loaded to break potential loops
     if (settingsLoaded.current) {
       return;
     }
     
-    let isMounted = true;
-    
     const loadDisplaySettings = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         
-        if (!user || !isMounted) return;
+        if (!user || !isMounted.current) return;
         
         // Get display settings
         const { data: displayData, error: displayError } = await supabase
@@ -44,10 +47,14 @@ export function useDisplaySettings() {
         // Don't throw if no data is found - it's OK for settings to be missing initially
         if (displayError && displayError.code !== 'PGRST116') {
           console.error("Error loading display settings:", displayError);
+          settingsLoaded.current = true; // Mark as loaded even on error to prevent loops
           return;
         }
         
-        if (!displayData || !isMounted) return;
+        if (!displayData || !isMounted.current) {
+          settingsLoaded.current = true; // Mark as loaded even with no data to prevent loops
+          return;
+        }
         
         const updatedSettings = {
           language: displayData.language as Language || displaySettings.language,
@@ -55,36 +62,47 @@ export function useDisplaySettings() {
           timezone: displayData.timezone as Timezone || displaySettings.timezone,
         };
         
-        setLocalDisplaySettings(updatedSettings);
+        if (isMounted.current) {
+          setLocalDisplaySettings(updatedSettings);
+        }
         
         // Use setTimeout with a longer delay to avoid React state update deadlocks
         // Only update global settings once to avoid infinite loops
-        if (isMounted && !settingsLoaded.current) {
+        if (isMounted.current && !settingsLoaded.current && !isSettingsUpdateScheduled.current) {
+          isSettingsUpdateScheduled.current = true;
+          
           setTimeout(() => {
-            if (isMounted) {
+            if (isMounted.current) {
               updateDisplaySettings({
                 language: updatedSettings.language,
                 currency: updatedSettings.currency,
                 timezone: updatedSettings.timezone
               });
+              
               // Mark settings as loaded to prevent future updates
               settingsLoaded.current = true;
+              isSettingsUpdateScheduled.current = false;
             }
-          }, 100);
+          }, 200);
         }
       } catch (error) {
         console.error("Error loading display settings:", error);
+        settingsLoaded.current = true; // Mark as loaded even on error to prevent loops
       }
     };
     
-    loadDisplaySettings();
+    if (!settingsLoaded.current) {
+      loadDisplaySettings();
+    }
     
     return () => {
-      isMounted = false;
+      isMounted.current = false;
     };
   }, []); // Remove displaySettings from dependencies to prevent loops
 
   const updateDisplaySettingsField = (field: keyof DisplaySettings, value: any) => {
+    if (!isMounted.current) return;
+    
     setLocalDisplaySettings(prev => ({
       ...prev,
       [field]: value
@@ -93,6 +111,8 @@ export function useDisplaySettings() {
 
   const saveDisplaySettings = async () => {
     try {
+      if (!isMounted.current) return false;
+      
       setIsSaving(true);
       
       const { data: { user } } = await supabase.auth.getUser();
@@ -112,30 +132,46 @@ export function useDisplaySettings() {
       if (error) throw error;
       
       // Use setTimeout to avoid React state update deadlocks
-      setTimeout(() => {
-        updateDisplaySettings({
-          language: localDisplaySettings.language,
-          currency: localDisplaySettings.currency,
-          timezone: localDisplaySettings.timezone
-        });
-      }, 100);
+      if (isMounted.current && !isSettingsUpdateScheduled.current) {
+        isSettingsUpdateScheduled.current = true;
+        
+        setTimeout(() => {
+          if (isMounted.current) {
+            updateDisplaySettings({
+              language: localDisplaySettings.language,
+              currency: localDisplaySettings.currency,
+              timezone: localDisplaySettings.timezone
+            });
+            
+            isSettingsUpdateScheduled.current = false;
+          }
+        }, 200);
+      }
       
-      toast({
-        title: t('displaySettingsUpdated'),
-        description: t('displaySettingsSaved'),
-      });
+      if (isMounted.current) {
+        toast({
+          title: t('displaySettingsUpdated'),
+          description: t('displaySettingsSaved'),
+        });
+      }
       
       return true;
     } catch (error) {
       console.error("Error updating display settings:", error);
-      toast({
-        title: t('errorOccurred'),
-        description: t('errorUpdatingSettings'),
-        variant: "destructive"
-      });
+      
+      if (isMounted.current) {
+        toast({
+          title: t('errorOccurred'),
+          description: t('errorUpdatingSettings'),
+          variant: "destructive"
+        });
+      }
+      
       return false;
     } finally {
-      setIsSaving(false);
+      if (isMounted.current) {
+        setIsSaving(false);
+      }
     }
   };
 

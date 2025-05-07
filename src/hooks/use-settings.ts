@@ -21,6 +21,7 @@ export interface UserSettings {
 
 export function useSettings() {
   const [isSaving, setIsSaving] = useState(false);
+  const [isQueryInvalidationScheduled, setIsQueryInvalidationScheduled] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
   const queryClient = useQueryClient();
@@ -48,13 +49,20 @@ export function useSettings() {
     savePrivacySettings
   } = usePrivacySettings();
 
-  // Combine all settings into one object - use memo to prevent unnecessary re-renders
+  // Combine all settings into one object
   const settingsData: UserSettings = {
     account: accountSettings,
     display: displaySettings,
     notifications: notificationSettings,
     privacy: privacySettings
   };
+
+  // Clear invalidation flag when unmounting to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      setIsQueryInvalidationScheduled(false);
+    };
+  }, []);
 
   const handleSettingsSubmit = async (settingsType: SettingsType) => {
     try {
@@ -84,11 +92,13 @@ export function useSettings() {
           success = false;
       }
       
-      if (success) {
-        // Use setTimeout to prevent deadlock, but with a larger delay
+      if (success && !isQueryInvalidationScheduled) {
+        // Use setTimeout to prevent deadlock, but only schedule once
+        setIsQueryInvalidationScheduled(true);
         setTimeout(() => {
           invalidateQueries(queryClient, 'user');
-        }, 100);
+          setIsQueryInvalidationScheduled(false);
+        }, 200);
       }
       
       return success;
