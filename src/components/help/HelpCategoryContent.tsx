@@ -8,12 +8,21 @@ import {
 import { HelpCategory } from "@/types/help";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface HelpCategoryContentProps {
   category: HelpCategory;
 }
 
 export function HelpCategoryContent({ category }: HelpCategoryContentProps) {
+  if (!category.articles || category.articles.length === 0) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        No articles found for this category
+      </div>
+    );
+  }
+
   return (
     <Accordion type="single" collapsible className="w-full">
       {category.articles.map((article) => (

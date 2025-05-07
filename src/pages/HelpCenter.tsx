@@ -6,13 +6,18 @@ import { HelpCategoryTabs } from "@/components/help/HelpCategoryTabs";
 import { HelpSearch } from "@/components/help/HelpSearch";
 import { HelpSearchResults } from "@/components/help/HelpSearchResults";
 import { fetchHelpCategories, searchHelpArticles } from "@/services/helpCenterService";
-import { HelpCategory, HelpArticle } from "@/types/help";
+import { HelpArticle } from "@/types/help";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LifeBuoy } from "lucide-react";
+import { LifeBuoy, HelpCircle, FileQuestion, FileText, BarChart } from "lucide-react";
 
 const HelpCenter = () => {
   const t = useTranslation();
-  const [categories, setCategories] = useState<HelpCategory[]>([]);
+  const [categories, setCategories] = useState<Array<{
+    id: string;
+    label: any;
+    icon: React.ReactNode;
+  }>>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<HelpArticle[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -22,8 +27,33 @@ const HelpCenter = () => {
     const loadCategories = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchHelpCategories();
-        setCategories(data);
+        // In a real implementation, this would load from the database
+        // For now, let's add some mock categories
+        setCategories([
+          {
+            id: "general",
+            label: "faqCategories",
+            icon: <HelpCircle className="h-4 w-4" />
+          },
+          {
+            id: "payments",
+            label: "payments",
+            icon: <BarChart className="h-4 w-4" />
+          },
+          {
+            id: "investments",
+            label: "investments",
+            icon: <FileText className="h-4 w-4" />
+          },
+          {
+            id: "userAccounts",
+            label: "userAccounts",
+            icon: <FileQuestion className="h-4 w-4" />
+          }
+        ]);
+        
+        // Set default active category
+        setActiveCategory("general");
       } catch (error) {
         console.error("Error loading help categories:", error);
       } finally {
@@ -80,7 +110,12 @@ const HelpCenter = () => {
         />
 
         {!searchQuery && (
-          <HelpCategoryTabs categories={categories} isLoading={isLoading} />
+          <HelpCategoryTabs 
+            categories={categories} 
+            isLoading={isLoading}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory} 
+          />
         )}
       </div>
     </DashboardLayout>

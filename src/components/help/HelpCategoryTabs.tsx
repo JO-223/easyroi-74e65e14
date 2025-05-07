@@ -4,25 +4,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { HelpCategoryContent } from "./HelpCategoryContent";
 import { HelpKey } from "@/utils/translations/help";
+import { HelpCategory } from "@/types/help";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface HelpCategory {
+interface HelpCategoryProps {
   id: string;
   label: HelpKey;
   icon: React.ReactNode;
 }
 
 interface HelpCategoryTabsProps {
-  categories: HelpCategory[];
+  categories: HelpCategoryProps[];
   activeCategory: string;
   setActiveCategory: (category: string) => void;
+  isLoading?: boolean;
 }
 
 export function HelpCategoryTabs({
   categories,
   activeCategory,
   setActiveCategory,
+  isLoading = false,
 }: HelpCategoryTabsProps) {
   const { t } = useLanguage();
+
+  if (isLoading) {
+    return <Skeleton className="h-64 w-full" />;
+  }
 
   return (
     <Tabs
@@ -47,7 +55,11 @@ export function HelpCategoryTabs({
 
       {categories.map((category) => (
         <TabsContent key={category.id} value={category.id} className="pt-2">
-          <HelpCategoryContent categoryId={category.id} />
+          <HelpCategoryContent category={{ 
+            id: category.id, 
+            title: t(category.label), 
+            articles: [] 
+          }} />
         </TabsContent>
       ))}
     </Tabs>

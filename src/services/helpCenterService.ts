@@ -1,15 +1,6 @@
-import { supabase } from "@/integrations/supabase/client";
 
-// Add the missing HelpArticle type
-export interface HelpArticle {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-  tags: string[];
-  popularity: number;
-  lastUpdated: string;
-}
+import { supabase } from "@/integrations/supabase/client";
+import { HelpCategory, HelpArticle } from "@/types/help";
 
 /**
  * Fetches all help articles from the database.
@@ -30,6 +21,41 @@ export const fetchHelpArticles = async (): Promise<HelpArticle[]> => {
     return data as HelpArticle[];
   } catch (error) {
     console.error("Unexpected error fetching help articles:", error);
+    return [];
+  }
+};
+
+/**
+ * Fetches all help categories with their articles.
+ * @returns {Promise<HelpCategory[]>} - A promise that resolves to an array of HelpCategory objects.
+ */
+export const fetchHelpCategories = async (): Promise<HelpCategory[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('help_categories')
+      .select('id, title, icon');
+
+    if (error) {
+      console.error("Error fetching help categories:", error);
+      return [];
+    }
+
+    // For each category, fetch its articles
+    const categoriesWithArticles = await Promise.all(
+      (data || []).map(async (category) => {
+        const articles = await fetchHelpArticlesByCategory(category.id);
+        return {
+          id: category.id,
+          title: category.title,
+          icon: category.icon,
+          articles
+        } as HelpCategory;
+      })
+    );
+
+    return categoriesWithArticles;
+  } catch (error) {
+    console.error("Unexpected error fetching help categories:", error);
     return [];
   }
 };
