@@ -1,208 +1,158 @@
-import { Link, useLocation } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users, Award, FileSpreadsheet, DollarSign } from 'lucide-react';
-import { BadgeLevel } from '@/components/ui/badge-level';
-import { LanguageSwitcher } from '@/components/ui/language-switcher';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useAdminRole } from "@/hooks/use-admin-role";
-import { NavItem } from '@/types';
-import { InvestorKey } from "@/utils/translations/investor";
+
+import {
+  BarChart4,
+  Building,
+  Calendar,
+  CreditCard,
+  DollarSign,
+  HardHat,
+  Home,
+  LifeBuoy,
+  Network,
+  Settings,
+  Users
+} from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { NavLink, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { SidebarBadge } from "./sidebar-badge";
+import { Button } from "../ui/button";
+import { useAdminRole } from "@/hooks/use-admin-role";
+import { Badge } from "../ui/badge";
+import { useMobile } from "@/hooks/use-mobile";
 
-interface UserProfileData {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  level?: string | null;
+// Define sidebar navigation items
+export const sidebarNavItems = [
+  {
+    title: "dashboard",
+    href: "/dashboard",
+    icon: Home,
+  },
+  {
+    title: "properties",
+    href: "/dashboard/properties",
+    icon: Building,
+  },
+  {
+    title: "investments",
+    href: "/dashboard/investments",
+    icon: DollarSign,
+  },
+  {
+    title: "development",
+    href: "/dashboard/development",
+    icon: HardHat,
+  },
+  {
+    title: "analytics",
+    href: "/dashboard/analytics",
+    icon: BarChart4,
+  },
+  {
+    title: "cashflowTracker",
+    href: "/dashboard/cashflow",
+    icon: CreditCard,
+  },
+  {
+    title: "events",
+    href: "/dashboard/events",
+    icon: Calendar,
+  },
+  {
+    title: "network",
+    href: "/dashboard/network",
+    icon: Users,
+    badge: true,
+  },
+  {
+    title: "consultations",
+    href: "/dashboard/consultations",
+    icon: Network,
+  },
+  {
+    title: "helpCenter",
+    href: "/dashboard/help",
+    icon: LifeBuoy,
+  },
+];
+
+// Admin sidebar navigation items
+export const adminSidebarItems = [
+  {
+    title: "Admin Dashboard",
+    href: "/admin",
+    icon: Settings,
+  },
+];
+
+interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
+  closeSidebar?: () => void;
 }
 
-interface SidebarNavProps {
-  userData?: UserProfileData;
-}
-
-export function SidebarNav({ userData }: SidebarNavProps) {
-  const location = useLocation();
-  const navigate = useNavigate();
+export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProps) {
+  const { user } = useAuth();
   const t = useTranslation();
-  const { isAdmin } = useAdminRole();
-  
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/login');
+  const location = useLocation();
+  const { isAdminUser } = useAdminRole();
+  const isMobile = useMobile();
+
+  // Function to handle navigation click on mobile
+  const handleNavClick = () => {
+    if (isMobile && closeSidebar) {
+      closeSidebar();
+    }
   };
 
-  const items: NavItem[] = [
-    {
-      title: t('dashboard'),
-      href: '/dashboard',
-      icon: Home
-    }, 
-    {
-      title: t('properties'),
-      href: '/dashboard/properties',
-      icon: Building2
-    }, 
-    {
-      title: t('development'),
-      href: '/dashboard/development',
-      icon: Construction
-    }, 
-    {
-      title: t('analytics'),
-      href: '/dashboard/analytics',
-      icon: BarChart3
-    }, 
-    {
-      title: t('cashflowTracker'),
-      href: '/dashboard/cashflow',
-      icon: FileSpreadsheet
-    },
-    {
-      title: t('myInvestments'),
-      href: '/dashboard/investments',
-      icon: DollarSign
-    },
-    {
-      title: t('events'),
-      href: '/dashboard/events',
-      icon: Calendar
-    }, 
-    {
-      title: t('network'),
-      href: '/dashboard/network',
-      icon: Users
-    },
-    {
-      title: t('investorLevels' as InvestorKey),
-      href: '/dashboard/investor-levels',
-      icon: Award
-    },
-    {
-      title: t('consultations'),
-      href: '/dashboard/consultations',
-      icon: UserCircle
-    },
-    {
-      title: t('profile'),
-      href: '/dashboard/profile',
-      icon: UserCircle
-    }, 
-    {
-      title: t('settings'),
-      href: '/dashboard/settings',
-      icon: Settings
-    }
-  ];
-
-  // Add admin panel link if user is admin
-  if (isAdmin) {
-    items.push({
-      title: t('adminPanel'),
-      href: '/admin',
-      icon: Shield,
-      adminOnly: true
-    });
-  }
-  
-  // Show skeleton during loading
-  if (!userData || !userData.firstName) {
-    return (
-      <div className="flex flex-col h-full text-sidebar-foreground bg-easyroi-navy">
-        <div className="px-3 py-2">
-          <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-4">
-            <div className="flex items-center space-x-2">
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <div>
-                <Skeleton className="h-4 w-24 mb-2" />
-                <Skeleton className="h-3 w-16" />
-              </div>
-            </div>
-            <div className="mt-3">
-              <Skeleton className="h-5 w-28" />
-            </div>
-          </div>
-        </div>
-        {/* Skeleton nav items */}
-        <nav className="space-y-1 px-3 flex-1">
-          {Array(8).fill(0).map((_, i) => (
-            <Skeleton key={i} className="h-9 w-full rounded-md my-1" />
-          ))}
-        </nav>
-      </div>
-    );
-  }
-  
-  const initials = userData && userData.firstName && userData.lastName 
-    ? `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`
-    : "U";
-    
-  const displayName = userData && userData.firstName && userData.lastName
-    ? `${userData.firstName} ${userData.lastName}`
-    : "User";
-    
-  const email = userData?.email || "";
-
   return (
-    <div className="flex flex-col h-full text-sidebar-foreground bg-easyroi-navy">
-      <div className="px-3 py-2">
-        <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-4">
-          <div className="flex items-center space-x-2">
-            <div className="h-10 w-10 rounded-full bg-easyroi-gold flex items-center justify-center">
-              <span className="font-bold text-easyroi-navy">{initials}</span>
-            </div>
-            <div>
-              <p className="font-medium leading-none text-white">{displayName}</p>
-              <p className="text-xs leading-none text-gray-300 mt-1">{email}</p>
-            </div>
-          </div>
-          <div className="mt-3">
-            <BadgeLevel level={userData?.level as any || "bronze"} />
-          </div>
-        </div>
-      </div>
-      <nav className="space-y-1 px-3 flex-1">
-        {items.map(item => {
-          // Check if current path starts with item.href to highlight nested routes
-          const isActive = location.pathname === item.href || 
-            (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
-          
-          // Add a special style for admin links
-          const isAdminLink = item.adminOnly;
-          
-          return (
-            <Link 
-              key={item.href} 
-              to={item.href} 
+    <div className={cn("flex flex-col gap-1", className)} {...props}>
+      {sidebarNavItems.map((item) => (
+        <Button
+          key={item.href}
+          asChild
+          variant="ghost"
+          className={cn(
+            "justify-start gap-2 px-3",
+            location.pathname === item.href && "bg-accent text-accent-foreground",
+            location.pathname.startsWith(item.href) && 
+            item.href !== "/dashboard" && 
+            "bg-accent/50 text-accent-foreground"
+          )}
+        >
+          <NavLink to={item.href} className="flex items-center" onClick={handleNavClick}>
+            <item.icon className="mr-2 h-4 w-4" />
+            {t(item.title)}
+            {item.badge && <SidebarBadge count={3} />}
+            {item.href === "/dashboard/consultations" && (
+              <Badge variant="outline" className="ml-auto text-xs py-0">New</Badge>
+            )}
+          </NavLink>
+        </Button>
+      ))}
+
+      {isAdminUser && (
+        <div className="relative mt-6 pt-6 before:absolute before:top-0 before:left-2 before:right-2 before:h-px before:bg-border">
+          {adminSidebarItems.map((item) => (
+            <Button
+              key={item.href}
+              asChild
+              variant="ghost"
               className={cn(
-                "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors", 
-                isActive 
-                  ? "bg-sidebar-accent text-easyroi-gold" 
-                  : "text-sidebar-foreground hover:text-easyroi-gold hover:bg-sidebar-accent/50",
-                isAdminLink && "border border-easyroi-gold/40 bg-sidebar-accent/30"
+                "justify-start gap-2 px-3",
+                location.pathname === item.href && "bg-accent text-accent-foreground",
+                location.pathname.startsWith(item.href) && 
+                item.href !== "/dashboard" && 
+                "bg-accent/50 text-accent-foreground"
               )}
             >
-              <item.icon className={cn("mr-3 h-5 w-5", isAdminLink && "text-easyroi-gold")} />
-              {item.title}
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="p-4 space-y-2">
-        <div className="flex justify-between items-center px-3 py-2 text-sm font-medium rounded-md text-white">
-          <span>{t('language')}</span>
-          <LanguageSwitcher variant="minimal" className="text-white hover:bg-sidebar-accent/50" />
+              <NavLink to={item.href} className="flex items-center" onClick={handleNavClick}>
+                <item.icon className="mr-2 h-4 w-4" />
+                {item.title}
+              </NavLink>
+            </Button>
+          ))}
         </div>
-        <button 
-          onClick={handleLogout}
-          className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-white hover:text-easyroi-gold hover:bg-sidebar-accent/50 transition-colors w-full"
-        >
-          <LogOut className="mr-3 h-5 w-5" />
-          <span>{t('logout')}</span>
-        </button>
-      </div>
+      )}
     </div>
   );
 }

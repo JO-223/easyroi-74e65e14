@@ -19,6 +19,7 @@ import { tooltipKeys, TooltipKey } from './tooltip';
 import { investorKeys, InvestorKey } from './investor';
 import { legalKeys, LegalKey } from './legal';
 import { consultationKeys, ConsultationKey } from './consultation';
+import { helpKeys, HelpKey } from './help';
 
 // Union of all translation keys
 export type TranslationKey =
@@ -41,7 +42,8 @@ export type TranslationKey =
   | TooltipKey
   | InvestorKey
   | LegalKey
-  | ConsultationKey;
+  | ConsultationKey
+  | HelpKey;
 
 // Array of all translation keys, useful for validation
 const allTranslationKeys = [
@@ -64,7 +66,8 @@ const allTranslationKeys = [
   ...tooltipKeys,
   ...investorKeys,
   ...legalKeys,
-  ...consultationKeys
+  ...consultationKeys,
+  ...helpKeys
 ] as const;
 
 // Function to check if a string is a valid translation key
@@ -93,5 +96,6 @@ export {
   tooltipKeys,
   investorKeys,
   legalKeys,
-  consultationKeys
+  consultationKeys,
+  helpKeys
 };
