@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Property, PropertyFilter } from "@/types/property";
 
@@ -120,7 +119,8 @@ export const fetchProperties = async (filters?: PropertyFilter) => {
       type,
       amenities,
       images,
-      pros_cons
+      pros_cons,
+      ownership: Number(item.ownership || 100) // Default to 100% if not specified
     };
     return property;
   });
@@ -212,7 +212,8 @@ export const fetchPropertyById = async (id: string): Promise<Property> => {
     type,
     amenities,
     images,
-    pros_cons
+    pros_cons,
+    ownership: Number(data.ownership || 100) // Default to 100% if not specified
   };
   
   return property;

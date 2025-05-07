@@ -45,7 +45,7 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
                   <TableCell>{property.roi}</TableCell>
                   <TableCell>{property.value}</TableCell>
                   <TableCell>
-                    {property.ownership ? `${property.ownership}%` : '100%'}
+                    {`${property.ownership}%`}
                   </TableCell>
                   <TableCell>
                     <Badge
