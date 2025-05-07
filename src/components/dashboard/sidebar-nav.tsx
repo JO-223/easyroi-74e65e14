@@ -106,7 +106,7 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
   };
 
   return (
-    <div className={cn("flex flex-col gap-1", className)} {...props}>
+    <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       {sidebarNavItems.map((item) => (
         <Button
           key={item.href}
