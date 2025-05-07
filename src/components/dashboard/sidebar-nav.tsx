@@ -106,18 +106,18 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
   };
 
   return (
-    <div className={cn("flex flex-col gap-1", className)} {...props}>
+    <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       {sidebarNavItems.map((item) => (
         <Button
           key={item.href}
           asChild
           variant="ghost"
           className={cn(
-            "justify-start gap-2 px-3",
-            location.pathname === item.href && "bg-accent text-accent-foreground",
+            "justify-start gap-2 px-3 text-white",
+            location.pathname === item.href && "bg-[#5e3ec7] font-medium",
             location.pathname.startsWith(item.href) && 
             item.href !== "/dashboard" && 
-            "bg-accent/50 text-accent-foreground"
+            "bg-[#5e3ec7]/80 font-medium"
           )}
         >
           <NavLink to={item.href} className="flex items-center" onClick={handleNavClick}>
@@ -132,18 +132,18 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
       ))}
 
       {isAdmin && (
-        <div className="relative mt-6 pt-6 before:absolute before:top-0 before:left-2 before:right-2 before:h-px before:bg-border">
+        <div className="relative mt-6 pt-6 before:absolute before:top-0 before:left-2 before:right-2 before:h-px before:bg-white/20">
           {adminSidebarItems.map((item) => (
             <Button
               key={item.href}
               asChild
               variant="ghost"
               className={cn(
-                "justify-start gap-2 px-3",
-                location.pathname === item.href && "bg-accent text-accent-foreground",
+                "justify-start gap-2 px-3 text-white",
+                location.pathname === item.href && "bg-[#5e3ec7] font-medium",
                 location.pathname.startsWith(item.href) && 
                 item.href !== "/dashboard" && 
-                "bg-accent/50 text-accent-foreground"
+                "bg-[#5e3ec7]/80 font-medium"
               )}
             >
               <NavLink to={item.href} className="flex items-center" onClick={handleNavClick}>
