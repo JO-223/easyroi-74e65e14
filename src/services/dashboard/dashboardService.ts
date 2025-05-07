@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 // Types for dashboard data
@@ -205,4 +204,3 @@ export function formatCurrency(value: number): string {
     return `€${value.toFixed(0)}`;
   }
 }
-
