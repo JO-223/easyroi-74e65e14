@@ -1,3 +1,4 @@
+
 const en = {
   // General
   welcome: "Welcome",
@@ -601,32 +602,7 @@ const en = {
   submitting: "Submitting...",
   submitRequest: "Submit Request",
   saleRequestSubmitted: "Sale request submitted successfully",
-  errorSubmittingSaleRequest: "Error submitting sale request",
-  
-  // Consultation translations
-  consultations: "1:1 Consultations",
-  investmentExperts: "Investment Experts",
-  legalAssistance: "Legal Assistance",
-  taxConsultation: "Tax Consultation",
-  bookConsultation: "Book Consultation",
-  viewCalendar: "View available slots",
-  noExpertsFound: "No experts found for this category",
-  
-  // Expert roles and descriptions
-  investmentExpert: "Investment Expert",
-  investmentExpertDesc: "Specialized in real estate investment strategies, market analysis, and portfolio optimization.",
-  investmentAdvisor: "Investment Advisor",
-  investmentAdvisorDesc: "Helps clients build and maintain a diversified real estate portfolio aligned with their financial goals.",
-  
-  legalAdvisor: "Legal Advisor",
-  legalAdvisorDesc: "Specializes in real estate contracts, international property law, and legal due diligence for investments.",
-  propertyLawyer: "Property Lawyer",
-  propertyLawyerDesc: "Expert in resolving property disputes, contracts analysis, and navigating multi-jurisdiction real estate transactions.",
-  
-  taxConsultant: "Tax Consultant",
-  taxConsultantDesc: "Provides guidance on tax optimization strategies for real estate investors and property tax planning.",
-  internationalTaxExpert: "International Tax Expert",
-  internationalTaxExpertDesc: "Specializes in cross-border taxation, tax treaties, and international investment structures.",
+  errorSubmittingSaleRequest: "Error submitting sale request"
 };
 
 export default en;
