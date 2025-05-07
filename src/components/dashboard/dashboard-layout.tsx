@@ -114,11 +114,11 @@ export function DashboardLayout({
       <div className="min-h-screen bg-gray-50">
         <div className="flex">
           {/* Sidebar for larger screens */}
-          <div className="hidden lg:block w-64 bg-sidebar min-h-screen">
+          <div className="hidden lg:block w-64 bg-easyroi-navy min-h-screen">
             <div className="p-6 bg-easyroi-navy">
               <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
             </div>
-            <SidebarNav closeSidebar={handleCloseSidebar} />
+            <SidebarNav className="p-4" closeSidebar={handleCloseSidebar} />
           </div>
           
           {/* Main content area */}
@@ -140,7 +140,7 @@ export function DashboardLayout({
                   <div className="p-6 bg-easyroi-navy">
                     <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
                   </div>
-                  <SidebarNav closeSidebar={handleCloseSidebar} />
+                  <SidebarNav className="p-4" closeSidebar={handleCloseSidebar} />
                 </SheetContent>
               </Sheet>
             </DashboardHeader>

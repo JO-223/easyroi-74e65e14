@@ -57,7 +57,7 @@ export function HelpCategoryTabs({
         <TabsContent key={category.id} value={category.id} className="pt-2">
           <HelpCategoryContent category={{ 
             id: category.id, 
-            title: t(category.label), 
+            title: t(category.label),
             articles: [] 
           }} />
         </TabsContent>
