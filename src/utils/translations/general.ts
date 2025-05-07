@@ -1,3 +1,4 @@
+
 // Chiavi di traduzione relative agli elementi generali dell'interfaccia
 export const generalKeys = [
   "welcome",
@@ -117,7 +118,8 @@ export const generalKeys = [
   "errorExportingData",
   "dataLoadError",
   "errorLoadingCashflowData",
-  "noDataToExport"
+  "noDataToExport",
+  "property"  // Added the missing key
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];

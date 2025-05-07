@@ -47,7 +47,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
         </div>
 
         <NavItem to="/dashboard/profile" icon={UserCircle} text={t('profile')}>
-          {userData.level && <SidebarBadge level={userData.level} />}
+          {userData.level && <SidebarBadge level={userData.level as any} />}
         </NavItem>
         <NavItem to="/dashboard/settings" icon={Settings} text={t('settings')} />
       </div>
