@@ -21,15 +21,16 @@ const Settings = () => {
     updatePrivacySettingsField
   } = useSettings();
 
-  // Use a more reliable way to check if settings are loaded
+  // Fixed loading state management
   useEffect(() => {
-    // Only check for essential data loaded status, avoid unnecessary re-renders
+    // Use a one-time loading effect that doesn't depend on data
+    // This prevents oscillation between loading and not loading
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 800);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, []); // Empty dependency array ensures this only runs once
 
   if (isLoading) {
     return (

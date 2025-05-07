@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage, Language, Currency, Timezone, DisplaySettings } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,48 +16,61 @@ export function useDisplaySettings() {
     currency: displaySettings.currency,
     timezone: displaySettings.timezone,
   });
+  
+  // Use a ref to track if initial settings were loaded to prevent refresh loops
+  const settingsLoaded = useRef(false);
 
   useEffect(() => {
+    // Early return if settings are already loaded to break potential loops
+    if (settingsLoaded.current) {
+      return;
+    }
+    
     let isMounted = true;
     
     const loadDisplaySettings = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         
-        if (user && isMounted) {
-          // Get display settings
-          const { data: displayData, error: displayError } = await supabase
-            .from('display_settings')
-            .select('language, currency, timezone')
-            .eq('profile_id', user.id)
-            .maybeSingle();
-          
-          // Don't throw if no data is found - it's OK for settings to be missing initially
-          if (displayError && displayError.code !== 'PGRST116') {
-            console.error("Error loading display settings:", displayError);
-            return;
-          }
-          
-          if (displayData && isMounted) {
-            const updatedSettings = {
-              language: displayData.language as Language || displaySettings.language,
-              currency: displayData.currency as Currency || displaySettings.currency,
-              timezone: displayData.timezone as Timezone || displaySettings.timezone,
-            };
-            
-            setLocalDisplaySettings(updatedSettings);
-            
-            // Use setTimeout to avoid React state update deadlocks
-            setTimeout(() => {
-              if (isMounted) {
-                updateDisplaySettings({
-                  language: updatedSettings.language,
-                  currency: updatedSettings.currency,
-                  timezone: updatedSettings.timezone
-                });
-              }
-            }, 0);
-          }
+        if (!user || !isMounted) return;
+        
+        // Get display settings
+        const { data: displayData, error: displayError } = await supabase
+          .from('display_settings')
+          .select('language, currency, timezone')
+          .eq('profile_id', user.id)
+          .maybeSingle();
+        
+        // Don't throw if no data is found - it's OK for settings to be missing initially
+        if (displayError && displayError.code !== 'PGRST116') {
+          console.error("Error loading display settings:", displayError);
+          return;
+        }
+        
+        if (!displayData || !isMounted) return;
+        
+        const updatedSettings = {
+          language: displayData.language as Language || displaySettings.language,
+          currency: displayData.currency as Currency || displaySettings.currency,
+          timezone: displayData.timezone as Timezone || displaySettings.timezone,
+        };
+        
+        setLocalDisplaySettings(updatedSettings);
+        
+        // Use setTimeout with a longer delay to avoid React state update deadlocks
+        // Only update global settings once to avoid infinite loops
+        if (isMounted && !settingsLoaded.current) {
+          setTimeout(() => {
+            if (isMounted) {
+              updateDisplaySettings({
+                language: updatedSettings.language,
+                currency: updatedSettings.currency,
+                timezone: updatedSettings.timezone
+              });
+              // Mark settings as loaded to prevent future updates
+              settingsLoaded.current = true;
+            }
+          }, 100);
         }
       } catch (error) {
         console.error("Error loading display settings:", error);
@@ -69,7 +82,7 @@ export function useDisplaySettings() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, []); // Remove displaySettings from dependencies to prevent loops
 
   const updateDisplaySettingsField = (field: keyof DisplaySettings, value: any) => {
     setLocalDisplaySettings(prev => ({
@@ -105,7 +118,7 @@ export function useDisplaySettings() {
           currency: localDisplaySettings.currency,
           timezone: localDisplaySettings.timezone
         });
-      }, 0);
+      }, 100);
       
       toast({
         title: t('displaySettingsUpdated'),
