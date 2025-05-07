@@ -1,4 +1,3 @@
-
 // Chiavi di traduzione relative agli elementi generali dell'interfaccia
 export const generalKeys = [
   "welcome",
@@ -89,7 +88,36 @@ export const generalKeys = [
   "investmentAlerts",
   "noAlerts",
   "viewAllAlerts",
-  "ownership"
+  "ownership",
+  "cashflowTracker",
+  "cashflowAnalytics",
+  "cashflowFilters",
+  "monthlyCashflow",
+  "startDate",
+  "endDate",
+  "selectDate",
+  "allProperties",
+  "month",
+  "year",
+  "totalBookings",
+  "portalCommissions",
+  "cleaningCosts",
+  "touristTaxDTCM",
+  "grossTotal",
+  "utilityCosts",
+  "maintenanceCosts",
+  "netTotal",
+  "dataType",
+  "actual",
+  "forecast",
+  "exportData",
+  "exportSuccess",
+  "exportError",
+  "fileDownloaded",
+  "errorExportingData",
+  "dataLoadError",
+  "errorLoadingCashflowData",
+  "noDataToExport"
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];

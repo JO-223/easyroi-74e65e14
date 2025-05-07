@@ -29,6 +29,7 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Sitemap from "./pages/Sitemap";
 import CookiePolicy from "./pages/CookiePolicy";
+import CashflowTracker from "./pages/CashflowTracker"; // Add this import
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -118,6 +119,13 @@ const App = () => {
                 
                 <Route path="/dashboard/investor-levels" element={
                   <InvestorLevels />
+                } />
+                
+                {/* Add the new Cashflow Tracker route */}
+                <Route path="/dashboard/cashflow" element={
+                  <RequireAuth>
+                    <CashflowTracker />
+                  </RequireAuth>
                 } />
                 
                 {/* Admin Routes */}
