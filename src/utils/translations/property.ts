@@ -98,7 +98,22 @@ export const propertyKeys = [
   "submitting",
   "submitRequest",
   "saleRequestSubmitted",
-  "errorSubmittingSaleRequest"
+  "errorSubmittingSaleRequest",
+  // My Investments page translation keys
+  "myInvestments",
+  "secondary",
+  "offPlan",
+  "clubDeal",
+  "currentValue",
+  "purchaseDate",
+  "percentageOwned",
+  "investedCapital",
+  "contractYears",
+  "expectedYield",
+  "actualYield",
+  "noInvestmentsFound",
+  "sortAscending",
+  "sortDescending"
 ] as const;
 
 export type PropertyKey = typeof propertyKeys[number];
