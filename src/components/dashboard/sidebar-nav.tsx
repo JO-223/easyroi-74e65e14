@@ -20,7 +20,7 @@ import { SidebarBadge } from "./sidebar-badge";
 import { Button } from "../ui/button";
 import { useAdminRole } from "@/hooks/use-admin-role";
 import { Badge } from "../ui/badge";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Define sidebar navigation items
 export const sidebarNavItems = [
@@ -94,8 +94,8 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
   const { user } = useAuth();
   const t = useTranslation();
   const location = useLocation();
-  const { isAdminUser } = useAdminRole();
-  const isMobile = useMobile();
+  const { isAdmin } = useAdminRole();
+  const isMobile = useIsMobile();
 
   // Function to handle navigation click on mobile
   const handleNavClick = () => {
@@ -122,7 +122,7 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
           <NavLink to={item.href} className="flex items-center" onClick={handleNavClick}>
             <item.icon className="mr-2 h-4 w-4" />
             {t(item.title)}
-            {item.badge && <SidebarBadge count={3} />}
+            {item.badge && <SidebarBadge />}
             {item.href === "/dashboard/consultations" && (
               <Badge variant="outline" className="ml-auto text-xs py-0">New</Badge>
             )}
@@ -130,7 +130,7 @@ export function SidebarNav({ className, closeSidebar, ...props }: SidebarNavProp
         </Button>
       ))}
 
-      {isAdminUser && (
+      {isAdmin && (
         <div className="relative mt-6 pt-6 before:absolute before:top-0 before:left-2 before:right-2 before:h-px before:bg-border">
           {adminSidebarItems.map((item) => (
             <Button

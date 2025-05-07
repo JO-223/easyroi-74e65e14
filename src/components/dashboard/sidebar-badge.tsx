@@ -5,7 +5,7 @@ import { useUserLevel } from "@/hooks/useUserLevel";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface SidebarBadgeProps {
+export interface SidebarBadgeProps {
   level?: string | null;
 }
 

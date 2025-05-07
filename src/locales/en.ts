@@ -1,3 +1,4 @@
+
 const en = {
   welcome: "Welcome",
   dashboard: "Dashboard",
@@ -124,13 +125,6 @@ const en = {
   allProperties: "All Properties",
   noCashflowData: "No cashflow data available",
 
-  // Generic UI elements
-  loading: "Loading...",
-  errorLoadingData: "Error loading data.",
-  success: "Success!",
-  error: "Error!",
-  refresh: "Refresh",
-
   // Property page translations
   propertyDetails: "Property Details",
   address: "Address",
@@ -241,7 +235,11 @@ const en = {
   popularTopics: "Popular Topics",
   relatedArticles: "Related Articles",
   needMoreHelp: "Need More Help?",
-  contactSupport: "Search below or browse categories to find answers to your questions"
+  contactSupport: "Search below or browse categories to find answers to your questions",
+  
+  // UI elements - avoid duplicate keys
+  errorLoadingData: "Error loading data.",
+  refresh: "Refresh"
 };
 
 export default en;

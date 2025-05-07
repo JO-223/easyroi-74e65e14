@@ -1,5 +1,5 @@
 
-import { HelpCategory } from "@/types/help";
+import { HelpCategory, HelpArticle } from "@/types/help";
 
 // This would typically fetch from an API or database
 // For now, we'll use mock data

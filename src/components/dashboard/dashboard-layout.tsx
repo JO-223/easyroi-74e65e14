@@ -105,6 +105,10 @@ export function DashboardLayout({
     isLoading
   };
 
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <UserProfileContext.Provider value={contextValue}>
       <div className="min-h-screen bg-gray-50">
@@ -114,7 +118,7 @@ export function DashboardLayout({
             <div className="p-6 bg-easyroi-navy">
               <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
             </div>
-            <SidebarNav userData={profileData} />
+            <SidebarNav closeSidebar={handleCloseSidebar} />
           </div>
           
           {/* Main content area */}
@@ -136,7 +140,7 @@ export function DashboardLayout({
                   <div className="p-6 bg-easyroi-navy">
                     <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
                   </div>
-                  <SidebarNav userData={profileData} />
+                  <SidebarNav closeSidebar={handleCloseSidebar} />
                 </SheetContent>
               </Sheet>
             </DashboardHeader>

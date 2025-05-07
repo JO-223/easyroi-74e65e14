@@ -52,7 +52,7 @@ export function HelpCategoryTabs({ categories, isLoading }: HelpCategoryTabsProp
             value={category.id}
             className="text-sm md:text-base"
           >
-            {t(category.title)}
+            {t(category.title as any)}
           </TabsTrigger>
         ))}
       </TabsList>
