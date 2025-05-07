@@ -8,14 +8,10 @@ import { PrivacySettings } from "@/components/settings/PrivacySettings";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSettings } from "@/hooks/use-settings";
 import { DashboardLoading } from "@/components/dashboard/DashboardLoading";
-import { useAuth } from "@/contexts/AuthContext";
 
 const Settings = () => {
   const { t } = useLanguage();
-  const [isPageLoading, setIsPageLoading] = useState(true);
-  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
-  const { isInitialized } = useAuth();
-  
+  const [isLoading, setIsLoading] = useState(true);
   const { 
     settingsData, 
     isSaving, 
@@ -25,28 +21,18 @@ const Settings = () => {
     updatePrivacySettingsField
   } = useSettings();
 
-  // Fixed loading state management with guard against re-triggering
+  // Fixed loading state management
   useEffect(() => {
-    if (hasInitiallyLoaded) return;
-    
-    // One-time loading effect with controlled timeout
+    // Use a one-time loading effect that doesn't depend on data
+    // This prevents oscillation between loading and not loading
     const timer = setTimeout(() => {
-      setIsPageLoading(false);
-      setHasInitiallyLoaded(true);
-    }, 1000);
+      setIsLoading(false);
+    }, 800);
     
     return () => clearTimeout(timer);
-  }, [hasInitiallyLoaded]);
+  }, []); // Empty dependency array ensures this only runs once
 
-  // Special case for settings: if we detect multiple initializations, bypass loading state
-  useEffect(() => {
-    if (isInitialized && isPageLoading && !hasInitiallyLoaded) {
-      setIsPageLoading(false);
-      setHasInitiallyLoaded(true);
-    }
-  }, [isInitialized, isPageLoading, hasInitiallyLoaded]);
-
-  if (isPageLoading && !hasInitiallyLoaded) {
+  if (isLoading) {
     return (
       <DashboardLayout title={t('settings')} subtitle={t('manageSettings')}>
         <DashboardLoading />
