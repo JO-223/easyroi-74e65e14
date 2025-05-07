@@ -1,7 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users, Award } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Users, Award, FileSpreadsheet } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -56,6 +56,11 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       href: '/dashboard/analytics',
       icon: BarChart3
     }, 
+    {
+      title: t('cashflowTracker'),
+      href: '/dashboard/cashflow',
+      icon: FileSpreadsheet
+    },
     {
       title: t('events'),
       href: '/dashboard/events',

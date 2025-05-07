@@ -89,7 +89,40 @@ export const generalKeys = [
   "investmentAlerts",
   "noAlerts",
   "viewAllAlerts",
-  "ownership"
+  "ownership",
+  "property",
+  
+  // Cashflow tracker related keys
+  "cashflowTracker",
+  "cashflowTrackerDesc",
+  "totalBookings",
+  "portalFees",
+  "cleaningCosts",
+  "touristTax",
+  "grossTotal",
+  "utilityCosts",
+  "maintenanceCosts",
+  "netTotal",
+  "forecast",
+  "actual",
+  "month",
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+  "exportCSV",
+  "selectYear",
+  "selectMonth",
+  "allProperties",
+  "noCashflowData"
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];

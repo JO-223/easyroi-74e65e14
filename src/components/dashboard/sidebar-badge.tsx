@@ -5,15 +5,22 @@ import { useUserLevel } from "@/hooks/useUserLevel";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function SidebarBadge() {
+interface SidebarBadgeProps {
+  level?: string | null;
+}
+
+export function SidebarBadge({ level }: SidebarBadgeProps) {
   const { userLevel, isLoading } = useUserLevel();
   const { t } = useLanguage();
   
-  if (isLoading) {
+  // Use the passed level if provided, otherwise use the one from the hook
+  const displayLevel = level || userLevel;
+  
+  if (isLoading && !displayLevel) {
     return <Skeleton className="h-6 w-20" />;
   }
   
-  if (!userLevel) {
+  if (!displayLevel) {
     return null;
   }
   
@@ -23,7 +30,7 @@ export function SidebarBadge() {
         {t('investorLevel')}:
       </div>
       <UserBadge 
-        level={userLevel} 
+        level={displayLevel} 
         size="md"
         className="w-full justify-center py-1"
         // Remove any animation classes

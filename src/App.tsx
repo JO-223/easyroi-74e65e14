@@ -29,6 +29,7 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Sitemap from "./pages/Sitemap";
 import CookiePolicy from "./pages/CookiePolicy";
+import CashflowTracker from "./pages/CashflowTracker";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -83,6 +84,12 @@ const App = () => {
                 <Route path="/dashboard/analytics" element={
                   <RequireAuth>
                     <Analytics />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/cashflow" element={
+                  <RequireAuth>
+                    <CashflowTracker />
                   </RequireAuth>
                 } />
                 
