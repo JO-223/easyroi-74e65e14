@@ -74,7 +74,6 @@ const translations = {
   currentValue: "Valore Attuale",
   annualReturn: "Rendimento Annuale",
   monthlyIncome: "Reddito Mensile",
-  expenses: "Spese",
   roi: "ROI",
   propertyType_residential: "Residenziale",
   propertyType_commercial: "Commerciale",
