@@ -1,7 +1,7 @@
 
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ConsultationTabs } from "@/components/consultations/ConsultationTabs";
+import { AllConsultantsList } from "@/components/consultations/AllConsultantsList";
 
 const Consultations = () => {
   const t = useTranslation();
@@ -11,7 +11,7 @@ const Consultations = () => {
       <div className="space-y-6">
         <p className="text-muted-foreground">{t('consultationsDescription')}</p>
         
-        <ConsultationTabs />
+        <AllConsultantsList />
       </div>
     </DashboardLayout>
   );

@@ -147,7 +147,7 @@ const translations = {
   eventDate: "Data Evento",
   eventLocation: "Luogo Evento",
   eventType: "Tipo di Evento",
-  register: "Registrati",
+  registerEvent: "Registrati",
   registered: "Registrato",
   
   // Network
@@ -190,7 +190,7 @@ const translations = {
   profit: "Profitto",
   loss: "Perdita",
   
-  // Documentation
+  // Documents
   documents: "Documenti",
   contracts: "Contratti",
   agreements: "Accordi",
@@ -228,8 +228,12 @@ const translations = {
   
   // Consultations
   consultations: "Consulenze",
-  consultationRequest: "Richiesta Consulenza",
-  consultationSchedule: "Pianifica Consulenza",
+  consultationsDescription: "Consulta i nostri esperti per ricevere consulenza professionale su investimenti, questioni legali e fiscali per i tuoi investimenti immobiliari.",
+  investmentExperts: "Esperti di Investimenti",
+  legalAssistance: "Assistenza Legale",
+  taxConsulting: "Consulenza Fiscale",
+  bookConsultation: "Prenota Consulenza",
+  noConsultantsAvailable: "Nessun consulente disponibile al momento."
 };
 
 export default translations;

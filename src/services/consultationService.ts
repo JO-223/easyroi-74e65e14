@@ -84,3 +84,14 @@ export async function fetchConsultants(type: ExpertType): Promise<Consultant[]> 
     }, 800);
   });
 }
+
+// New function to fetch all consultants
+export async function fetchAllConsultants(): Promise<Consultant[]> {
+  // Simulate API delay
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const allConsultants = Object.values(MOCK_CONSULTANTS).flat();
+      resolve(allConsultants);
+    }, 800);
+  });
+}
