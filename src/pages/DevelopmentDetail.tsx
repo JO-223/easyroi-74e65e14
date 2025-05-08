@@ -112,7 +112,7 @@ export default function DevelopmentDetail() {
                 <h2 className="text-xl font-medium mb-3">{t('projectGallery')}</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {project.images.map(image => <div key={image.id} className="overflow-hidden rounded-md h-36">
-                      <img src={image.url} alt={project.name} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
+                      <img src={image.url} alt={project.name} className="w-full h-full hover:scale-110 transition-transform duration-300 object-contain" />
                     </div>)}
                 </div>
               </div>}
