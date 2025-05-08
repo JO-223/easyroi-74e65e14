@@ -33,7 +33,6 @@ export function SidebarBadge({ level }: SidebarBadgeProps) {
         level={displayLevel as any} 
         size="md"
         className="w-full justify-center py-1"
-        // Remove any animation classes
       />
     </div>
   );

@@ -122,7 +122,16 @@ export const generalKeys = [
   "selectYear",
   "selectMonth",
   "allProperties",
-  "noCashflowData"
+  "noCashflowData",
+  
+  // Investment related keys
+  "myInvestments",
+  "noInvestmentsFound",
+  "errorLoadingData",
+  "secondary",
+  "offPlan",
+  "clubDeal",
+  "investorLevel",
 ] as const;
 
 export type GeneralKey = typeof generalKeys[number];

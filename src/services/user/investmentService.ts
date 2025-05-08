@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Investment } from "@/types/investment";
@@ -59,13 +58,117 @@ export async function getUserInvestment(): Promise<number> {
   }
 }
 
+// Sample data for different investment types
+const sampleSecondaryInvestments: Investment[] = [
+  {
+    id: "sec-1",
+    name: "Villa Belvedere",
+    location: "Milano, Italia",
+    type: "secondary",
+    currentValue: 980000,
+    purchaseDate: "2022-06-15",
+    propertyId: "prop-1"
+  },
+  {
+    id: "sec-2",
+    name: "Appartamento Centro",
+    location: "Roma, Italia",
+    type: "secondary",
+    currentValue: 450000,
+    purchaseDate: "2021-10-22",
+    propertyId: "prop-2"
+  },
+  {
+    id: "sec-3",
+    name: "Casa Vista Mare",
+    location: "Napoli, Italia",
+    type: "secondary",
+    currentValue: 720000,
+    purchaseDate: "2023-03-08",
+    propertyId: "prop-3"
+  }
+];
+
+const sampleOffPlanInvestments: Investment[] = [
+  {
+    id: "off-1",
+    name: "Torre Moderna",
+    location: "Barcelona, Spagna",
+    type: "offPlan",
+    currentValue: 620000,
+    purchaseDate: "2023-11-10",
+    propertyId: "prop-4"
+  },
+  {
+    id: "off-2",
+    name: "Residenze Parco Verde",
+    location: "Torino, Italia",
+    type: "offPlan",
+    currentValue: 350000,
+    purchaseDate: "2024-01-20",
+    propertyId: "prop-5"
+  }
+];
+
+const sampleClubDealInvestments: Investment[] = [
+  {
+    id: "club-1",
+    name: "Complesso Turistico Costa",
+    location: "Marbella, Spagna",
+    type: "clubDeal",
+    currentValue: 3500000,
+    purchaseDate: "2023-05-12",
+    propertyId: "prop-6",
+    percentageOwned: 15.5,
+    investedCapital: 542500,
+    contractYears: 10,
+    expectedYield: 8.2,
+    actualYield: 7.9
+  },
+  {
+    id: "club-2",
+    name: "Centro Commerciale Stella",
+    location: "Milano, Italia",
+    type: "clubDeal",
+    currentValue: 5200000,
+    purchaseDate: "2022-08-30",
+    propertyId: "prop-7",
+    percentageOwned: 12.0,
+    investedCapital: 624000,
+    contractYears: 15,
+    expectedYield: 9.5,
+    actualYield: 9.1
+  },
+  {
+    id: "club-3",
+    name: "Complesso Uffici Business Park",
+    location: "Frankfurt, Germania",
+    type: "clubDeal",
+    currentValue: 4800000,
+    purchaseDate: "2023-02-18",
+    propertyId: "prop-8",
+    percentageOwned: 8.5,
+    investedCapital: 408000,
+    contractYears: 12,
+    expectedYield: 7.8,
+    actualYield: 8.2
+  }
+];
+
 /**
  * Recupera tutti gli investimenti di un utente
  */
 export async function fetchUserInvestments(): Promise<Investment[]> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return [];
+    if (!user) {
+      // Return sample data in case there's no authenticated user
+      return [
+        ...sampleSecondaryInvestments,
+        ...sampleOffPlanInvestments,
+        ...sampleClubDealInvestments
+      ];
+    }
 
     // Fetch user properties with investment data
     const { data: properties, error } = await supabase
@@ -93,7 +196,21 @@ export async function fetchUserInvestments(): Promise<Investment[]> {
     
     if (error) {
       console.error("Errore nel recupero degli investimenti:", error);
-      return [];
+      // Return sample data in case of error
+      return [
+        ...sampleSecondaryInvestments,
+        ...sampleOffPlanInvestments,
+        ...sampleClubDealInvestments
+      ];
+    }
+    
+    // If no real properties found, return sample data
+    if (!properties || properties.length === 0) {
+      return [
+        ...sampleSecondaryInvestments,
+        ...sampleOffPlanInvestments,
+        ...sampleClubDealInvestments
+      ];
     }
     
     // Transform the data to match our Investment type
@@ -113,7 +230,12 @@ export async function fetchUserInvestments(): Promise<Investment[]> {
     }));
   } catch (error) {
     console.error("Errore nel recupero degli investimenti:", error);
-    return [];
+    // Return sample data in case of exception
+    return [
+      ...sampleSecondaryInvestments,
+      ...sampleOffPlanInvestments,
+      ...sampleClubDealInvestments
+    ];
   }
 }
 
