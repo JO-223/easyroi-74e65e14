@@ -1,4 +1,3 @@
-
 const en = {
   // General
   welcome: "Welcome",
@@ -96,7 +95,7 @@ const en = {
   portfolioAllocation: "Portfolio Allocation",
   geographicDistribution: "Geographic Distribution",
   assetAllocation: "Asset Allocation",
-  propertyValue: "Property Value",
+  propertyValue: "Purchased Price",
   propertyStatus: "Property Status",
   propertyLocation: "Property Location",
   propertyROI: "Property ROI",
@@ -109,7 +108,9 @@ const en = {
   tenantManagement: "Tenant Management",
   maintenanceRequests: "Maintenance Requests",
   rentCollection: "Rent Collection",
-
+  currentValue: "Current Value",
+  purchasedPrice: "Purchased Price",
+  
   // Portfolio related
   portfolioROI: "Portfolio ROI",
   aboveIndex: "Above index",
