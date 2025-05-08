@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 // Types for dashboard data
@@ -40,6 +39,9 @@ export interface DashboardData {
   properties: Property[];
   userLevel: string | null;
 }
+
+// Current exchange rate from EUR to AED (as of May 2025)
+const EUR_TO_AED_RATE = 4.03; // 1 EUR = 4.03 AED
 
 /**
  * Fetches all dashboard data for the current user
@@ -234,13 +236,16 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
  * Format number to currency string
  */
 export function formatCurrency(value: number): string {
-  if (value >= 1000000) {
+  // Convert from EUR to AED
+  const aedValue = value * EUR_TO_AED_RATE;
+  
+  if (aedValue >= 1000000) {
     // Format as X.YM (with one decimal place)
-    return `€${(value / 1000000).toFixed(1).replace('.0', '')}M`;
-  } else if (value >= 1000) {
+    return `AED ${(aedValue / 1000000).toFixed(1).replace('.0', '')}M`;
+  } else if (aedValue >= 1000) {
     // Format as X.Yk (with one decimal place)
-    return `€${(value / 1000).toFixed(1).replace('.0', '')}k`;
+    return `AED ${(aedValue / 1000).toFixed(1).replace('.0', '')}k`;
   } else {
-    return `€${value.toFixed(0)}`;
+    return `AED ${aedValue.toFixed(0)}`;
   }
 }
