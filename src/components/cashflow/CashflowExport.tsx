@@ -19,17 +19,17 @@ export function CashflowExport({ data, disabled }: CashflowExportProps) {
     // Prepare CSV headers
     const headers = [
       'Month',
-      'Total Bookings (AED)',
-      'Portal Fees (AED)',
-      'Cleaning Costs (AED)',
-      'Tourist Tax (DTCM) (AED)',
-      'Forecasted Gross Total (AED)',
-      'Actual Gross Total (AED)',
+      'Total Bookings',
+      'Portal Fees',
+      'Cleaning Costs',
+      'Tourist Tax (DTCM)',
+      'Forecasted Gross Total',
+      'Actual Gross Total',
       'Gross Difference %',
-      'Utility Costs (AED)',
-      'Maintenance Costs (AED)',
-      'Forecasted Net Total (AED)',
-      'Actual Net Total (AED)',
+      'Utility Costs',
+      'Maintenance Costs',
+      'Forecasted Net Total',
+      'Actual Net Total',
       'Net Difference %'
     ].join(',');
     

@@ -6,15 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatCurrency(amount: number | null | undefined, currency = 'AED') {
+export function formatCurrency(amount: number | null | undefined, currency = 'EUR') {
   if (amount === null || amount === undefined) return '';
   
-  const formatter = new Intl.NumberFormat('en-AE', {
+  return new Intl.NumberFormat('it-IT', {
     style: 'currency',
     currency: currency,
     maximumFractionDigits: 0
-  });
-  
-  // Replace the currency symbol with AED
-  return formatter.format(amount).replace(/[^\d,.-]/g, '') + ' AED';
+  }).format(amount);
 }
