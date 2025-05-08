@@ -93,7 +93,9 @@ export function NotificationDropdown() {
             notifications.map(notification => (
               <DropdownMenuItem 
                 key={notification.id}
-                className={`px-4 py-3 cursor-pointer flex items-start ${!notification.read ? 'bg-blue-50' : ''}`}
+                className={`px-4 py-3 cursor-pointer flex items-start border border-transparent ${
+                  !notification.read ? 'bg-blue-50' : ''
+                } hover:border-amber-500 transition-colors`}
               >
                 <div className="mr-3 mt-1">
                   <div className={`h-8 w-8 rounded-full ${

@@ -80,7 +80,9 @@ export function AlertsDropdown() {
             alerts.map(alert => (
               <DropdownMenuItem 
                 key={alert.id}
-                className={`px-4 py-3 cursor-pointer flex items-start ${!alert.read ? 'bg-amber-50' : ''}`}
+                className={`px-4 py-3 cursor-pointer flex items-start border border-transparent ${
+                  !alert.read ? 'bg-amber-50' : ''
+                } hover:border-amber-500 transition-colors`}
                 onClick={() => handleAlertClick(alert.propertyId)}
               >
                 <div className="mr-3 mt-1">
@@ -92,17 +94,17 @@ export function AlertsDropdown() {
                   <p className={`text-sm font-medium ${!alert.read ? 'text-amber-800' : 'text-black'}`}>
                     {alert.title}
                   </p>
-                  <p className="text-xs text-black mt-0.5">{alert.message}</p>
-                  <p className="text-xs text-black mt-1">
+                  <p className="text-xs text-gray-600 mt-0.5">{alert.message}</p>
+                  <p className="text-xs text-gray-400 mt-1">
                     {new Date(alert.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <ChevronRight className="h-4 w-4 text-black mt-2" />
+                <ChevronRight className="h-4 w-4 text-gray-400 mt-2" />
               </DropdownMenuItem>
             ))
           ) : (
             <div className="px-4 py-6 text-center">
-              <p className="text-black text-sm">
+              <p className="text-gray-500 text-sm">
                 {t('noAlerts')}
               </p>
             </div>
