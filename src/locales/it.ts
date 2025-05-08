@@ -1,126 +1,235 @@
-import React from 'react';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, ChevronRight, Home } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { Badge } from '@/components/ui/badge';
-import { useNavigate } from 'react-router-dom';
 
-type Alert = {
-  id: string;
-  title: string;
-  message: string;
-  propertyId?: string;
-  read: boolean;
-  createdAt: string;
+// Italian translations
+const translations = {
+  // General
+  appName: "EasyROI",
+  welcome: "Benvenuto su EasyROI",
+  home: "Home",
+  loading: "Caricamento...",
+  success: "Operazione completata con successo",
+  error: "Si è verificato un errore",
+  save: "Salva",
+  cancel: "Annulla",
+  edit: "Modifica",
+  delete: "Elimina",
+  confirm: "Conferma",
+  back: "Indietro",
+  next: "Avanti",
+  send: "Invia",
+  logout: "Esci",
+  login: "Accedi",
+  register: "Registrati",
+  dashboard: "Dashboard",
+  profile: "Profilo",
+  settings: "Impostazioni",
+  search: "Cerca",
+  filter: "Filtra",
+  sort: "Ordina",
+  all: "Tutti",
+  none: "Nessuno",
+  date: "Data",
+  time: "Ora",
+  year: "Anno",
+  month: "Mese",
+  day: "Giorno",
+  amount: "Importo",
+  currency: "Valuta",
+  new: "Nuovo",
+  view: "Visualizza",
+  create: "Crea",
+  
+  // Notifications
+  notifications: "Notifiche",
+  noNotifications: "Non hai notifiche",
+  viewAllNotifications: "Vedi tutte le notifiche",
+
+  // Alerts
+  investmentAlerts: "Avvisi Investimenti",
+  noAlerts: "Nessun avviso",
+  viewAllAlerts: "Vedi tutti gli avvisi",
+
+  // Dashboard
+  portfolioValue: "Valore del Portafoglio",
+  totalProperties: "Proprietà Totali",
+  totalInvestment: "Investimento Totale",
+  averageROI: "ROI Medio",
+  portfolioGrowth: "Crescita del Portafoglio",
+  monthlyRevenue: "Entrate Mensili",
+  recentTransactions: "Transazioni Recenti",
+  upcomingEvents: "Eventi Imminenti",
+  portfolioAllocation: "Allocazione del Portafoglio",
+  propertyType: "Tipo di Proprietà",
+  location: "Posizione",
+
+  // Properties
+  properties: "Proprietà",
+  myProperties: "Le Mie Proprietà",
+  forSaleProperties: "Proprietà in Vendita",
+  propertyName: "Nome Proprietà",
+  propertyDetails: "Dettagli Proprietà",
+  propertyLocation: "Posizione Proprietà",
+  propertyStatus: "Stato Proprietà",
+  propertySummary: "Riepilogo Proprietà",
+  purchasePrice: "Prezzo d'Acquisto",
+  currentValue: "Valore Attuale",
+  annualReturn: "Rendimento Annuale",
+  monthlyIncome: "Reddito Mensile",
+  expenses: "Spese",
+  roi: "ROI",
+  propertyType_residential: "Residenziale",
+  propertyType_commercial: "Commerciale",
+  propertyType_land: "Terreno",
+  propertyType_industrial: "Industriale",
+  
+  // Settings
+  accountSettings: "Impostazioni Account",
+  notificationSettings: "Impostazioni Notifiche",
+  privacySettings: "Impostazioni Privacy",
+  displaySettings: "Impostazioni Display",
+  language: "Lingua",
+  theme: "Tema",
+  darkMode: "Modalità Scura",
+  lightMode: "Modalità Chiara",
+  timeZone: "Fuso Orario",
+  
+  // Profile
+  profileInformation: "Informazioni Profilo",
+  editProfile: "Modifica Profilo",
+  firstName: "Nome",
+  lastName: "Cognome",
+  email: "Email",
+  phone: "Telefono",
+  address: "Indirizzo",
+  city: "Città",
+  state: "Stato",
+  zipCode: "CAP",
+  country: "Paese",
+  bio: "Biografia",
+  website: "Sito Web",
+  socialMedia: "Social Media",
+  investmentLevel: "Livello Investimento",
+  investmentPreferences: "Preferenze di Investimento",
+  
+  // Investment levels
+  level_starter: "Starter",
+  level_bronze: "Bronze",
+  level_silver: "Silver",
+  level_gold: "Gold",
+  level_ruby: "Ruby",
+  level_emerald: "Emerald",
+  level_platinum: "Platinum",
+  level_diamond: "Diamond",
+  
+  // Analytics
+  analytics: "Analitiche",
+  performance: "Performance",
+  comparison: "Confronto",
+  trends: "Tendenze",
+  forecast: "Previsione",
+  marketAnalysis: "Analisi di Mercato",
+  
+  // Development Projects
+  developmentProjects: "Progetti in Sviluppo",
+  projectName: "Nome Progetto",
+  projectDetails: "Dettagli Progetto",
+  projectStatus: "Stato Progetto",
+  projectTimeline: "Timeline Progetto",
+  projectBudget: "Budget Progetto",
+  projectROI: "ROI del Progetto",
+  startDate: "Data Inizio",
+  endDate: "Data Fine",
+  completionPercentage: "Percentuale di Completamento",
+  
+  // Events
+  events: "Eventi",
+  eventName: "Nome Evento",
+  eventDetails: "Dettagli Evento",
+  eventDate: "Data Evento",
+  eventLocation: "Luogo Evento",
+  eventType: "Tipo di Evento",
+  register: "Registrati",
+  registered: "Registrato",
+  
+  // Network
+  network: "Network",
+  connections: "Connessioni",
+  investors: "Investitori",
+  agents: "Agenti",
+  developers: "Sviluppatori",
+  connect: "Connetti",
+  message: "Messaggio",
+  connectionRequests: "Richieste di Connessione",
+  
+  // Messages
+  messages: "Messaggi",
+  inbox: "Posta in Arrivo",
+  sent: "Inviati",
+  drafts: "Bozze",
+  compose: "Componi",
+  subject: "Oggetto",
+  newMessage: "Nuovo Messaggio",
+  reply: "Rispondi",
+  forward: "Inoltra",
+  
+  // Admin
+  adminPanel: "Pannello Admin",
+  userManagement: "Gestione Utenti",
+  siteSettings: "Impostazioni Sito",
+  contentManagement: "Gestione Contenuti",
+  
+  // Errors
+  notFound: "Pagina Non Trovata",
+  unauthorized: "Non Autorizzato",
+  serverError: "Errore del Server",
+  offline: "Sei Offline",
+  
+  // Cashflow
+  cashflow: "Flusso di Cassa",
+  income: "Entrate",
+  expenses: "Uscite",
+  profit: "Profitto",
+  loss: "Perdita",
+  
+  // Documentation
+  documents: "Documenti",
+  contracts: "Contratti",
+  agreements: "Accordi",
+  reports: "Rapporti",
+  
+  // Legal
+  termsOfService: "Termini di Servizio",
+  privacyPolicy: "Politica sulla Privacy",
+  cookiePolicy: "Politica sui Cookie",
+  
+  // User actions
+  signIn: "Accedi",
+  signOut: "Esci",
+  signUp: "Registrati",
+  forgotPassword: "Password Dimenticata",
+  resetPassword: "Reimposta Password",
+  changePassword: "Cambia Password",
+  
+  // Time
+  today: "Oggi",
+  yesterday: "Ieri",
+  tomorrow: "Domani",
+  thisWeek: "Questa Settimana",
+  lastWeek: "Settimana Scorsa",
+  thisMonth: "Questo Mese",
+  lastMonth: "Mese Scorso",
+  thisYear: "Quest'Anno",
+  lastYear: "Anno Scorso",
+  
+  // Filters
+  filterBy: "Filtra per",
+  sortBy: "Ordina per",
+  ascending: "Crescente",
+  descending: "Decrescente",
+  
+  // Consultations
+  consultations: "Consulenze",
+  consultationRequest: "Richiesta Consulenza",
+  consultationSchedule: "Pianifica Consulenza",
 };
 
-export function AlertsDropdown() {
-  const { t } = useLanguage();
-  const navigate = useNavigate();
-  
-  // Mock alerts data
-  const [alerts] = useState<Alert[]>([
-    {
-      id: '1',
-      title: 'New Investment Opportunity',
-      message: 'New luxury property available in Milan',
-      propertyId: 'abc123',
-      read: false,
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: '2',
-      title: 'Price Drop Alert',
-      message: 'Price reduced by 5% on Dubai Marina property',
-      propertyId: 'def456',
-      read: false,
-      createdAt: new Date(Date.now() - 86400000).toISOString() // 1 day ago
-    }
-  ]);
-
-  const unreadCount = alerts.filter(alert => !alert.read).length;
-  
-  const handleAlertClick = (propertyId?: string) => {
-    if (propertyId) {
-      navigate(`/property/${propertyId}`);
-    }
-  };
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
-          <AlertTriangle className="h-5 w-5 text-easyroi-navy" />
-          {unreadCount > 0 && (
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-amber-500">
-              {unreadCount}
-            </Badge>
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80">
-        <div className="flex items-center justify-between px-4 py-2 border-b">
-          <h3 className="font-semibold">{t('investmentAlerts')}</h3>
-          {unreadCount > 0 && (
-            <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200">
-              {unreadCount} {t('new')}
-            </Badge>
-          )}
-        </div>
-        
-        <div className="max-h-[300px] overflow-auto">
-          {alerts.length > 0 ? (
-            alerts.map(alert => (
-              <DropdownMenuItem 
-                key={alert.id}
-                className={`px-4 py-3 cursor-pointer flex items-start border border-transparent ${
-                  !alert.read ? 'bg-amber-50' : ''
-                } hover:border-amber-500 hover:bg-transparent focus:bg-transparent focus:border-amber-500 transition-colors`}
-                onClick={() => handleAlertClick(alert.propertyId)}
-              >
-                <div className="mr-3 mt-1">
-                  <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center">
-                    <Home className="h-4 w-4 text-amber-600" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <p className={`text-sm font-medium ${!alert.read ? 'text-amber-800' : 'text-black'}`}>
-                    {alert.title}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-0.5">{alert.message}</p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {new Date(alert.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <ChevronRight className="h-4 w-4 text-gray-400 mt-2" />
-              </DropdownMenuItem>
-            ))
-          ) : (
-            <div className="px-4 py-6 text-center">
-              <p className="text-gray-500 text-sm">
-                {t('noAlerts')}
-              </p>
-            </div>
-          )}
-        </div>
-        
-        <div className="border-t p-2">
-          <Button 
-            variant="link" 
-            size="sm" 
-            className="w-full justify-center text-amber-600"
-            onClick={() => navigate('/alerts')}
-          >
-            {t('viewAllAlerts')}
-          </Button>
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
+export default translations;
