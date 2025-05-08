@@ -91,7 +91,6 @@ const translations = {
   privacySettingsDesc: "Gestisci la privacy e la visibilità del tuo profilo",
   language: "Lingua",
   selectLanguage: "Seleziona lingua",
-  currency: "Valuta",
   selectCurrency: "Seleziona valuta",
   timezone: "Fuso Orario",
   selectTimezone: "Seleziona fuso orario",
