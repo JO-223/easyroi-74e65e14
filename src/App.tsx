@@ -14,7 +14,6 @@ import PropertyDetail from "./pages/PropertyDetail";
 import Analytics from "./pages/Analytics";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
-import Network from "./pages/Network";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Contact from "./pages/Contact";
@@ -116,12 +115,6 @@ const App = () => {
                 <Route path="/dashboard/events/:id" element={
                   <RequireAuth>
                     <EventDetail />
-                  </RequireAuth>
-                } />
-                
-                <Route path="/dashboard/network" element={
-                  <RequireAuth>
-                    <Network />
                   </RequireAuth>
                 } />
                 

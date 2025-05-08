@@ -1,13 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserBadge } from "@/components/ui/user-badge";
-import { useUserLevel } from "@/hooks/useUserLevel";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Progress } from "@/components/ui/progress";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Skeleton } from "@/components/ui/skeleton";
 
-const LEVEL_THRESHOLDS = {
+import React, { useEffect, useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { BadgeLevel } from "@/components/ui/badge-level";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { formatCurrency } from "@/utils/formatCurrency";
+
+interface UserLevelCardProps {
+  className?: string;
+}
+
+const levelThresholds = {
   starter: 0,
   bronze: 300000,
   silver: 750000,
@@ -18,127 +24,100 @@ const LEVEL_THRESHOLDS = {
   diamond: 20000000,
 };
 
-type LevelKey = keyof typeof LEVEL_THRESHOLDS;
-
-export function UserLevelCard() {
+export const UserLevelCard = ({ className }: UserLevelCardProps) => {
   const { t } = useLanguage();
-  const { userLevel, isLoading: isLoadingLevel } = useUserLevel();
-  
-  const { data: investmentData, isLoading: isLoadingInvestment } = useQuery({
-    queryKey: ['userInvestment'],
-    queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return { totalInvestment: 0 };
-      
-      const { data, error } = await supabase
-        .from('user_investments')
-        .select('total_investment')
-        .eq('user_id', user.id)
-        .single();
+  const { user } = useAuth();
+  const [level, setLevel] = useState<string>("bronze");
+  const [nextLevel, setNextLevel] = useState<string>("silver");
+  const [progress, setProgress] = useState(0);
+  const [totalInvestment, setTotalInvestment] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchUserLevel = async () => {
+      if (!user) return;
+
+      try {
+        // Fetch user profile to get current level
+        const { data: profileData, error: profileError } = await supabase
+          .from("profiles")
+          .select("level")
+          .eq("id", user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        // Fetch user's total investment directly from properties
+        const { data: propertiesData, error: propertiesError } = await supabase
+          .from('properties')
+          .select('price')
+          .eq('user_id', user.id);
+
+        if (propertiesError) throw propertiesError;
+
+        // Calculate total investment from properties
+        const total = propertiesData?.reduce((sum, property) => 
+          sum + Number(property.price || 0), 0) || 0;
         
-      if (error) {
-        console.error('Error fetching user investment:', error);
-        return { totalInvestment: 0 };
+        setTotalInvestment(total);
+        
+        const currentLevel = profileData?.level || "bronze";
+        setLevel(currentLevel);
+
+        // Determine next level
+        const levels = Object.keys(levelThresholds);
+        const currentIndex = levels.indexOf(currentLevel);
+        const nextLevelKey = currentIndex < levels.length - 1 ? levels[currentIndex + 1] : levels[currentIndex];
+        setNextLevel(nextLevelKey);
+
+        // Calculate progress
+        const currentThreshold = levelThresholds[currentLevel as keyof typeof levelThresholds] || 0;
+        const nextThreshold = levelThresholds[nextLevelKey as keyof typeof levelThresholds] || levelThresholds.diamond;
+
+        if (currentIndex < levels.length - 1) {
+          const progressPercent = ((total - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
+          setProgress(Math.min(Math.max(progressPercent, 0), 100));
+        } else {
+          setProgress(100); // Max level reached
+        }
+      } catch (error) {
+        console.error("Error fetching user level data:", error);
       }
-      
-      return { totalInvestment: Number(data?.total_investment || 0) };
-    },
-  });
-  
-  const isLoading = isLoadingLevel || isLoadingInvestment;
-  const totalInvestment = investmentData?.totalInvestment || 0;
-  
-  const getCurrentLevel = () => {
-    if (!userLevel) return 'starter' as LevelKey;
-    return userLevel as LevelKey;
-  };
-  
-  const getNextLevel = () => {
-    const currentLevel = getCurrentLevel();
-    const levels = Object.keys(LEVEL_THRESHOLDS) as LevelKey[];
-    const currentIndex = levels.indexOf(currentLevel);
-    
-    if (currentIndex < levels.length - 1) {
-      return levels[currentIndex + 1];
-    }
-    
-    return null;
-  };
-  
-  const nextLevel = getNextLevel();
-  const currentLevel = getCurrentLevel();
-  
-  const calculateProgress = () => {
-    if (!nextLevel) return 100;
-    
-    const currentThreshold = LEVEL_THRESHOLDS[currentLevel];
-    const nextThreshold = LEVEL_THRESHOLDS[nextLevel];
-    const range = nextThreshold - currentThreshold;
-    const progress = ((totalInvestment - currentThreshold) / range) * 100;
-    
-    return Math.min(Math.max(progress, 0), 100);
-  };
-  
-  const formatCurrency = (value: number) => {
-    if (value >= 1000000) {
-      return `AED${(value / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
-    } else if (value >= 1000) {
-      return `AED${(value / 1000).toFixed(0)}k`;
-    }
-    return `AED${value}`;
-  };
-  
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle><Skeleton className="h-6 w-40" /></CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-12 w-full mb-4" />
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-3 w-1/2" />
-        </CardContent>
-      </Card>
-    );
-  }
-  
+    };
+
+    fetchUserLevel();
+  }, [user]);
+
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>{t('investorLevel')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between mb-4">
-          <UserBadge level={currentLevel} size="lg" />
-          <span className="text-sm font-medium">
-            {formatCurrency(totalInvestment)}
-          </span>
-        </div>
-        
-        {nextLevel && (
-          <>
-            <Progress 
-              value={calculateProgress()} 
-              className="h-2 mb-2" 
-            />
-            
-            <div className="flex justify-between items-center text-xs text-muted-foreground">
-              <span>{formatCurrency(LEVEL_THRESHOLDS[currentLevel])}</span>
-              <div className="flex items-center gap-1">
-                <span>{t('nextLevel')}:</span>
-                <UserBadge 
-                  level={nextLevel} 
-                  size="sm" 
-                  showIcon={false}
-                  className="ml-1" 
-                />
-                <span>({formatCurrency(LEVEL_THRESHOLDS[nextLevel])})</span>
-              </div>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <BadgeLevel level={level as any} size="lg" />
+            <Link
+              to="/dashboard/investor-levels"
+              className="text-xs text-blue-500 hover:underline"
+            >
+              {t('viewAllLevels')}
+            </Link>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>{level}</span>
+              <span>{nextLevel}</span>
             </div>
-          </>
-        )}
+            <Progress value={progress} className="h-2" />
+          </div>
+
+          <div className="pt-2">
+            <div className="text-sm font-medium">{t('totalInvestment')}</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalInvestment)}</div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
-}
+};
