@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 // Types for dashboard data
@@ -56,24 +57,51 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       .eq('id', user.id)
       .single();
     
-    // Get user investment data
+    // Get user properties to calculate investments and ROI directly
+    const { data: propertiesData } = await supabase
+      .from('properties')
+      .select('id, name, price, roi_percentage, status, location_id, ownership, Current_Evaluation')
+      .eq('user_id', user.id);
+    
+    // Calculate total investment directly from properties
+    const totalInvestment = propertiesData ? propertiesData.reduce((sum, property) => 
+      sum + Number(property.price || 0), 0) : 0;
+    
+    // Calculate average ROI directly from properties (weighted by property price)
+    let totalWeightedROI = 0;
+    let totalPropertyValue = 0;
+    
+    if (propertiesData && propertiesData.length > 0) {
+      propertiesData.forEach(property => {
+        const price = Number(property.price || 0);
+        const roi = Number(property.roi_percentage || 0);
+        if (price > 0 && !isNaN(roi)) {
+          totalWeightedROI += roi * price;
+          totalPropertyValue += price;
+        }
+      });
+    }
+    
+    const averageROI = totalPropertyValue > 0 ? totalWeightedROI / totalPropertyValue : 0;
+    
+    // Get previous investment data to calculate change
     const { data: investmentData } = await supabase
       .from('user_investments')
-      .select('total_investment, investment_change_percentage')
+      .select('investment_change_percentage')
       .eq('user_id', user.id)
       .single();
     
-    // Get user ROI data
-    const { data: roiData } = await supabase
-      .from('user_roi')
-      .select('average_roi, roi_change')
-      .eq('user_id', user.id)
-      .single();
-    
-    // Get user properties count
+    // Get property count change
     const { data: propertyData } = await supabase
       .from('user_properties')
-      .select('count, change')
+      .select('change')
+      .eq('user_id', user.id)
+      .single();
+    
+    // Get ROI change
+    const { data: roiData } = await supabase
+      .from('user_roi')
+      .select('roi_change')
       .eq('user_id', user.id)
       .single();
     
@@ -84,35 +112,46 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       .eq('user_id', user.id)
       .order('month_index', { ascending: true });
     
-    // Get portfolio allocation
-    const { data: allocationData } = await supabase
-      .from('user_portfolio_allocation')
-      .select('location, percentage')
-      .eq('user_id', user.id);
+    // Calculate portfolio allocation by country
+    let countryAllocation = {};
+    let totalProperties = 0;
     
-    // Get user properties
-    const { data: propertiesData } = await supabase
-      .from('properties')
-      .select('id, name, price, roi_percentage, status, location_id, ownership, Current_Evaluation')
-      .eq('user_id', user.id);
-    
-    // Get property locations
-    const locationMap = new Map();
     if (propertiesData && propertiesData.length > 0) {
+      // Get locations for all properties
       const locationIds = propertiesData.map(prop => prop.location_id);
       const { data: locationsData } = await supabase
         .from('property_locations')
-        .select('id, city, country')
+        .select('id, country')
         .in('id', locationIds);
       
       if (locationsData) {
+        // Create a map of location IDs to countries
+        const locationMap = new Map();
         locationsData.forEach(loc => {
-          locationMap.set(loc.id, `${loc.city}, ${loc.country}`);
+          locationMap.set(loc.id, loc.country);
+        });
+        
+        // Count properties by country
+        propertiesData.forEach(property => {
+          const country = locationMap.get(property.location_id);
+          if (country) {
+            if (!countryAllocation[country]) {
+              countryAllocation[country] = 0;
+            }
+            countryAllocation[country]++;
+            totalProperties++;
+          }
         });
       }
     }
     
-    // Get events count - fetch actual count from events table
+    // Convert country allocation to percentages
+    const portfolioAllocation: PortfolioAllocation[] = Object.entries(countryAllocation).map(([country, count]) => ({
+      name: country,
+      value: totalProperties > 0 ? Number((Number(count) / totalProperties * 100).toFixed(2)) : 0
+    }));
+    
+    // Get events count
     const { count: eventsCount, error: eventsError } = await supabase
       .from('events')
       .select('*', { count: 'exact', head: true });
@@ -127,22 +166,21 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       value: Number(item.value || 0),
     })) || [];
     
-    // Format portfolio allocation data - ensure percentage is a number and formatted to 2 decimal places
-    const portfolioAllocation: PortfolioAllocation[] = allocationData?.map(item => {
-      let percentageValue = 0;
+    // Get property locations for displaying properties
+    const locationMap = new Map();
+    if (propertiesData && propertiesData.length > 0) {
+      const locationIds = propertiesData.map(prop => prop.location_id);
+      const { data: locationsData } = await supabase
+        .from('property_locations')
+        .select('id, city, country')
+        .in('id', locationIds);
       
-      // Handle all possible types for percentage value
-      if (typeof item.percentage === 'number') {
-        percentageValue = Number(item.percentage.toFixed(2));
-      } else if (typeof item.percentage === 'string') {
-        percentageValue = Number(parseFloat(item.percentage).toFixed(2));
+      if (locationsData) {
+        locationsData.forEach(loc => {
+          locationMap.set(loc.id, `${loc.city}, ${loc.country}`);
+        });
       }
-      
-      return {
-        name: String(item.location || ""),
-        value: percentageValue,
-      };
-    }) || [];
+    }
     
     // Format properties data with rounded ROI percentages
     const properties: Property[] = propertiesData?.map(item => {
@@ -169,9 +207,9 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     
     // Create stats object with rounded percentages
     const stats: DashboardStats = {
-      totalInvestment: Number(investmentData?.total_investment || 0),
-      properties: Number(propertyData?.count || 0),
-      roi: parseFloat(Number(roiData?.average_roi || 0).toFixed(2)),
+      totalInvestment: totalInvestment,
+      properties: propertiesData?.length || 0,
+      roi: parseFloat(Number(averageROI || 0).toFixed(2)),
       events: eventsCount || 0,
       investmentChange: parseFloat(Number(investmentData?.investment_change_percentage || 0).toFixed(2)),
       propertiesChange: Number(propertyData?.change || 0),
