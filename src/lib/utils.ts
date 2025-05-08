@@ -6,18 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Current exchange rate from EUR to AED (as of May 2025)
-const EUR_TO_AED_RATE = 4.03; // 1 EUR = 4.03 AED
-
-export function formatCurrency(amount: number | null | undefined, currency = 'AED') {
+export function formatCurrency(amount: number | null | undefined, currency = 'EUR') {
   if (amount === null || amount === undefined) return '';
   
-  // Convert from EUR to AED
-  const aedAmount = amount * EUR_TO_AED_RATE;
-  
-  return new Intl.NumberFormat('en-AE', {
+  return new Intl.NumberFormat('it-IT', {
     style: 'currency',
     currency: currency,
     maximumFractionDigits: 0
-  }).format(aedAmount);
+  }).format(amount);
 }
