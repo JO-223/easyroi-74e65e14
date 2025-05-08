@@ -124,6 +124,10 @@ export const generalKeys = [
   "selectMonth",
   "allProperties",
   "noCashflowData",
+  "viewAllLevels",
+  "noInvestorsFound",
+  "tryDifferentSearch",
+  "sendMessage",
   
   // Investment related keys
   "myInvestments",
