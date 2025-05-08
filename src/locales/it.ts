@@ -1,3 +1,4 @@
+
 const it = {
   // General
   welcome: "Benvenuti",
@@ -508,22 +509,12 @@ const it = {
   saleRequestSubmitted: "Richiesta di vendita inviata con successo",
   errorSubmittingSaleRequest: "Errore nell'invio della richiesta di vendita",
   
-  // Cashflow tracker related keys
-  month: "Mese",
-  totalBookings: "Prenotazioni",
-  portalFees: "Portali",
-  cleaningCosts: "Pulizie",
-  touristTax: "Tassa di Soggiorno",
-  grossTotal: "Totale Lordo",
-  utilityCosts: "Utenze",
-  maintenanceCosts: "Extra",
-  netTotal: "Totale Netto",
-  forecast: "Analisi",
-  actual: "Reale",
-  viewAllLevels: "Visualizza Tutti i Livelli",
-  noInvestorsFound: "Nessun investitore trovato",
-  tryDifferentSearch: "Prova un termine di ricerca diverso",
-  sendMessage: "Invia Messaggio",
+  // Properties Table
+  propertyName: "Nome Proprietà",
+  currentEvaluation: "Valutazione Attuale",
+  ownership: "Proprietà",
+  active: "Attiva",
+  development: "Sviluppo",
   
   // Month names
   january: "Gennaio",
@@ -556,6 +547,9 @@ const it = {
   selectYear: "Seleziona Anno",
   selectMonth: "Seleziona Mese",
   allProperties: "Tutte le Proprietà",
+  
+  // Cashflow tracker description
+  cashflowTrackerDesc: "Monitora e analizza il flusso di cassa delle tue proprietà",
 };
 
 export default it;

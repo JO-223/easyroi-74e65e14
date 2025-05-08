@@ -27,7 +27,7 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
               <TableHead>{t('propertyROI')}</TableHead>
               <TableHead>Prezzo Acquisto</TableHead>
               <TableHead>{t('currentEvaluation')}</TableHead>
-              <TableHead>{t('Ownership')}</TableHead>
+              <TableHead>{t('ownership')}</TableHead>
               <TableHead>{t('propertyStatus')}</TableHead>
             </TableRow>
           </TableHeader>
