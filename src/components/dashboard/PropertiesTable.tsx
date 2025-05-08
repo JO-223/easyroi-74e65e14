@@ -45,7 +45,7 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
                   <TableCell>{property.location}</TableCell>
                   <TableCell>{property.roi}</TableCell>
                   <TableCell>{property.value}</TableCell>
-                  <TableCell>{property.currentValue || property.value}</TableCell>
+                  <TableCell>{property.currentEvaluation || property.value}</TableCell>
                   <TableCell>
                     {`${property.ownership}%`}
                   </TableCell>

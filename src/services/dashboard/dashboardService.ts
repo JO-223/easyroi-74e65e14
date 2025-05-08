@@ -27,8 +27,9 @@ export interface Property {
   location: string;
   roi: string;
   value: string;
+  currentEvaluation?: string;  // Added currentEvaluation field
   status: string;
-  ownership: number;  // Added ownership field
+  ownership: number;
 }
 
 export interface DashboardData {
@@ -92,7 +93,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     // Get user properties
     const { data: propertiesData } = await supabase
       .from('properties')
-      .select('id, name, price, roi_percentage, status, location_id, ownership')
+      .select('id, name, price, roi_percentage, status, location_id, ownership, Current_Evaluation')
       .eq('user_id', user.id);
     
     // Get property locations
@@ -160,8 +161,9 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
         location: locationMap.get(item.location_id) || 'Unknown Location',
         roi: roiValue,
         value: formatCurrency(Number(item.price || 0)),
+        currentEvaluation: item.Current_Evaluation ? formatCurrency(Number(item.Current_Evaluation)) : undefined,
         status: item.status === 'active' ? 'active' : 'development',
-        ownership: Number(item.ownership || 100) // Include ownership with default to 100 if null
+        ownership: Number(item.ownership || 100)
       };
     }) || [];
     
