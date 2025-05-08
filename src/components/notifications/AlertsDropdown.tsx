@@ -89,20 +89,20 @@ export function AlertsDropdown() {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <p className={`text-sm font-medium ${!alert.read ? 'text-amber-800' : 'text-gray-800'}`}>
+                  <p className={`text-sm font-medium ${!alert.read ? 'text-amber-800' : 'text-black'}`}>
                     {alert.title}
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">{alert.message}</p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-black mt-0.5">{alert.message}</p>
+                  <p className="text-xs text-black mt-1">
                     {new Date(alert.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <ChevronRight className="h-4 w-4 text-white mt-2" />
+                <ChevronRight className="h-4 w-4 text-black mt-2" />
               </DropdownMenuItem>
             ))
           ) : (
             <div className="px-4 py-6 text-center">
-              <p className="text-white text-sm">
+              <p className="text-black text-sm">
                 {t('noAlerts')}
               </p>
             </div>
@@ -113,7 +113,7 @@ export function AlertsDropdown() {
           <Button 
             variant="link" 
             size="sm" 
-            className="w-full justify-center text-black"
+            className="w-full justify-center text-amber-600"
             onClick={() => navigate('/alerts')}
           >
             {t('viewAllAlerts')}
