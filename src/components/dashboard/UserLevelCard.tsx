@@ -95,7 +95,7 @@ export const UserLevelCard = ({ className }: UserLevelCardProps) => {
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <BadgeLevel level={level as any} size="lg" />
+            <BadgeLevel level={level as any} />
             <Link
               to="/dashboard/investor-levels"
               className="text-xs text-blue-500 hover:underline"
