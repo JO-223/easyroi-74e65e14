@@ -1,40 +1,29 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Property } from "@/types/property";
 import { formatCurrency } from "@/lib/utils";
-import { 
-  Bed, 
-  Bath, 
-  MapPin, 
-  CheckCircle, 
-  XCircle, 
-  Home, 
-  SquareDot, 
-  CreditCard,
-  Percent,
-  Building
-} from "lucide-react";
+import { Bed, Bath, MapPin, CheckCircle, XCircle, Home, SquareDot, CreditCard, Percent, Building } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { fetchPropertyById } from "@/services/propertyService";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { PropertyDocuments } from "@/components/property/PropertyDocuments";
 import { RequestSaleModal } from "@/components/property/RequestSaleModal";
-
 export default function PropertyDetail() {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const t = useTranslation();
   const [property, setProperty] = useState<Property | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRequestSaleModalOpen, setIsRequestSaleModalOpen] = useState(false);
-  
   useEffect(() => {
     const loadProperty = async () => {
       if (!id) return;
-      
       setIsLoading(true);
       try {
         const data = await fetchPropertyById(id);
@@ -45,13 +34,10 @@ export default function PropertyDetail() {
         setIsLoading(false);
       }
     };
-    
     loadProperty();
   }, [id]);
-  
   if (isLoading) {
-    return (
-      <DashboardLayout title={t('propertyDetails')} subtitle="">
+    return <DashboardLayout title={t('propertyDetails')} subtitle="">
         <div className="max-w-4xl mx-auto p-4">
           <Skeleton className="h-[400px] w-full mb-6" />
           <Skeleton className="h-10 w-2/3 mb-4" />
@@ -62,13 +48,10 @@ export default function PropertyDetail() {
             <Skeleton className="h-40" />
           </div>
         </div>
-      </DashboardLayout>
-    );
+      </DashboardLayout>;
   }
-  
   if (!property) {
-    return (
-      <DashboardLayout title={t('propertyDetails')} subtitle="">
+    return <DashboardLayout title={t('propertyDetails')} subtitle="">
         <div className="max-w-4xl mx-auto p-4 text-center">
           <h2 className="text-2xl font-bold mb-4">{t('propertyNotFound')}</h2>
           <p className="mb-6">{t('propertyMayHaveBeenRemovedOrUnavailable')}</p>
@@ -76,38 +59,26 @@ export default function PropertyDetail() {
             <Button>{t('backToProperties')}</Button>
           </Link>
         </div>
-      </DashboardLayout>
-    );
+      </DashboardLayout>;
   }
-  
+
   // Sort images to ensure primary is first
   const sortedImages = [...property.images].sort((a, b) => {
     if (a.is_primary && !b.is_primary) return -1;
     if (!a.is_primary && b.is_primary) return 1;
     return 0;
   });
-  
-  return (
-    <DashboardLayout 
-      title={property.name} 
-      subtitle={`${property.location.city}, ${property.location.country}`}
-    >
+  return <DashboardLayout title={property.name} subtitle={`${property.location.city}, ${property.location.country}`}>
       <div className="max-w-4xl mx-auto p-4">
         {/* Image Carousel */}
         <div className="mb-8 relative rounded-lg overflow-hidden">
           <Carousel className="w-full">
             <CarouselContent>
-              {sortedImages.map((image) => (
-                <CarouselItem key={image.id} className="relative">
+              {sortedImages.map(image => <CarouselItem key={image.id} className="relative">
                   <div className="aspect-[16/9] md:aspect-[21/9] bg-gray-100 relative">
-                    <img 
-                      src={image.url} 
-                      alt={property.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={image.url} alt={property.name} className="w-full h-full object-cover" />
                   </div>
-                </CarouselItem>
-              ))}
+                </CarouselItem>)}
             </CarouselContent>
             <CarouselPrevious className="left-2" />
             <CarouselNext className="right-2" />
@@ -141,11 +112,9 @@ export default function PropertyDetail() {
             <div className="text-2xl font-bold text-easyroi-gold mb-1">
               {formatCurrency(property.price)}
             </div>
-            {property.price && property.size_sqm && (
-              <div className="text-sm text-gray-600">
+            {property.price && property.size_sqm && <div className="text-sm text-gray-600">
                 {formatCurrency(property.price / property.size_sqm)} / m²
-              </div>
-            )}
+              </div>}
           </div>
         </div>
         
@@ -166,37 +135,31 @@ export default function PropertyDetail() {
               <dt className="text-gray-600">{t('size')}</dt>
               <dd className="font-medium">{property.size_sqm} m²</dd>
               
-              {property.service_charges !== null && (
-                <>
+              {property.service_charges !== null && <>
                   <dt className="text-gray-600">{t('serviceCharges')}</dt>
                   <dd className="font-medium">{formatCurrency(property.service_charges)}</dd>
-                </>
-              )}
+                </>}
             </dl>
           </div>
           
           <div>
             <h2 className="text-xl font-semibold mb-4 pb-2 border-b">{t('investmentDetails')}</h2>
             <dl className="grid grid-cols-2 gap-y-3">
-              {property.roi_percentage !== null && (
-                <>
+              {property.roi_percentage !== null && <>
                   <dt className="text-gray-600">{t('expectedROI')}</dt>
                   <dd className="font-medium flex items-center">
                     <Percent className="h-4 w-4 mr-1" />
                     {property.roi_percentage}%
                   </dd>
-                </>
-              )}
+                </>}
               
-              {property.min_investment !== null && (
-                <>
+              {property.min_investment !== null && <>
                   <dt className="text-gray-600">{t('minInvestment')}</dt>
                   <dd className="font-medium flex items-center">
                     <CreditCard className="h-4 w-4 mr-1" />
                     {formatCurrency(property.min_investment)}
                   </dd>
-                </>
-              )}
+                </>}
               
               <dt className="text-gray-600">{t('price')}</dt>
               <dd className="font-medium">{formatCurrency(property.price)}</dd>
@@ -219,43 +182,15 @@ export default function PropertyDetail() {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 pb-2 border-b">{t('amenities')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {property.amenities.map((amenity) => (
-              <div key={amenity.id} className="flex items-center p-2">
+            {property.amenities.map(amenity => <div key={amenity.id} className="flex items-center p-2">
                 <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
                 <span>{amenity.name}</span>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
         
         {/* Pros & Cons */}
-        {property.pros_cons && property.pros_cons.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h2 className="text-xl font-semibold mb-4 pb-2 border-b text-green-600">{t('pros')}</h2>
-              <ul className="space-y-2">
-                {property.pros_cons.filter(item => item.is_pro).map((pro) => (
-                  <li key={pro.id} className="flex items-start">
-                    <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
-                    <span>{pro.description}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div>
-              <h2 className="text-xl font-semibold mb-4 pb-2 border-b text-red-600">{t('cons')}</h2>
-              <ul className="space-y-2">
-                {property.pros_cons.filter(item => !item.is_pro).map((con) => (
-                  <li key={con.id} className="flex items-start">
-                    <XCircle className="h-5 w-5 mr-2 text-red-500 mt-0.5" />
-                    <span>{con.description}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        {property.pros_cons && property.pros_cons.length > 0}
         
         {/* Action buttons */}
         <div className="flex justify-between mt-8 pt-4 border-t">
@@ -267,15 +202,9 @@ export default function PropertyDetail() {
           </Link>
           
           <div className="flex gap-2">
-            <Button className="bg-easyroi-gold text-easyroi-navy hover:bg-easyroi-gold/90">
-              {t('contactAboutProperty')}
-            </Button>
             
-            <Button 
-              variant="outline" 
-              className="flex items-center border-easyroi-gold text-easyroi-gold hover:bg-easyroi-gold/10"
-              onClick={() => setIsRequestSaleModalOpen(true)}
-            >
+            
+            <Button variant="outline" className="flex items-center border-easyroi-gold text-easyroi-gold hover:bg-easyroi-gold/10" onClick={() => setIsRequestSaleModalOpen(true)}>
               <Building className="mr-2 h-4 w-4" />
               {t('requestSale')}
             </Button>
@@ -284,14 +213,6 @@ export default function PropertyDetail() {
       </div>
       
       {/* Request Sale Modal */}
-      {property && (
-        <RequestSaleModal 
-          isOpen={isRequestSaleModalOpen}
-          onClose={() => setIsRequestSaleModalOpen(false)}
-          propertyId={property.id}
-          propertyName={property.name}
-        />
-      )}
-    </DashboardLayout>
-  );
+      {property && <RequestSaleModal isOpen={isRequestSaleModalOpen} onClose={() => setIsRequestSaleModalOpen(false)} propertyId={property.id} propertyName={property.name} />}
+    </DashboardLayout>;
 }
