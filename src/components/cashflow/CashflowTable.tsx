@@ -88,7 +88,7 @@ export function CashflowTable({ data, isLoading }: CashflowTableProps) {
             } = row;
 
             // Convert month names to lowercase for translation keys
-            const monthKey = month.toLowerCase();
+            const monthKey = month.toLowerCase() as TranslationKey;
 
             return (
               <TableRow key={month}>

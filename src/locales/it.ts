@@ -1,9 +1,8 @@
-
 const it = {
   // General
   welcome: "Benvenuti",
   dashboard: "Dashboard",
-  properties: "Annunci",
+  properties: "Investimenti",
   development: "Off-Plan",
   analytics: "Analisi",
   events: "Eventi",
@@ -309,7 +308,7 @@ const it = {
   save: "Salva",
 
   // Properties Page
-  yourProperties: "Le Tue Proprietà",
+  yourProperties: "I Tuoi Investimenti",
   property: "Proprietà",
   location: "Posizione",
   value: "Valore",
@@ -539,6 +538,24 @@ const it = {
   october: "Ottobre",
   november: "Novembre",
   december: "Dicembre",
+  
+  // Cashflow tracker related keys
+  month: "Mese",
+  totalBookings: "Prenotazioni",
+  portalFees: "Portali",
+  cleaningCosts: "Pulizie",
+  touristTax: "Tassa di Soggiorno",
+  grossTotal: "Totale Lordo",
+  utilityCosts: "Utenze",
+  maintenanceCosts: "Extra",
+  netTotal: "Totale Netto",
+  forecast: "Analisi",
+  actual: "Reale",
+  noCashflowData: "Nessun dato di cashflow disponibile",
+  exportCSV: "Esporta CSV",
+  selectYear: "Seleziona Anno",
+  selectMonth: "Seleziona Mese",
+  allProperties: "Tutte le Proprietà",
 };
 
 export default it;
