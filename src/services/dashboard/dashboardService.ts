@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 // Types for dashboard data
@@ -27,7 +28,7 @@ export interface Property {
   location: string;
   roi: string;
   value: string;
-  currentEvaluation?: string;  // Added currentEvaluation field
+  currentEvaluation?: string;
   status: string;
   ownership: number;
 }
@@ -66,22 +67,21 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     const totalInvestment = propertiesData ? propertiesData.reduce((sum, property) => 
       sum + Number(property.price || 0), 0) : 0;
     
-    // Calculate average ROI directly from properties (weighted by property price)
-    let totalWeightedROI = 0;
-    let totalPropertyValue = 0;
+    // Calculate average ROI as sum of percentages divided by number of properties
+    let totalROI = 0;
+    let propertiesWithROI = 0;
     
     if (propertiesData && propertiesData.length > 0) {
       propertiesData.forEach(property => {
-        const price = Number(property.price || 0);
         const roi = Number(property.roi_percentage || 0);
-        if (price > 0 && !isNaN(roi)) {
-          totalWeightedROI += roi * price;
-          totalPropertyValue += price;
+        if (!isNaN(roi)) {
+          totalROI += roi;
+          propertiesWithROI++;
         }
       });
     }
     
-    const averageROI = totalPropertyValue > 0 ? totalWeightedROI / totalPropertyValue : 0;
+    const averageROI = propertiesWithROI > 0 ? totalROI / propertiesWithROI : 0;
     
     // Get previous investment data to calculate change
     const { data: investmentData } = await supabase
