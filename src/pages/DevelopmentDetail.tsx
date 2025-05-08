@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
@@ -11,23 +10,28 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, CalendarIcon, MapPin, Building2, Users, Percent } from "lucide-react";
 import { format } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
-
 export default function DevelopmentDetail() {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const navigate = useNavigate();
-  const { t } = useLanguage();
-  
-  const { data: project, isLoading, error } = useQuery({
+  const {
+    t
+  } = useLanguage();
+  const {
+    data: project,
+    isLoading,
+    error
+  } = useQuery({
     queryKey: ['developmentProject', id],
     queryFn: () => fetchDevelopmentProject(id!),
-    enabled: !!id,
+    enabled: !!id
   });
-  
   const handleGoBack = () => navigate(-1);
-  
   if (isLoading) {
-    return (
-      <DashboardLayout title={t('projectDetails')} subtitle={t('loading')}>
+    return <DashboardLayout title={t('projectDetails')} subtitle={t('loading')}>
         <div className="container mx-auto py-6">
           <div className="animate-pulse space-y-4">
             <div className="h-8 w-1/3 bg-muted rounded"></div>
@@ -35,13 +39,10 @@ export default function DevelopmentDetail() {
             <div className="h-40 bg-muted rounded"></div>
           </div>
         </div>
-      </DashboardLayout>
-    );
+      </DashboardLayout>;
   }
-  
   if (error || !project) {
-    return (
-      <DashboardLayout title={t('projectNotFound')} subtitle={t('errorLoadingProject')}>
+    return <DashboardLayout title={t('projectNotFound')} subtitle={t('errorLoadingProject')}>
         <div className="container mx-auto py-6">
           <Button variant="ghost" onClick={handleGoBack} className="mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" /> {t('back')}
@@ -51,24 +52,19 @@ export default function DevelopmentDetail() {
             <p className="text-muted-foreground mt-2">{t('projectMayHaveBeenRemoved')}</p>
           </div>
         </div>
-      </DashboardLayout>
-    );
+      </DashboardLayout>;
   }
-  
+
   // Get the primary image or first image
   const primaryImage = project.images.find(img => img.is_primary) || project.images[0];
   const imageUrl = primaryImage ? primaryImage.url : '/placeholder.svg';
-  
+
   // Format expected completion date
-  const formattedDate = project.expected_completion ? 
-    format(new Date(project.expected_completion), 'MMMM d, yyyy') : 
-    t('notAvailable');
-  
+  const formattedDate = project.expected_completion ? format(new Date(project.expected_completion), 'MMMM d, yyyy') : t('notAvailable');
+
   // Cast to the specific type needed by BadgeLevel
   const investorLevel = project.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond" | null;
-  
-  return (
-    <DashboardLayout title={project.name} subtitle={`${project.location.city}, ${project.location.country}`}>
+  return <DashboardLayout title={project.name} subtitle={`${project.location.city}, ${project.location.country}`}>
       <div className="container mx-auto py-6">
         <Button variant="ghost" onClick={handleGoBack} className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" /> {t('back')}
@@ -77,11 +73,7 @@ export default function DevelopmentDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <div className="relative rounded-lg overflow-hidden h-80">
-              <img 
-                src={imageUrl} 
-                alt={project.name} 
-                className="w-full h-full object-cover"
-              />
+              <img src={imageUrl} alt={project.name} className="w-full h-full object-contain" />
               <div className="absolute top-4 right-4">
                 <BadgeLevel level={investorLevel} />
               </div>
@@ -116,22 +108,14 @@ export default function DevelopmentDetail() {
               <Progress value={project.progress_percentage} className="h-3" />
             </div>
             
-            {project.images.length > 1 && (
-              <div>
+            {project.images.length > 1 && <div>
                 <h2 className="text-xl font-medium mb-3">{t('projectGallery')}</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {project.images.map((image) => (
-                    <div key={image.id} className="overflow-hidden rounded-md h-36">
-                      <img 
-                        src={image.url} 
-                        alt={project.name} 
-                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                  ))}
+                  {project.images.map(image => <div key={image.id} className="overflow-hidden rounded-md h-36">
+                      <img src={image.url} alt={project.name} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
+                    </div>)}
                 </div>
-              </div>
-            )}
+              </div>}
           </div>
           
           <div className="lg:col-span-1">
@@ -144,10 +128,7 @@ export default function DevelopmentDetail() {
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('minInvestment')}</span>
                     <span className="font-semibold">
-                      {project.min_investment ? 
-                        `€${project.min_investment.toLocaleString()}` : 
-                        t('contactUs')
-                      }
+                      {project.min_investment ? `€${project.min_investment.toLocaleString()}` : t('contactUs')}
                     </span>
                   </div>
                   
@@ -206,6 +187,5 @@ export default function DevelopmentDetail() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
-  );
+    </DashboardLayout>;
 }
