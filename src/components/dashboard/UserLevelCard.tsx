@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserBadge } from "@/components/ui/user-badge";
 import { useUserLevel } from "@/hooks/useUserLevel";
@@ -82,11 +81,11 @@ export function UserLevelCard() {
   
   const formatCurrency = (value: number) => {
     if (value >= 1000000) {
-      return `€${(value / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
+      return `AED${(value / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
     } else if (value >= 1000) {
-      return `€${(value / 1000).toFixed(0)}k`;
+      return `AED${(value / 1000).toFixed(0)}k`;
     }
-    return `€${value}`;
+    return `AED${value}`;
   };
   
   if (isLoading) {

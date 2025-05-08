@@ -37,14 +37,14 @@ export const InvestmentGrowthChart = ({ data, className }: InvestmentGrowthChart
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                // Improved formatter to show M for millions
+                // Updated formatter to show AED for millions
                 tickFormatter={(value) => {
                   if (value >= 1000000) {
-                    return `€${(value / 1000000).toFixed(1)}M`;
+                    return `AED${(value / 1000000).toFixed(1)}M`;
                   } else if (value >= 1000) {
-                    return `€${(value / 1000).toFixed(0)}k`;
+                    return `AED${(value / 1000).toFixed(0)}k`;
                   }
-                  return `€${value}`;
+                  return `AED${value}`;
                 }}
               />
               <Tooltip 

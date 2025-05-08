@@ -7,13 +7,13 @@
  * Formatta un valore monetario secondo lo stile preferito dell'utente
  * 
  * @param value - Il valore da formattare
- * @param currency - La valuta (default: EUR)
+ * @param currency - La valuta (default: AED)
  * @param compactDisplay - Se usare formato compatto per numeri grandi (es. 3.45M)
- * @returns - Stringa formattata (es. "€3,450,000" o "€3.45M")
+ * @returns - Stringa formattata (es. "AED3,450,000" o "AED3.45M")
  */
 export function formatCurrency(
   value: number,
-  currency: string = 'EUR',
+  currency: string = 'AED',
   compactDisplay: boolean = false
 ): string {
   if (value === undefined || value === null) {
@@ -21,11 +21,11 @@ export function formatCurrency(
   }
 
   // Gestione valori negativi o zero
-  if (value === 0) return `€0`;
+  if (value === 0) return `AED0`;
   
   // Formattazione compatta per valori grandi (es. 3.45M)
   if (compactDisplay && Math.abs(value) >= 1000000) {
-    return `€${(value / 1000000).toFixed(2)}M`;
+    return `AED${(value / 1000000).toFixed(2)}M`;
   }
   
   // Formattazione standard con separatore delle migliaia
@@ -36,7 +36,8 @@ export function formatCurrency(
     maximumFractionDigits: 0
   });
   
-  return formatter.format(value);
+  // Replace the € symbol with AED
+  return formatter.format(value).replace('€', 'AED');
 }
 
 /**

@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 // Types for dashboard data
@@ -27,7 +28,7 @@ export interface Property {
   location: string;
   roi: string;
   value: string;
-  currentEvaluation?: string;  // Added currentEvaluation field
+  currentEvaluation?: string;
   status: string;
   ownership: number;
 }
@@ -198,11 +199,11 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
 export function formatCurrency(value: number): string {
   if (value >= 1000000) {
     // Format as X.YM (with one decimal place)
-    return `€${(value / 1000000).toFixed(1).replace('.0', '')}M`;
+    return `AED${(value / 1000000).toFixed(1).replace('.0', '')}M`;
   } else if (value >= 1000) {
     // Format as X.Yk (with one decimal place)
-    return `€${(value / 1000).toFixed(1).replace('.0', '')}k`;
+    return `AED${(value / 1000).toFixed(1).replace('.0', '')}k`;
   } else {
-    return `€${value.toFixed(0)}`;
+    return `AED${value.toFixed(0)}`;
   }
 }

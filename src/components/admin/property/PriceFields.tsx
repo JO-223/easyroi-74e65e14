@@ -48,7 +48,7 @@ export function PriceFields({ control, currencies }: PriceFieldsProps) {
             </FormLabel>
             <Select 
               onValueChange={field.onChange} 
-              defaultValue={field.value}
+              defaultValue={field.value || "AED"}
             >
               <FormControl>
                 <SelectTrigger>

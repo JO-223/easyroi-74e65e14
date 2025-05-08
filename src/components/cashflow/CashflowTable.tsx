@@ -72,7 +72,7 @@ export function CashflowTable({ data, isLoading }: CashflowTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((row) => {
+          {data?.map((row) => {
             const {
               month,
               bookingsTotal,
