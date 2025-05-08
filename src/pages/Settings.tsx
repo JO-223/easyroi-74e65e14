@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { AccountSettings } from "@/components/settings/AccountSettings";
 import { DisplaySettings } from "@/components/settings/DisplaySettings";
@@ -20,28 +20,31 @@ const Settings = () => {
     updateNotificationSettingsField,
     updatePrivacySettingsField
   } = useSettings();
+  
+  // Memoize settings checking to prevent unnecessary rerenders
+  const checkSettingsLoaded = useCallback(() => {
+    // Check if we have account email data
+    const hasAccountData = Boolean(settingsData.account.email);
+    
+    // Check if display settings are loaded
+    const hasDisplayData = Boolean(settingsData.display.language);
+    
+    return hasAccountData && hasDisplayData;
+  }, [settingsData.account.email, settingsData.display.language]);
 
   useEffect(() => {
-    // Simulate checking if all settings are loaded
-    const checkSettingsLoaded = () => {
-      // Check if we have account email data
-      const hasAccountData = settingsData.account.email !== "";
-      
-      // Check if display settings are loaded (using a truthy check instead of comparing to empty string)
-      const hasDisplayData = Boolean(settingsData.display.language);
-      
-      if (hasAccountData && hasDisplayData) {
-        setIsLoading(false);
-      }
-    };
-    
-    checkSettingsLoaded();
+    // Only change loading state if needed to prevent unnecessary rerenders
+    if (isLoading && checkSettingsLoaded()) {
+      setIsLoading(false);
+    }
     
     // Set a timeout to ensure loading state doesn't get stuck
-    const timeoutId = setTimeout(() => setIsLoading(false), 2000);
+    const timeoutId = setTimeout(() => {
+      if (isLoading) setIsLoading(false);
+    }, 2000);
     
     return () => clearTimeout(timeoutId);
-  }, [settingsData]);
+  }, [isLoading, checkSettingsLoaded]);
 
   if (isLoading) {
     return (

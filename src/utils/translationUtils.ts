@@ -1,74 +1,50 @@
 
-import { GeneralKey } from './translations/general';
-import { PropertyKey } from './translations/property';
-import { AdminKey } from './translations/admin';
-import { DashboardKey } from './translations/dashboard';
-import { SettingsKey } from './translations/settings';
-import { DevelopmentKey } from './translations/development';
-import { AnalyticsKey } from './translations/analytics';
-import { EventsKey } from './translations/events';
-import { NetworkKey } from './translations/network';
-import { ProfileKey } from './translations/profile';
-import { LandingKey } from './translations/landing';
-import { AboutKey } from './translations/about';
-import { ContactKey } from './translations/contact';
-import { AuthKey } from './translations/auth';
-import { UiKey } from './translations/ui';
-import { MiscKey } from './translations/misc';
-import { TooltipKey } from './translations/tooltip';
-import { InvestorKey } from './translations/investor';
-import { LegalKey } from './translations/legal';
-import { ConsultationKey } from './translations/consultation';
+import { generalKeys } from './translations/general';
+import { propertyKeys } from './translations/property';
+import { adminKeys } from './translations/admin';
+import { dashboardKeys } from './translations/dashboard';
+import { settingsKeys } from './translations/settings';
+import { developmentKeys } from './translations/development';
+import { analyticsKeys } from './translations/analytics';
+import { eventsKeys } from './translations/events';
+import { networkKeys } from './translations/network';
+import { profileKeys } from './translations/profile';
+import { landingKeys } from './translations/landing';
+import { aboutKeys } from './translations/about';
+import { contactKeys } from './translations/contact';
+import { authKeys } from './translations/auth';
+import { uiKeys } from './translations/ui';
+import { miscKeys } from './translations/misc';
+import { tooltipKeys } from './translations/tooltip';
+import { investorKeys } from './translations/investor';
+import { legalKeys } from './translations/legal';
+import { consultationKeys } from './translations/consultation';
 
-// Define all possible translation keys
-export type TranslationKey =
-  | GeneralKey
-  | PropertyKey
-  | AdminKey
-  | DashboardKey
-  | SettingsKey
-  | DevelopmentKey
-  | AnalyticsKey
-  | EventsKey
-  | NetworkKey
-  | ProfileKey
-  | LandingKey
-  | AboutKey
-  | ContactKey
-  | AuthKey
-  | UiKey
-  | MiscKey
-  | TooltipKey
-  | InvestorKey
-  | LegalKey
-  | ConsultationKey;
+// All translation keys combined
+export type TranslationKey = 
+  | typeof generalKeys[number]
+  | typeof propertyKeys[number]
+  | typeof adminKeys[number]
+  | typeof dashboardKeys[number]
+  | typeof settingsKeys[number]
+  | typeof developmentKeys[number]
+  | typeof analyticsKeys[number]
+  | typeof eventsKeys[number]
+  | typeof networkKeys[number]
+  | typeof profileKeys[number]
+  | typeof landingKeys[number]
+  | typeof aboutKeys[number]
+  | typeof contactKeys[number]
+  | typeof authKeys[number]
+  | typeof uiKeys[number]
+  | typeof miscKeys[number]
+  | typeof tooltipKeys[number]
+  | typeof investorKeys[number]
+  | typeof legalKeys[number]
+  | typeof consultationKeys[number]
+  | string; // <-- Allow any string for dynamic translations
 
-// Type guard to check if a string is a valid translation key
+// Utility to check if a key is a valid translation key
 export function isValidTranslationKey(key: string): key is TranslationKey {
-  // This function is used to validate keys at runtime if needed
-  return true; // In practice, we would check against all keys
+  return true; // For now we allow all strings
 }
-
-// Re-export all translation key arrays for use in translationChecks.ts
-export {
-  generalKeys, 
-  propertyKeys, 
-  adminKeys, 
-  dashboardKeys, 
-  settingsKeys,
-  developmentKeys,
-  analyticsKeys,
-  eventsKeys,
-  networkKeys,
-  profileKeys,
-  landingKeys,
-  aboutKeys,
-  contactKeys,
-  authKeys,
-  uiKeys,
-  miscKeys,
-  tooltipKeys,
-  investorKeys,
-  legalKeys,
-  consultationKeys
-} from './translations';

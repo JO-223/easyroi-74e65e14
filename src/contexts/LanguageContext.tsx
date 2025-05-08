@@ -1,10 +1,11 @@
 
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, useContext, ReactNode, useCallback } from 'react';
 import en from '@/locales/en';
 import it from '@/locales/it';
 import es from '@/locales/es';
 import de from '@/locales/de';
 import { TranslationKey, isValidTranslationKey } from '@/utils/translationUtils';
+import { isEqual } from 'lodash-es';
 
 export type Language = 'en' | 'it' | 'es' | 'de';
 export type Currency = 'usd' | 'eur' | 'gbp';
@@ -70,30 +71,44 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     return { language: language, currency: 'usd', timezone: 'europe_london' };
   });
 
+  // Update HTML lang attribute when language changes
   useEffect(() => {
     localStorage.setItem('language', language);
     document.documentElement.lang = language;
   }, [language]);
 
+  // Save display settings to localStorage when they change
   useEffect(() => {
     localStorage.setItem('displaySettings', JSON.stringify(displaySettings));
-    document.documentElement.lang = displaySettings.language;
   }, [displaySettings]);
 
-  const setLanguage = (lang: Language) => {
+  // Memoized function to set language to prevent unnecessary rerenders
+  const setLanguage = useCallback((lang: Language) => {
+    if (lang === language) return;
+    
     setLanguageState(lang);
-    setDisplaySettings(prev => ({ ...prev, language: lang }));
-  };
+    setDisplaySettings(prev => {
+      if (prev.language === lang) return prev;
+      return { ...prev, language: lang };
+    });
+  }, [language]);
 
-  const updateDisplaySettings = (settings: Partial<DisplaySettings>) => {
-    setDisplaySettings(prev => ({ ...prev, ...settings }));
-    if (settings.language) {
+  // Memoized function to update display settings
+  const updateDisplaySettings = useCallback((settings: Partial<DisplaySettings>) => {
+    setDisplaySettings(prev => {
+      const newSettings = { ...prev, ...settings };
+      // Only update if something actually changed
+      if (isEqual(prev, newSettings)) return prev;
+      return newSettings;
+    });
+    
+    if (settings.language && settings.language !== language) {
       setLanguageState(settings.language);
     }
-  };
+  }, [language]);
 
   // Enhanced translation function that handles nested structures better
-  const t = (key: TranslationKey, params?: string | Record<string, string | number>): string => {
+  const t = useCallback((key: TranslationKey, params?: string | Record<string, string | number>): string => {
     // First, try to get the direct translation value
     const translationValue = translations[language]?.[key] || translations.en[key];
     
@@ -127,7 +142,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     
     // Fallback for unhandled cases
     return key;
-  };
+  }, [language]);
 
   const value = {
     language,
