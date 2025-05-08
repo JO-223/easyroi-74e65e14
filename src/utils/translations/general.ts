@@ -91,9 +91,6 @@ export const generalKeys = [
   "viewAllAlerts",
   "ownership",
   "property",
-  "helpCenter",
-  "helpCenterDescription",
-  "searchHelp",
   
   // Cashflow tracker related keys
   "cashflowTracker",

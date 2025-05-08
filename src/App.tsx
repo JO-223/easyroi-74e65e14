@@ -32,7 +32,6 @@ import CookiePolicy from "./pages/CookiePolicy";
 import CashflowTracker from "./pages/CashflowTracker";
 import MyInvestments from "./pages/MyInvestments";
 import Consultations from "./pages/Consultations";
-import HelpCenter from "./pages/HelpCenter";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -105,12 +104,6 @@ const App = () => {
                 <Route path="/dashboard/consultations" element={
                   <RequireAuth>
                     <Consultations />
-                  </RequireAuth>
-                } />
-                
-                <Route path="/dashboard/help" element={
-                  <RequireAuth>
-                    <HelpCenter />
                   </RequireAuth>
                 } />
                 

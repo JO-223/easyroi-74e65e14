@@ -105,20 +105,16 @@ export function DashboardLayout({
     isLoading
   };
 
-  const handleCloseSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
   return (
     <UserProfileContext.Provider value={contextValue}>
       <div className="min-h-screen bg-gray-50">
         <div className="flex">
           {/* Sidebar for larger screens */}
-          <div className="hidden lg:block w-64 min-h-screen bg-gradient-to-b from-[#39146c] to-[#6b2dd0]">
-            <div className="p-6 bg-[#39146c]">
+          <div className="hidden lg:block w-64 bg-sidebar min-h-screen">
+            <div className="p-6 bg-easyroi-navy">
               <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
             </div>
-            <SidebarNav closeSidebar={handleCloseSidebar} />
+            <SidebarNav userData={profileData} />
           </div>
           
           {/* Main content area */}
@@ -136,11 +132,11 @@ export function DashboardLayout({
                     <span className="sr-only">Toggle Sidebar</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="p-0 w-64 lg:hidden bg-gradient-to-b from-[#39146c] to-[#6b2dd0]">
-                  <div className="p-6 bg-[#39146c]">
+                <SheetContent side="left" className="p-0 w-64 lg:hidden bg-easyroi-navy">
+                  <div className="p-6 bg-easyroi-navy">
                     <img src="/lovable-uploads/a00c1972-b881-489c-90f7-bf7f1f6ac87a.png" alt="EasyROI Logo" className="h-10" />
                   </div>
-                  <SidebarNav closeSidebar={handleCloseSidebar} />
+                  <SidebarNav userData={profileData} />
                 </SheetContent>
               </Sheet>
             </DashboardHeader>

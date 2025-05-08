@@ -21,16 +21,27 @@ const Settings = () => {
     updatePrivacySettingsField
   } = useSettings();
 
-  // Fixed loading state management
   useEffect(() => {
-    // Use a one-time loading effect that doesn't depend on data
-    // This prevents oscillation between loading and not loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
+    // Simulate checking if all settings are loaded
+    const checkSettingsLoaded = () => {
+      // Check if we have account email data
+      const hasAccountData = settingsData.account.email !== "";
+      
+      // Check if display settings are loaded (using a truthy check instead of comparing to empty string)
+      const hasDisplayData = Boolean(settingsData.display.language);
+      
+      if (hasAccountData && hasDisplayData) {
+        setIsLoading(false);
+      }
+    };
     
-    return () => clearTimeout(timer);
-  }, []); // Empty dependency array ensures this only runs once
+    checkSettingsLoaded();
+    
+    // Set a timeout to ensure loading state doesn't get stuck
+    const timeoutId = setTimeout(() => setIsLoading(false), 2000);
+    
+    return () => clearTimeout(timeoutId);
+  }, [settingsData]);
 
   if (isLoading) {
     return (

@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAccountSettings, AccountSettings } from "./useAccountSettings";
 import { useDisplaySettings, DisplaySettings } from "./useDisplaySettings";
 import { useNotificationSettings, NotificationSettings } from "./useNotificationSettings";
@@ -48,7 +48,7 @@ export function useSettings() {
     savePrivacySettings
   } = usePrivacySettings();
 
-  // Combine all settings into one object - use memo to prevent unnecessary re-renders
+  // Combine all settings into one object
   const settingsData: UserSettings = {
     account: accountSettings,
     display: displaySettings,
@@ -85,10 +85,8 @@ export function useSettings() {
       }
       
       if (success) {
-        // Use setTimeout to prevent deadlock, but with a larger delay
-        setTimeout(() => {
-          invalidateQueries(queryClient, 'user');
-        }, 100);
+        // Invalidate relevant queries after successful update
+        invalidateQueries(queryClient, 'user');
       }
       
       return success;
