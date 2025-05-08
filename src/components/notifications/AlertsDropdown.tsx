@@ -80,7 +80,7 @@ export function AlertsDropdown() {
             alerts.map(alert => (
               <DropdownMenuItem 
                 key={alert.id}
-                className={`px-4 py-3 cursor-pointer flex items-start ${!alert.read ? 'bg-amber-50' : ''}`}
+                className={`px-4 py-3 cursor-pointer flex items-start ${!alert.read ? 'bg-black' : ''}`}
                 onClick={() => handleAlertClick(alert.propertyId)}
               >
                 <div className="mr-3 mt-1">
