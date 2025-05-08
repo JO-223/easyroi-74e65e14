@@ -643,6 +643,7 @@ export type Database = {
           bathrooms: number
           bedrooms: number
           created_at: string
+          Current_Evaluation: number | null
           data_source: string | null
           id: string
           investor_level: string | null
@@ -667,6 +668,7 @@ export type Database = {
           bathrooms: number
           bedrooms: number
           created_at?: string
+          Current_Evaluation?: number | null
           data_source?: string | null
           id?: string
           investor_level?: string | null
@@ -691,6 +693,7 @@ export type Database = {
           bathrooms?: number
           bedrooms?: number
           created_at?: string
+          Current_Evaluation?: number | null
           data_source?: string | null
           id?: string
           investor_level?: string | null
