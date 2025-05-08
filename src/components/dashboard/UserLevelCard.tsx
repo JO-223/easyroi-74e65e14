@@ -60,7 +60,8 @@ export const UserLevelCard = ({ className }: UserLevelCardProps) => {
         
         setTotalInvestment(total);
         
-        const currentLevel = profileData?.level || "bronze";
+        // Use type assertion to handle the unknown type
+        const currentLevel = (profileData?.level as string) || "bronze";
         setLevel(currentLevel);
 
         // Determine next level

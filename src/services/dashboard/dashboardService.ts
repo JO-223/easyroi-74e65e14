@@ -76,7 +76,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
     
     // Calculate investment change percentage
     let investmentChange = 0;
-    if (prevInvestmentData && prevInvestmentData.total_investment > 0) {
+    if (prevInvestmentData && typeof prevInvestmentData.total_investment === 'number' && prevInvestmentData.total_investment > 0) {
       investmentChange = ((totalInvestment - Number(prevInvestmentData.total_investment)) / 
         Number(prevInvestmentData.total_investment)) * 100;
     }
@@ -142,7 +142,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
         propertiesData.forEach(property => {
           const location = locationsData.find(loc => loc.id === property.location_id);
           if (location) {
-            const country = location.country;
+            const country = location.country as string;
             countryMap.set(country, (countryMap.get(country) || 0) + 1);
           }
         });
@@ -167,7 +167,7 @@ export async function fetchDashboardData(): Promise<DashboardData | null> {
       
       if (locationsData) {
         locationsData.forEach(loc => {
-          locationMap.set(loc.id, `${loc.city}, ${loc.country}`);
+          locationMap.set(loc.id, `${loc.city as string}, ${loc.country as string}`);
         });
       }
     }
