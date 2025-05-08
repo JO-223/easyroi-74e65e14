@@ -7,7 +7,7 @@ export default function CashflowTracker() {
   const t = useTranslation();
   
   return (
-    <DashboardLayout title={t("cashflowTracker")} subtitle={t("cashflowTrackerDesc")}>
+    <DashboardLayout title="Cashflow Tracker" subtitle={t("cashflowTrackerDesc")}>
       <CashflowContent />
     </DashboardLayout>
   );

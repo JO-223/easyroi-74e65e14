@@ -21,9 +21,6 @@ const StatItem = ({ title, value, change, isPositive, icon: Icon }: StatItemProp
           <div>
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <p className="text-2xl font-bold">{value}</p>
-            <p className={`text-xs ${isPositive ? "text-easyroi-success" : "text-easyroi-danger"} flex items-center mt-1`}>
-              {change}
-            </p>
           </div>
           <div className="bg-easyroi-navy/10 p-3 rounded-full">
             <Icon className="h-5 w-5 text-easyroi-navy" />

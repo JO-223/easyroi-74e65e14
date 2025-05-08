@@ -11,7 +11,6 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
-import Analytics from "./pages/Analytics";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
 import Profile from "./pages/Profile";
@@ -29,7 +28,6 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Sitemap from "./pages/Sitemap";
 import CookiePolicy from "./pages/CookiePolicy";
 import CashflowTracker from "./pages/CashflowTracker";
-import MyInvestments from "./pages/MyInvestments";
 import Consultations from "./pages/Consultations";
 import { useEffect } from "react";
 
@@ -82,21 +80,9 @@ const App = () => {
                   </RequireAuth>
                 } />
                 
-                <Route path="/dashboard/analytics" element={
-                  <RequireAuth>
-                    <Analytics />
-                  </RequireAuth>
-                } />
-                
                 <Route path="/dashboard/cashflow" element={
                   <RequireAuth>
                     <CashflowTracker />
-                  </RequireAuth>
-                } />
-
-                <Route path="/dashboard/investments" element={
-                  <RequireAuth>
-                    <MyInvestments />
                   </RequireAuth>
                 } />
                 

@@ -1,7 +1,6 @@
-
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Award, FileSpreadsheet, DollarSign } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Award, FileSpreadsheet } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -47,24 +46,14 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       icon: Building2
     }, 
     {
-      title: t('development'),
+      title: 'Off-Plan',
       href: '/dashboard/development',
       icon: Construction
     }, 
     {
-      title: t('analytics'),
-      href: '/dashboard/analytics',
-      icon: BarChart3
-    }, 
-    {
-      title: t('cashflowTracker'),
+      title: 'Cashflow Tracker',
       href: '/dashboard/cashflow',
       icon: FileSpreadsheet
-    },
-    {
-      title: t('myInvestments'),
-      href: '/dashboard/investments',
-      icon: DollarSign
     },
     {
       title: t('events'),
