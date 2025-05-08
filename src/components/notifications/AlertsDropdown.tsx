@@ -97,12 +97,12 @@ export function AlertsDropdown() {
                     {new Date(alert.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <ChevronRight className="h-4 w-4 text-gray-400 mt-2" />
+                <ChevronRight className="h-4 w-4 text-white mt-2" />
               </DropdownMenuItem>
             ))
           ) : (
             <div className="px-4 py-6 text-center">
-              <p className="text-gray-500 text-sm">
+              <p className="text-white text-sm">
                 {t('noAlerts')}
               </p>
             </div>
