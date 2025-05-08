@@ -83,7 +83,7 @@ export function DevelopmentProjectCard({ project, onClick }: DevelopmentProjectC
             <p className="text-sm font-medium">{t('minInvestment')}:</p>
             <p className="text-lg font-bold text-easyroi-navy">
               {project.min_investment ? 
-                `€${project.min_investment.toLocaleString()}` : 
+                `AED${project.min_investment.toLocaleString()}` : 
                 t('contactUs')
               }
             </p>
