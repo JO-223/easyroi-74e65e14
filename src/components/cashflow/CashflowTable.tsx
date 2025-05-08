@@ -87,9 +87,12 @@ export function CashflowTable({ data, isLoading }: CashflowTableProps) {
               actualNetTotal
             } = row;
 
+            // Convert month names to lowercase for translation keys
+            const monthKey = month.toLowerCase();
+
             return (
               <TableRow key={month}>
-                <TableCell className="font-medium bg-muted/50">{t(month.toLowerCase() as any)}</TableCell>
+                <TableCell className="font-medium bg-muted/50">{t(monthKey)}</TableCell>
                 <TableCell>{formatCurrency(bookingsTotal)}</TableCell>
                 <TableCell>{formatCurrency(portalFees)}</TableCell>
                 <TableCell>{formatCurrency(cleaningCosts)}</TableCell>
