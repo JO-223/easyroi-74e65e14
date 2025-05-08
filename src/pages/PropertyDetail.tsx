@@ -76,7 +76,7 @@ export default function PropertyDetail() {
             <CarouselContent>
               {sortedImages.map(image => <CarouselItem key={image.id} className="relative">
                   <div className="aspect-[16/9] md:aspect-[21/9] bg-gray-100 relative">
-                    <img src={image.url} alt={property.name} className="w-full h-full object-cover" />
+                    <img src={image.url} alt={property.name} className="w-full h-full object-contain" />
                   </div>
                 </CarouselItem>)}
             </CarouselContent>
