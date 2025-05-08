@@ -82,7 +82,7 @@ export function AlertsDropdown() {
                 key={alert.id}
                 className={`px-4 py-3 cursor-pointer flex items-start border border-transparent ${
                   !alert.read ? 'bg-amber-50' : ''
-                } hover:border-amber-500 transition-colors`}
+                } hover:border-amber-500 hover:bg-transparent focus:bg-transparent focus:border-amber-500 transition-colors`}
                 onClick={() => handleAlertClick(alert.propertyId)}
               >
                 <div className="mr-3 mt-1">

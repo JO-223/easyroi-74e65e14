@@ -1,555 +1,126 @@
+import React from 'react';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle, ChevronRight, Home } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
-const it = {
-  // General
-  welcome: "Benvenuti",
-  dashboard: "Dashboard",
-  properties: "Investimenti",
-  development: "Off-Plan",
-  analytics: "Analisi",
-  events: "Eventi",
-  network: "Network",
-  profile: "Profilo",
-  settings: "Impostazioni",
-  logout: "Esci",
-  loading: "Caricamento",
-  error: "Errore",
-  success: "Successo",
-  
-  // Analytics
-  totalInvestment: "Investimento Totale",
-  roi: "ROI",
-  annualGrowth: "Crescita Annuale",
-  marketComparison: "Confronto con il Mercato",
-  vsPreviousYear: "vs. Anno precedente",
-  vsMarketAverage: "vs. Media di mercato",
-  investmentGrowth: "Crescita dell'Investimento",
-  portfolioAllocation: "Allocazione del Portafoglio",
-  geographicDistribution: "Distribuzione Geografica",
-  assetAllocation: "Allocazione degli Asset",
-  propertyValue: "Valore dell'Immobile",
-  propertyStatus: "Stato dell'Immobile",
-  propertyLocation: "Posizione dell'Immobile",
-  propertyROI: "ROI dell'Immobile",
-  propertyDetails: "Dettagli dell'Immobile",
-  propertyValuation: "Valutazione dell'Immobile",
-  marketTrends: "Tendenze di Mercato",
-  investmentTimeline: "Cronologia degli Investimenti",
-  financialPerformance: "Performance Finanziaria",
-  propertyManagement: "Gestione dell'Immobile",
-  tenantManagement: "Gestione degli Inquilini",
-  maintenanceRequests: "Richieste di Manutenzione",
-  rentCollection: "Raccolta Affitti",
-  
-  // Portfolio related
-  portfolioROI: "ROI del Portafoglio",
-  aboveIndex: "Sopra l'indice",
-  yourPortfolio: "Il Tuo Portafoglio",
-  marketAverage: "Media di Mercato",
-  
-  // Events
-  upcomingEvents: "Prossimi Eventi",
-  pastEvents: "Eventi Passati",
-  eventDetails: "Dettagli dell'Evento",
-  attendees: "Partecipanti",
-  speakers: "Relatori",
-  eventsAttended: "Eventi Partecipati",
-  noEventsYet: "Nessun evento partecipato",
-  totalEvents: "Eventi Partecipati Totali",
-  discoverEventsAndNetworkingOpportunities: "Scopri eventi e opportunità di networking",
-  eventNotFound: "Evento Non Trovato",
-  errorLoadingEvent: "Errore nel Caricamento dell'Evento",
-  eventMayHaveBeenRemoved: "Questo evento potrebbe essere stato rimosso",
-  viewAllEvents: "Visualizza Tutti gli Eventi",
-  registrationSuccessful: "Registrazione Completata",
-  youAreNowRegisteredForThisEvent: "Sei ora registrato per questo evento",
-  registrationFailed: "Registrazione Fallita",
-  pleaseTryAgainLater: "Per favore riprova più tardi",
-  registrationCanceled: "Registrazione Annullata",
-  youAreNoLongerRegisteredForThisEvent: "Non sei più registrato per questo evento",
-  cancellationFailed: "Annullamento Fallito",
-  aboutThisEvent: "Informazioni su questo Evento",
-  atCapacity: "Al Completo",
-  joinThisEvent: "Partecipa a questo Evento",
-  youAreRegisteredForThisEvent: "Sei registrato per questo evento",
-  cancelRegistration: "Annulla Registrazione",
-  cancelYourRegistration: "Annulla la tua Registrazione",
-  areYouSureYouWantToCancelYourRegistration: "Sei sicuro di voler annullare la tua registrazione?",
-  goBack: "Torna Indietro",
-  confirm: "Conferma",
-  thisEventHasReachedCapacity: "Questo evento ha raggiunto la capacità massima",
-  joinUsForThisExcitingEvent: "Unisciti a noi per questo emozionante evento",
-  eventFull: "Evento al Completo",
-  registerForEvent: "Registrati all'Evento",
-  errorFetchingEvents: "Errore nel Recupero degli Eventi",
-  relatedProperty: "Proprietà Correlata",
-  thisEventIsRelatedToAProperty: "Questo evento è correlato a una proprietà",
-  thisEventIsRelatedToADevelopmentProject: "Questo evento è correlato a un progetto di sviluppo",
-  online: "Online",
-  
-  // Network
-  investorNetwork: "Rete di Investitori",
-  connectInvestors: "Connettiti con altri investitori",
-  contactInformation: "Informazioni di Contatto",
-  connect: "Connetti",
-  messages: "Messaggi",
-  notifications: "Notifiche",
-  sendMessage: "Invia Messaggio",
-  typeYourMessage: "Scrivi il tuo messaggio...",
-  messageHistory: "Cronologia Messaggi",
-  noMessagesYet: "Ancora nessun messaggio",
-  startConversation: "Inizia una conversazione",
-  searchInvestors: "Cerca investitori",
-  allInvestors: "Tutti gli Investitori",
-  investorsNearYou: "Investitori Vicino a Te",
-  myConnections: "Le Mie Connessioni",
-  pending: "In Attesa",
-  noInvestorsFound: "Nessun investitore trovato",
-  tryDifferentSearch: "Prova un termine di ricerca diverso",
-  viewProfile: "Visualizza Profilo",
-  connectRequest: "Richiesta di Connessione",
-  acceptConnection: "Accetta Connessione",
-  decline: "Rifiuta",
-  connectionPending: "Connessione in Attesa",
-  connected: "Connesso",
-  disconnect: "Disconnetti",
-  authRequired: "Autenticazione Richiesta",
-  pleaseLoginToConnect: "Effettua l'accesso per connetterti con altri investitori",
-  connectionSent: "Richiesta di Connessione Inviata",
-  connectionSentMsg: "La tua richiesta di connessione è stata inviata",
-  connectionRequestError: "Impossibile inviare la richiesta di connessione",
-  pleaseLoginToDisconnect: "Effettua l'accesso per disconnetterti da questo investitore",
-  connectionRemoved: "Connessione Rimossa", 
-  connectionRemovedMsg: "Non sei più connesso con questo investitore",
-  connectionRemoveError: "Impossibile rimuovere la connessione",
-  pleaseLoginToMessage: "Effettua l'accesso per mandare un messaggio a questo investitore",
-  privateProfileNetworkRestricted: "Funzionalità di Rete Limitate per Profilo Privato",
-  privateProfileNetworkMessage: "Il tuo profilo è impostato come privato, questo limita le funzionalità di rete. Per abilitare tutte le funzionalità, aggiorna le tue impostazioni sulla privacy.",
-  goToPrivacySettings: "Vai alle Impostazioni sulla Privacy",
-  investor: "Investitore",
-  noBioAvailable: "Nessuna biografia disponibile",
-  failedToLoadMessages: "Impossibile caricare la cronologia messaggi",
-  failedToSendMessage: "Impossibile inviare il messaggio",
-  messagingWith: "Conversazione con",
-  messageExchangeDesc: "Scambia messaggi con la tua connessione",
-  investorsFound: "Investitori trovati",
-  typeMessage: "Scrivi un messaggio...",
-  networkDataError: "Errore nel caricamento dei dati di rete",
-  notificationsMarkedAsRead: "Notifiche Lette",
-  allNotificationsMarkedAsRead: "Tutte le notifiche sono state contrassegnate come lette",
-  errorMarkingNotificationsAsRead: "Errore nel contrassegnare le notifiche come lette",
-  markAllAsRead: "Segna tutte come lette",
-  noNotifications: "Nessuna notifica",
-  
-  // Settings
-  privacySettings: "Impostazioni sulla Privacy",
-  privacySettingsDesc: "Controlla la visibilità del tuo profilo e le preferenze di condivisione dati",
-  publicProfile: "Profilo Pubblico",
-  dataSharing: "Condivisione Dati",
-  profileVisibility: "Visibilità Profilo",
-  profileVisibilityDesc: "Controlla chi può vedere i dettagli del tuo profilo",
-  public: "Pubblico",
-  private: "Privato",
-  connectionsOnly: "Solo Connessioni",
-  updatePrivacy: "Aggiorna Impostazioni Privacy",
-  accountSettings: "Impostazioni Account",
-  accountSettingsDesc: "Aggiorna le informazioni del tuo account personale",
-  name: "Nome",
-  email: "Email",
-  updateAccount: "Aggiorna Account",
-  displaySettings: "Impostazioni di Visualizzazione",
-  displaySettingsDesc: "Aggiorna l'aspetto e la visualizzazione delle informazioni di EasyROI",
-  language: "Lingua",
-  selectLanguage: "Seleziona Lingua",
-  currency: "Valuta",
-  selectCurrency: "Seleziona Valuta",
-  timezone: "Fuso Orario",
-  selectTimezone: "Seleziona Fuso Orario",
-  saving: "Salvataggio in corso...",
-  updateDisplay: "Aggiorna",
-  notificationSettings: "Impostazioni Notifiche",
-  notificationSettingsDesc: "Controlla quali notifiche ricevi",
-  emailNotifications: "Notifiche Email",
-  pushNotifications: "Notifiche Push",
-  updateNotifications: "Aggiorna Notifiche",
-  manageSettings: "Gestisci le impostazioni del tuo account",
-  
-  // Settings descriptions
-  emailNotificationsDesc: "Ricevi aggiornamenti importanti e avvisi via email",
-  pushNotificationsDesc: "Ricevi notifiche in tempo reale nel tuo browser",
-  publicProfileDesc: "Controlla se il tuo profilo è visibile ad altri investitori",
-  dataSharingDesc: "Gestisci come i tuoi dati di investimento vengono condivisi con i nostri partner",
-  profilePublic: "Profilo Pubblico",
-  profilePublicDesc: "Il tuo profilo è visibile a tutti gli investitori",
-  profileSemiPublic: "Profilo Semi-Pubblico",
-  profileSemiPublicDesc: "Il tuo profilo è visibile solo agli investitori connessi",
-  profilePrivate: "Profilo Privato",
-  profilePrivateDesc: "Il tuo profilo non è visibile a nessuno",
-  
-  // Account settings
-  accountSettingsUpdated: "Impostazioni Account Aggiornate",
-  accountSettingsSaved: "Le impostazioni del tuo account sono state salvate",
-  errorOccurred: "Si è Verificato un Errore",
-  errorUpdatingSettings: "Errore nell'aggiornamento delle impostazioni del tuo account",
-  
-  // Display settings
-  displaySettingsUpdated: "Impostazioni di Visualizzazione Aggiornate", 
-  displaySettingsSaved: "Le tue preferenze di visualizzazione sono state salvate",
-  
-  // Notification settings
-  notificationSettingsUpdated: "Impostazioni di Notifica Aggiornate",
-  notificationSettingsSaved: "Le tue preferenze di notifica sono state salvate",
-  
-  // Privacy settings
-  privacySettingsUpdated: "Impostazioni Privacy Aggiornate",
-  privacySettingsSaved: "Le tue preferenze di privacy sono state salvate",
-  
-  // Profile Page
-  myProfile: "Il Mio Profilo",
-  viewEditProfile: "Visualizza e modifica le informazioni del tuo profilo",
-  joinedOn: "Iscritto il",
-  bronze: "Bronze",
-  silver: "Silver",
-  gold: "Gold",
-  platinum: "Platinum",
-  diamond: "Diamond",
-  basicInfo: "Informazioni di Base",
-  bio: "Biografia",
-  interests: "Interessi",
-  addInterest: "Aggiungi Interesse",
-  selectInterest: "Seleziona Interesse",
-  firstLastName: "Nome e Cognome",
-  contactInfo: "Informazioni di Contatto",
-  phone: "Telefono",
-  saveChanges: "Salva Modifiche",
-  editProfile: "Modifica Profilo",
-  cancelEditing: "Annulla",
-  securityPrivacy: "Sicurezza e Privacy",
-  changePassword: "Cambia Password",
-  twoFactorAuth: "Autenticazione a Due Fattori",
-  enable: "Attiva",
-  disable: "Disattiva",
-  dataPrivacy: "Privacy dei Dati",
-  downloadData: "Scarica i Miei Dati",
-  deleteAccount: "Elimina Account",
-  investmentSummary: "Riepilogo Investimenti",
-  totalPortfolioValue: "Valore Totale Portafoglio",
-  averageROI: "ROI Medio",
-  recentActivity: "Attività Recenti",
-  noRecentActivity: "Nessuna attività recente",
-  viewAll: "Visualizza Tutto",
-  memberSince: "Membro dal",
-  
-  // Help and Support
-  helpCenter: "Centro Assistenza",
-  aboutUs: "Chi Siamo",
-  contactUs: "Contattaci",
-  
-  // Analysis & Data
-  comprehensiveAnalysis: "Analisi Completa",
-  roiPerformance: "Performance ROI",
-  allocation: "Allocazione",
-  historicalROI: "ROI Storico",
-  annualROI: "ROI Annuale",
-  
-  // Admin
-  importProjects: "Importa Progetti",
-  importProperties: "Importa Proprietà",
-  importProjectsDesc: "Importa dati di progetti di sviluppo da fonti esterne in formato JSON.",
-  developmentProjectImportComingSoon: "La funzionalità di importazione dei progetti di sviluppo sarà implementata presto.",
-  
-  // Status
-  errorLoadingData: "Errore nel caricamento dei dati",
-  noHistoricalData: "Dati storici non disponibili",
-  marketVolatility: "Compensazione della volatilità di mercato rilevata",
-
-  // Analytics empty states
-  noAssetAllocationData: 'Nessun dato di allocazione asset disponibile',
-  noGeographicData: 'Nessun dato geografico disponibile',
-  noDataAvailable: 'Nessun dato disponibile',
-  dataWillAppearSoon: 'I dati appariranno qui non appena saranno disponibili',
-  noInvestments: 'Nessun investimento registrato',
-  noData: "Nessun Dato",
-  refreshOrContactSupport: "Aggiorna la pagina o contatta il supporto",
-  noInvestmentDataAvailable: "Nessun dato di investimento disponibile",
-  
-  // Auth
-  loginSuccessTitle: "Accesso Riuscito",
-  loginSuccessMsg: "Benvenuto nel tuo cruscotto",
-  investorPortal: "Portale Investitori",
-  investorPortalDesc: "Accedi a opportunità di investimento esclusive",
-  privatePortalAlert: "Questo è un portale privato riservato agli investitori verificati",
-  forgotPassword: "Password Dimenticata?",
-  signingIn: "Accesso in corso...",
-  signIn: "Accedi",
-  needAssistance: "Hai bisogno di assistenza? Contatta il nostro team di relazioni con gli investitori",
-  scheduleMeeting: "Pianifica un Incontro",
-  
-  // Landing
-  premiumRealEstate: "Immobili di Prestigio",
-  exceptionalReturns: "Rendimenti Eccezionali",
-  exclusiveAccess: "Accesso esclusivo a investimenti immobiliari ad alto rendimento per investitori esigenti",
-  scroll: "SCORRI",
-  curated: "Opportunità di Investimento Selezionate",
-  curatedDesc: "Selezioniamo attentamente solo le proprietà più promettenti con eccellente potenziale di ROI",
-  premiumProperties: "Proprietà Premium",
-  premiumPropertiesDesc: "Accedi a opportunità immobiliari esclusive non disponibili sul mercato aperto",
-  portfolioAnalytics: "Analisi del Portafoglio",
-  portfolioAnalyticsDesc: "Monitora i tuoi investimenti con analisi dettagliate e metriche di performance",
-  securePlatform: "Piattaforma Sicura",
-  securePlatformDesc: "I tuoi investimenti e dati sono protetti con sicurezza di livello aziendale",
-  featuredLocations: "Luoghi in Evidenza",
-  readyToMaximize: "Pronto a massimizzare i rendimenti del tuo portafoglio immobiliare?",
-  footerDescription: "EasyROI offre accesso esclusivo a opportunità di investimento immobiliare premium con rendimenti eccezionali.",
-  quickLinks: "Link Rapidi",
-  
-  // General UI
-  back: "Indietro",
-  resetFilters: "Reimposta Filtri",
-  cancel: "Annulla",
-  save: "Salva",
-
-  // Properties Page
-  yourProperties: "I Tuoi Investimenti",
-  property: "Proprietà",
-  location: "Posizione",
-  value: "Valore",
-  status: "Stato",
-  price: "Prezzo",
-  expectedROI: "ROI Previsto",
-  minInvestment: "Investimento Minimo",
-  viewDetails: "Visualizza Dettagli",
-  allLocations: "Tutte le Posizioni",
-  priceRange: "Intervallo di Prezzo",
-  min: "Min",
-  max: "Max",
-  propertyType: "Tipo di Proprietà",
-  allTypes: "Tutti i Tipi",
-  investorLevel: "Livello Investitore",
-  allLevels: "Tutti i Livelli",
-  amenities: "Servizi",
-  hideAmenities: "Nascondi Servizi",
-  showAmenities: "Mostra Servizi",
-  applyFilters: "Applica Filtri",
-  exclusiveProperties: "Proprietà Esclusive",
-  noPropertiesFound: "Nessuna proprietà trovata, prova con filtri diversi",
-  menu: "Menu",
-  
-  // Development Page
-  developmentProjects: "Progetti di Sviluppo",
-  exploreCurrentProjectsInProgress: "Esplora i progetti in corso",
-  errorFetchingProjects: "Errore nel recupero dei progetti",
-  constructionStage: "Fase di Costruzione",
-  allStages: "Tutte le Fasi",
-  planning: "Pianificazione",
-  foundation: "Fondamenta",
-  structural: "Strutturale",
-  finishing: "Finiture",
-  framing: "Incorniciatura",  
-  interior: "Interni",
-  completed: "Completato",
-  progressRange: "Range di Avanzamento",
-  projectFilter: "Filtro Progetti",
-  progress: "Avanzamento",
-  filterProjects: "Filtra Progetti",
-  selectInvestorLevel: "Seleziona Livello Investitore",
-  enterLocation: "Inserisci Posizione",
-  selectStage: "Seleziona Fase",
-  clearAll: "Cancella Tutto",
-  noProjectsFound: "Nessun progetto trovato",
-  tryDifferentFilters: "Prova filtri diversi",
-  
-  // Development project details
-  projectDetails: "Dettagli Progetto",
-  completion: "Completamento",
-  minInvestmentRequired: "Investimento Min. Richiesto",
-  investorLevelRequired: "Livello Investitore Richiesto",
-  projectDescription: "Descrizione del Progetto",
-  constructionProgress: "Avanzamento Costruzione",
-  projectGallery: "Galleria del Progetto",
-  investmentDetails: "Dettagli dell'Investimento",
-  expectedCompletion: "Completamento Previsto",
-  totalUnits: "Unità Totali",
-  availableUnits: "Unità Disponibili",
-  completionPercentage: "Percentuale di Completamento",
-  requestInformation: "Richiedi Informazioni",
-  tbd: "Da definire",
-  notAvailable: "Non disponibile",
-  projectNotFound: "Progetto non trovato",
-  errorLoadingProject: "Errore nel caricamento del progetto",
-  projectMayHaveBeenRemoved: "Questo progetto potrebbe essere stato rimosso",
-  
-  // Access Control
-  accessDenied: "Accesso Negato",
-  importPropertiesAdminOnly: "Solo gli amministratori possono importare proprietà",
-  
-  // About Page
-  aboutUsTitle: "Chi è EasyROI",
-  aboutUsSubtitle: "Opportunità di Investimento Esclusive per Investitori Esigenti",
-  ourStory: "La Nostra Storia",
-  ourStoryText1: "Fondata nel 2020, EasyROI è nata dalla visione di trasformare il modo in cui gli individui con patrimonio elevato accedono a investimenti immobiliari premium.",
-  ourStoryText2: "La nostra piattaforma offre una trasparenza senza pari e accesso a proprietà esclusive con rendimenti eccezionali.",
-  ourValues: "I Nostri Valori",
-  excellenceValue: "Eccellenza",
-  excellenceText: "Selezioniamo solo le opportunità di investimento di più alta qualità con comprovato potenziale di ROI.",
-  integrityValue: "Integrità",
-  integrityText: "Trasparenza e onestà guidano ogni interazione con la nostra comunità di investitori.",
-  exclusivityValue: "Esclusività",
-  exclusivityText: "La nostra piattaforma garantisce l'accesso a proprietà uniche non disponibili sul mercato aperto.",
-  joinOurCommunity: "Unisciti alla Nostra Comunità Esclusiva",
-  joinOurCommunityText: "Diventa parte della nostra rete di investitori sofisticati e ottieni accesso a opportunità di investimento premium.",
-  loginCta: "Accedi al Portale",
-  
-  // Contact Page
-  contactDescription: "Mettiti in contatto con i nostri specialisti di investimento",
-  visitUs: "Visitaci",
-  emailUs: "Mandaci un'email",
-  callUs: "Chiamaci",
-  businessHours: "Orari d'ufficio",
-  mondayToFriday: "Lunedì a Venerdì",
-  fullName: "Nome Completo",
-  fullNamePlaceholder: "Inserisci il tuo nome completo",
-  emailPlaceholder: "Inserisci il tuo indirizzo email",
-  subject: "Oggetto",
-  subjectPlaceholder: "Di cosa si tratta?",
-  message: "Messaggio",
-  messagePlaceholder: "Come possiamo aiutarti?",
-  
-  // Password field
-  password: "Password",
-  
-  // Property detail tabs
-  details: "Dettagli",
-  features: "Caratteristiche",
-  prosAndCons: "Pro e Contro",
-  investment: "Investimento",
-  
-  // Property details
-  size: "Dimensione",
-  bedrooms: "Camere da Letto",
-  bathrooms: "Bagni",
-  occupationStatus: "Stato di Occupazione",
-  serviceCharges: "Spese di Servizio",
-  year: "Anno",
-  pros: "Pro",
-  cons: "Contro",
-  noProsListed: "Nessun pro elencato",
-  noConsListed: "Nessun contro elencato",
-  
-  // Event components
-  noEventsFound: "Nessun evento trovato",
-  upgradeRequiredToJoin: "Aggiornamento necessario per partecipare",
-  
-  // Event filters
-  filters: "Filtri",
-  eventType: "Tipo di Evento",
-  networking: "Networking",
-  propertyViewing: "Visita Proprietà",
-  investmentSeminar: "Seminario d'Investimento", 
-  projectLaunch: "Lancio Progetto",
-  eventFormat: "Formato Evento",
-  allFormats: "Tutti i Formati",
-  onlineEvents: "Eventi Online",
-  inPersonEvents: "Eventi in Presenza",
-  dateRange: "Intervallo di Date",
-  fromDate: "Data di Inizio",
-  toDate: "Data di Fine",
-  showOnlyAvailableEvents: "Mostra solo eventi con disponibilità",
-  clearFilters: "Cancella Filtri",
-
-  // My Investments
-  myInvestments: "I Miei Investimenti",
-  secondary: "Secondario",
-  offPlan: "Fuori Piano",
-  clubDeal: "Club Deal",
-  currentValue: "Valore Attuale",
-  purchaseDate: "Data di Acquisto",
-  percentageOwned: "% Posseduta",
-  investedCapital: "Capitale Investito",
-  contractYears: "Anni di Contratto",
-  expectedYield: "Rendimento Previsto",
-  actualYield: "Rendimento Reale",
-  noInvestmentsFound: "Nessun investimento trovato",
-  sortAscending: "Ordinamento Crescente",
-  sortDescending: "Ordinamento Decrescente",
-
-  // Consultations
-  consultations: "Consulenze 1:1",
-  consultationsDescription: "Prenota una consulenza privata con uno dei nostri esperti",
-  investmentExperts: "Esperti di Investimento",
-  legalAssistance: "Assistenza Legale",
-  taxConsulting: "Consulenza Fiscale",
-  bookConsultation: "Prenota Consulenza",
-  noConsultantsAvailable: "Nessun consulente disponibile al momento",
-  
-  // Network components
-  cashflowTracker: "Cashflow Tracker",
-  adminPanel: "Pannello Amministrazione",
-  adminPanelSubtitle: "Gestisci investitori, proprietà, progetti ed eventi",
-  
-  // Admin tabs
-  investors: "Investitori",
-  forSaleProperties: "Proprietà in Vendita",
-  
-  // Digital Documentation and Request Sale
-  digitalDocumentation: "Documentazione Digitale",
-  contracts: "Contratti",
-  notarialDeeds: "Atti Notarili",
-  financialReports: "Report Finanziari",
-  taxDeclarations: "Dichiarazioni Fiscali",
-  otherDocuments: "Altri Documenti",
-  download: "Scarica",
-  noDocumentsFound: "Nessun documento trovato in questa categoria",
-  uploaded: "Caricato il",
-  
-  requestSale: "Richiedi Vendita",
-  requestSaleDescription: "Richiedi di vendere il tuo immobile",
-  askingPrice: "Prezzo Richiesto",
-  submitting: "Invio in corso...",
-  submitRequest: "Invia Richiesta",
-  saleRequestSubmitted: "Richiesta di vendita inviata con successo",
-  errorSubmittingSaleRequest: "Errore nell'invio della richiesta di vendita",
-  
-  // Properties Table
-  propertyName: "Nome Proprietà",
-  currentEvaluation: "Valutazione Attuale",
-  ownership: "Proprietà",
-  active: "Attiva",
-  development: "Sviluppo",
-  
-  // Month names
-  january: "Gennaio",
-  february: "Febbraio",
-  march: "Marzo",
-  april: "Aprile",
-  may: "Maggio",
-  june: "Giugno",
-  july: "Luglio",
-  august: "Agosto",
-  september: "Settembre",
-  october: "Ottobre",
-  november: "Novembre",
-  december: "Dicembre",
-  
-  // Cashflow tracker related keys
-  month: "Mese",
-  totalBookings: "Prenotazioni",
-  portalFees: "Portali",
-  cleaningCosts: "Pulizie",
-  touristTax: "Tassa di Soggiorno",
-  grossTotal: "Totale Lordo",
-  utilityCosts: "Utenze",
-  maintenanceCosts: "Extra",
-  netTotal: "Totale Netto",
-  forecast: "Analisi",
-  actual: "Reale",
-  noCashflowData: "Nessun dato di cashflow disponibile",
-  exportCSV: "Esporta CSV",
-  selectYear: "Seleziona Anno",
-  selectMonth: "Seleziona Mese",
-  allProperties: "Tutte le Proprietà",
-  
-  // Cashflow tracker description
-  cashflowTrackerDesc: "Monitora e analizza il flusso di cassa delle tue proprietà",
+type Alert = {
+  id: string;
+  title: string;
+  message: string;
+  propertyId?: string;
+  read: boolean;
+  createdAt: string;
 };
 
-export default it;
+export function AlertsDropdown() {
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+  
+  // Mock alerts data
+  const [alerts] = useState<Alert[]>([
+    {
+      id: '1',
+      title: 'New Investment Opportunity',
+      message: 'New luxury property available in Milan',
+      propertyId: 'abc123',
+      read: false,
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: '2',
+      title: 'Price Drop Alert',
+      message: 'Price reduced by 5% on Dubai Marina property',
+      propertyId: 'def456',
+      read: false,
+      createdAt: new Date(Date.now() - 86400000).toISOString() // 1 day ago
+    }
+  ]);
+
+  const unreadCount = alerts.filter(alert => !alert.read).length;
+  
+  const handleAlertClick = (propertyId?: string) => {
+    if (propertyId) {
+      navigate(`/property/${propertyId}`);
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative">
+          <AlertTriangle className="h-5 w-5 text-easyroi-navy" />
+          {unreadCount > 0 && (
+            <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-amber-500">
+              {unreadCount}
+            </Badge>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-80">
+        <div className="flex items-center justify-between px-4 py-2 border-b">
+          <h3 className="font-semibold">{t('investmentAlerts')}</h3>
+          {unreadCount > 0 && (
+            <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200">
+              {unreadCount} {t('new')}
+            </Badge>
+          )}
+        </div>
+        
+        <div className="max-h-[300px] overflow-auto">
+          {alerts.length > 0 ? (
+            alerts.map(alert => (
+              <DropdownMenuItem 
+                key={alert.id}
+                className={`px-4 py-3 cursor-pointer flex items-start border border-transparent ${
+                  !alert.read ? 'bg-amber-50' : ''
+                } hover:border-amber-500 hover:bg-transparent focus:bg-transparent focus:border-amber-500 transition-colors`}
+                onClick={() => handleAlertClick(alert.propertyId)}
+              >
+                <div className="mr-3 mt-1">
+                  <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center">
+                    <Home className="h-4 w-4 text-amber-600" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className={`text-sm font-medium ${!alert.read ? 'text-amber-800' : 'text-black'}`}>
+                    {alert.title}
+                  </p>
+                  <p className="text-xs text-gray-600 mt-0.5">{alert.message}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {new Date(alert.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400 mt-2" />
+              </DropdownMenuItem>
+            ))
+          ) : (
+            <div className="px-4 py-6 text-center">
+              <p className="text-gray-500 text-sm">
+                {t('noAlerts')}
+              </p>
+            </div>
+          )}
+        </div>
+        
+        <div className="border-t p-2">
+          <Button 
+            variant="link" 
+            size="sm" 
+            className="w-full justify-center text-amber-600"
+            onClick={() => navigate('/alerts')}
+          >
+            {t('viewAllAlerts')}
+          </Button>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
