@@ -26,6 +26,7 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
               <TableHead>{t('propertyLocation')}</TableHead>
               <TableHead>{t('propertyROI')}</TableHead>
               <TableHead>{t('propertyValue')}</TableHead>
+              <TableHead>{t('currentValue')}</TableHead>
               <TableHead>{t('ownership')}</TableHead>
               <TableHead>{t('propertyStatus')}</TableHead>
             </TableRow>
@@ -33,7 +34,7 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
           <TableBody>
             {properties.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={7} className="h-24 text-center">
                   {t('noData')}
                 </TableCell>
               </TableRow>
@@ -44,6 +45,7 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
                   <TableCell>{property.location}</TableCell>
                   <TableCell>{property.roi}</TableCell>
                   <TableCell>{property.value}</TableCell>
+                  <TableCell>{property.currentValue || property.value}</TableCell>
                   <TableCell>
                     {`${property.ownership}%`}
                   </TableCell>
