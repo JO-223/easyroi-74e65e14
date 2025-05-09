@@ -1,6 +1,7 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { fetchClubDeals } from "@/services/clubDealService";
+import { getClubDeals } from "@/services/clubDealService";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { ClubDealList } from "@/components/club-deal/ClubDealList";
 import { ClubDealFilters } from "@/components/club-deal/ClubDealFilters";
@@ -8,21 +9,19 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { ClubDeal } from "@/types/clubDeal";
+
 export default function ClubDealPage() {
-  const {
-    t
-  } = useLanguage();
-  const {
-    toast
-  } = useToast();
+  const { t } = useLanguage();
+  const { toast } = useToast();
   const [activeFilters, setActiveFilters] = useState<any>({});
+  
   const {
     data: deals = [],
     isLoading,
     error
   } = useQuery({
     queryKey: ['clubDeals'],
-    queryFn: fetchClubDeals,
+    queryFn: getClubDeals,
     meta: {
       onError: () => {
         toast({
@@ -35,7 +34,7 @@ export default function ClubDealPage() {
   });
 
   // Apply filters to deals
-  const filteredDeals = deals.filter((deal: ClubDeal) => {
+  const filteredDeals = (deals as ClubDeal[]).filter((deal: ClubDeal) => {
     // Investor level filter
     if (activeFilters.investorLevel && activeFilters.investorLevel !== 'all' && deal.investorLevel !== activeFilters.investorLevel) {
       return false;
@@ -69,9 +68,11 @@ export default function ClubDealPage() {
     }
     return true;
   });
+  
   const handleApplyFilters = (filters: any) => {
     setActiveFilters(filters);
   };
+  
   return <DashboardLayout title={t('clubDeal')} subtitle={t('exploreClubDeals')}>
       <div className="container mx-auto py-6 px-4 md:px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

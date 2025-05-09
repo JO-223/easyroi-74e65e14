@@ -1,7 +1,8 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { fetchClubDeal } from "@/services/clubDealService";
+import { getClubDealById } from "@/services/clubDealService";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +26,7 @@ export default function ClubDealDetail() {
   
   const { data: deal, isLoading, error } = useQuery({
     queryKey: ['clubDeal', id],
-    queryFn: () => fetchClubDeal(id!),
+    queryFn: () => getClubDealById(id!),
     enabled: !!id
   });
   
