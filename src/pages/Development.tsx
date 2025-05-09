@@ -76,22 +76,24 @@ export default function Development() {
   
   return (
     <DashboardLayout title={t('developmentProjects')} subtitle={t('exploreCurrentProjectsInProgress')}>
-      <div className="container mx-auto py-6">
+      <div className="container mx-auto py-6 px-4 md:px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">{t('developmentProjects')}</h1>
-            <p className="text-muted-foreground">{t('exploreCurrentProjectsInProgress')}</p>
+            <h1 className="text-2xl font-semibold tracking-tight truncate">{t('developmentProjects')}</h1>
+            <p className="text-muted-foreground truncate">{t('exploreCurrentProjectsInProgress')}</p>
           </div>
         </div>
         
         <Separator className="my-6" />
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-1">
-            <DevelopmentProjectFilters onApplyFilters={handleApplyFilters} />
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-1">
+            <div className="sticky top-6">
+              <DevelopmentProjectFilters onApplyFilters={handleApplyFilters} />
+            </div>
           </div>
           
-          <div className="md:col-span-3">
+          <div className="lg:col-span-3">
             <DevelopmentProjectList 
               projects={filteredProjects} 
               isLoading={isLoading} 

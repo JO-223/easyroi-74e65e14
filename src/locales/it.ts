@@ -165,6 +165,7 @@ const translations = {
   
   // Development Projects
   developmentProjects: "Progetti in Sviluppo",
+  exploreCurrentProjectsInProgress: "Explore current projects in progress",
   projectName: "Nome Progetto",
   projectDetails: "Dettagli Progetto",
   projectStatus: "Stato Progetto",
@@ -174,9 +175,19 @@ const translations = {
   startDate: "Data Inizio",
   endDate: "Data Fine",
   completionPercentage: "Percentuale di Completamento",
+  progress: "Progress",
+  minInvestment: "Min Investment",
+  expectedROI: "Expected ROI",
+  totalUnits: "Total Units",
+  availableUnits: "Available Units",
+  expectedCompletion: "Expected Completion",
+  tbd: "TBD",
+  contactUs: "Contact Us",
   
   // Events
   events: "Eventi",
+  eventiImminenti: "Eventi Imminenti",
+  discoverEventsAndNetworkingOpportunities: "Discover events and networking opportunities",
   eventName: "Nome Evento",
   eventDetails: "Dettagli Evento",
   eventDate: "Data Evento",
@@ -184,6 +195,8 @@ const translations = {
   eventType: "Tipo di Evento",
   registerEvent: "Registrati",
   registered: "Registrato",
+  attendees: "Attendees",
+  posizione: "Posizione",
   
   // Network
   network: "Network",
@@ -260,6 +273,10 @@ const translations = {
   sortBy: "Ordina per",
   ascending: "Crescente",
   descending: "Decrescente",
+  filterProjects: "Filter Projects",
+  applyFilters: "Apply Filters",
+  clearFilters: "Clear Filters",
+  clearAll: "Clear All",
   
   // Consultations
   consultations: "Consulenze",

@@ -1,3 +1,4 @@
+
 import { DevelopmentProject } from "@/types/property";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,10 +7,12 @@ import { CalendarIcon, Building2, Users } from "lucide-react";
 import { format } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BadgeLevel } from "@/components/ui/badge-level";
+
 interface DevelopmentProjectCardProps {
   project: DevelopmentProject;
   onClick?: () => void;
 }
+
 export function DevelopmentProjectCard({
   project,
   onClick
@@ -17,6 +20,7 @@ export function DevelopmentProjectCard({
   const {
     t
   } = useLanguage();
+  
   const primaryImage = project.images.find(img => img.is_primary) || project.images[0];
   const imageUrl = primaryImage ? primaryImage.url : '/placeholder.svg';
 
@@ -25,9 +29,11 @@ export function DevelopmentProjectCard({
 
   // Cast investor_level to the appropriate type expected by BadgeLevel
   const investorLevel = project.investor_level as "bronze" | "silver" | "gold" | "platinum" | "diamond" | null;
-  return <Card className="group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer" onClick={onClick}>
+  
+  return (
+    <Card className="group overflow-hidden border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex flex-col" onClick={onClick}>
       <div className="relative h-48 overflow-hidden">
-        <img src={imageUrl} alt={project.name} className="w-full h-full transition-transform duration-500 group-hover:scale-105 object-fill" />
+        <img src={imageUrl} alt={project.name} className="w-full h-full transition-transform duration-500 group-hover:scale-105 object-cover" />
         <div className="absolute top-2 right-2">
           <BadgeLevel level={investorLevel} />
         </div>
@@ -36,7 +42,7 @@ export function DevelopmentProjectCard({
         </div>
       </div>
       
-      <CardContent className="p-4">
+      <CardContent className="p-4 flex-grow">
         <h3 className="text-lg font-semibold line-clamp-1">{project.name}</h3>
         <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
           {project.description}
@@ -52,32 +58,32 @@ export function DevelopmentProjectCard({
         
         <div className="mt-4 space-y-2">
           <div className="flex items-center text-sm text-muted-foreground">
-            <CalendarIcon className="h-4 w-4 mr-2" />
-            <span>{t('expectedCompletion')}: {formattedDate}</span>
+            <CalendarIcon className="h-4 w-4 mr-2 shrink-0" />
+            <span className="truncate">{t('expectedCompletion')}: {formattedDate}</span>
           </div>
           
           <div className="flex items-center text-sm text-muted-foreground">
-            <Building2 className="h-4 w-4 mr-2" />
+            <Building2 className="h-4 w-4 mr-2 shrink-0" />
             <span>{t('totalUnits')}: {project.total_units}</span>
           </div>
           
           <div className="flex items-center text-sm text-muted-foreground">
-            <Users className="h-4 w-4 mr-2" />
+            <Users className="h-4 w-4 mr-2 shrink-0" />
             <span>{t('availableUnits')}: {project.available_units}</span>
           </div>
         </div>
       </CardContent>
       
-      <CardFooter className="bg-muted/50 p-4 border-t">
-        <div className="w-full flex justify-between items-center">
+      <CardFooter className="bg-muted/50 p-4 border-t w-full">
+        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <div>
             <p className="text-sm font-medium">{t('minInvestment')}:</p>
-            <p className="text-lg font-bold text-easyroi-navy">
+            <p className="text-lg font-bold text-easyroi-navy truncate">
               {project.min_investment ? `AED${project.min_investment.toLocaleString()}` : t('contactUs')}
             </p>
           </div>
           
-          <div className="text-right">
+          <div className="text-left sm:text-right">
             <p className="text-sm font-medium">{t('expectedROI')}:</p>
             <p className="text-lg font-bold text-easyroi-gold">
               {project.expected_roi ? `${project.expected_roi}%` : t('tbd')}
@@ -85,5 +91,6 @@ export function DevelopmentProjectCard({
           </div>
         </div>
       </CardFooter>
-    </Card>;
+    </Card>
+  );
 }

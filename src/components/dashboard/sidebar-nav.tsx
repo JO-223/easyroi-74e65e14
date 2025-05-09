@@ -1,6 +1,7 @@
+
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Settings, Shield, UserCircle, Award, FileSpreadsheet } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Shield, UserCircle, Award, FileSpreadsheet } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -74,12 +75,8 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       title: t('profile'),
       href: '/dashboard/profile',
       icon: UserCircle
-    }, 
-    {
-      title: t('settings'),
-      href: '/dashboard/settings',
-      icon: Settings
     }
+    // Settings page removed from navigation
   ];
 
   // Add admin panel link if user is admin
@@ -140,7 +137,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
             </div>
             <div>
               <p className="font-medium leading-none text-white">{displayName}</p>
-              <p className="text-xs leading-none text-gray-300 mt-1">{email}</p>
+              <p className="text-xs leading-none text-gray-300 mt-1 truncate max-w-32">{email}</p>
             </div>
           </div>
           <div className="mt-3">
@@ -170,7 +167,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
               )}
             >
               <item.icon className={cn("mr-3 h-5 w-5", isAdminLink && "text-easyroi-gold")} />
-              {item.title}
+              <span className="truncate">{item.title}</span>
             </Link>
           );
         })}
