@@ -58,7 +58,7 @@ const translations = {
   maintenanceCosts: "Costi manutenzione",
   netTotal: "Totale netto",
   forecast: "Previsione",
-  actual: "Reale"
+  actual: "Reale",
   
   // Notifications
   notifications: "Notifiche",
