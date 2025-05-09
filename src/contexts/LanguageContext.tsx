@@ -1,9 +1,9 @@
 
 import React, { createContext, useState, useEffect, useContext, ReactNode, useCallback } from 'react';
-import en from '@/locales/en';
-import it from '@/locales/it';
-import es from '@/locales/es';
-import de from '@/locales/de';
+import * as enTranslations from '@/locales/en';
+import * as itTranslations from '@/locales/it';
+import * as esTranslations from '@/locales/es';
+import * as deTranslations from '@/locales/de';
 import { TranslationKey, isValidTranslationKey } from '@/utils/translationUtils';
 import { isEqual } from 'lodash-es';
 
@@ -31,7 +31,12 @@ interface LanguageContextType {
   updateDisplaySettings: (settings: Partial<DisplaySettings>) => void;
 }
 
-const translations: Translations = { en, it, es, de };
+const translations: Translations = { 
+  en: enTranslations.default, 
+  it: itTranslations.default, 
+  es: esTranslations.default, 
+  de: deTranslations.default 
+};
 
 const supportedLanguages = [
   { code: 'en' as const, name: 'English' },

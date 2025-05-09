@@ -1,5 +1,9 @@
+import { aboutKeys } from "@/utils/translations/about";
+import { analyticsKeys } from "@/utils/translations/analytics";
+import { clubDealKeys } from "@/utils/translations/clubDeal";
+import { UiKey } from "@/utils/translations/ui";
 
-const en = {
+const translations = {
   // General
   welcome: "Welcome",
   dashboard: "Dashboard",
@@ -602,7 +606,10 @@ const en = {
   submitting: "Submitting...",
   submitRequest: "Submit Request",
   saleRequestSubmitted: "Sale request submitted successfully",
-  errorSubmittingSaleRequest: "Error submitting sale request"
+  errorSubmittingSaleRequest: "Error submitting sale request",
+  
+  // Add the new translation
+  filterByPropertyType: "Filtered by property type ID: {id}"
 };
 
-export default en;
+export default translations;

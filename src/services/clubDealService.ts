@@ -97,7 +97,8 @@ const mockClubDeals: ClubDeal[] = [
         completed: false,
         phase: "exit"
       }
-    ]
+    ],
+    propertyTypeId: "d7a92651-0c7e-4432-9ea0-90f16f2a6038" // Added property type ID
   },
   {
     id: "2",
@@ -193,32 +194,25 @@ const mockClubDeals: ClubDeal[] = [
         completed: false,
         phase: "exit"
       }
-    ]
+    ],
+    propertyTypeId: "some-other-id" // Different property type ID
   }
 ];
 
 export const fetchClubDeals = async (): Promise<ClubDeal[]> => {
-  // In a real-world scenario, we would fetch this data from Supabase
-  // For now, we'll return mock data
-  
-  // Example of how the Supabase fetch would look:
+  // In a real-world scenario with Supabase, we would use:
   // const { data, error } = await supabase
-  //   .from('club_deals')
+  //   .from('properties')
   //   .select(`
   //     *,
   //     location:location_id(*),
-  //     images:club_deal_images(*)
+  //     images:property_images(*)
   //   `)
+  //   .eq('type_id', 'd7a92651-0c7e-4432-9ea0-90f16f2a6038') // Filter by specific type ID
   //   .order('created_at', { ascending: false });
   
-  // if (error) {
-  //   console.error('Error fetching club deals:', error);
-  //   throw error;
-  // }
-  
-  // return data;
-  
-  return mockClubDeals;
+  // For now, we'll filter our mock data
+  return mockClubDeals.filter(deal => deal.propertyTypeId === 'd7a92651-0c7e-4432-9ea0-90f16f2a6038');
 };
 
 export const fetchClubDeal = async (id: string): Promise<ClubDeal> => {

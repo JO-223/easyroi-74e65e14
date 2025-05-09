@@ -92,6 +92,7 @@ export default function ClubDealPage() {
           <div className="w-full">
             <h1 className="text-2xl font-semibold tracking-tight break-words">{t('clubDeal')}</h1>
             <p className="text-muted-foreground break-words">{t('exploreClubDeals')}</p>
+            <p className="text-sm text-muted-foreground mt-1">{t('filterByPropertyType', { id: 'd7a92651-0c7e-4432-9ea0-90f16f2a6038' })}</p>
           </div>
         </div>
         

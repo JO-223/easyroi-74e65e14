@@ -59,4 +59,5 @@ export interface ClubDeal {
   purchaseDate?: string;
   documents: ClubDealDocument[];
   timeline: ClubDealTimelineEvent[];
+  propertyTypeId?: string; // Added property type ID field
 }

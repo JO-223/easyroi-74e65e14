@@ -1,4 +1,3 @@
-
 // Italian translations
 const translations = {
   // General
@@ -337,7 +336,8 @@ const translations = {
   acquisitionPhase: "Fase di Acquisto",
   rentalPhase: "Fase di Affitto",
   exitPhase: "Fase di Uscita",
-  currentPropertyValue: "Valore Attuale Immobile"
+  currentPropertyValue: "Valore Attuale Immobile",
+  filterByPropertyType: "Filtrato per ID tipo proprietà: {id}"
 };
 
 export default translations;
