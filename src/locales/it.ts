@@ -2,6 +2,7 @@
 const translations = {
   // General
   appName: "EasyROI",
+  totalPrice: "Target Investimento",
   welcome: "Benvenuto su EasyROI",
   home: "Home",
   loading: "Caricamento...",
