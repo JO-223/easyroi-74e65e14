@@ -60,7 +60,7 @@ const mockClubDeals: ClubDeal[] = [
       {
         id: "t1",
         title: "Inizio Raccolta Fondi",
-        date: "2023-05-01",
+        date: "2025-05-01",
         description: "Avvio della raccolta capitali per l'acquisto dell'immobile",
         completed: true,
         phase: "acquisition"
@@ -68,7 +68,7 @@ const mockClubDeals: ClubDeal[] = [
       {
         id: "t2",
         title: "Chiusura Raccolta Fondi",
-        date: "2023-12-31",
+        date: "2025-05-01",
         description: "Data prevista per il raggiungimento dell'obiettivo di raccolta",
         completed: false,
         phase: "acquisition"
@@ -76,7 +76,7 @@ const mockClubDeals: ClubDeal[] = [
       {
         id: "t3",
         title: "Acquisto Immobile",
-        date: "2024-01-15",
+        date: "2025-05-01",
         description: "Finalizzazione dell'acquisto dell'immobile",
         completed: false,
         phase: "acquisition"
@@ -84,7 +84,7 @@ const mockClubDeals: ClubDeal[] = [
       {
         id: "t4",
         title: "Inizio Affitto",
-        date: "2024-02-01",
+        date: "2025-05-01",
         description: "Inizio del periodo di affitto",
         completed: false,
         phase: "rental"
@@ -92,7 +92,7 @@ const mockClubDeals: ClubDeal[] = [
       {
         id: "t5",
         title: "Valutazione Vendita",
-        date: "2027-02-01",
+        date: "2025-05-01",
         description: "Valutazione dell'immobile per potenziale vendita",
         completed: false,
         phase: "exit"
