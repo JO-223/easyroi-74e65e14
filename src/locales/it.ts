@@ -104,6 +104,7 @@ const translations = {
   propertyType_commercial: "Commerciale",
   propertyType_land: "Terreno",
   propertyType_industrial: "Industriale",
+  exclusiveProperties: "I Miei Investimenti",
   
   // Settings
   accountSettings: "Impostazioni Account",
