@@ -28,6 +28,7 @@ export const dashboardKeys = [
   "noData",
   "refreshOrContactSupport",
   "nextLevel",
+  'currentEvaluation',
   "eventsInLastYear"
 ] as const;
 
