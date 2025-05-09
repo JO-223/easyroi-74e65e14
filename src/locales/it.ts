@@ -84,6 +84,7 @@ const translations = {
   location: "Posizione",
   currentEvaluation: "Valutazione Attuale",
   ownership: "Quota",
+  Exclusive Properties: "I Miei Investimenti"
 
   // Properties
   properties: "Investimenti",
