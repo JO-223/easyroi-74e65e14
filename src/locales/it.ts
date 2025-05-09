@@ -60,6 +60,8 @@ const translations = {
   portfolioAllocation: "Allocazione del Portafoglio",
   propertyType: "Tipo di Proprietà",
   location: "Posizione",
+  currentEvaluation: "Valutazione Attuale",
+  ownership: "Quota"
 
   // Properties
   properties: "Proprietà",
