@@ -6,13 +6,13 @@ import { ClubDeal } from "@/types/clubDeal";
 const mockClubDeals: ClubDeal[] = [
   {
     id: "1",
-    name: "Luxury Villa Marina",
-    description: "Splendida villa di lusso con 5 camere da letto e piscina privata, situata in una delle zone più esclusive di Dubai. La proprietà offre una vista mozzafiato sul mare e accesso diretto alla spiaggia. Costruita nel 2020, la villa è in condizioni impeccabili e presenta finiture di alta qualità.",
+    name: "Tempio Degli Dei",
+    description: "Splendida proprietà con 32 camere da letto e 32 bagni, situata in una delle zone più esclusive di Roma. La proprietà è immersa nel verde e vicina al Vaticano. La villa è in condizioni impeccabili e presenta finiture di alta qualità.",
     location: {
-      address: "Palm Jumeirah, Villa 42",
-      city: "Dubai",
-      zone: "Palm Jumeirah",
-      country: "Emirati Arabi Uniti"
+      address: "Via San Pancrazio, 17",
+      city: "Roma",
+      zone: "Villa Pamphili",
+      country: "Italia"
     },
     status: "funding_in_progress",
     images: [
