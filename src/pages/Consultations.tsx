@@ -11,8 +11,8 @@ const Consultations = () => {
     <DashboardLayout title={t('consultations')}>
       <div className="space-y-6 container mx-auto py-6 px-4 md:px-6">
         <Card className="p-6">
-          <h1 className="text-2xl font-semibold mb-4">{t('consultations')}</h1>
-          <p className="text-muted-foreground max-w-3xl">{t('consultationsDescription')}</p>
+          <h1 className="text-2xl font-semibold mb-4 break-words">{t('consultations')}</h1>
+          <p className="text-muted-foreground max-w-3xl break-words">{t('consultationsDescription')}</p>
         </Card>
         
         <AllConsultantsList />

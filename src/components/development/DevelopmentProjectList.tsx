@@ -31,8 +31,8 @@ export function DevelopmentProjectList({ projects, isLoading }: DevelopmentProje
   if (projects.length === 0) {
     return (
       <div className="text-center py-12">
-        <h3 className="text-lg font-medium">{t('noProjectsFound')}</h3>
-        <p className="text-muted-foreground mt-2">{t('tryDifferentFilters')}</p>
+        <h3 className="text-lg font-medium break-words">{t('noProjectsFound')}</h3>
+        <p className="text-muted-foreground mt-2 break-words">{t('tryDifferentFilters')}</p>
       </div>
     );
   }

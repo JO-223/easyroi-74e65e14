@@ -136,7 +136,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
               <span className="font-bold text-easyroi-navy">{initials}</span>
             </div>
             <div>
-              <p className="font-medium leading-none text-white">{displayName}</p>
+              <p className="font-medium leading-none text-white truncate">{displayName}</p>
               <p className="text-xs leading-none text-gray-300 mt-1 truncate max-w-32">{email}</p>
             </div>
           </div>
@@ -166,7 +166,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
                 isAdminLink && "border border-easyroi-gold/40 bg-sidebar-accent/30"
               )}
             >
-              <item.icon className={cn("mr-3 h-5 w-5", isAdminLink && "text-easyroi-gold")} />
+              <item.icon className={cn("mr-3 h-5 w-5 flex-shrink-0", isAdminLink && "text-easyroi-gold")} />
               <span className="truncate">{item.title}</span>
             </Link>
           );
@@ -181,8 +181,8 @@ export function SidebarNav({ userData }: SidebarNavProps) {
           onClick={handleLogout}
           className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-white hover:text-easyroi-gold hover:bg-sidebar-accent/50 transition-colors w-full"
         >
-          <LogOut className="mr-3 h-5 w-5" />
-          <span>{t('logout')}</span>
+          <LogOut className="mr-3 h-5 w-5 flex-shrink-0" />
+          <span className="truncate">{t('logout')}</span>
         </button>
       </div>
     </div>
