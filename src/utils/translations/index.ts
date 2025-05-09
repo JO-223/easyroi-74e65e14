@@ -19,6 +19,7 @@ import { tooltipKeys } from './tooltip';
 import { investorKeys } from './investor';
 import { legalKeys } from './legal';
 import { consultationKeys } from './consultation';
+import { clubDealKeys } from './clubDeal';
 
 export {
   generalKeys,
@@ -40,5 +41,6 @@ export {
   tooltipKeys,
   investorKeys,
   legalKeys,
-  consultationKeys
+  consultationKeys,
+  clubDealKeys
 };

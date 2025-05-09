@@ -59,7 +59,7 @@ const translations = {
   netTotal: "Totale netto",
   forecast: "Previsione",
   actual: "Reale",
-  cashflowTrackerDesc: "",
+  cashflowTrackerDesc: "Tracciamento del flusso di cassa",
   
   // Notifications
   notifications: "Notifiche",
@@ -87,8 +87,8 @@ const translations = {
   ownership: "Quota",
 
   // Properties
-  properties: "Investimenti",
-  myProperties: "I Miei Investimenti",
+  properties: "Proprietà",
+  myProperties: "Le Mie Proprietà",
   forSaleProperties: "Proprietà in Vendita",
   propertyName: "Nome Proprietà",
   propertyDetails: "Dettagli Proprietà",
@@ -186,12 +186,11 @@ const translations = {
   performance: "Performance",
   comparison: "Confronto",
   trends: "Tendenze",
-  forecast: "Previsione",
   marketAnalysis: "Analisi di Mercato",
   
   // Development Projects
   developmentProjects: "Progetti in Sviluppo",
-  exploreCurrentProjectsInProgress: "Explore current projects in progress",
+  exploreCurrentProjectsInProgress: "Esplora i progetti in corso",
   projectName: "Nome Progetto",
   projectDetails: "Dettagli Progetto",
   projectStatus: "Stato Progetto",
@@ -201,19 +200,19 @@ const translations = {
   startDate: "Data Inizio",
   endDate: "Data Fine",
   completionPercentage: "Percentuale di Completamento",
-  progress: "Progress",
-  minInvestment: "Min Investment",
-  expectedROI: "Expected ROI",
-  totalUnits: "Total Units",
-  availableUnits: "Available Units",
-  expectedCompletion: "Expected Completion",
-  tbd: "TBD",
-  contactUs: "Contact Us",
+  progress: "Progresso",
+  minInvestment: "Investimento Minimo",
+  expectedROI: "ROI Atteso",
+  totalUnits: "Unità Totali",
+  availableUnits: "Unità Disponibili",
+  expectedCompletion: "Completamento Previsto",
+  tbd: "Da Definire",
+  contactUs: "Contattaci",
   
   // Events
   events: "Eventi",
   eventiImminenti: "Eventi Imminenti",
-  discoverEventsAndNetworkingOpportunities: "Discover events and networking opportunities",
+  discoverEventsAndNetworkingOpportunities: "Scopri eventi e opportunità di networking",
   eventName: "Nome Evento",
   eventDetails: "Dettagli Evento",
   eventDate: "Data Evento",
@@ -221,7 +220,7 @@ const translations = {
   eventType: "Tipo di Evento",
   registerEvent: "Registrati",
   registered: "Registrato",
-  attendees: "Attendees",
+  attendees: "Partecipanti",
   posizione: "Posizione",
   
   // Network
@@ -299,10 +298,10 @@ const translations = {
   sortBy: "Ordina per",
   ascending: "Crescente",
   descending: "Decrescente",
-  filterProjects: "Filter Projects",
-  applyFilters: "Apply Filters",
-  clearFilters: "Clear Filters",
-  clearAll: "Clear All",
+  filterProjects: "Filtra Progetti",
+  applyFilters: "Applica Filtri",
+  clearFilters: "Cancella Filtri",
+  clearAll: "Cancella Tutti",
   
   // Consultations
   consultations: "Consulenze",
@@ -311,7 +310,34 @@ const translations = {
   legalAssistance: "Assistenza Legale",
   taxConsulting: "Consulenza Fiscale",
   bookConsultation: "Prenota Consulenza",
-  noConsultantsAvailable: "Nessun consulente disponibile al momento."
+  noConsultantsAvailable: "Nessun consulente disponibile al momento.",
+
+  // Club Deal
+  clubDeal: "Club Deal",
+  exploreClubDeals: "Esplora opportunità di investimento condiviso",
+  dealStatus: "Stato del Deal",
+  fundingInProgress: "Raccolta Fondi in Corso",
+  propertyAcquired: "Immobile Acquistato",
+  inRental: "In Affitto",
+  readyForSale: "Pronto per la Rivendita",
+  completedDeal: "Deal Completato",
+  investorsParticipating: "Investitori Partecipanti",
+  fundingTarget: "Obiettivo Raccolta",
+  fundingProgress: "Progresso Raccolta",
+  fundingDeadline: "Scadenza Raccolta",
+  daysRemaining: "Giorni Rimanenti",
+  estimatedRentalROI: "ROI Stimato da Affitto",
+  estimatedTotalROI: "ROI Stimato Totale",
+  estimatedRentalDuration: "Durata Stimata Affitto",
+  joinClubDeal: "Partecipa al Club Deal",
+  downloadBusinessPlan: "Scarica il Business Plan",
+  contactDealManager: "Contatta il Deal Manager",
+  dealDocuments: "Documenti del Deal",
+  dealTimeline: "Timeline del Deal",
+  acquisitionPhase: "Fase di Acquisto",
+  rentalPhase: "Fase di Affitto",
+  exitPhase: "Fase di Uscita",
+  currentPropertyValue: "Valore Attuale Immobile"
 };
 
 export default translations;
