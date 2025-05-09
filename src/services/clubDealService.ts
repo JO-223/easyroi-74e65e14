@@ -18,17 +18,17 @@ const mockClubDeals: ClubDeal[] = [
     images: [
       {
         id: "img1",
-        url: "/lovable-uploads/f030c164-2df3-4c76-bc3d-6c506d59a005.png",
+        url: "https://gqsetnzdaocxmutrbisp.supabase.co/storage/v1/object/public/property-images/Tempio%20degli%20dei%20property/tempio%20palazzo.jpg",
         is_primary: true
       },
       {
         id: "img2",
-        url: "/lovable-uploads/c6fb964a-ed49-478a-88c3-5d395e52f920.png"
+        url: "https://gqsetnzdaocxmutrbisp.supabase.co/storage/v1/object/public/property-images/Tempio%20degli%20dei%20property/tempio%202.jpg"
       }
     ],
-    totalPrice: 2500000,
+    totalPrice: 1150000,
     minInvestment: 50000,
-    currentValue: 2500000,
+    currentValue: 1150000,
     expectedRentalROI: 5.8,
     expectedTotalROI: 32,
     fundingTarget: 2500000,
