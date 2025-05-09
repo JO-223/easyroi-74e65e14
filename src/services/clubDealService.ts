@@ -68,7 +68,7 @@ const mockClubDeals: ClubDeal[] = [
       {
         id: "t2",
         title: "Chiusura Raccolta Fondi",
-        date: "2025-05-15",
+        date: "2025-06-30",
         description: "Data prevista per il raggiungimento dell'obiettivo di raccolta",
         completed: false,
         phase: "acquisition"
