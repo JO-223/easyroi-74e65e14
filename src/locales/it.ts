@@ -1,3 +1,4 @@
+
 // Italian translations
 const translations = {
   // General
@@ -336,10 +337,7 @@ const translations = {
   acquisitionPhase: "Fase di Acquisto",
   rentalPhase: "Fase di Affitto",
   exitPhase: "Fase di Uscita",
-  currentPropertyValue: "Valore Attuale Immobile",
-  
-  // Add to the "it" object in the existing translations 
-  onlyShowingClubDealProperties: "Visualizzazione solo delle proprietà di tipo 'Club Deal'"
+  currentPropertyValue: "Valore Attuale Immobile"
 };
 
 export default translations;

@@ -30,8 +30,7 @@ export const clubDealKeys = [
   "purchaseDate",
   "login",
   "please",
-  "toViewDocuments",
-  "onlyShowingClubDealProperties"
+  "toViewDocuments"
 ] as const;
 
 export type ClubDealKey = typeof clubDealKeys[number];

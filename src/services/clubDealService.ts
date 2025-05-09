@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { ClubDeal } from "@/types/clubDeal";
 
@@ -197,75 +198,32 @@ const mockClubDeals: ClubDeal[] = [
 ];
 
 export const fetchClubDeals = async (): Promise<ClubDeal[]> => {
-  // In a real-world scenario, we would fetch properties that have the "Club Deal" type from Supabase
+  // In a real-world scenario, we would fetch this data from Supabase
+  // For now, we'll return mock data
   
-  /* 
-    This would be the actual implementation with Supabase:
-    
-    const { data, error } = await supabase
-      .from('properties')
-      .select(`
-        id,
-        name,
-        location_id(address, city, zone, country),
-        price as totalPrice,
-        min_investment as minInvestment,
-        current_value as currentValue,
-        status,
-        roi_percentage as expectedRentalROI,
-        expected_total_roi as expectedTotalROI,
-        funding_target as fundingTarget,
-        funding_current as fundingCurrent,
-        funding_deadline as fundingDeadline,
-        purchase_date as purchaseDate,
-        rental_duration as rentalDuration,
-        investors_count as investorsCount,
-        investor_level as investorLevel,
-        property_images(id, url, is_primary),
-        property_type_id(name)
-      `)
-      .eq('property_type_id.name', 'Club Deal')
-      .order('created_at', { ascending: false });
-    
-    if (error) {
-      console.error('Error fetching club deals:', error);
-      throw error;
-    }
-    
-    // Transform the data to match the ClubDeal type
-    return data.map(item => ({
-      id: item.id,
-      name: item.name,
-      // ... transform other properties
-    }));
-  */
+  // Example of how the Supabase fetch would look:
+  // const { data, error } = await supabase
+  //   .from('club_deals')
+  //   .select(`
+  //     *,
+  //     location:location_id(*),
+  //     images:club_deal_images(*)
+  //   `)
+  //   .order('created_at', { ascending: false });
   
-  // For now, return mock data
+  // if (error) {
+  //   console.error('Error fetching club deals:', error);
+  //   throw error;
+  // }
+  
+  // return data;
+  
   return mockClubDeals;
 };
 
 export const fetchClubDeal = async (id: string): Promise<ClubDeal> => {
-  // For a real implementation, we would fetch a specific club deal property from Supabase
-  /*
-    const { data, error } = await supabase
-      .from('properties')
-      .select(`
-        id,
-        name,
-        // ... other fields
-        property_type_id(name)
-      `)
-      .eq('id', id)
-      .eq('property_type_id.name', 'Club Deal')
-      .single();
-    
-    if (error) {
-      console.error(`Club deal with ID ${id} not found:`, error);
-      throw new Error(`Club deal with ID ${id} not found`);
-    }
-    
-    return transformToClubDeal(data);
-  */
+  // In a real-world scenario, we would fetch this data from Supabase
+  // For now, we'll return mock data
   
   const deal = mockClubDeals.find(deal => deal.id === id);
   
