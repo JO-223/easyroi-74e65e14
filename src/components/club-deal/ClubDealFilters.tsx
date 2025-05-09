@@ -81,36 +81,36 @@ export function ClubDealFilters({ onApplyFilters }: ClubDealFiltersProps) {
               <SelectValue placeholder={t('allLevels')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">
+              <SelectItem value="all">
                 {t('allLevels')}
               </SelectItem>
               <SelectItem value="bronze">
                 <div className="flex items-center">
-                  <BadgeLevel level="bronze" size="sm" className="mr-2" />
+                  <BadgeLevel level="bronze" className="mr-2" />
                   <span>Bronze</span>
                 </div>
               </SelectItem>
               <SelectItem value="silver">
                 <div className="flex items-center">
-                  <BadgeLevel level="silver" size="sm" className="mr-2" />
+                  <BadgeLevel level="silver" className="mr-2" />
                   <span>Silver</span>
                 </div>
               </SelectItem>
               <SelectItem value="gold">
                 <div className="flex items-center">
-                  <BadgeLevel level="gold" size="sm" className="mr-2" />
+                  <BadgeLevel level="gold" className="mr-2" />
                   <span>Gold</span>
                 </div>
               </SelectItem>
               <SelectItem value="platinum">
                 <div className="flex items-center">
-                  <BadgeLevel level="platinum" size="sm" className="mr-2" />
+                  <BadgeLevel level="platinum" className="mr-2" />
                   <span>Platinum</span>
                 </div>
               </SelectItem>
               <SelectItem value="diamond">
                 <div className="flex items-center">
-                  <BadgeLevel level="diamond" size="sm" className="mr-2" />
+                  <BadgeLevel level="diamond" className="mr-2" />
                   <span>Diamond</span>
                 </div>
               </SelectItem>
@@ -188,7 +188,7 @@ export function ClubDealFilters({ onApplyFilters }: ClubDealFiltersProps) {
               <SelectValue placeholder={t('all')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">{t('all')}</SelectItem>
+              <SelectItem value="all">{t('all')}</SelectItem>
               <SelectItem value="funding_in_progress">{t('fundingInProgress')}</SelectItem>
               <SelectItem value="property_acquired">{t('propertyAcquired')}</SelectItem>
               <SelectItem value="in_rental">{t('inRental')}</SelectItem>

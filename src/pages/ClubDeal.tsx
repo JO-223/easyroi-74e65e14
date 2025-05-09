@@ -33,6 +33,7 @@ export default function ClubDealPage() {
   const filteredDeals = deals.filter((deal: ClubDeal) => {
     // Investor level filter
     if (activeFilters.investorLevel && 
+        activeFilters.investorLevel !== 'all' &&
         deal.investorLevel !== activeFilters.investorLevel) {
       return false;
     }
@@ -72,6 +73,7 @@ export default function ClubDealPage() {
     
     // Status filter
     if (activeFilters.status && 
+        activeFilters.status !== 'all' && 
         deal.status !== activeFilters.status) {
       return false;
     }
