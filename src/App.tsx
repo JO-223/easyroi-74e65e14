@@ -20,6 +20,8 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Development from "./pages/Development";
 import DevelopmentDetail from "./pages/DevelopmentDetail";
+import ClubDeal from "./pages/ClubDeal";
+import ClubDealDetail from "./pages/ClubDealDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminRoute from "./components/admin/AdminRoute";
 import InvestorLevels from "./pages/InvestorLevels";
@@ -77,6 +79,18 @@ const App = () => {
                 <Route path="/dashboard/development/:id" element={
                   <RequireAuth>
                     <DevelopmentDetail />
+                  </RequireAuth>
+                } />
+
+                <Route path="/dashboard/club-deal" element={
+                  <RequireAuth>
+                    <ClubDeal />
+                  </RequireAuth>
+                } />
+                
+                <Route path="/dashboard/club-deal/:id" element={
+                  <RequireAuth>
+                    <ClubDealDetail />
                   </RequireAuth>
                 } />
                 
