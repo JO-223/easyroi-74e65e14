@@ -59,18 +59,5 @@ export interface ClubDeal {
   purchaseDate?: string;
   documents: ClubDealDocument[];
   timeline: ClubDealTimelineEvent[];
-  propertyTypeId?: string;
-  type: {
-    id: string;
-    name: string;
-  };
-  totalShares: number;
-  availableShares: number;
-  projectCompletion: number;
-  estimatedCompletion: string;
-  amenities: {
-    id: string;
-    name: string;
-    icon: string;
-  }[];
+  propertyTypeId?: string; // Added property type ID field
 }
