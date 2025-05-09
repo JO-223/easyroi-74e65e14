@@ -1,4 +1,3 @@
-
 import { Property } from "@/types/property";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,12 +5,10 @@ import { MapPin, Bed, Bath, Droplet, Car, Wifi, Globe, Percent } from "lucide-re
 import { useTranslation } from "@/hooks/useTranslation";
 import { formatCurrency } from "@/lib/utils";
 import { Link } from "react-router-dom";
-
 interface PropertyCardProps {
   property: Property;
   onViewDetails: (property: Property) => void;
 }
-
 export function PropertyCard({
   property
 }: PropertyCardProps) {
@@ -19,11 +16,9 @@ export function PropertyCard({
 
   // Get primary image or placeholder
   const primaryImage = property.images.find(img => img.is_primary)?.url || (property.images.length > 0 ? property.images[0].url : '/placeholder.svg');
-  
-  return (
-    <Card className="h-full overflow-hidden border border-gray-200">
+  return <Card className="h-full overflow-hidden border border-gray-200">
       <div className="aspect-video w-full overflow-hidden h-48">
-        <img src={primaryImage} alt={property.name} className="w-full h-full object-contain" />
+        <img src={primaryImage} alt={property.name} className="w-full h-full object-cover" />
       </div>
       
       <CardHeader className="pb-2">
@@ -45,12 +40,10 @@ export function PropertyCard({
             <p className="font-bold text-easyroi-gold break-words">{formatCurrency(property.price)}</p>
           </div>
           
-          {property.roi_percentage && (
-            <div>
+          {property.roi_percentage && <div>
               <p className="text-sm text-gray-500">{t('expectedROI')}</p>
               <p className="font-bold text-easyroi-gold break-words">{property.roi_percentage}%</p>
-            </div>
-          )}
+            </div>}
           
           <div>
             <p className="text-sm text-gray-500">{t('ownership')}</p>
@@ -66,16 +59,13 @@ export function PropertyCard({
           </div>
         </div>
 
-        {property.min_investment && (
-          <div className="mt-2">
+        {property.min_investment && <div className="mt-2">
             <p className="text-sm text-gray-500">{t('minInvestment')}</p>
             <p className="font-bold text-gray-800 break-words">{formatCurrency(property.min_investment)}</p>
-          </div>
-        )}
+          </div>}
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {property.amenities.slice(0, 4).map((amenity, index) => (
-            <span key={index} className="inline-flex items-center px-2 py-1 bg-gray-100 rounded text-xs text-gray-700 break-words">
+          {property.amenities.slice(0, 4).map((amenity, index) => <span key={index} className="inline-flex items-center px-2 py-1 bg-gray-100 rounded text-xs text-gray-700 break-words">
               {amenity.icon === 'droplet' && <Droplet className="h-3 w-3 mr-1 flex-shrink-0" />}
               {amenity.icon === 'wifi' && <Wifi className="h-3 w-3 mr-1 flex-shrink-0" />}
               {amenity.icon === 'car' && <Car className="h-3 w-3 mr-1 flex-shrink-0" />}
@@ -83,8 +73,7 @@ export function PropertyCard({
               {amenity.icon === 'bath' && <Bath className="h-3 w-3 mr-1 flex-shrink-0" />}
               {!amenity.icon && <Globe className="h-3 w-3 mr-1 flex-shrink-0" />}
               {amenity.name}
-            </span>
-          ))}
+            </span>)}
         </div>
       </CardContent>
       
@@ -95,6 +84,5 @@ export function PropertyCard({
           </Button>
         </Link>
       </CardFooter>
-    </Card>
-  );
+    </Card>;
 }
