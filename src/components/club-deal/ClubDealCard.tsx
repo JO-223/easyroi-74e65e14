@@ -101,8 +101,8 @@ export function ClubDealCard({ deal, onClick }: ClubDealCardProps) {
                 </div>
                 <Progress value={progressPercentage} className="h-2" />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{formatCurrency(deal.fundingCurrent, 'EUR')}</span>
-                  <span>{formatCurrency(deal.fundingTarget, 'EUR')}</span>
+                  <span>{formatCurrency(deal.fundingCurrent)}</span>
+                  <span>{formatCurrency(deal.fundingTarget)}</span>
                 </div>
               </div>
               
@@ -130,7 +130,7 @@ export function ClubDealCard({ deal, onClick }: ClubDealCardProps) {
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div>
               <p className="text-muted-foreground">{t('minInvestment')}</p>
-              <p className="font-medium">{formatCurrency(deal.minInvestment, 'EUR')}</p>
+              <p className="font-medium">{formatCurrency(deal.minInvestment)}</p>
             </div>
             <div>
               <p className="text-muted-foreground">{t('estimatedRentalROI')}</p>

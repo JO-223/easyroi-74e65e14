@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
@@ -178,8 +177,8 @@ export default function ClubDealDetail() {
                   <div>
                     <h2 className="text-xl font-medium mb-3">{t('fundingProgress')}</h2>
                     <div className="mb-2 flex justify-between">
-                      <span>{formatCurrency(deal.fundingCurrent, 'EUR')}</span>
-                      <span>{formatCurrency(deal.fundingTarget, 'EUR')}</span>
+                      <span>{formatCurrency(deal.fundingCurrent)}</span>
+                      <span>{formatCurrency(deal.fundingTarget)}</span>
                     </div>
                     <Progress value={progressPercentage} className="h-3" />
                     <div className="mt-2 flex justify-between text-sm text-muted-foreground">
@@ -294,14 +293,14 @@ export default function ClubDealDetail() {
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('totalPrice')}</span>
                     <span className="font-semibold">
-                      {formatCurrency(deal.totalPrice, 'EUR')}
+                      {formatCurrency(deal.totalPrice)}
                     </span>
                   </div>
                   
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('minInvestment')}</span>
                     <span className="font-semibold">
-                      {formatCurrency(deal.minInvestment, 'EUR')}
+                      {formatCurrency(deal.minInvestment)}
                     </span>
                   </div>
                   
@@ -357,7 +356,7 @@ export default function ClubDealDetail() {
                     <Percent className="h-5 w-5 text-muted-foreground" />
                     <div>
                       <p className="text-sm text-muted-foreground">{t('currentPropertyValue')}</p>
-                      <p className="font-medium">{formatCurrency(deal.currentValue, 'EUR')}</p>
+                      <p className="font-medium">{formatCurrency(deal.currentValue)}</p>
                     </div>
                   </div>
                 </div>
