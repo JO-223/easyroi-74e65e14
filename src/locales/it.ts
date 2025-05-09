@@ -61,7 +61,7 @@ const translations = {
   propertyType: "Tipo di Proprietà",
   location: "Posizione",
   currentEvaluation: "Valutazione Attuale",
-  ownership: "Quota"
+  ownership: "Quota",
 
   // Properties
   properties: "Proprietà",
