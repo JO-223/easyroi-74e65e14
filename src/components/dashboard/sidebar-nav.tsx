@@ -1,7 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Shield, UserCircle, Award, FileSpreadsheet, Users } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Shield, UserCircle, Award, FileSpreadsheet } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -47,11 +47,6 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       icon: Building2
     }, 
     {
-      title: t('clubDeals'),
-      href: '/dashboard/club-deal',
-      icon: Users
-    },
-    {
       title: 'Off-Plan',
       href: '/dashboard/development',
       icon: Construction
@@ -81,6 +76,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
       href: '/dashboard/profile',
       icon: UserCircle
     }
+    // Settings page removed from navigation
   ];
 
   // Add admin panel link if user is admin
