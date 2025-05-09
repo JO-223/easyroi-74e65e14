@@ -26,16 +26,16 @@ const mockClubDeals: ClubDeal[] = [
         url: "https://gqsetnzdaocxmutrbisp.supabase.co/storage/v1/object/public/property-images/Tempio%20degli%20dei%20property/tempio%202.jpg"
       }
     ],
-    Investimento: 1150000,
-    InvestimentoMin: 50000,
-    ValoreAttuale: 1150000,
-    ROIdaAffitto: 18.85,
-    ROItotale: 32,
-    TargetInvestimento: 1150000,
-    Investiti: 900000,
-    Deadline: "2025-05-15",
-    Investitori: 7,
-    LivelloMin: "starter",
+    totalPrice: 1150000,
+    minInvestment: 50000,
+    currentValue: 1150000,
+    expectedRentalROI: 18.85,
+    expectedTotalROI: 32,
+    fundingTarget: 1150000,
+    fundingCurrent: 900000,
+    fundingDeadline: "2025-05-15",
+    investorsCount: 7,
+    investorLevel: "starter",
     documents: [
       {
         id: "doc1",
