@@ -1,176 +1,229 @@
 
+import { supabase } from "@/integrations/supabase/client";
 import { ClubDeal } from "@/types/clubDeal";
 
-export async function getClubDeals(): Promise<ClubDeal[]> {
-  // In a real app, this would fetch from Supabase
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockClubDeals);
-    }, 800);
-  });
-}
-
-export async function getClubDealById(id: string): Promise<ClubDeal | null> {
-  // In a real app, this would fetch from Supabase
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const deal = mockClubDeals.find(deal => deal.id === id);
-      resolve(deal || null);
-    }, 500);
-  });
-}
-
-// Mock data
+// Mock data for demonstration purposes
 const mockClubDeals: ClubDeal[] = [
   {
-    id: "cd1",
-    name: "Palm Jumeirah Residences",
+    id: "1",
+    name: "Tempio Degli Dei",
+    description: "Splendida proprietà con 32 camere da letto e 32 bagni, situata in una delle zone più esclusive di Roma. La proprietà è immersa nel verde e vicina al Vaticano. La villa è in condizioni impeccabili e presenta finiture di alta qualità.",
     location: {
-      city: "Dubai",
-      country: "UAE",
-      address: "Palm Jumeirah",
-      latitude: 25.1124,
-      longitude: 55.1390
+      address: "Via San Pancrazio, 17",
+      city: "Roma",
+      zone: "Villa Pamphili",
+      country: "Italia"
     },
-    description: "Exclusive beachfront apartments with stunning sea views",
-    price: 3500000,
-    roi_percentage: 8.5,
-    type: {
-      id: "d7a92651-0c7e-4432-9ea0-90f16f2a6038",
-      name: "Club Deal"
-    },
-    status: "Active",
-    minInvestment: 250000,
-    totalInvestors: 14,
-    requiredInvestorLevel: "bronze",
-    totalShares: 100,
-    availableShares: 35,
-    projectCompletion: 80,
-    estimatedCompletion: "2023-12-31",
-    documents: [
-      {
-        id: "doc1",
-        title: "Investment Brochure",
-        description: "Detailed overview of the investment opportunity",
-        url: "#",
-        fileType: "pdf"
-      },
-      {
-        id: "doc2",
-        title: "Financial Projections",
-        description: "5-year ROI analysis and cash flow projections",
-        url: "#",
-        fileType: "excel"
-      }
-    ],
+    status: "funding_in_progress",
     images: [
       {
         id: "img1",
-        url: "/lovable-uploads/8f62e7e7-e2ac-4ee6-bfee-3019052700d0.png",
+        url: "https://gqsetnzdaocxmutrbisp.supabase.co/storage/v1/object/public/property-images/Tempio%20degli%20dei%20property/tempio%20palazzo.jpg",
         is_primary: true
-      }
-    ],
-    amenities: [
-      { id: "am1", name: "Private Beach", icon: "umbrella" },
-      { id: "am2", name: "Infinity Pool", icon: "droplet" },
-      { id: "am3", name: "Spa & Gym", icon: "dumbbell" },
-      { id: "am4", name: "Concierge", icon: "bell" }
-    ]
-  },
-  {
-    id: "cd2",
-    name: "Downtown Business Center",
-    location: {
-      city: "Dubai",
-      country: "UAE",
-      address: "Downtown Dubai",
-      latitude: 25.2048,
-      longitude: 55.2708
-    },
-    description: "Prime office spaces in Dubai's business district",
-    price: 5200000,
-    roi_percentage: 7.2,
-    type: {
-      id: "d7a92651-0c7e-4432-9ea0-90f16f2a6038",
-      name: "Club Deal"
-    },
-    status: "Active",
-    minInvestment: 500000,
-    totalInvestors: 10,
-    requiredInvestorLevel: "silver",
-    totalShares: 100,
-    availableShares: 20,
-    projectCompletion: 100,
-    estimatedCompletion: "2023-03-15",
-    documents: [
-      {
-        id: "doc3",
-        title: "Market Analysis",
-        description: "Commercial real estate trends in Dubai",
-        url: "#",
-        fileType: "pdf"
-      }
-    ],
-    images: [
+      },
       {
         id: "img2",
-        url: "/lovable-uploads/9496436e-cc5e-4188-9411-1dea4b718fc3.png",
-        is_primary: true
+        url: "https://gqsetnzdaocxmutrbisp.supabase.co/storage/v1/object/public/property-images/Tempio%20degli%20dei%20property/tempio%202.jpg"
       }
     ],
-    amenities: [
-      { id: "am5", name: "24/7 Security", icon: "shield" },
-      { id: "am6", name: "Smart Building", icon: "wifi" },
-      { id: "am7", name: "Conference Rooms", icon: "users" },
-      { id: "am8", name: "Parking", icon: "car" }
-    ]
-  },
-  {
-    id: "cd3",
-    name: "Marina Towers",
-    location: {
-      city: "Dubai",
-      country: "UAE",
-      address: "Dubai Marina",
-      latitude: 25.0650,
-      longitude: 55.1376
-    },
-    description: "Luxury apartments with waterfront views",
-    price: 4800000,
-    roi_percentage: 6.8,
-    type: {
-      id: "d7a92651-0c7e-4432-9ea0-90f16f2a6038",
-      name: "Club Deal"
-    },
-    status: "Coming Soon",
-    minInvestment: 350000,
-    totalInvestors: 0,
-    requiredInvestorLevel: "bronze",
-    totalShares: 100,
-    availableShares: 100,
-    projectCompletion: 45,
-    estimatedCompletion: "2024-08-20",
+    totalPrice: 1150000,
+    minInvestment: 50000,
+    currentValue: 1150000,
+    expectedRentalROI: 18.85,
+    expectedTotalROI: 32,
+    fundingTarget: 1150000,
+    fundingCurrent: 900000,
+    fundingDeadline: "2025-06-30",
+    investorsCount: 7,
+    investorLevel: "starter",
     documents: [
       {
-        id: "doc4",
-        title: "Project Timeline",
-        description: "Construction and investment milestones",
+        id: "doc1",
+        title: "Business Plan",
+        description: "Piano di investimento dettagliato",
         url: "#",
-        fileType: "pdf"
+        fileType: "pdf",
+        uploadDate: "2023-05-15",
+        isRestricted: true
+      },
+      {
+        id: "doc2",
+        title: "Documentazione Legale",
+        description: "Contratti e accordi legali",
+        url: "#",
+        fileType: "pdf",
+        uploadDate: "2023-05-20",
+        isRestricted: true
       }
     ],
+    timeline: [
+      {
+        id: "t1",
+        title: "Inizio Raccolta Fondi",
+        date: "2025-02-01",
+        description: "Avvio della raccolta capitali per l'acquisto dell'immobile",
+        completed: true,
+        phase: "acquisition"
+      },
+      {
+        id: "t2",
+        title: "Chiusura Raccolta Fondi",
+        date: "2025-06-30",
+        description: "Data prevista per il raggiungimento dell'obiettivo di raccolta",
+        completed: false,
+        phase: "acquisition"
+      },
+      {
+        id: "t3",
+        title: "Completamento Ristrutturazione",
+        date: "2025-08-31",
+        description: "Finalizzazione della ristrutturazione dell'immobile",
+        completed: false,
+        phase: "acquisition"
+      },
+      {
+        id: "t4",
+        title: "Inizio Affitto",
+        date: "2025-10-01",
+        description: "Inizio del periodo di affitto",
+        completed: false,
+        phase: "rental"
+      },
+      {
+        id: "t5",
+        title: "Valutazione Vendita",
+        date: "2029-01-01",
+        description: "Valutazione dell'immobile per potenziale vendita",
+        completed: false,
+        phase: "exit"
+      }
+    ],
+    propertyTypeId: "d7a92651-0c7e-4432-9ea0-90f16f2a6038" // Added property type ID
+  },
+  {
+    id: "2",
+    name: "Urban Apartment Complex",
+    description: "Complesso residenziale moderno nel cuore di Milano con 20 appartamenti di lusso. Posizione ottimale vicino ai principali punti di interesse e trasporti pubblici. Edificio di recente costruzione con certificazione energetica A+.",
+    location: {
+      address: "Via Monte Napoleone 12",
+      city: "Milano",
+      zone: "Centro",
+      country: "Italia"
+    },
+    status: "property_acquired",
     images: [
       {
         id: "img3",
-        url: "/lovable-uploads/c6fb964a-ed49-478a-88c3-5d395e52f920.png",
+        url: "/lovable-uploads/8f62e7e7-e2ac-4ee6-bfee-3019052700d0.png",
         is_primary: true
+      },
+      {
+        id: "img4",
+        url: "/lovable-uploads/9496436e-cc5e-4188-9411-1dea4b718fc3.png"
       }
     ],
-    amenities: [
-      { id: "am9", name: "Marina Access", icon: "anchor" },
-      { id: "am10", name: "Infinity Pool", icon: "droplet" },
-      { id: "am11", name: "Fitness Center", icon: "dumbbell" },
-      { id: "am12", name: "Residents Lounge", icon: "coffee" }
-    ]
+    totalPrice: 4500000,
+    minInvestment: 100000,
+    currentValue: 4650000,
+    expectedRentalROI: 4.5,
+    expectedTotalROI: 28,
+    fundingTarget: 4500000,
+    fundingCurrent: 4500000,
+    fundingDeadline: "2023-03-31",
+    purchaseDate: "2023-04-15",
+    rentalDuration: 36,
+    investorsCount: 18,
+    investorLevel: "gold",
+    documents: [
+      {
+        id: "doc3",
+        title: "Rapporto Mensile",
+        description: "Rapporto sulle performance mensili",
+        url: "#",
+        fileType: "pdf",
+        uploadDate: "2023-09-01",
+        isRestricted: true
+      }
+    ],
+    timeline: [
+      {
+        id: "t6",
+        title: "Inizio Raccolta Fondi",
+        date: "2022-11-01",
+        description: "Avvio della raccolta capitali",
+        completed: true,
+        phase: "acquisition"
+      },
+      {
+        id: "t7",
+        title: "Chiusura Raccolta Fondi",
+        date: "2023-03-31",
+        description: "Raggiunto obiettivo di raccolta",
+        completed: true,
+        phase: "acquisition"
+      },
+      {
+        id: "t8",
+        title: "Acquisto Immobile",
+        date: "2023-04-15",
+        description: "Finalizzazione dell'acquisto dell'immobile",
+        completed: true,
+        phase: "acquisition"
+      },
+      {
+        id: "t9",
+        title: "Inizio Affitto",
+        date: "2023-06-01",
+        description: "Inizio del periodo di affitto",
+        completed: true,
+        phase: "rental"
+      },
+      {
+        id: "t10",
+        title: "Termine Affitto",
+        date: "2026-06-01",
+        description: "Fine prevista del periodo di affitto",
+        completed: false,
+        phase: "rental"
+      },
+      {
+        id: "t11",
+        title: "Vendita Immobile",
+        date: "2026-09-01",
+        description: "Vendita dell'immobile e distribuzione dei profitti",
+        completed: false,
+        phase: "exit"
+      }
+    ],
+    propertyTypeId: "some-other-id" // Different property type ID
   }
 ];
+
+export const fetchClubDeals = async (): Promise<ClubDeal[]> => {
+  // In a real-world scenario with Supabase, we would use:
+  // const { data, error } = await supabase
+  //   .from('properties')
+  //   .select(`
+  //     *,
+  //     location:location_id(*),
+  //     images:property_images(*)
+  //   `)
+  //   .eq('type_id', 'd7a92651-0c7e-4432-9ea0-90f16f2a6038') // Filter by specific type ID
+  //   .order('created_at', { ascending: false });
+  
+  // For now, we'll filter our mock data
+  return mockClubDeals.filter(deal => deal.propertyTypeId === 'd7a92651-0c7e-4432-9ea0-90f16f2a6038');
+};
+
+export const fetchClubDeal = async (id: string): Promise<ClubDeal> => {
+  // In a real-world scenario, we would fetch this data from Supabase
+  // For now, we'll return mock data
+  
+  const deal = mockClubDeals.find(deal => deal.id === id);
+  
+  if (!deal) {
+    throw new Error(`Club deal with ID ${id} not found`);
+  }
+  
+  return deal;
+};

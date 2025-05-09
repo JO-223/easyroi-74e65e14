@@ -1,7 +1,6 @@
-
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Shield, UserCircle, Award, FileSpreadsheet, Users, HandHelping } from 'lucide-react';
+import { BarChart3, Building2, Calendar, Construction, Home, LogOut, Shield, UserCircle, Award, FileSpreadsheet, Users } from 'lucide-react';
 import { BadgeLevel } from '@/components/ui/badge-level';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -74,7 +73,7 @@ export function SidebarNav({ userData }: SidebarNavProps) {
     {
       title: t('consultations'),
       href: '/dashboard/consultations',
-      icon: HandHelping
+      icon: UserCircle
     },
     {
       title: t('profile'),
