@@ -86,8 +86,8 @@ const translations = {
   ownership: "Quota",
 
   // Properties
-  properties: "Proprietà",
-  myProperties: "Le Mie Proprietà",
+  properties: "Investimenti",
+  myProperties: "I Miei Investimenti",
   forSaleProperties: "Proprietà in Vendita",
   propertyName: "Nome Proprietà",
   propertyDetails: "Dettagli Proprietà",
