@@ -33,7 +33,7 @@ const mockClubDeals: ClubDeal[] = [
     expectedTotalROI: 32,
     fundingTarget: 1150000,
     fundingCurrent: 900000,
-    fundingDeadline: "2025-05-15",
+    fundingDeadline: "2025-06-30",
     investorsCount: 7,
     investorLevel: "starter",
     documents: [
