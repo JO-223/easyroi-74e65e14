@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,6 +93,18 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Global text overflow handling */
+  h1, h2, h3, h4, h5, h6, p, span, div, button, a {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
   }
 }
 
@@ -253,6 +266,27 @@
   
   .responsive-text-3xl {
     @apply text-2xl sm:text-3xl md:text-4xl;
+  }
+  
+  /* Text overflow utilities */
+  .text-ellipsis {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+  
+  .break-anywhere {
+    overflow-wrap: anywhere;
+  }
+  
+  /* Ensure select, input and button content doesn't overflow */
+  .select-container, 
+  .input-container,
+  .button-container {
+    @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+  
+  /* Make sure dropdowns have a proper background and z-index */
+  .dropdown-content {
+    @apply bg-white dark:bg-gray-900 z-50 border shadow-md rounded-md;
   }
   
   @keyframes scrollDown {

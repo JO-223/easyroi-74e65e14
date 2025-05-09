@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Badge } from "@/components/ui/badge";
 
 interface DevelopmentProjectFiltersProps {
   onApplyFilters: (filters: any) => void;
@@ -51,11 +50,11 @@ export function DevelopmentProjectFilters({ onApplyFilters }: DevelopmentProject
   
   return (
     <div className="space-y-4 p-4 bg-white rounded-lg shadow-sm border">
-      <h3 className="font-medium text-lg">{t('filterProjects')}</h3>
+      <h3 className="font-medium text-lg truncate">{t('filterProjects')}</h3>
       
       <div className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('constructionProgress')}</label>
+          <label className="text-sm font-medium block truncate">{t('constructionProgress')}</label>
           <div className="px-2">
             <Slider 
               value={progressRange}
@@ -72,19 +71,20 @@ export function DevelopmentProjectFilters({ onApplyFilters }: DevelopmentProject
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('minInvestment')}</label>
+          <label className="text-sm font-medium block truncate">{t('minInvestment')}</label>
           <Input
             type="number"
             placeholder="€"
             value={minInvestment}
             onChange={(e) => setMinInvestment(e.target.value)}
+            className="w-full"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('investorLevel')}</label>
+          <label className="text-sm font-medium block truncate">{t('investorLevel')}</label>
           <Select value={investorLevel} onValueChange={setInvestorLevel}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder={t('selectInvestorLevel')} />
             </SelectTrigger>
             <SelectContent>
@@ -100,19 +100,20 @@ export function DevelopmentProjectFilters({ onApplyFilters }: DevelopmentProject
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('location')}</label>
+          <label className="text-sm font-medium block truncate">{t('location')}</label>
           <Input
             type="text"
             placeholder={t('enterLocation')}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
+            className="w-full"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('constructionStage')}</label>
+          <label className="text-sm font-medium block truncate">{t('constructionStage')}</label>
           <Select value={stage} onValueChange={setStage}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder={t('selectStage')} />
             </SelectTrigger>
             <SelectContent>
@@ -131,13 +132,13 @@ export function DevelopmentProjectFilters({ onApplyFilters }: DevelopmentProject
         <div className="flex gap-2 pt-2">
           <Button 
             variant="outline" 
-            className="flex-1"
+            className="flex-1 truncate"
             onClick={clearFilters}
           >
             {t('clearAll')}
           </Button>
           <Button 
-            className="flex-1 bg-easyroi-navy text-white hover:bg-easyroi-navy/90"
+            className="flex-1 bg-easyroi-navy text-white hover:bg-easyroi-navy/90 truncate"
             onClick={applyFilters}
           >
             {t('applyFilters')}

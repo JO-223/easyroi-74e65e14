@@ -78,9 +78,9 @@ export default function Development() {
     <DashboardLayout title={t('developmentProjects')} subtitle={t('exploreCurrentProjectsInProgress')}>
       <div className="container mx-auto py-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">{t('developmentProjects')}</h1>
-            <p className="text-muted-foreground">{t('exploreCurrentProjectsInProgress')}</p>
+          <div className="max-w-full overflow-hidden">
+            <h1 className="text-2xl font-semibold tracking-tight truncate">{t('developmentProjects')}</h1>
+            <p className="text-muted-foreground truncate">{t('exploreCurrentProjectsInProgress')}</p>
           </div>
         </div>
         

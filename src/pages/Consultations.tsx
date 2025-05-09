@@ -8,8 +8,8 @@ const Consultations = () => {
   
   return (
     <DashboardLayout title={t('consultations')}>
-      <div className="space-y-6">
-        <p className="text-muted-foreground">{t('consultationsDescription')}</p>
+      <div className="space-y-6 max-w-full">
+        <p className="text-muted-foreground break-words">{t('consultationsDescription')}</p>
         
         <AllConsultantsList />
       </div>
