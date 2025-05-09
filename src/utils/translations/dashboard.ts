@@ -9,6 +9,8 @@ export const dashboardKeys = [
   "recentTransactions",
   "upcomingEvents", 
   "marketNews",
+  "currentEvaluation",
+  "ownership",
   "totalValue",
   "totalROI",
   "investmentPeriod",
@@ -28,7 +30,6 @@ export const dashboardKeys = [
   "noData",
   "refreshOrContactSupport",
   "nextLevel",
-  'currentEvaluation',
   "eventsInLastYear"
 ] as const;
 
